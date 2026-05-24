@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Choose Your Path — Sinverse</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <!-- ─── LIBRARY SCREEN ───────────────────────────── -->
+  <div id="screen-library" class="screen" style="display:none">
+    <header class="cyoa-header">
+      <div class="cyoa-brand">
+        <a href="../">
+          <img src="../images/logo.png" alt="Sinverse" class="header-logo" />
+        </a>
+        <div class="cyoa-title-block">
+          <h1 class="cyoa-title">Choose Your Own Adventure</h1>
+          <span class="cyoa-eyebrow">Interactive Fiction</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="cyoa-search-bar">
+      <input id="search-input" class="search-input" type="text" placeholder="Search by title..." aria-label="Search adventures" />
+      <div id="tag-filters" class="tag-filters"></div>
+    </div>
+
+    <div id="adventure-grid" class="adventure-grid">
+      <div class="loading-placeholder">Loading adventures...</div>
+    </div>
+
+    <footer class="cyoa-footer">
+      <a href="../" class="cyoa-footer-home-link">&#8592; Sinverse Home</a>
+      <span class="footer-sep">&middot;</span>
+      <span>Community interactive adventures</span>
+    </footer>
+  </div>
+
+  <!-- ─── GAME SCREEN ──────────────────────────────── -->
+  <div id="screen-game" class="screen" style="display:none">
+    <div class="game-layout">
+
+      <aside class="game-aside">
+        <div class="aside-top">
+          <button id="btn-back-library" class="btn-ghost back-btn" aria-label="Return to library">
+            &#8592; Adventures
+          </button>
+          <a href="../">
+            <img src="../images/logo.png" alt="Sinverse" class="sidebar-logo" />
+          </a>
+        </div>
+
+        <div class="scene-image-wrap">
+          <img id="scene-image" src="" alt="" />
+          <div class="scene-image-placeholder" id="scene-image-placeholder">
+            <span class="placeholder-glyph">&#10022;</span>
+          </div>
+        </div>
+
+        <div class="progress-panel">
+          <div class="progress-label">Path taken</div>
+          <div id="breadcrumb-list" class="breadcrumb-list"></div>
+          <button id="btn-back-node" class="btn-ghost back-node-btn" style="display:none">&#8629; Go back</button>
+        </div>
+
+        <div class="save-panel">
+          <button id="btn-restart" class="btn-ghost">Restart</button>
+        </div>
+      </aside>
+
+      <main class="game-main">
+        <div class="adventure-meta">
+          <span id="game-story-title" class="adventure-meta-title"></span>
+        </div>
+
+        <div class="blurb-wrap">
+          <p id="scene-blurb" class="scene-blurb"></p>
+          <div id="scene-byline" class="scene-byline" style="display:none">
+            <span class="byline-label">written by</span>
+            <span id="scene-author" class="byline-author"></span>
+          </div>
+        </div>
+
+        <div id="choices-wrap" class="choices-wrap"></div>
+
+        <div id="ending-wrap" class="ending-wrap" style="display:none">
+          <div class="ending-ornament">&#8212; &#10022; &#8212;</div>
+          <div class="ending-label">The End</div>
+          <div class="ending-actions">
+            <button id="btn-play-again" class="btn-primary">Play again</button>
+            <button id="btn-library-from-end" class="btn-ghost">Back to adventures</button>
+          </div>
+        </div>
+
+        <div id="dead-end-wrap" class="dead-end-wrap" style="display:none">
+          <div class="dead-end-header">
+            <span class="dead-end-ornament">&#10022;</span>
+            <span class="dead-end-label">This path has not been written yet</span>
+          </div>
+          <div id="dead-end-contact"></div>
+          <button id="btn-dead-end-library" class="btn-ghost">Back to adventures</button>
+        </div>
+      </main>
+    </div>
+  </div>
+
+  <!-- ─── CONFIRM MODAL ───────────────────────────── -->
+  <div id="modal-overlay" class="modal-overlay" style="display:none">
+    <div class="modal">
+      <p id="modal-message" class="modal-message"></p>
+      <div class="modal-actions">
+        <button id="modal-confirm" class="btn-primary">Yes</button>
+        <button id="modal-cancel" class="btn-ghost">Cancel</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" aria-live="polite"></div>
+
+  <script src="submit.js"></script>
+  <script src="app.js"></script>
+  <script>
+    // Show library screen immediately -- age gate is on landing page
+    document.getElementById('screen-library').style.display = 'block';
+  </script>
+</body>
+</html>

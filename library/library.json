@@ -1,0 +1,33 @@
+[
+  {
+    "id": 1,
+    "type": "standalone",
+    "title": "TDay Tales - Pakawa",
+    "author": "RonaSerena",
+    "summary": "A story about how couple dynamics changed a lot after TDay hit.",
+    "wordCount": 12400,
+    "tags": ["tday", "noncon", "snuff"],
+    "file": "stories/tdaytales_pakawa_couples_tday.html",
+    "coverImage": null,
+    "date": "2022-05",
+    "canonical": true
+  },
+  {
+    "id": 2,
+    "type": "serial",
+    "title": "Chronicles of Control: Kel",
+    "author": "JaysLab",
+    "summary": "A multi-part story following one man's enslavement to the red panda giantess, Kel",
+    "tags": [],
+    "coverImage": null,
+    "date": "2025-02",
+    "canonical": true,
+    "chapters": [
+      { "title": "CoCK - Chapter 1",   "file": "stories/chronicles_of_control_kel_1.html"},
+      { "title": "CoCK - Chapter 2",   "file": "stories/chronicles_of_control_kel_2.html"},
+      { "title": "CoCK - Chapter 3",   "file": "stories/chronicles_of_control_kel_3.html"},
+      { "title": "CoCK - Chapter 4",   "file": "stories/chronicles_of_control_kel_4.html"},
+      { "title": "CoCK - Chapter 5",   "file": "stories/chronicles_of_control_kel_5.html"}
+    ]
+  }
+]
