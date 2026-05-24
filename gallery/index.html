@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Gallery — Sinverse</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="gallery-header">
+    <div class="gallery-brand">
+      <a href="../">
+        <img src="../images/logo.png" alt="Sinverse" class="header-logo" />
+      </a>
+      <div class="gallery-title-block">
+        <h1 class="gallery-title">Gallery</h1>
+        <span class="gallery-eyebrow">Sinverse Art & Comics</span>
+      </div>
+    </div>
+  </header>
+
+  <div class="gallery-controls">
+    <input id="search-input" class="search-input" type="text" placeholder="Search by title or artist..." aria-label="Search gallery" />
+
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-group-label">Type</span>
+        <div class="filter-btns" id="type-filters">
+          <button class="filter-btn active" data-filter="type" data-value="all">All</button>
+          <button class="filter-btn" data-filter="type" data-value="comic">Comics</button>
+          <button class="filter-btn" data-filter="type" data-value="scene">World Scenes</button>
+          <button class="filter-btn" data-filter="type" data-value="charref">Character Refs</button>
+        </div>
+      </div>
+      </div>
+
+      <div class="filter-group">
+        <span class="filter-group-label">Sort</span>
+        <select id="sort-select" class="sort-select">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title A–Z</option>
+          <option value="artist">Artist A–Z</option>
+        </select>
+      </div>
+    </div>
+
+    <div id="tag-filters" class="tag-filter-row"></div>
+  </div>
+
+  <div id="gallery-grid" class="gallery-grid">
+    <div class="loading-placeholder">Loading gallery...</div>
+  </div>
+
+  <div class="gallery-footer">
+    <a href="../" class="footer-home-link">&#8592; Sinverse Home</a>
+    <span class="footer-sep">&middot;</span>
+    <span id="gallery-count" class="gallery-count"></span>
+  </div>
+
+  <script src="gallery.js"></script>
+</body>
+</html>

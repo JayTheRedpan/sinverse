@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Library — Sinverse</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body>
+
+  <header class="lib-header">
+    <div class="lib-brand">
+      <a href="../"><img src="../images/logo.png" alt="Sinverse" class="header-logo" /></a>
+      <div class="lib-title-block">
+        <h1 class="lib-title">Library</h1>
+        <span class="lib-eyebrow">Complete Stories</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <div class="lib-controls">
+    <div class="lib-controls-top">
+      <input id="search-input" class="search-input" type="text" placeholder="Search by title or author..." />
+      <div class="view-toggle" id="story-view-toggle">
+        <button id="view-list-btn" class="view-toggle-btn" title="List view">&#9776; List</button>
+        <button id="view-grid-btn" class="view-toggle-btn active" title="Grid view">&#9783; Grid</button>
+      </div>
+    </div>
+    <div class="filter-row" id="story-controls">
+      <div class="filter-group">
+        <span class="filter-group-label">Type</span>
+        <div class="filter-btns" id="type-filters">
+          <button class="filter-btn active" data-value="all">All</button>
+          <button class="filter-btn" data-value="standalone">Stories</button>
+          <button class="filter-btn" data-value="serial">Serials</button>
+        </div>
+      </div>
+      <div class="filter-group">
+        <span class="filter-group-label">Sort</span>
+        <select id="sort-select" class="sort-select">
+          <option value="newest">Newest first</option>
+          <option value="oldest">Oldest first</option>
+          <option value="title">Title A–Z</option>
+          <option value="author">Author A–Z</option>
+          <option value="wordcount">Word count</option>
+        </select>
+      </div>
+    </div>
+    <div class="filter-row-bottom" id="story-tag-row">
+      <div id="tag-filters" class="tag-filter-row"></div>
+    </div>
+  </div>
+
+  <!-- Tabs below controls -->
+  <div class="lib-tabs">
+    <button id="tab-stories" class="lib-tab active">Stories &amp; Serials</button>
+    <button id="tab-collections" class="lib-tab">Collections</button>
+  </div>
+
+  <div id="lib-grid" class="lib-grid">
+    <div class="loading-placeholder">Loading library...</div>
+  </div>
+
+  <footer class="lib-footer">
+    <a href="../" class="footer-home-link">&#8592; Sinverse Home</a>
+    <span class="footer-sep">&middot;</span>
+    <span id="lib-count" class="lib-count"></span>
+  </footer>
+
+  <!-- Collection overlay -->
+  <div id="collection-panel" class="collection-panel" style="display:none">
+    <div class="collection-panel-inner">
+      <button id="collection-close" class="btn-ghost collection-close-btn">&#8592; Back to collections</button>
+      <div id="collection-header" class="collection-header"></div>
+      <div id="collection-stories" class="collection-stories"></div>
+    </div>
+  </div>
+
+  <script src="library.js"></script>
+</body>
+</html>

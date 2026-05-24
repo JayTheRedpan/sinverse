@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Viewer — Sinverse Gallery</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="viewer-body">
+
+  <div class="viewer-topbar">
+    <a href="index.html" class="btn-ghost viewer-back">&#8592; Gallery</a>
+    <span id="viewer-title" class="viewer-topbar-title"></span>
+    <a href="../" class="viewer-logo-link">
+      <img src="../images/logo.png" alt="Sinverse" class="viewer-nav-logo" />
+    </a>
+  </div>
+
+  <!-- ── COMIC READER ─────────────────────────── -->
+  <div id="view-comic" class="view-panel" style="display:none">
+    <div class="comic-synopsis-wrap" id="comic-synopsis-wrap">
+      <div class="comic-synopsis-box">
+        <div class="comic-meta-header">
+          <span id="comic-type-badge" class="type-badge type-comic">Comic</span>
+          <span id="comic-canonical" class="canonical-badge" style="display:none">&#10022; Canonical</span>
+        </div>
+        <h1 id="comic-title" class="viewer-h1"></h1>
+        <p id="comic-artist" class="viewer-artist"></p>
+        <div id="comic-tags" class="viewer-tags"></div>
+        <p id="comic-synopsis" class="viewer-synopsis"></p>
+        <button id="comic-start-btn" class="btn-primary">Read now</button>
+      </div>
+    </div>
+
+    <div class="comic-reader-wrap" id="comic-reader-wrap" style="display:none">
+      <div class="comic-page-wrap">
+        <img id="comic-page-img" src="" alt="Comic page" class="comic-page-img" />
+      </div>
+      <div class="comic-controls">
+        <button id="comic-prev" class="btn-ghost comic-nav-btn">&#8592; Prev</button>
+        <span id="comic-page-counter" class="comic-counter"></span>
+        <button id="comic-next" class="btn-ghost comic-nav-btn">Next &#8594;</button>
+      </div>
+      <button id="comic-back-synopsis" class="btn-ghost comic-back-btn">&#8592; Back to synopsis</button>
+    </div>
+  </div>
+
+  <!-- ── SCENE VIEWER ─────────────────────────── -->
+  <div id="view-scene" class="view-panel" style="display:none">
+    <div class="scene-viewer-layout">
+      <div class="scene-image-panel">
+        <img id="scene-img" src="" alt="" class="scene-full-img" />
+      </div>
+      <aside class="scene-meta-panel">
+        <span id="scene-type-badge" class="type-badge type-scene">World Scene</span>
+        <span id="scene-canonical" class="canonical-badge" style="display:none">&#10022; Canonical</span>
+        <h1 id="scene-title" class="viewer-h1"></h1>
+        <p id="scene-artist" class="viewer-artist"></p>
+        <div id="scene-tags" class="viewer-tags"></div>
+        <p id="scene-description" class="viewer-synopsis"></p>
+        <div id="scene-characters" class="viewer-characters"></div>
+        <a id="scene-download" href="#" download class="btn-ghost viewer-download">&#8595; Download</a>
+      </aside>
+    </div>
+  </div>
+
+  <!-- ── CHAR REF VIEWER ──────────────────────── -->
+  <div id="view-charref" class="view-panel" style="display:none">
+    <div class="scene-viewer-layout">
+      <div class="scene-image-panel">
+        <img id="ref-img" src="" alt="" class="scene-full-img" />
+      </div>
+      <aside class="scene-meta-panel">
+        <span class="type-badge type-charref">Character Reference</span>
+        <span id="ref-canonical" class="canonical-badge" style="display:none">&#10022; Canonical</span>
+        <h1 id="ref-title" class="viewer-h1"></h1>
+        <p id="ref-artist" class="viewer-artist"></p>
+        <div id="ref-tags" class="viewer-tags"></div>
+        <div id="ref-char-link" class="ref-char-link"></div>
+        <div class="ref-detail-block" id="ref-height-block" style="display:none">
+          <span class="ref-detail-label">Height</span>
+          <span id="ref-height" class="ref-detail-value"></span>
+        </div>
+        <div class="ref-detail-block" id="ref-notes-block" style="display:none">
+          <span class="ref-detail-label">Artist notes</span>
+          <p id="ref-notes" class="ref-notes-text"></p>
+        </div>
+        <a id="ref-download" href="#" download class="btn-primary viewer-download" style="margin-top:1rem">&#8595; Download reference sheet</a>
+      </aside>
+    </div>
+  </div>
+
+  <script src="../_shared/registry.js"></script>
+  <script src="viewer.js"></script>
+</body>
+</html>

@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Sinverse</title>
+  <link rel="icon" type="image/x-icon" href="favicon.ico" />
+  <link rel="apple-touch-icon" href="apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="_shared/styles-global.css" />
+  <style>
+    /* ── Age Gate ─────────────────────────────── */
+    #agegate {
+      position: fixed; inset: 0;
+      background: var(--bg);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      background-image: radial-gradient(ellipse 60% 60% at 50% 40%, rgba(122,34,51,0.18) 0%, transparent 70%);
+    }
+
+    .agegate-box {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 1.25rem;
+      max-width: 440px;
+      width: 90%;
+      padding: 3rem 2.5rem;
+      background: var(--bg-card);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius-lg);
+      text-align: center;
+      box-shadow: 0 0 80px rgba(0,0,0,0.6);
+      position: relative;
+      z-index: 2;
+    }
+
+    .agegate-logo {
+      width: 90px; height: 90px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 20px rgba(196,154,120,0.2));
+    }
+
+    .agegate-title {
+      font-family: var(--font-caps);
+      font-size: 2.6rem;
+      font-weight: 300;
+      letter-spacing: 0.25em;
+      color: var(--accent);
+      text-transform: uppercase;
+    }
+
+    .agegate-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-muted);
+      letter-spacing: 0.08em;
+      margin-top: -0.5rem;
+    }
+
+    .agegate-divider {
+      width: 60px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+    }
+
+    .agegate-warning {
+      font-size: 0.9rem;
+      line-height: 1.75;
+      color: var(--text-secondary);
+    }
+
+    .agegate-warning strong { color: var(--text-primary); font-weight: 400; }
+
+    .btn-enter {
+      width: 100%;
+      background: var(--wine);
+      color: var(--accent-light);
+      border: 1px solid rgba(196,154,120,0.2);
+      border-radius: var(--radius);
+      padding: 0.8rem 2rem;
+      font-family: var(--font-caps);
+      font-size: 0.78rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background var(--transition), box-shadow var(--transition);
+      margin-top: 0.5rem;
+    }
+    .btn-enter:hover {
+      background: #8f2438;
+      box-shadow: 0 0 20px rgba(122,34,51,0.4);
+    }
+
+    .btn-exit {
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      letter-spacing: 0.06em;
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+    .btn-exit:hover { color: var(--text-secondary); }
+
+    /* ── Landing Page ─────────────────────────── */
+    #landing { display: none; min-height: 100vh; }
+
+    .landing-hero {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 5rem 2rem 3rem;
+      gap: 1.5rem;
+      position: relative;
+      overflow: hidden;
+    }
+
+    .landing-hero::before {
+      content: '';
+      position: absolute; inset: 0;
+      background: radial-gradient(ellipse 70% 60% at 50% 0%, rgba(122,34,51,0.15) 0%, transparent 70%);
+      pointer-events: none;
+    }
+
+    .hero-logo {
+      width: 120px; height: 120px;
+      object-fit: contain;
+      filter: drop-shadow(0 0 30px rgba(196,154,120,0.3));
+      animation: fadeSlideIn 0.8s ease both;
+    }
+
+    .hero-title {
+      font-family: var(--font-caps);
+      font-size: clamp(3rem, 8vw, 6rem);
+      font-weight: 300;
+      letter-spacing: 0.4em;
+      color: var(--accent);
+      text-transform: uppercase;
+      line-height: 1;
+      animation: fadeSlideIn 0.8s ease 0.1s both;
+    }
+
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(1rem, 2.5vw, 1.4rem);
+      color: var(--text-secondary);
+      letter-spacing: 0.05em;
+      animation: fadeSlideIn 0.8s ease 0.2s both;
+    }
+
+    .hero-divider {
+      width: 80px; height: 1px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      animation: fadeSlideIn 0.8s ease 0.3s both;
+    }
+
+    .hero-discord {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.6rem;
+      background: #5865F2;
+      color: #fff;
+      border-radius: var(--radius);
+      padding: 0.7rem 1.5rem;
+      font-family: var(--font-caps);
+      font-size: 0.72rem;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      text-decoration: none;
+      transition: opacity var(--transition), transform var(--transition);
+      animation: fadeSlideIn 0.8s ease 0.4s both;
+    }
+    .hero-discord:hover { opacity: 0.88; transform: translateY(-1px); color: #fff; }
+
+    /* ── Nav Cards ────────────────────────────── */
+    .nav-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      padding: 1px;
+      margin-top: 1rem;
+    }
+
+    .nav-card {
+      background: var(--bg-card);
+      padding: 2.5rem;
+      cursor: pointer;
+      position: relative;
+      overflow: hidden;
+      transition: background var(--transition);
+      display: flex;
+      flex-direction: column;
+      gap: 0.85rem;
+      text-decoration: none;
+      color: inherit;
+      animation: fadeSlideIn 0.6s ease both;
+    }
+
+    .nav-card::after {
+      content: '';
+      position: absolute;
+      bottom: 0; left: 0; right: 0;
+      height: 2px;
+      background: linear-gradient(90deg, transparent, var(--accent), transparent);
+      opacity: 0;
+      transition: opacity var(--transition-slow);
+    }
+
+    .nav-card:hover { background: var(--bg-card-hover); }
+    .nav-card:hover::after { opacity: 1; }
+
+    .nav-card-icon {
+      font-size: 1.5rem;
+      color: var(--accent);
+      opacity: 0.5;
+      transition: opacity var(--transition);
+      line-height: 1;
+    }
+    .nav-card:hover .nav-card-icon { opacity: 0.9; }
+
+    .nav-card-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.5rem;
+      font-weight: 400;
+      color: var(--text-primary);
+      transition: color var(--transition);
+      line-height: 1.2;
+    }
+    .nav-card:hover .nav-card-title { color: var(--accent-light); }
+
+    .nav-card-desc {
+      font-size: 0.9rem;
+      line-height: 1.7;
+      color: var(--text-secondary);
+      flex: 1;
+    }
+
+    .nav-card-cta {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      transition: color var(--transition);
+      margin-top: 0.5rem;
+    }
+    .nav-card:hover .nav-card-cta { color: var(--accent); }
+
+    /* ── Footer ───────────────────────────────── */
+    .landing-footer {
+      padding: 2rem;
+      text-align: center;
+      font-size: 0.75rem;
+      color: var(--text-muted);
+      font-style: italic;
+      border-top: 1px solid var(--border);
+    }
+
+    /* ── Responsive ───────────────────────────── */
+    @media (max-width: 600px) {
+      .nav-cards { grid-template-columns: 1fr; }
+      .landing-hero { padding: 3rem 1.5rem 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Age Gate -->
+  <div id="agegate">
+    <div class="agegate-box">
+      <img src="images/logo.png" alt="Sinverse" class="agegate-logo" />
+      <h1 class="agegate-title">Sinverse</h1>
+      <p class="agegate-subtitle">An adult creative universe</p>
+      <div class="agegate-divider"></div>
+      <p class="agegate-warning">
+        This site contains adult content intended for mature audiences only.
+        By entering you confirm that you are <strong>18 years of age or older</strong>
+        and consent to viewing explicit material.
+      </p>
+      <button class="btn-enter" id="btn-enter">I am 18 or older — Enter</button>
+      <a href="https://www.google.com" class="btn-exit">I am under 18 — Exit</a>
+    </div>
+  </div>
+
+  <!-- Landing Page -->
+  <div id="landing">
+
+    <section class="landing-hero">
+      <img src="images/logo.png" alt="Sinverse" class="hero-logo" />
+      <h1 class="hero-title">Sinverse</h1>
+      <p class="hero-tagline">An expansive adult creative universe — stories, art, and lore for mature audiences.</p>
+      <div class="hero-divider"></div>
+      <a href="https://discord.gg/FFWPJmcUDg" target="_blank" rel="noopener noreferrer" class="hero-discord">
+        <svg width="18" height="14" viewBox="0 0 71 55" fill="currentColor" xmlns="http://www.w3.org/2000/svg">
+          <path d="M60.1 4.9A58.6 58.6 0 0 0 45.5.4a.2.2 0 0 0-.2.1 40.9 40.9 0 0 0-1.8 3.7 54.1 54.1 0 0 0-16.2 0A37.5 37.5 0 0 0 25.4.5a.2.2 0 0 0-.2-.1A58.4 58.4 0 0 0 10.6 4.9a.2.2 0 0 0-.1.1C1.6 18.1-.9 31 .3 43.7a.2.2 0 0 0 .1.2 58.9 58.9 0 0 0 17.7 8.9.2.2 0 0 0 .2-.1 42 42 0 0 0 3.6-5.9.2.2 0 0 0-.1-.3 38.7 38.7 0 0 1-5.5-2.6.2.2 0 0 1 0-.4l1.1-.9a.2.2 0 0 1 .2 0c11.5 5.2 23.9 5.2 35.3 0a.2.2 0 0 1 .2 0l1.1.9a.2.2 0 0 1 0 .4 36.2 36.2 0 0 1-5.5 2.6.2.2 0 0 0-.1.3 47.1 47.1 0 0 0 3.6 5.9.2.2 0 0 0 .2.1 58.7 58.7 0 0 0 17.8-8.9.2.2 0 0 0 .1-.2c1.4-14.9-2.4-27.7-10.1-39.1a.2.2 0 0 0-.1 0zM23.7 36.2c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1c3.6 0 6.5 3.2 6.4 7.1 0 3.9-2.8 7.1-6.4 7.1zm23.6 0c-3.5 0-6.4-3.2-6.4-7.1s2.8-7.1 6.4-7.1c3.6 0 6.5 3.2 6.4 7.1 0 3.9-2.8 7.1-6.4 7.1z"/>
+        </svg>
+        Join the Discord
+      </a>
+    </section>
+
+    <nav class="nav-cards">
+      <a href="wiki/" class="nav-card" style="animation-delay:0.05s">
+        <div class="nav-card-icon">&#9412;</div>
+        <div class="nav-card-title">Wiki</div>
+        <p class="nav-card-desc">Characters, lore, factions, locations, and the history of the Sinverse universe.</p>
+        <div class="nav-card-cta">Explore the universe &rarr;</div>
+      </a>
+
+      <a href="library/" class="nav-card" style="animation-delay:0.10s">
+        <div class="nav-card-icon">&#9096;</div>
+        <div class="nav-card-title">Library</div>
+        <p class="nav-card-desc">Complete stories by authors in the Sinverse community. Curated, finished works ready to read.</p>
+        <div class="nav-card-cta">Read stories &rarr;</div>
+      </a>
+
+      <a href="cyoa/" class="nav-card" style="animation-delay:0.15s">
+        <div class="nav-card-icon">&#9674;</div>
+        <div class="nav-card-title">Choose Your Own Adventure</div>
+        <p class="nav-card-desc">Community-built branching stories. Every choice matters. Every path needs a writer.</p>
+        <div class="nav-card-cta">Start a story &rarr;</div>
+      </a>
+
+      <a href="gallery/" class="nav-card" style="animation-delay:0.20s">
+        <div class="nav-card-icon">&#9723;</div>
+        <div class="nav-card-title">Gallery</div>
+        <p class="nav-card-desc">Art, illustrations, and visual content from the Sinverse creative community.</p>
+        <div class="nav-card-cta">View the gallery &rarr;</div>
+      </a>
+
+      <a href="sizeref/" class="nav-card" style="animation-delay:0.25s">
+        <div class="nav-card-icon">&#8691;</div>
+        <div class="nav-card-title">Size Reference</div>
+        <p class="nav-card-desc">Compare characters at scale. An interactive visual tool built around one of the universe's defining themes.</p>
+        <div class="nav-card-cta">Compare characters &rarr;</div>
+      </a>
+
+      <a href="contributors/" class="nav-card" style="animation-delay:0.30s">
+        <div class="nav-card-icon">&#10022;</div>
+        <div class="nav-card-title">Contributors</div>
+        <p class="nav-card-desc">The authors, artists, and creators who bring the Sinverse to life. Meet the community.</p>
+        <div class="nav-card-cta">Meet the creators &rarr;</div>
+      </a>
+    </nav>
+
+    <footer class="landing-footer">
+      Sinverse &mdash; Adult content. 18+ only. &mdash; All characters are fictional adults.
+    </footer>
+
+  </div>
+
+  <script>
+    var KEY = 'sinverse_age_ok';
+
+    function showLanding() {
+      document.getElementById('agegate').style.display = 'none';
+      document.getElementById('landing').style.display = 'block';
+    }
+
+    // Already confirmed this session -- skip the gate
+    if (sessionStorage.getItem(KEY) === '1') {
+      showLanding();
+    }
+
+    document.getElementById('btn-enter').addEventListener('click', function() {
+      sessionStorage.setItem(KEY, '1');
+      showLanding();
+    });
+  </script>
+
+</body>
+</html>

@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Reader — Sinverse Library</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <link rel="stylesheet" href="styles.css" />
+</head>
+<body class="reader-body">
+
+  <!-- Top bar -->
+  <div class="reader-topbar">
+    <a id="reader-back" href="index.html" class="btn-ghost reader-back-btn">&#8592; Library</a>
+    <span id="reader-topbar-title" class="reader-topbar-title"></span>
+    <a href="../"><img src="../images/logo.png" alt="Sinverse" class="reader-nav-logo" /></a>
+  </div>
+
+  <!-- Chapter nav for serials -->
+  <div id="chapter-nav" class="chapter-nav" style="display:none">
+    <div class="chapter-nav-inner">
+      <span class="chapter-nav-label">Chapters</span>
+      <div id="chapter-list" class="chapter-list"></div>
+    </div>
+  </div>
+
+  <!-- Reader layout -->
+  <div class="reader-layout">
+
+    <!-- Sidebar -->
+    <aside class="reader-sidebar">
+      <img id="reader-cover" src="" alt="" class="reader-cover" style="display:none" />
+      <div class="reader-meta-block">
+        <h1 id="reader-title" class="reader-title"></h1>
+        <p id="reader-author" class="reader-author"></p>
+        <div id="reader-tags" class="reader-tags"></div>
+        <p id="reader-summary" class="reader-summary"></p>
+        <div id="reader-wordcount" class="reader-wordcount"></div>
+      </div>
+
+      <!-- Chapter list for serials (sidebar version) -->
+      <div id="reader-chapters" class="reader-chapters" style="display:none">
+        <div class="reader-chapters-label">Chapters</div>
+        <div id="reader-chapter-list" class="reader-chapter-list"></div>
+      </div>
+
+      <!-- Reading progress -->
+      <div class="reader-progress-wrap" id="reader-progress-wrap" style="display:none">
+        <div class="reader-progress-label">Reading progress</div>
+        <div class="reader-progress-bar">
+          <div class="reader-progress-fill" id="reader-progress-fill"></div>
+        </div>
+        <span class="reader-progress-pct" id="reader-progress-pct">0%</span>
+      </div>
+    </aside>
+
+    <!-- Story content -->
+    <main class="reader-main">
+      <!-- Serial chapter header -->
+      <div id="reader-chapter-header" class="reader-chapter-header" style="display:none">
+        <span id="reader-chapter-title" class="reader-chapter-title"></span>
+      </div>
+
+      <div id="reader-content" class="reader-content">
+        <div class="loading-placeholder">Loading story...</div>
+      </div>
+
+      <!-- Chapter navigation for serials -->
+      <div id="reader-chapter-nav" class="reader-chapter-nav" style="display:none">
+        <button id="prev-chapter" class="btn-ghost chapter-nav-btn">&#8592; Previous chapter</button>
+        <span id="chapter-counter" class="chapter-counter"></span>
+        <button id="next-chapter" class="btn-ghost chapter-nav-btn">Next chapter &#8594;</button>
+      </div>
+
+      <!-- End of story -->
+      <div id="reader-end" class="reader-end" style="display:none">
+        <div class="reader-end-ornament">&#8212; &#10022; &#8212;</div>
+        <div class="reader-end-label">The End</div>
+        <a href="index.html" class="btn-ghost">Back to library</a>
+      </div>
+    </main>
+
+  </div>
+
+  <script src="reader.js"></script>
+</body>
+</html>

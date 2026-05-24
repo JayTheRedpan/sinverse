@@ -1,0 +1,91 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Submit a New Adventure — Sinverse</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="builder.css" />
+</head>
+<body>
+
+<div class="builder-page">
+
+  <!-- Sticky top bar -->
+  <header class="builder-topbar">
+    <a href="index.html" class="builder-back">&#8592; Adventures</a>
+    <div class="builder-topbar-center">
+      <span class="builder-topbar-title">New Adventure</span>
+      <span id="node-count" class="builder-node-badge">0 scenes</span>
+    </div>
+    <button id="btn-submit-all" class="btn-primary builder-submit-btn">Submit</button>
+  </header>
+
+  <!-- Single column scroll -->
+  <div class="builder-scroll">
+
+    <!-- Adventure details -->
+    <section class="builder-section">
+      <div class="builder-section-title">Adventure details</div>
+
+      <div class="node-field">
+        <label class="node-label">Title <span class="req">*</span></label>
+        <input id="meta-title" class="builder-input" type="text" placeholder="Your adventure title" />
+      </div>
+
+      <div class="node-field">
+        <label class="node-label">Your handle <span class="builder-optional">(optional — for author credit)</span></label>
+        <input id="meta-author" class="builder-input" type="text" placeholder="Anonymous if left blank" />
+      </div>
+
+      <div class="node-field">
+        <label class="node-label">Library summary <span class="req">*</span></label>
+        <input id="meta-summary" class="builder-input" type="text" placeholder="One or two sentences shown on the adventure card" />
+      </div>
+
+      <div class="node-field">
+        <label class="node-label">Adventure tags</label>
+        <div id="meta-tags" class="builder-tag-grid"></div>
+      </div>
+    </section>
+
+    <!-- Divider -->
+    <div class="builder-divider">
+      <span>Scenes</span>
+    </div>
+
+    <!-- Node cards injected here -->
+    <div id="nodes-container" class="nodes-container"></div>
+
+    <!-- Add scene button -->
+    <div class="builder-add-wrap">
+      <button id="btn-add-node" class="builder-add-node-btn">+ Add another scene</button>
+    </div>
+
+  </div>
+
+  <!-- Submit overlay -->
+  <div id="submit-overlay" class="builder-submit-overlay" style="display:none">
+    <div class="builder-submit-box">
+      <div id="submit-glyph" class="builder-submit-glyph">&#10022;</div>
+      <div id="submit-title" class="builder-submit-title">Submitting...</div>
+      <div id="submit-progress" class="builder-submit-progress"></div>
+      <div class="builder-bar-wrap">
+        <div id="submit-bar" class="builder-bar"></div>
+      </div>
+      <button id="submit-done-btn" class="btn-ghost" style="display:none; margin-top:1rem">Done</button>
+    </div>
+  </div>
+
+</div>
+
+<script src="submit.js"></script>
+<script src="builder.js"></script>
+</body>
+</html>
