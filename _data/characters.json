@@ -1,0 +1,32 @@
+[
+  {
+    "id": 1,
+    "name": "Jay",
+    "species": "Red Panda",
+    "height": 67,
+    "height_correction": 1,
+    "weight": 130,
+    "length": 5,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779680235/jay_lttpou.png",
+    "wiki": "character_jay",
+    "faction": "",
+    "description": "A flavour bio shown in the stat block.",
+    "canonical": true
+  },
+  {
+    "id": 2,
+    "name": "Kel",
+    "species": "Red Panda",
+    "height": 206,
+    "height_correction": 1,
+    "weight": null,
+    "length": 98,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779680245/kel_ji7k0u.png",
+    "wiki": "character_jay",
+    "faction": "",
+    "description": "A flavour bio shown in the stat block.",
+    "canonical": true
+  }
+]
