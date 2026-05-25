@@ -1,0 +1,86 @@
+[
+  {
+    "id": "grasshopper",
+    "label": "Grasshopper",
+    "height": 1.5,
+    "color": "#6b8c3e",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693140/grasshopper-silhouette_vtzjfc.png"
+  },
+  {
+    "id": "grass",
+    "label": "Grass",
+    "height": 4,
+    "color": "#5a7a2e",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693138/grass-silhouette_u9ywgi.png"
+  },
+  {
+    "id": "piggy-bank",
+    "label": "Piggy Bank",
+    "height": 6,
+    "color": "#e89aac",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693132/piggy-bank-silhouette_yyhbdu.png"
+  },
+  {
+    "id": "beer-bottle",
+    "label": "Beer Bottle",
+    "height": 9,
+    "color": "#8b6914",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693147/beer-bottle-silhouette_uz1qxl.png"
+  },
+  {
+    "id": "cat",
+    "label": "Cat",
+    "height": 10,
+    "color": "#b09070",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693142/cat-silhouette_xb8qhz.png"
+  },
+  {
+    "id": "dog",
+    "label": "Dog (Husky)",
+    "height": 24,
+    "color": "#7a6a5a",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693136/husky-silhouette_zpcqil.png"
+  },
+  {
+    "id": "man",
+    "label": "Man (6ft)",
+    "height": 72,
+    "color": "#7090a0",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779694030/muscle-man-silhouette_ybsu0c.png"
+  },
+  {
+    "id": "car",
+    "label": "Car",
+    "height": 58,
+    "color": "#607080",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693144/car-silhouette_sgwdop.png"
+  },
+  {
+    "id": "tree",
+    "label": "Tree",
+    "height": 240,
+    "color": "#4a7a3a",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693128/tree-silhouette_ej83a2.png"
+  },
+  {
+    "id": "house",
+    "label": "House",
+    "height": 240,
+    "color": "#8a7060",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693149/barn-silhouette_a0l2zk.png"
+  },
+  {
+    "id": "statue-of-liberty",
+    "label": "Statue of Liberty",
+    "height": 1854,
+    "color": "#7aaa96",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693129/statue-of-liberty-silhouette_m05bgo.png"
+  },
+  {
+    "id": "city",
+    "label": "City Skyline",
+    "height": 7920,
+    "color": "#607090",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779693131/skyline-silhouette_rm0vez.png"
+  }
+]

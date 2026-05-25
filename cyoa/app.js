@@ -538,7 +538,7 @@ function showScreen(name) {
 
 
 function restartAdventure() {
-  showConfirm('Restart from the beginning  Current progress will be lost.', () => {
+  showConfirm('Restart from the beginning? Current progress will be lost.', () => {
     state.currentId = null; state.history = []; state.inventory = new Set(); state.deadEndActive = false;
     goToNode(1);
   });
@@ -592,7 +592,7 @@ btnBackLibrary.addEventListener('click', () => {
   if (!state.currentId || node .isEnding) {
     resetState();
   } else {
-    showConfirm('Return to the library  Your unsaved progress will be lost.', resetState);
+    showConfirm('Return to adventures? Your unsaved progress will be lost.', resetState);
   }
 });
 

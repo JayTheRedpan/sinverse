@@ -19,9 +19,9 @@
   --border-mid:     rgba(196,154,120,0.18);
   --border-bright:  rgba(196,154,120,0.30);
 
-  --text-primary:   #ede0d0;
-  --text-secondary: #a8917e;
-  --text-muted:     #5c4a3e;
+  --text-primary:   #f5ece0;
+  --text-secondary: #c4a882;
+  --text-muted:     #7a6455;
 
   --accent:         #c49a78;
   --accent-light:   #dbb89a;
@@ -50,7 +50,7 @@
 
 /* -- Reset ------------------------------------- */
 *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { font-size: 17px; scroll-behavior: smooth; }
+html { font-size: 18px; scroll-behavior: smooth; }
 
 body {
   background: var(--bg);

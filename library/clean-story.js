@@ -14,7 +14,47 @@
 const fs   = require('fs');
 const path = require('path');
 
+// Windows-1252 / Latin-1 character map for common problem characters
+var WIN1252 = {
+  '\u0080': '€',  // euro sign
+  '\u0082': '‚',  // single low quote
+  '\u0083': 'ƒ',  // latin small f with hook
+  '\u0084': '„',  // double low quote
+  '\u0085': '…',  // ellipsis
+  '\u0086': '†',  // dagger
+  '\u0087': '‡',  // double dagger
+  '\u0088': 'ˆ',  // modifier circumflex
+  '\u0089': '‰',  // per mille sign
+  '\u008a': 'Š',  // latin capital S with caron
+  '\u008b': '‹',  // single left angle quote
+  '\u008c': 'Œ',  // latin capital ligature OE
+  '\u008e': 'Ž',  // latin capital Z with caron
+  '\u0091': '‘',  // left single quote
+  '\u0092': '’',  // right single quote / apostrophe
+  '\u0093': '“',  // left double quote
+  '\u0094': '”',  // right double quote
+  '\u0095': '•',  // bullet
+  '\u0096': '–',  // en dash
+  '\u0097': '—',  // em dash
+  '\u0098': '˜',  // small tilde
+  '\u0099': '™',  // trade mark sign
+  '\u009a': 'š',  // latin small s with caron
+  '\u009b': '›',  // single right angle quote
+  '\u009c': 'œ',  // latin small ligature oe
+  '\u009e': 'ž',  // latin small z with caron
+  '\u009f': 'Ÿ',  // latin capital Y with diaeresis
+};
+
+function fixEncoding(str) {
+  // Replace Windows-1252 control range characters with proper Unicode
+  return str.replace(/[\u0080-\u009f]/g, function(ch) {
+    return WIN1252[ch.toLowerCase()] || ch;
+  });
+}
+
 function cleanHtml(raw) {
+  // Fix encoding issues before any other processing
+  raw = fixEncoding(raw);
   // -- Extract body content if full HTML document
   var body = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
   var content = body ? body[1] : raw;
@@ -93,7 +133,25 @@ function cleanHtml(raw) {
 }
 
 function processFile(inputPath, outputPath) {
-  var raw     = fs.readFileSync(inputPath, 'utf8');
+  // Read file as raw buffer
+  var buf = fs.readFileSync(inputPath);
+
+  // Strip UTF-8 BOM if present
+  if (buf[0] === 0xEF && buf[1] === 0xBB && buf[2] === 0xBF) buf = buf.slice(3);
+
+  // Decode: try UTF-8 first
+  var raw = buf.toString('utf8');
+
+  // If double-encoded garbage is present (Ã¯Â¿Â½ or ï¿½),
+  // the file is Latin-1 bytes being read as UTF-8.
+  // Re-read as Latin-1 to get the original Windows-1252 bytes.
+  if (raw.includes('Ã¯Â¿Â½') || raw.includes('ï¿½') || raw.includes('\ufffd')) {
+    raw = buf.toString('latin1');
+  }
+  if (path.resolve(inputPath) === path.resolve(outputPath)) {
+    console.error('ERROR: Input and output are the same file. Use a different output path.');
+    process.exit(1);
+  }
   var clean   = cleanHtml(raw);
   fs.writeFileSync(outputPath, clean, 'utf8');
   console.log('Cleaned: ' + path.basename(inputPath) + ' -> ' + path.basename(outputPath));
