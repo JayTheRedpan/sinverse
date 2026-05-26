@@ -1,0 +1,161 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Contributors — Sinverse</title>
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+    body {
+      background: var(--bg);
+      color: var(--text-primary);
+      font-family: var(--font-body);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 2rem;
+      overflow: hidden;
+    }
+
+    .wip-wrap {
+      text-align: center;
+      max-width: 560px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      position: relative;
+    }
+
+    .wip-nav {
+      position: absolute;
+      top: -3.5rem;
+      left: 0;
+    }
+    .wip-nav a {
+      font-family: var(--font-caps);
+      font-size: 0.62rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .wip-nav a:hover { color: var(--accent); }
+
+    .wip-portrait-wrap {
+      width: 120px;
+      height: 120px;
+      border-radius: 50%;
+      overflow: hidden;
+      border: 1px solid var(--border-mid);
+      margin-bottom: 2rem;
+      background: var(--bg-inset);
+    }
+    .wip-portrait {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      object-position: center 20%;
+      filter: invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88);
+      display: block;
+    }
+
+    .wip-eyebrow {
+      font-family: var(--font-caps);
+      font-size: 0.62rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1.25rem;
+    }
+
+    .wip-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: clamp(2rem, 6vw, 3rem);
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.15;
+      margin-bottom: 1.5rem;
+    }
+
+    .wip-divider {
+      width: 48px;
+      height: 1px;
+      background: var(--border-mid);
+      margin-bottom: 1.75rem;
+    }
+
+    .wip-body {
+      font-family: var(--font-body);
+      font-size: 1.1rem;
+      color: var(--text-secondary);
+      line-height: 1.8;
+      margin-bottom: 2rem;
+    }
+    .wip-body em {
+      font-style: italic;
+      color: var(--accent-light);
+    }
+
+    .wip-sub {
+      font-family: var(--font-caps);
+      font-size: 0.65rem;
+      letter-spacing: 0.14em;
+      color: var(--text-secondary);
+    }
+
+    .wip-dots { display: inline-block; }
+    .wip-dots span { animation: blink 1.4s infinite; opacity: 0; }
+    .wip-dots span:nth-child(2) { animation-delay: 0.2s; }
+    .wip-dots span:nth-child(3) { animation-delay: 0.4s; }
+    @keyframes blink {
+      0%, 80%, 100% { opacity: 0; }
+      40% { opacity: 1; }
+    }
+
+    .corner { position: fixed; width: 80px; height: 80px; opacity: 0.15; }
+    .corner::before, .corner::after { content: ''; position: absolute; background: var(--accent); }
+    .corner::before { width: 1px; height: 100%; }
+    .corner::after  { width: 100%; height: 1px; }
+    .corner.tl { top: 2rem; left: 2rem; }
+    .corner.tr { top: 2rem; right: 2rem; transform: scaleX(-1); }
+    .corner.bl { bottom: 2rem; left: 2rem; transform: scaleY(-1); }
+    .corner.br { bottom: 2rem; right: 2rem; transform: scale(-1); }
+  </style>
+</head>
+<body>
+
+<div class="corner tl"></div>
+<div class="corner tr"></div>
+<div class="corner bl"></div>
+<div class="corner br"></div>
+
+<div class="wip-wrap">
+  <nav class="wip-nav"><a href="../">← Back to Sinverse</a></nav>
+
+  <!-- TODO: replace src with Jay's profile_image from characters.json once uploaded -->
+  <div class="wip-portrait-wrap">
+    <img class="wip-portrait" src="https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png" alt="Jay" />
+  </div>
+
+  <div class="wip-eyebrow">Contributors</div>
+
+  <h1 class="wip-title">Jay is hard at work on this one<span class="wip-dots"><span>.</span><span>.</span><span>.</span></span></h1>
+
+  <div class="wip-divider"></div>
+
+  <p class="wip-body">The contributors directory is <em>coming soon</em> — profiles, credits, and spotlights for the writers, artists, and creators who bring the Sinverse universe to life. Coming before long.</p>
+
+  <p class="wip-sub">Work in progress &nbsp;·&nbsp; Thank you for your patience</p>
+</div>
+
+</body>
+</html>

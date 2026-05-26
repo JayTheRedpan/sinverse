@@ -4,6 +4,7 @@
 var S = {
   heightOverrides: {},  // charId -> override inches (session only)
   gridLines:    false,  // show scale grid lines across viewer
+  perspActive:  {},     // slotIdx -> active perspective tab index
   chars:       [],
   objects:     [],
   builds:      [],
@@ -196,12 +197,16 @@ function fillSelects() {
     if (sel.getAttribute('data-type') === 'char') {
       var cur = sel.value;
       buildSelectOptions(sel, cur);
+      // If previously selected custom was cleared, cur is now invalid — reset
+      if (cur && cur.startsWith('custom_') && !sel.value) {
+        sel.value = '';
+      }
       // Update picker button label
       var row = sel.closest('.sr-slot-row');
       var btn = row && row.querySelector('.slot-picker-btn');
       if (btn) {
         var opt = sel.options[sel.selectedIndex];
-        btn.textContent = opt && opt.value ? opt.textContent : '— Select character —';
+        btn.textContent = (opt && opt.value) ? opt.textContent : '— Select character —';
       }
     } else {
       // Object dropdown
@@ -690,7 +695,7 @@ var REF_ARM_IN = 24;   // intimate viewing distance (arm's length in inches)
 
 function calcStats(char, slotIdx) {
   var h  = (slotIdx !== undefined) ? effectiveHSlot(char, slotIdx) : effectiveH(char);
-  var w  = char.weight || sc(h, 'average');
+  var w  = (slotIdx !== undefined) ? scaledWeight(char, slotIdx) : (char.weight || sc(h, 'average'));
   var wkg = w * 0.453592;
   var mR = w / REF_W_LB;
   var hR = h / REF_H_IN;
@@ -751,7 +756,7 @@ function calcStats(char, slotIdx) {
     // Swallow
     swallowMl:       100 * mR,    // volume per swallow ~100mL, linear with throat size
     // Voice
-    voiceDb:         Math.min(194, Math.round(70 + 20 * Math.log10(mR + 1))), // dB, capped at physical max
+    voiceDb:         Math.min(194, Math.round(70 * Math.pow(mR, 0.25))), // dB — scales with lung/throat size, capped at physical max
     // Body warmth
     warmthRadiusIn:  60  * hR,    // ~5ft at ref — distance where body heat is clearly felt
     // Anatomy — all linear dimensions scale with hR, volume/mass with hR^3
@@ -855,7 +860,7 @@ function fmtThousands(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})
 function calcPerspective(char, slotIdx, refH, refW) {
   var charH = effectiveHSlot(char, slotIdx);
   var charW = char.weight || sc(charH, 'average');
-  var charS = calcStats(char);
+  var charS = calcStats(char, slotIdx);
   var refS  = calcStats({height: refH, height_correction: 1,
                          weight: refW, default_silhouette: 'giantess'});
 
@@ -882,23 +887,29 @@ function renderPerspectiveSection(char, slotIdx, charSlots2) {
   // Build list of reference targets: standard person + other chars
   var targets = [{id:'std', label:'Human', h:REF_STD_H, w:REF_W_LB}];
   charSlots2.forEach(function(cs) {
-    if (cs.char === char) return;
+    // Skip THIS slot (same char AND same slotIdx), but include same char in other slots
+    if (cs.char === char && cs.slotIdx === slotIdx) return;
     var oh = effectiveHSlot(cs.char, cs.slotIdx);
     var ow = scaledWeight(cs.char, cs.slotIdx);
-    targets.push({id:'char_'+(cs.char.id||cs.char.name), label:cs.char.name, h:oh, w:ow});
+    var isOv = S.heightOverrides[cs.slotIdx] !== undefined;
+    // If same name as current char or overridden, add height to label for clarity
+    var nameConflict = cs.char.name === char.name;
+    var label = cs.char.name;
+    if (nameConflict || isOv) label += ' (' + fH(oh) + ')';
+    targets.push({id:'slot_'+cs.slotIdx, label:label, h:oh, w:ow});
   });
 
-  var activeIdx = 0;
+  var activeIdx = S.perspActive[slotIdx] || 0;
+  // Clamp to valid range in case targets changed
+  if (activeIdx >= targets.length) activeIdx = 0;
 
   function renderContent(p) {
     var html = '<div class="sv-section-title">To Their Eyes</div>';
-    if (targets.length > 1) {
-      html += '<div class="persp-tabs">';
-      targets.forEach(function(t, i) {
-        html += '<button class="unit-btn persp-tab'+(i===activeIdx?' active':'')+'" data-idx="'+i+'">'+t.label+'</button>';
-      });
-      html += '</div>';
-    }
+    html += '<div class="persp-tabs">';
+    targets.forEach(function(t, i) {
+      html += '<button class="unit-btn persp-tab'+(i===activeIdx?' active':'')+'" data-idx="'+i+'">'+t.label+'</button>';
+    });
+    html += '</div>';
     html += '<div class="sv-row"><span class="sv-label">Appears as:</span><span class="sv-value">' + fL(p.apparentIn) + ' tall</span></div>';
     var cPct = p.caloricPct;
     var cPctStr = cPct < 0.01 ? '< 0.01%' : cPct < 1 ? cPct.toFixed(2) + '%' : cPct.toFixed(1) + '%';
@@ -914,6 +925,7 @@ function renderPerspectiveSection(char, slotIdx, charSlots2) {
     section.querySelectorAll('.persp-tab').forEach(function(btn) {
       btn.addEventListener('click', function() {
         activeIdx = parseInt(this.getAttribute('data-idx'));
+        S.perspActive[slotIdx] = activeIdx;
         refresh();
       });
     });
@@ -1602,31 +1614,33 @@ function buildForm(slot) {
   lf.innerHTML +=
     // Mode toggle
     '<div class="btn-row" style="margin-bottom:.4rem">' +
-      '<button class="unit-btn active lmode" data-slot="'+slot+'" data-m="preset">Preset</button>' +
-      '<button class="unit-btn lmode" data-slot="'+slot+'" data-m="calc">Calculate</button>' +
-      '<button class="unit-btn lmode" data-slot="'+slot+'" data-m="manual">Manual</button>' +
+      '<button class="unit-btn lmode'+((!ex||ex.length_mode==="preset")?" active":"")+'" data-slot="'+slot+'" data-m="preset">Preset</button>' +
+      '<button class="unit-btn lmode'+(ex&&ex.length_mode==="calc"?" active":"")+'" data-slot="'+slot+'" data-m="calc">Calculate</button>' +
+      '<button class="unit-btn lmode'+(ex&&ex.length_mode==="manual"?" active":"")+'" data-slot="'+slot+'" data-m="manual">Manual</button>' +
     '</div>' +
     // Preset panel
-    '<div id="lprep-'+slot+'">' +
+    '<div id="lprep-'+slot+'" style="'+(ex&&ex.length_mode&&ex.length_mode!=='preset'?'display:none':'')+'">' +
       '<select class="builder-input" id="lpsel-'+slot+'">' +
         DEFAULTS.lengthPresets.map(function(p){
-          var defSel = exLen ? (Math.abs(p.inches-exLen)<0.1) : (p.id==='average'||p.label==='Average');
+          var defSel = ex&&ex.length_preset
+            ? (String(p.inches)===String(ex.length_preset))
+            : (exLen ? Math.abs(p.inches-exLen)<0.1 : (p.id==='average'||p.label==='Average'));
           return '<option value="'+p.inches+'"'+(defSel?' selected':'')+'>'+p.label+'</option>';
         }).join('') +
       '</select>' +
       '<div class="wt-est" id="lpest-'+slot+'"></div>' +
     '</div>' +
     // Calculate panel
-    '<div id="lcalc-'+slot+'" style="display:none">' +
+    '<div id="lcalc-'+slot+'" style="'+(ex&&ex.length_mode==='calc'?'':'display:none')+'">' +
       '<div class="cf-hint" style="margin-bottom:.3rem">Length at 6ft — scales linearly to character height</div>' +
       '<div class="row">' +
-        '<input id="lref-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="6" />' +
+        '<input id="lref-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="'+(ex&&ex.length_calc_ref?ex.length_calc_ref:6)+'" />' +
         '<span class="sep" id="lrunit-'+slot+'">'+(!S.metric?'in at 6ft':'cm at 183cm')+'</span>' +
       '</div>' +
       '<div class="wt-est" id="lcres-'+slot+'"></div>' +
     '</div>' +
     // Manual panel
-    '<div id="lman-'+slot+'" style="display:none">' +
+    '<div id="lman-'+slot+'" style="'+(ex&&ex.length_mode==='manual'?'':'display:none')+'">' +
       '<div class="row" id="li-'+slot+'">' +
         '<input id="lin-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="'+(exLen?Math.round(exLen):6)+'" />' +
         '<span class="sep">in</span>' +
@@ -1708,23 +1722,23 @@ function buildForm(slot) {
   var wf = cf('Weight');
   wf.innerHTML +=
     '<div class="btn-row" style="margin-bottom:.4rem">' +
-      '<button class="unit-btn active wm" data-slot="'+slot+'" data-m="build">From build</button>' +
-      '<button class="unit-btn wm" data-slot="'+slot+'" data-m="calc">Calculate</button>' +
-      '<button class="unit-btn wm" data-slot="'+slot+'" data-m="manual">Manual</button>' +
+      '<button class="unit-btn wm'+((!ex||!ex.weight_mode||ex.weight_mode==="build")?" active":"")+'" data-slot="'+slot+'" data-m="build">From build</button>' +
+      '<button class="unit-btn wm'+(ex&&ex.weight_mode==="calc"?" active":"")+'" data-slot="'+slot+'" data-m="calc">Calculate</button>' +
+      '<button class="unit-btn wm'+(ex&&ex.weight_mode==="manual"?" active":"")+'" data-slot="'+slot+'" data-m="manual">Manual</button>' +
     '</div>' +
-    '<div id="wb-'+slot+'">' +
+    '<div id="wb-'+slot+'" style="'+(ex&&ex.weight_mode&&ex.weight_mode!=='build'?'display:none':'')+'">'+
       '<select class="builder-input" id="bsel-'+slot+'"></select>' +
       '<div class="wt-est" id="best-'+slot+'"></div>' +
     '</div>' +
-    '<div id="wc-'+slot+'" style="display:none">' +
+    '<div id="wc-'+slot+'" style="'+(ex&&ex.weight_mode==='calc'?'':'display:none')+'">'+
       '<div class="cf-hint" style="margin-bottom:.3rem">Weight at 6ft — scales to character height</div>' +
       '<div class="row">' +
-        '<input id="ref-'+slot+'" class="builder-input numInput" type="number" min="0" value="170" />' +
+        '<input id="ref-'+slot+'" class="builder-input numInput" type="number" min="0" value="'+(ex&&ex.weight_calc_ref?ex.weight_calc_ref:170)+'" />' +
         '<span class="sep" id="runit-'+slot+'">'+(!S.metric?'lbs at 6ft':'kg at 183cm')+'</span>' +
       '</div>' +
       '<div class="wt-est" id="cres-'+slot+'"></div>' +
     '</div>' +
-    '<div id="wm-'+slot+'" style="display:none">' +
+    '<div id="wm-'+slot+'" style="'+(ex&&ex.weight_mode==='manual'?'':'display:none')+'">'+
       '<div class="row" id="wmi-'+slot+'">' +
         '<input id="lbs-'+slot+'" class="builder-input numInput" type="number" min="0" value="'+(ex&&ex.weight?Math.round(ex.weight):170)+'" />' +
         '<span class="sep">lbs</span>' +
@@ -1743,7 +1757,7 @@ function buildForm(slot) {
   var bsel = document.getElementById('bsel-'+slot);
   if (bsel) {
     S.builds.forEach(function(b){var o=el('option');o.value=b.id;o.textContent=b.label;bsel.appendChild(o);});
-    bsel.value = 'average';
+    bsel.value = (ex&&ex.weight_build) ? ex.weight_build : 'average';
   }
 
   wireForm(slot, wrap);
@@ -2164,7 +2178,14 @@ function wireForm(slot, wrap) {
     var isCustom=this.value==='custom';
     var lupload=g('lupload-'+slot); if(lupload)lupload.style.display=isCustom?'':'none';
     var lorient=g('lorient-'+slot); if(lorient)lorient.style.display=isCustom?'':'none';
+    // Clear the uploaded image when switching back to a silhouette
+    if(!isCustom) {
+      var lpre=g('lpre-'+slot); if(lpre) lpre.src='';
+      var lurl=g('lurl-'+slot); if(lurl) lurl.value='';
+      delete cropImgs['l'+slot];
+    }
     save();
+    if(S.view==='length') renderLengthView();
   });
   // Hide/show length image section based on whether character has length data
   function updateLengthImgVisibility() {
@@ -2378,6 +2399,22 @@ function autoSave(slot) {
   var defaultHSSil=(psilVal&&psilVal!=='upload')?psilVal:((DEFAULTS.headshotSils[0]&&DEFAULTS.headshotSils[0].id)||'giantess');
   if(psilVal&&psilVal!=='upload') profile_image='';
 
+  // Save modes and selected dropdown values
+  var activeLMode = (function(){
+    var w2=document.getElementById('custom'+slot+'-form');
+    var a=w2?w2.querySelector('.lmode.active'):null;
+    return a?a.getAttribute('data-m'):'preset';
+  })();
+  var activeWMode = activeWeightMode(slot);
+  var lpselEl = g('lpsel-'+slot);
+  var bselEl  = g('bsel-'+slot);
+  var lrefEl  = g('lref-'+slot);
+  var wrefEl  = g('ref-'+slot);
+  var lpselVal = lpselEl ? lpselEl.value : '';
+  var bselVal  = bselEl  ? bselEl.value  : 'average';
+  var lrefVal  = lrefEl  ? (parseFloat(lrefEl.value)||0) : 0;
+  var wrefVal  = wrefEl  ? (parseFloat(wrefEl.value)||0) : 0;
+
   var charLen=getLengthIn(slot);
 
   // Length silhouette
@@ -2391,17 +2428,26 @@ function autoSave(slot) {
   var hrEl=g('headroom-'+slot);
   var headroomPct=hrEl?Math.max(0,Math.min(100,parseInt(hrEl.value)||0)):0;
 
+  // Don't overwrite good saved values with nulls from timing issues
+  var prevSaved = (loadCustom())['slot'+slot] || {};
+  var newWeight = getWlbs(slot);
+  var newLength = charLen;
+  if (newWeight === null && prevSaved.weight) newWeight = prevSaved.weight;
+  if ((newLength === null || newLength === 0) && prevSaved.length) newLength = prevSaved.length;
+
   var char={
     id:'custom_'+slot, name:ni.value.trim(),
     height:h, height_correction:corr, headroom_pct:headroomPct,
-    weight:getWlbs(slot), image:img,
-    length:charLen, length_image:length_image,
+    weight:newWeight, image:img,
+    length:newLength, length_image:length_image,
     profile_image:profile_image,
     default_silhouette:defaultSil,
     default_length_silhouette:defaultLenSil,
     length_orient_flip:lFlip,
     length_orient_rotate:lRot,
     default_headshot_silhouette:defaultHSSil,
+    length_mode:activeLMode, length_preset:lpselVal, length_calc_ref:lrefVal,
+    weight_mode:activeWMode, weight_build:bselVal, weight_calc_ref:wrefVal,
     canonical:false, custom:true,
   };
   var d=loadCustom(); d['slot'+slot]=char; saveCustom(d);
@@ -2410,7 +2456,11 @@ function autoSave(slot) {
   var vals=sels.map(function(s){return s.value;});
   fillSelects();
   allSlotSelects().forEach(function(s,i){s.value=vals[i]||'';});
-  if(vals.some(function(v){return v==='custom_'+slot;})) renderActive();
+  if(vals.some(function(v){return v==='custom_'+slot;})) {
+    fillSelects();  // update picker button label if name changed
+    renderActive();
+    if(S.view!=='stats') renderStatsView();
+  }
 }
 
 // ── Image / crop ──────────────────────────────────────────────
@@ -2646,8 +2696,19 @@ function saveCustom(d){try{localStorage.setItem(STORE,JSON.stringify(d));}catch(
 function clearSlot(slot){
   if(!confirm('Clear custom slot '+slot+'?'))return;
   var d=loadCustom(); d['slot'+slot]=null; saveCustom(d);
-  allSlotSelects().forEach(function(sel){if(sel.value==='custom_'+slot)sel.value='';});
+  // Remove from all compare slots that had this custom char selected
+  allSlotSelects().forEach(function(sel){
+    if(sel.value==='custom_'+slot) {
+      sel.value='';
+      // Update picker button label
+      var row = sel.closest('.sr-slot-row');
+      var btn = row && row.querySelector('.slot-picker-btn');
+      if (btn) btn.textContent = '— Select character —';
+      sel.dispatchEvent(new Event('change'));
+    }
+  });
   fillSelects(); buildForms(); renderActive();
+  if(S.view!=='stats') renderStatsView();
 }
 
 // ── Tab switching ─────────────────────────────────────────────
