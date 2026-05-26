@@ -2,17 +2,42 @@
 
 // ── State ─────────────────────────────────────────────────────
 var S = {
-  chars:      [],   // canon characters
-  objects:    [],   // scale objects
-  builds:     [],   // body builds
-  selObj:     null, // selected scale object
-  metric:     false,
-  zoom:       1,
-  pxPerIn:    2,    // updated on each render
-  canvasH:    400,  // updated by ResizeObserver
+  chars:       [],
+  objects:     [],
+  builds:      [],
+  metric:      false,
+  zoomH:       1,
+  zoomL:       0.5,
+  view:        'height',
+  pxPerIn:     2,
+  pxPerInLen:  2,
+  canvasH:     420,
+  lenImgMode:  {},    // entityId -> 'length' | 'height'
 };
 
 var STORE   = 'sinverse_custom_chars';
+
+// Populated from defaults.json at init time
+var DEFAULTS = {
+  heightSils:   [],  // [{id, label, url}]
+  lengthSils:   [],
+  headshotSils: [],
+  height:   {},      // id -> url (convenience lookup)
+  headshot: {},
+  length:       '',  // first length silhouette URL
+  lengthPresets: [], // [{id,label,inches}]
+};
+
+function populateDefaults(data) {
+  DEFAULTS.heightSils    = data.height_silhouettes   || [];
+  DEFAULTS.lengthSils    = data.length_silhouettes   || [];
+  DEFAULTS.headshotSils  = data.headshot_silhouettes || [];
+  DEFAULTS.lengthPresets = data.length_presets       || [];
+  S.builds              = data.builds              || [];
+  DEFAULTS.heightSils.forEach(function(s)   { DEFAULTS.height[s.id]   = s.url; });
+  DEFAULTS.headshotSils.forEach(function(s) { DEFAULTS.headshot[s.id] = s.url; });
+  DEFAULTS.length = DEFAULTS.lengthSils.length ? DEFAULTS.lengthSils[0].url : '';
+}
 var LABEL_H = 0;   // no labels below ground
 var ZSTEP   = 0.25;
 var ZMIN    = 0.25;
@@ -36,40 +61,32 @@ async function init() {
   }
   S.chars   = await fetchJSON('../_data/characters.json', []);
   S.objects = await fetchJSON('./objects.json', []);
-  S.builds  = await fetchJSON('./builds.json', []);
+  var defsData = await fetchJSON('./defaults.json', {});
+  populateDefaults(defsData);
 
-  fillSelects();
-  fillObjSelect();
   buildForms();
 
-  // Default: first canon char in slot 0, door as object
-  // Create initial slot and set default character
+  // Create initial slot — buildSelectOptions runs inside and populates options
   var slotContainer = document.getElementById('sr-char-slots');
   if (slotContainer) {
-    slotContainer.appendChild(createSlotRow());
+    var firstRow = createSlotRow('char');
+    slotContainer.appendChild(firstRow);
     updateSlotUI();
-    if (S.chars.length) allSlotSelects()[0].value = 'canon_' + S.chars[0].id;
+    // Set Jay directly on the select element right now, before anything else touches it
+    var firstSel = firstRow.querySelector('.slot-select');
+    if (firstSel && S.chars.length) {
+      firstSel.value = 'canon_' + S.chars[0].id;
+      }
   }
-  var door = S.objects.find(function(o){return o.id==='door';});
-  if (door) { S.selObj = door; document.getElementById('sel-obj').value = 'door'; }
+  // fillSelects refreshes all selects but preserves existing values via buildSelectOptions
+  fillSelects();
 
-  // Observe the CANVAS AREA (not scroll) — its height doesn't change when stats populate,
-  // so ResizeObserver won't oscillate as stats are cleared and rebuilt each render.
   var area = document.getElementById('sr-canvas-area');
-  var areaRect = area ? area.getBoundingClientRect() : null;
-  if (areaRect && areaRect.height > 80) S.canvasH = areaRect.height - LABEL_H - 8;
-
-  var ro = new ResizeObserver(function(entries) {
-    var h = entries[0].contentRect.height;
-    var newH = h - LABEL_H - 8;
-    if (newH > 80 && Math.abs(newH - S.canvasH) > 10) {
-      S.canvasH = newH;
-      render();
-    }
+  requestAnimationFrame(function() {
+    render();
+    var ro = new ResizeObserver(function() { renderActive(); });
+    if (area) ro.observe(area);
   });
-  if (area) ro.observe(area);
-
-  render();
 }
 
 // ── Units ─────────────────────────────────────────────────────
@@ -89,17 +106,47 @@ function ftIn(i) {
   var t = Math.round(i), ft = Math.floor(t/12), ins = t%12;
   return ft + "'" + ins + '"';
 }
-function fH(in_) { return S.metric ? Math.round(inToCm(in_))+' cm' : ftIn(in_); }
+function fH(in_) {
+  if (S.metric) {
+    var cm = Math.round(inToCm(in_));
+    if (cm >= 100) {
+      var m = Math.floor(cm / 100);
+      var rc = cm % 100;
+      return m + 'm ' + rc + 'cm';
+    }
+    return cm + ' cm';
+  }
+  return ftIn(in_);
+}
 function fW(lbs) {
   if (!lbs) return '—';
   return S.metric ? Math.round(lbsToKg(lbs))+' kg' : Math.round(lbs)+' lbs';
 }
-function fL(in_) { return S.metric ? inToCm(in_).toFixed(1)+' cm' : in_.toFixed(1)+'"'; }
+function fL(in_) {
+  if (!in_) return S.metric ? '0 cm' : '0"';
+  if (S.metric) {
+    var cm = Math.round(inToCm(in_));
+    if (cm >= 100) {
+      var m = Math.floor(cm / 100);
+      var rc = cm % 100;
+      return m + 'm ' + rc + 'cm';
+    }
+    return cm + ' cm';
+  } else {
+    var rounded = Math.round(in_);
+    if (rounded >= 12) {
+      var ft = Math.floor(rounded / 12);
+      var ins = rounded % 12;
+      return ft + "' " + ins + '"';
+    }
+    return rounded + '"';
+  }
+}
 
 // ── Square-cube ───────────────────────────────────────────────
 function sc(hIn, buildId) {
   var b = S.builds.find(function(b){return b.id===buildId;});
-  return (b && hIn) ? b.referenceWeight * Math.pow(hIn/b.referenceHeight, 3) : null;
+  return (b && hIn) ? b.referenceWeight * Math.pow(hIn/72, 3) : null;
 }
 
 // ── Selects ───────────────────────────────────────────────────
@@ -123,33 +170,52 @@ function buildSelectOptions(sel, preserveValue) {
 }
 
 function fillSelects() {
-  allSlotSelects().forEach(function(sel) { buildSelectOptions(sel); });
+  allSlotSelects().forEach(function(sel) {
+    if (sel.getAttribute('data-type') === 'obj') {
+      // Rebuild object dropdown preserving current value
+      var cur = sel.value;
+      sel.innerHTML = '<option value="">-- Select object --</option>';
+      S.objects.forEach(function(o) {
+        var opt = el('option'); opt.value = o.id; opt.textContent = o.label; sel.appendChild(opt);
+      });
+      if (cur) sel.value = cur;
+    } else {
+      buildSelectOptions(sel);
+    }
+  });
 }
 
 function allSlotSelects() {
   return Array.from(document.querySelectorAll('.slot-select'));
 }
 
-function fillObjSelect() {
-  var sel = document.getElementById('sel-obj');
-  sel.innerHTML = '<option value="">-- None --</option>';
-  S.objects.forEach(function(o) {
-    var opt = el('option'); opt.value = o.id; opt.textContent = o.label; sel.appendChild(opt);
-  });
-}
+
 
 // getChar replaced by allChars() + allSlotSelects()
 
+function charFromValue(v) {
+  if (!v) return null;
+  if (v.startsWith('canon_')) {
+    var id = parseInt(v.replace('canon_','')); return S.chars.find(function(c){return c.id===id;})||null;
+  }
+  if (v.startsWith('custom_')) {
+    var d = loadCustom(); return d[v==='custom_1'?'slot1':'slot2']||null;
+  }
+  return null;
+}
+
 function allChars() {
   return allSlotSelects().map(function(sel) {
-    var v = sel.value; if (!v) return null;
-    if (v.startsWith('canon_')) {
-      var id = parseInt(v.replace('canon_','')); return S.chars.find(function(c){return c.id===id;})||null;
-    }
-    if (v.startsWith('custom_')) {
-      var d = loadCustom(); return d[v==='custom_1'?'slot1':'slot2']||null;
-    }
-    return null;
+    if (sel.getAttribute('data-type') === 'obj') return null;
+    return charFromValue(sel.value);
+  }).filter(Boolean);
+}
+
+function allObjects() {
+  return allSlotSelects().map(function(sel) {
+    if (sel.getAttribute('data-type') !== 'obj') return null;
+    var val = sel.value;
+    return val ? S.objects.find(function(o){return o.id===val;}) : null;
   }).filter(Boolean);
 }
 
@@ -164,54 +230,129 @@ function render() {
   figs.innerHTML = '';
   stats.innerHTML = '';
 
+  // Populate stats FIRST so their height is in the layout before we measure canvasH
+  if (chars.length || allObjects().length) {
+    chars.forEach(function(c) { stats.appendChild(statBlock(c)); });
+    allSlotSelects().forEach(function(sel) {
+      if (sel.getAttribute('data-type')==='obj' && sel.value) {
+        var obj = S.objects.find(function(o){return o.id===sel.value;});
+        if (obj) stats.appendChild(objStatBlock(obj));
+      }
+    });
+  }
 
-  if (!chars.length && !S.selObj) {
+  if (!chars.length && !allObjects().length) {
     scene.style.display = 'none'; empty.style.display = '';
     updateRuler();
     return;
   }
   scene.style.display = ''; empty.style.display = 'none';
 
-  // Max effective height across all entities
+  // Max DISPLAY height — includes headroom so ears/hair don't overflow at 100% zoom
   var maxH = 0;
   chars.forEach(function(c) {
     var eff = c.height * (c.height_correction || 1);
-    if (eff > maxH) maxH = eff;
+    var disp = eff * (1 + ((c.headroom_pct || 0) / 100));
+    if (disp > maxH) maxH = disp;
   });
-  if (S.selObj && S.selObj.height > maxH) maxH = S.selObj.height;
+  allObjects().forEach(function(o) {
+    if (o.height > maxH) maxH = o.height;
+  });
   if (maxH < 1) maxH = 72;
 
-  // pixels per inch: fill the canvas height
-  S.pxPerIn = S.canvasH / maxH;
+  // Measure canvasH AFTER stats are in DOM so their height is already subtracted
+  var areaEl = document.getElementById('sr-canvas-area');
+  if (areaEl) {
+    var freshH = areaEl.clientHeight;
+    if (freshH > 100) S.canvasH = freshH - 4;
+  }
+  S.pxPerIn = (S.canvasH * S.zoomH) / maxH;
 
-  // Render figures (images only) + labels (separate row below ground)
-  chars.forEach(function(c) { renderChar(figs, c); });
-  if (S.selObj) renderObj(figs, S.selObj);
 
-  // Stats
-  chars.forEach(function(c) { stats.appendChild(statBlock(c)); });
+  // Render figures and stat blocks in slot order
+  allSlotSelects().forEach(function(sel) {
+    var type = sel.getAttribute('data-type');
+    var val  = sel.value; if (!val) return;
+    if (type === 'obj') {
+      var obj = S.objects.find(function(o){ return o.id === val; });
+      if (obj) renderObj(figs, obj);
+    } else {
+      var c = charFromValue(val);
+      if (c) renderChar(figs, c);
+    }
+  });
 
-  // Apply current zoom and rebuild ruler
-  applyZoom();
+  // stat blocks already rendered at top of render() before canvasH measurement
+
+  // Apply vertical scroll padding so user can scroll up to see character tops
+  // Set sr-scene min-height to the zoomed character height so scroll container
+  // has real layout height to scroll through — no overflow breakout
+  var scene2 = document.getElementById('sr-scene');
+  var scrollEl2 = document.getElementById('sr-scroll');
+  if (scene2 && scrollEl2) {
+    if (S.zoomH > 1) {
+      var zoomed = Math.round(S.canvasH * S.zoomH);
+      scene2.style.minHeight = zoomed + 'px';
+      scrollEl2.style.overflowY = 'auto';
+      requestAnimationFrame(function() { scrollEl2.scrollTop = scrollEl2.scrollHeight; });
+    } else {
+      scene2.style.minHeight = '';
+      scrollEl2.style.overflowY = 'hidden';
+    }
+  }
+
+  // Rebuild ruler (uses updated S.pxPerIn)
+  updateRuler();
+
+  document.getElementById('zoom-label').textContent = Math.round(S.zoomH*100)+'%';
 }
 
 function renderChar(figs, char) {
   var effH = char.height * (char.height_correction || 1);
   var pH   = Math.max(4, Math.round(effH * S.pxPerIn));
+  // Add headroom for hair/ears/hats — extra px above skull, doesn't affect height scale
+  var headroomPx = char.headroom_pct ? Math.round(pH * char.headroom_pct / 100) : 0;
 
   var iw = el('div'); iw.className = 'sr-img-wrap';
-  iw.style.height = pH + 'px';
+  iw.style.height = (pH + headroomPx) + 'px';
   // Only constrain height — let width follow the image's natural aspect ratio
-  if (char.image) {
-    var img = el('img');
-    img.src = char.image; img.alt = char.name; img.className = 'sr-char-img';
-    iw.appendChild(img);
-  } else {
-    var pW = Math.max(20, Math.round(pH * 0.45));
-    iw.style.width = pW + 'px';
-    iw.innerHTML = silhouette(pH, pW);
-  }
+  var img = el('img');
+  var defaultSil = (DEFAULTS.height[char.default_silhouette] || DEFAULTS.height.giantess || '../images/character-default.svg');
+  var usingDefault = !char.image;
+  img.src = char.image || defaultSil;
+  img.alt = char.name;
+  // sr-img-real skips the brightening filter — only silhouettes need it
+  img.className = 'sr-char-img' + (usingDefault ? '' : ' sr-img-real');
+  iw.appendChild(img);
   figs.appendChild(iw);
+}
+
+// Draw image to canvas with flip/rotate for length view alignment
+function orientedImgEl(src, flip, rotateDeg, filter) {
+  var img = el('img');
+  img.className = filter ? 'sr-char-img' : 'sr-char-img sr-img-real';
+  if (!flip && !rotateDeg) {
+    img.src = src;
+    return img;
+  }
+  // Use canvas to pre-bake the transform so layout is correct
+  var loader = new Image();
+  loader.crossOrigin = 'anonymous';
+  loader.onload = function() {
+    var w = loader.naturalWidth, h = loader.naturalHeight;
+    var rotated = (rotateDeg === 90 || rotateDeg === 270);
+    var cw = rotated ? h : w;
+    var ch = rotated ? w : h;
+    var c = el('canvas'); c.width = cw; c.height = ch;
+    var ctx = c.getContext('2d');
+    ctx.translate(cw/2, ch/2);
+    if (rotateDeg) ctx.rotate(rotateDeg * Math.PI / 180);
+    if (flip) ctx.scale(-1, 1);
+    ctx.drawImage(loader, -w/2, -h/2);
+    img.src = c.toDataURL('image/png');
+  };
+  loader.src = src;
+  return img;
 }
 
 function renderObj(figs, obj) {
@@ -221,7 +362,9 @@ function renderObj(figs, obj) {
 
   if (obj.image) {
     var img = el('img');
-    img.src = obj.image; img.alt = obj.label; img.className = 'sr-char-img';
+    img.src = obj.image; img.alt = obj.label;
+    // Object silhouettes get the same rose-gold filter as character silhouettes
+    img.className = 'sr-char-img';  // filter applied by default via CSS
     iw.appendChild(img);
   } else {
     // Fallback: colored bar
@@ -247,62 +390,74 @@ function silhouette(h, w) {
 }
 
 // ── Zoom ──────────────────────────────────────────────────────
+// Zoom is baked into pxPerIn at render time — no CSS transform needed.
+// Re-rendering at a larger pxPerIn naturally scales all images correctly.
 function applyZoom() {
-  var zoomEl = document.getElementById('sr-zoom');
-  if (zoomEl) {
-    zoomEl.style.transform = 'scale('+S.zoom+')';
-    zoomEl.style.transformOrigin = 'bottom left';
-  }
-
-  // Vertical scroll: padding-top creates accessible space above the figures.
-  // align-items:flex-end keeps the ground at the bottom. Extra space opens at
-  // the top so the user can scroll UP to see tall character heads.
-  var scroll = document.getElementById('sr-scroll');
-  if (scroll) {
-    var extraH = Math.max(0, Math.round(S.canvasH * (S.zoom - 1)));
-    scroll.style.paddingTop = extraH + 'px';
-    // Keep ground visible: scroll to bottom so the figures are always in view
-    // Use requestAnimationFrame so the padding paint happens first
-    requestAnimationFrame(function() { scroll.scrollTop = scroll.scrollHeight; });
-  }
-
-  document.getElementById('zoom-label').textContent = Math.round(S.zoom*100)+'%';
-  updateRuler();
+  document.getElementById('zoom-label').textContent = Math.round(S.zoomH*100)+'%';
+  render();  // re-render with new pxPerIn = canvasH * zoomH / maxH
 }
 
 // ── Ruler ─────────────────────────────────────────────────────
 // Ruler is OUTSIDE zoom — tick positions calculated with zoom factor applied
+function niceInterval(minPx, pxPerUnit) {
+  var steps = [1,2,5,10,20,25,50,100,250,500,1000];
+  for (var i=0; i<steps.length; i++) {
+    if (pxPerUnit * steps[i] >= minPx) return steps[i];
+  }
+  return steps[steps.length-1];
+}
+
 function updateRuler() {
   var col   = document.getElementById('sr-ruler-col');
   var inner = document.getElementById('sr-ruler-inner');
   if (!inner || !col) return;
   inner.innerHTML = '';
-
-  var colH = col.offsetHeight;
-  if (colH < 10) return;
   if (S.pxPerIn <= 0) return;
 
-  // Effective px per inch at current zoom level
-  var effPx = S.pxPerIn * S.zoom;
+  var areaEl = document.getElementById('sr-canvas-area');
+  var colH = areaEl ? areaEl.clientHeight - 4 : col.offsetHeight;
+  if (colH < 10) return;
 
-  // The ruler-inner bottom is offset by LABEL_H so 0ft aligns with the ground line.
-  // The usable ruler height is colH minus the label space at the bottom.
-  var rulerH = colH - LABEL_H;
-  if (rulerH < 10) return;
+  var effPx = S.pxPerIn; // zoom baked in
 
-  // Draw ticks for the full visible ruler height
-  var maxFt = Math.ceil(rulerH / effPx / 12) + 1;
-  for (var f = 0; f <= maxFt; f++) {
-    var px = Math.round(f * 12 * effPx);
-    if (px > rulerH + 2) break;
-    var tick = el('div'); tick.className = 'sr-ruler-tick';
-    tick.style.bottom = px + 'px';
-    tick.setAttribute('data-label', S.metric ? Math.round(f*12*2.54)+'cm' : f+'ft');
-    inner.appendChild(tick);
+  if (S.metric) {
+    var pxPerCm = effPx / 2.54;
+    var step = niceInterval(48, pxPerCm);
+    var maxCm = Math.ceil(colH / pxPerCm) + step;
+    for (var cm = 0; cm <= maxCm; cm += step) {
+      var px = Math.round(cm * pxPerCm);
+      if (px > colH + 2) break;
+      var tick = el('div'); tick.className = 'sr-ruler-tick';
+      tick.style.bottom = px + 'px';
+      tick.setAttribute('data-label', cm >= 100 ? (cm/100).toFixed(cm%100===0?0:1)+'m' : cm+'cm');
+      inner.appendChild(tick);
+    }
+  } else {
+    var pxPerFt = effPx * 12;
+    var step = niceInterval(48, pxPerFt);
+    var maxFt = Math.ceil(colH / pxPerFt) + step;
+    for (var f = 0; f <= maxFt; f += step) {
+      var px = Math.round(f * pxPerFt);
+      if (px > colH + 2) break;
+      var tick = el('div'); tick.className = 'sr-ruler-tick';
+      tick.style.bottom = px + 'px';
+      tick.setAttribute('data-label', f+"'");
+      inner.appendChild(tick);
+    }
   }
 }
 
 // ── Stat block ────────────────────────────────────────────────
+function objStatBlock(obj) {
+  var block = el('div'); block.className = 'sr-stat-block';
+  block.innerHTML =
+    '<div class="sr-stat-name">'+obj.label+'</div>'+
+    '<div class="sr-stat-grid">'+
+      '<div class="sr-stat-row"><span class="sr-stat-key">Height</span><span class="sr-stat-val">'+fH(obj.height)+'</span></div>'+
+    '</div>';
+  return block;
+}
+
 function statBlock(char) {
   var block = el('div'); block.className = 'sr-stat-block';
 
@@ -323,7 +478,541 @@ function statBlock(char) {
   return block;
 }
 
-// ── Custom forms ──────────────────────────────────────────────
+
+// ── Stats view ─────────────────────────────────────────────────
+var REF_H_IN = 72;   // reference height: 6ft
+var REF_W_LB = 170;  // reference weight: 170lbs
+
+function calcStats(char) {
+  var h  = char.height * (char.height_correction || 1);
+  var w  = char.weight || sc(h, 'average');
+  var wkg = w * 0.453592;
+  var mR = w / REF_W_LB;
+  var hR = h / REF_H_IN;
+  return {
+    // Scale
+    heightTimes:    hR,
+    weightTimes:    mR,
+    skinM2:         1.9 * Math.pow(mR, 0.67),
+    // Daily needs
+    caloriesDay:    Math.round(2000 * Math.pow(mR, 0.75)),
+    waterL:         2.5  * Math.pow(mR, 0.75),
+    urineL:         1.5  * Math.pow(mR, 0.75),
+    stomachL:       1.5  * mR,
+    // Body
+    caloriesStored: Math.round(90000 * mR),
+    lungL:          6    * mR,
+    exhaleL:        0.5  * mR,   // tidal volume (normal exhale) ~500mL
+    bloodL:         wkg  * 0.0755,
+    heartBpm:       Math.round(70 * Math.pow(mR, -0.25)),
+    heartDay:       Math.round(70 * Math.pow(mR, -0.25) * 1440),
+    bodyHeatW:      Math.round(2000 * Math.pow(mR, 0.75) * 4184 / 86400),
+    // Movement
+    strideIn:       Math.round(30 * hR),
+    speedMph:       12 * Math.pow(hR, 0.5),
+    gripLbs:        Math.round(110 * Math.pow(mR, 0.67)),
+    stompPsi:       (w * 1.5) / (8 * hR * hR),
+    // Kink
+    ejacMl:         3.7 * Math.pow(mR, 1.5),   // fantasy scaling (mR^1.5)
+    liftLbs:        Math.round(w * 1.5 * Math.pow(mR, -0.33)),
+    footLenIn:      10.5 * hR,
+    footWidIn:       3.5 * hR,
+    handLenIn:       7.6 * hR,
+    handWidIn:       3.4 * hR,
+    // Anatomy — all linear dimensions scale with hR, volume/mass with hR^3
+    penisGirthIn:    4.6 * hR,   // avg circumference 4.6" scaled by height
+    testicleG:      20   * mR,   // avg 20g each, scale with mass
+    penisG:        100   * Math.pow(hR, 3), // avg 100g, volume scales hR^3
+  };
+}
+
+function fmt(n, decimals, unit) {
+  if (n === null || n === undefined || isNaN(n)) return '—';
+  var v = decimals === 0 ? Math.round(n) : n.toFixed(decimals);
+  return unit ? v + ' ' + unit : String(v);
+}
+
+function fmtL(litres) {
+  if (S.metric) {
+    if (litres >= 1000000) return fmt(litres/1000000, 1, 'ML');           // megalitres
+    if (litres >= 1000)    return fmt(litres/1000, 1, 'kL');              // kilolitres
+    if (litres >= 100)     return Math.round(litres) + ' L';
+    if (litres >= 1)       return litres.toFixed(1) + ' L';
+    return Math.round(litres * 1000) + ' mL';
+  } else {
+    var gal = litres * 0.264172;
+    if (gal >= 1000000)  return fmt(gal/1000000, 1, 'million gal');
+    if (gal >= 1000)     return fmt(gal/1000, 1, 'k gal');
+    if (gal >= 1)        return fmt(gal, 1, ' gal');
+    var floz = litres * 33.814;
+    if (floz >= 1)       return fmt(floz, 1, ' fl oz');
+    return Math.round(litres * 1000) + ' mL';
+  }
+}
+
+function statRow(label, value, note) {
+  return '<div class="sv-row">' +
+    '<span class="sv-label">'+label+'</span>' +
+    '<span class="sv-value">'+value+(note?'<span class="sv-note"> '+note+'</span>':'')+'</span>' +
+  '</div>';
+}
+
+function statSection(title, rows) {
+  return '<div class="sv-section"><div class="sv-section-title">'+title+'</div>'+rows.join('')+'</div>';
+}
+
+// ── Comparative stats ─────────────────────────────────────────
+// Returns array of {label, value, note} rows comparing char to themselves
+// and (if others provided) to other chars
+function comparativeStats(char, s, allChars) {
+  var h = char.height * (char.height_correction || 1);
+  var w = char.weight || sc(h, 'average');
+  var rows = [];
+
+  // Self-referential
+  rows.push({label: 'Height as % of stride',   value: Math.round(h / s.strideIn * 100) + '%', note: 'how tall vs one step'});
+  rows.push({label: 'Foot vs door width',        value: fL(s.footLenIn) + ' vs 32"', note: s.footLenIn > 32 ? 'foot wider than door' : 'foot fits through door'});
+  rows.push({label: 'Grip circ. vs human waist', value: fL(s.penisGirthIn) + ' vs 30"', note: s.penisGirthIn > 30 ? 'larger than a human waist' : 'smaller than a human waist'});
+  rows.push({label: 'Stomp vs car tire PSI',     value: fmt(s.stompPsi, 1, 'PSI') + ' vs 32 PSI', note: s.stompPsi > 32 ? 'more than a car tire' : 'less than a car tire'});
+  if (char.length) {
+    var effLen = char.length * (char.length_correction || 1);
+    rows.push({label: 'Length as % of height',   value: Math.round(effLen / h * 100) + '%'});
+    rows.push({label: 'Ejac. vs stomach vol.',    value: fmtL(s.ejacMl/1000) + ' vs ' + fmtL(s.stomachL), note: 'one load vs stomach capacity'});
+  }
+  rows.push({label: 'Sip vs stomach vol.',       value: '355mL vs ' + fmtL(s.stomachL), note: 'a can of soda is a sip'});
+  rows.push({label: 'Can be lifted by…',         value: null});  // filled below
+
+  // Cross-character comparisons
+  allChars.forEach(function(other) {
+    if (other === char) return;
+    var os = calcStats(other);
+    var oh = other.height * (other.height_correction || 1);
+    var ow = other.weight || sc(oh, 'average');
+
+    // Can char lift other?
+    var canLift = s.liftLbs >= ow;
+    rows.push({label: 'Can lift ' + other.name + '?', value: canLift ? 'Yes' : 'No',
+      note: fW(ow) + ' vs ' + fW(s.liftLbs) + ' capacity'});
+
+    // Steps to cross other
+    var stepsAcross = (oh / s.strideIn).toFixed(1);
+    rows.push({label: 'Steps to cross ' + other.name, value: stepsAcross + ' steps'});
+
+    // Other fits in hand?
+    var palmPx = 0.007 * Math.pow(h/72, 2);
+    var otherFootprint = 0.025;
+    rows.push({label: other.name + ' on palm?', value: palmPx >= otherFootprint ? 'Yes (~' + Math.round(palmPx/otherFootprint) + ' fit)' : 'No',
+      note: 'standing upright'});
+
+    // Can other lift char?
+    var otherCanLift = os.liftLbs >= w;
+    rows.push({label: other.name + ' can lift me?', value: otherCanLift ? 'Yes' : 'No',
+      note: fW(w) + ' vs ' + fW(os.liftLbs) + ' capacity'});
+  });
+
+  return rows.filter(function(r){ return r.value !== null; });
+}
+
+function fmtThousands(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
+
+function renderStatsView() {
+  var panel = document.getElementById('view-stats');
+  if (!panel) return;
+  // Save scroll position before rebuild
+  var existingScroll = panel.querySelector('.sv-scroll');
+  var savedScrollTop  = existingScroll ? existingScroll.scrollTop  : 0;
+  var savedScrollLeft = existingScroll ? existingScroll.scrollLeft : 0;
+  panel.innerHTML = '';
+
+  var chars = allChars();
+  if (!chars.length) {
+    panel.innerHTML = '<div class="sr-empty">Select characters to see their stats</div>';
+    return;
+  }
+
+  var scroll = document.createElement('div');
+  scroll.className = 'sv-scroll';
+
+  chars.forEach(function(char) {
+    var s = calcStats(char);
+    var card = document.createElement('div');
+    card.className = 'sv-card';
+
+    var hsSilId = char.default_headshot_silhouette || char.default_silhouette || (DEFAULTS.headshotSils[0]&&DEFAULTS.headshotSils[0].id) || 'giantess';
+    var hsSilUrl = DEFAULTS.headshot[hsSilId] || '';
+    var imgSrc = char.profile_image || hsSilUrl;
+    var isReal = !!char.profile_image;
+
+    // Body temp: mammals maintain ~98.6°F / 37°C regardless of size
+    var bodyTemp = S.metric ? '37.0°C' : '98.6°F';
+
+    // Grip: recalculate with better formula
+    // Average male grip ~100 lbs; scales with forearm cross-section ∝ mR^0.67
+    var gripDisp = S.metric ? Math.round(s.gripLbs * 0.453592) + ' kg' : s.gripLbs + ' lbs';
+
+    // Lift estimate: avg untrained person lifts ~1.5× bodyweight; scales as mR^0.67
+    var liftLbs = Math.round(s.weightTimes * 170 * 1.5 * Math.pow(s.weightTimes, -0.33));
+    var liftDisp = S.metric ? Math.round(liftLbs * 0.453592) + ' kg' : liftLbs + ' lbs';
+
+
+
+
+
+    // Speed
+    var speedDisp = S.metric ? fmt(s.speedMph * 1.60934, 1, 'km/h') : fmt(s.speedMph, 1, 'mph');
+
+    // Stomp
+    var stompDisp = S.metric ? fmt(s.stompPsi * 0.0689476, 2, 'bar') : fmt(s.stompPsi, 1, 'PSI');
+
+    // Calories
+    var calsDay   = fmtThousands(s.caloriesDay)   + ' kcal';
+    var calStored = fmtThousands(s.caloriesStored) + ' kcal';
+
+    // Format linear measurements using fL (handles ft+in / m+cm thresholds)
+    var strideDisp  = fL(s.strideIn);
+    var footLenDisp = fL(s.footLenIn);
+    var footWidDisp = fL(s.footWidIn);
+    var handLenDisp = fL(s.handLenIn);
+    var handWidDisp = fL(s.handWidIn);
+
+    var penisWeightDisp = S.metric
+      ? (s.penisG >= 1000 ? fmt(s.penisG/1000,2,'kg') : Math.round(s.penisG)+' g')
+      : (s.penisG >= 453.6 ? fmt(s.penisG/453.6,2,'lbs') : Math.round(s.penisG/28.35)+' oz');
+    var testWeightDisp = S.metric
+      ? (s.testicleG >= 1000 ? fmt(s.testicleG/1000,2,'kg ea.') : Math.round(s.testicleG)+' g ea.')
+      : (s.testicleG >= 453.6 ? fmt(s.testicleG/453.6,2,'lbs ea.') : Math.round(s.testicleG/28.35)+' oz ea.');
+
+    card.innerHTML =
+      '<div class="sv-header">' +
+        '<img class="sv-portrait' + (isReal ? '' : ' sr-sil-filter') + '" src="' + imgSrc + '" alt="' + char.name + '" />' +
+        '<div class="sv-name">' + char.name + (char.canonical ? ' <span class="sr-stat-canon">&#10022;</span>' : '') + '</div>' +
+      '</div>' +
+
+      statSection('Scale', [
+        statRow('Height',              fH(char.height * (char.height_correction || 1))),
+        statRow('vs. average human',   fmt(s.heightTimes, 2, '×'), s.heightTimes >= 1 ? 'taller' : 'shorter'),
+        statRow('Weight',              fW(char.weight || sc(char.height * (char.height_correction || 1), 'average'))),
+        statRow('vs. average human',   fmt(s.weightTimes, 2, '×'), s.weightTimes >= 1 ? 'heavier' : 'lighter'),
+      ]) +
+
+      statSection('Daily needs', [
+        statRow('Calories / day',  calsDay),
+        statRow('Calories stored', calStored),
+        statRow('Water intake',    fmtL(s.waterL) + ' / day'),
+        statRow('Urine output',    fmtL(s.urineL) + ' / day'),
+        statRow('Stomach volume',  fmtL(s.stomachL)),
+      ]) +
+
+      statSection('Body', [
+        statRow('Lung capacity',    fmtL(s.lungL)),
+        statRow('Exhale volume',    fmtL(s.exhaleL), '(single breath)'),
+      ]) +
+
+      statSection('Measurements', [
+        statRow('Foot length',  footLenDisp),
+        statRow('Foot width',   footWidDisp),
+        statRow('Hand length',  handLenDisp),
+        statRow('Hand width',   handWidDisp),
+      ]) +
+
+      statSection('Movement', [
+        statRow('Stride length',    strideDisp),
+        statRow('Top speed (est.)', speedDisp),
+        statRow('Grip strength',    gripDisp),
+        statRow('Lifting capacity', liftDisp, '(est. max)'),
+        statRow('Stomp pressure',   stompDisp, '(heel strike)'),
+      ]) +
+
+      (char.length ? statSection('Anatomy', [
+        statRow('Penis length',     fL(char.length * (char.length_correction || 1))),
+        statRow('Girth (circ.)',    fL(s.penisGirthIn)),
+        statRow('Penis weight',     penisWeightDisp),
+        statRow('Testicle weight',  testWeightDisp),
+        statRow('Ejaculate volume', fmtL(s.ejacMl / 1000), '(Sinverse scaled)'),
+      ]) : '') +
+
+      (char.wiki ? '<a href="../wiki/#' + char.wiki + '" class="sr-wiki-link" style="display:block;padding:1rem 1.25rem;">View wiki &rarr;</a>' : '');
+
+
+
+    scroll.appendChild(card);
+  });
+
+  panel.appendChild(scroll);
+
+  // Restore scroll position after rebuild
+  scroll.scrollTop  = savedScrollTop;
+  scroll.scrollLeft = savedScrollLeft;
+}
+
+// ── View switching ────────────────────────────────────────────
+function switchView(view) {
+  S.view = view;
+  document.querySelectorAll('.sr-view-tab').forEach(function(t) {
+    t.classList.toggle('active', t.getAttribute('data-view') === view);
+  });
+  document.querySelectorAll('.sr-view').forEach(function(v) {
+    v.style.display = 'none';
+  });
+  var panel = document.getElementById('view-' + view);
+  if (panel) panel.style.display = (view === 'stats') ? 'flex' : '';
+  // Update zoom label and show/hide zoom controls per view
+  var lbl = document.getElementById('zoom-label');
+  if (lbl) lbl.textContent = Math.round((view === 'length' ? S.zoomL : S.zoomH) * 100) + '%';
+  var zc = document.querySelector('.zoom-controls');
+  if (zc) zc.style.visibility = view === 'stats' ? 'hidden' : 'visible';
+  var cb = document.getElementById('btn-copy-img');
+  if (cb) cb.style.display = view === 'stats' ? 'none' : '';
+  renderActive();
+}
+
+function renderActive() {
+  if (S.view === 'height') render();
+  else if (S.view === 'length') renderLengthView();
+  else if (S.view === 'stats') renderStatsView();
+}
+
+// ── Length view ────────────────────────────────────────────────
+var LENGTH_ROW_H = 160; // px per row
+var HEADSHOT_W   = 90;  // px for headshot column
+
+function renderLengthView() {
+  var rowsEl   = document.getElementById('sr-length-rows');
+  var emptyEl  = document.getElementById('sr-length-empty');
+  var zoomEl   = document.getElementById('sr-length-zoom');
+  var statsEl  = document.getElementById('sr-length-stats');
+  if (!rowsEl) return;
+  rowsEl.innerHTML  = '';
+  statsEl.innerHTML = '';
+
+  // Collect entities — include all chars (length defaults to 0 if unset)
+  // Only exclude objects with no length value
+  var entities = [];
+  allSlotSelects().forEach(function(sel) {
+    var type = sel.getAttribute('data-type');
+    var val  = sel.value; if (!val) return;
+    if (type === 'obj') {
+      var obj = S.objects.find(function(o){return o.id===val;});
+      if (obj && obj.length) entities.push({kind:'obj', data:obj});
+    } else {
+      var c = charFromValue(val);
+      if (c) entities.push({kind:'char', data:c});
+    }
+  });
+
+  if (!entities.length) {
+    emptyEl.style.display = ''; zoomEl.style.display = 'none';
+    updateLengthRuler(0, 1); return;
+  }
+  emptyEl.style.display = 'none'; zoomEl.style.display = '';
+
+  // Find max effective length
+  var maxLen = 0;
+  entities.forEach(function(e) {
+    var eid = e.kind === 'char' ? (e.data.id || e.data.name) : null;
+    var eMode = eid ? (S.lenImgMode[eid] || 'length') : 'length';
+    var len;
+    if (eMode === 'height' && e.kind === 'char') {
+      len = e.data.height * (e.data.height_correction || 1);
+    } else {
+      len = e.kind === 'char'
+        ? (e.data.length || 0) * (e.data.length_correction || 1)
+        : (e.data.length || 0);
+    }
+    if (len > maxLen) maxLen = len;
+  });
+  if (maxLen < 0.1) maxLen = 1;
+
+  var rulerEl = document.getElementById('sr-length-ruler');
+  var availW  = rulerEl ? rulerEl.getBoundingClientRect().width : 400;
+  if (availW < 10) availW = 400;
+  // Bake zoom into pxPerInLen — same approach as height view, no CSS transform needed
+  S.pxPerInLen = (availW * S.zoomL) / maxLen;
+
+  entities.forEach(function(e) {
+    rowsEl.appendChild(renderLengthRow(e));
+  });
+
+  // Stat blocks
+  entities.forEach(function(e) {
+    if (e.kind === 'obj') statsEl.appendChild(objLengthStatBlock(e.data));
+    else                  statsEl.appendChild(lengthStatBlock(e.data));
+  });
+
+  // Update ruler after render (pxPerInLen is now set correctly)
+  updateLengthRuler(0, S.pxPerInLen || 1);
+  document.getElementById('zoom-label').textContent = Math.round(S.zoomL*100)+'%';
+}
+
+function renderLengthRow(entity) {
+  var row = el('div'); row.className = 'sr-length-row';
+
+  // Headshot — counter-scaled so it stays natural size inside the zoom container
+  var hsWrap = el('div'); hsWrap.className = 'sr-headshot-wrap';
+  if (entity.kind === 'char') {
+    var hsImg = el('img'); hsImg.className = 'sr-headshot-img';
+    var hsSilId = entity.data.default_headshot_silhouette || entity.data.default_silhouette || (DEFAULTS.headshotSils[0]&&DEFAULTS.headshotSils[0].id) || 'giantess';
+    var hsSilUrl = DEFAULTS.headshot[hsSilId] || DEFAULTS.headshot.giantess || '';
+    hsImg.src = entity.data.profile_image || hsSilUrl;
+    if (!entity.data.profile_image) hsImg.classList.add('sr-sil-filter');
+    hsWrap.appendChild(hsImg);
+    var hsName = el('div'); hsName.className = 'sr-headshot-name';
+    hsName.textContent = entity.data.name;
+    hsWrap.appendChild(hsName);
+  }
+  // Objects: empty headshot cell (for alignment)
+
+  // Length image row — goes inside zoom container
+  var effLen = entity.kind === 'char'
+    ? (entity.data.length || 1) * (entity.data.length_correction || 1)
+    : (entity.data.length || 1);
+
+  // When showing height image rotated 90°, use the character's HEIGHT as the display width
+  var entityId2 = entity.kind === 'char' ? (entity.data.id || entity.data.name) : null;
+  var lenMode2 = entityId2 ? (S.lenImgMode[entityId2] || 'length') : 'length';
+  var displayLen = (lenMode2 === 'height' && entity.kind === 'char')
+    ? (entity.data.height * (entity.data.height_correction || 1))
+    : effLen;
+
+  var pxW = Math.max(4, Math.round(displayLen * S.pxPerInLen));
+
+  // The wrapper IS the length bar — width scales with character length.
+  // The image fills it exactly so visual size always matches the data.
+  var lenWrap = el('div'); lenWrap.className = 'sr-length-img-wrap';
+  lenWrap.style.width = pxW + 'px';
+  // Height is determined by CSS — let image natural proportions show fully
+
+  var lenImg = el('img'); lenImg.className = 'sr-length-img'; // may be replaced for objects
+  if (entity.kind === 'char') {
+    var lenSilId = entity.data.default_length_silhouette || (DEFAULTS.lengthSils[0]&&DEFAULTS.lengthSils[0].id) || 'default';
+    var lenSilUrl = '';
+    DEFAULTS.lengthSils.forEach(function(s){if(s.id===lenSilId)lenSilUrl=s.url;});
+    var entityId = entity.data.id || entity.data.name;
+    var lenMode = S.lenImgMode[entityId] || 'length';
+    var charFlip = entity.data.length_orient_flip   || false;
+    var charRot  = entity.data.length_orient_rotate || 0;
+    if (lenMode === 'height') {
+      // Show height image rotated 90° so it lies on its side
+      var hSrc = entity.data.image || (DEFAULTS.height[entity.data.default_silhouette] || DEFAULTS.height.giantess || '');
+      lenImg = orientedImgEl(hSrc, false, 90, !entity.data.image);
+    } else {
+      var charLenSrc = entity.data.length_image || lenSilUrl || DEFAULTS.length || '';
+      if (charFlip || charRot) {
+        lenImg = orientedImgEl(charLenSrc, charFlip, charRot, !entity.data.length_image);
+      } else {
+        lenImg.src = charLenSrc;
+        if (!entity.data.length_image) lenImg.classList.add('sr-sil-filter');
+      }
+    }
+  } else {
+    // Use canvas pre-baked orientation so image aligns correctly with scale
+    lenImg = orientedImgEl(
+      entity.data.image || '',
+      entity.data.length_orient_flip   || false,
+      entity.data.length_orient_rotate || 0,
+      true  // apply rose-gold filter
+    );
+    lenImg.alt = entity.data.label;
+  }
+
+  lenImg.classList.add('sr-length-img');
+  lenWrap.appendChild(lenImg);
+  row.appendChild(hsWrap);
+  row.appendChild(lenWrap);
+  return row;
+}
+
+function applyLengthZoom() {
+  // Zoom baked into pxPerInLen — renderLengthView recalculates and updates ruler
+  renderLengthView();
+}
+
+function updateLengthRuler(maxLen, pxPerIn) {
+  var ruler = document.getElementById('sr-length-ruler');
+  if (!ruler) return;
+  ruler.innerHTML = '';
+  var effPx = pxPerIn;  // zoom baked in
+  var rulerW = ruler.getBoundingClientRect().width || 400;
+
+  if (S.metric) {
+    var pxPerCm = effPx / 2.54;
+    var step = niceInterval(48, pxPerCm);
+    var maxCm = Math.ceil(rulerW / pxPerCm) + step;
+    for (var cm = 0; cm <= maxCm; cm += step) {
+      var px = Math.round(cm * pxPerCm);
+      if (px > rulerW + 4) break;
+      var tick = el('div'); tick.className = 'sr-length-tick';
+      tick.style.left = px + 'px';
+      tick.setAttribute('data-label', cm >= 100 ? (cm/100).toFixed(cm%100===0?0:1)+'m' : cm+'cm');
+      ruler.appendChild(tick);
+    }
+  } else {
+    // Nice inch steps: 1,2,3,6,12,24,36,60,120 — natural for length comparison
+    var inchSteps = [1,2,3,6,12,24,36,60,120,240];
+    var step = inchSteps[inchSteps.length-1];
+    for (var si=0; si<inchSteps.length; si++) {
+      if (effPx * inchSteps[si] >= 48) { step = inchSteps[si]; break; }
+    }
+    var maxIn = Math.ceil(rulerW / effPx) + step;
+    for (var i = 0; i <= maxIn; i += step) {
+      var px = Math.round(i * effPx);
+      if (px > rulerW + 4) break;
+      var tick = el('div'); tick.className = 'sr-length-tick';
+      tick.style.left = px + 'px';
+      tick.setAttribute('data-label', i >= 12 ? Math.floor(i/12)+"' "+i%12+'"' : i+'"');
+      ruler.appendChild(tick);
+    }
+  }
+}
+
+function lengthStatBlock(char) {
+  var block = el('div'); block.className = 'sr-stat-block';
+  var effLen = char.length * (char.length_correction || 1);
+  var entityId = char.id || char.name;
+  var mode = S.lenImgMode[entityId] || 'length';
+
+  var dispVal  = mode === 'height'
+    ? fH(char.height * (char.height_correction || 1))
+    : fL(effLen);
+  var dispKey  = mode === 'height' ? 'Height' : 'Length';
+  var dispNote = mode === 'length' && char.length_correction && char.length_correction < 0.99
+    ? '<div class="sr-stat-row"><span class="sr-stat-key"></span><span class="sr-stat-val sr-stat-note">base: '+fL(char.length)+'</span></div>' : '';
+
+  block.innerHTML =
+    '<div class="sr-stat-name">'+char.name+(char.canonical?' <span class="sr-stat-canon">&#10022;</span>':'')+'</div>'+
+    '<div class="sr-stat-grid">'+
+      '<div class="sr-stat-row"><span class="sr-stat-key">'+dispKey+'</span><span class="sr-stat-val">'+dispVal+'</span></div>'+
+      dispNote+
+    '</div>'+
+    (char.wiki ? '<a href="../wiki/#'+char.wiki+'" class="sr-wiki-link">View wiki &rarr;</a>' : '')+
+    '<div class="len-img-toggle">'+
+      '<button class="unit-btn'+(mode==='length'?' active':'')+'" data-id="'+entityId+'" data-mode="length">Length</button>'+
+      '<button class="unit-btn'+(mode==='height'?' active':'')+'" data-id="'+entityId+'" data-mode="height">Body</button>'+
+    '</div>';
+
+  block.querySelectorAll && setTimeout(function(){
+    block.querySelectorAll('.len-img-toggle .unit-btn').forEach(function(btn){
+      btn.addEventListener('click', function(){
+        S.lenImgMode[this.getAttribute('data-id')] = this.getAttribute('data-mode');
+        renderLengthView();
+      });
+    });
+  }, 0);
+
+  return block;
+}
+
+function objLengthStatBlock(obj) {
+  var block = el('div'); block.className = 'sr-stat-block';
+  block.innerHTML =
+    '<div class="sr-stat-name">'+obj.label+'</div>'+
+    '<div class="sr-stat-grid">'+
+      '<div class="sr-stat-row"><span class="sr-stat-key">Length</span><span class="sr-stat-val">'+fL(obj.length)+'</span></div>'+
+    '</div>';
+  return block;
+}
+
+// ── Custom forms ──────────────────────────────────────────────────
 function buildForms() {
   [1,2].forEach(buildForm);
 }
@@ -333,16 +1022,21 @@ function buildForm(slot) {
   if (!wrap) return;
   wrap.innerHTML = '';
   var ex = loadCustom()['slot'+slot];
+  var exCorr = ex ? String(ex.height_correction||'1') : '1';
 
-  // Reload existing image into cropImgs so crop works after refresh
-  if (ex && ex.image) {
-    setTimeout(function() { preloadCropImg(slot, ex.image); }, 80);
-  }
+  // Preload images into cropImgs for crop tool
+  if (ex && ex.image)         setTimeout(function(){ preloadCropImgP(slot,'i',ex.image); },80);
+  if (ex && ex.length_image && ex.length_image.startsWith('data')) setTimeout(function(){ preloadCropImgP(slot,'l',ex.length_image); },80);
+  if (ex && ex.profile_image) setTimeout(function(){ preloadCropImgP(slot,'p',ex.profile_image); },80);
 
-  // Name
+  // ── Name (always visible) ───────────────────────
   wrap.appendChild(field('Name *', inp('text','n'+slot,'Character name',ex?ex.name:'')));
 
-    // Height
+  // ── HEIGHT section ──────────────────────────────
+  var heightDet = makeDet('Height', false);
+  var heightBody = heightDet.querySelector('.det-body');
+
+  // Height input
   var hf = cf('Height *');
   hf.innerHTML +=
     '<div class="row" id="hi-'+slot+'">' +
@@ -355,91 +1049,260 @@ function buildForm(slot) {
       '<input id="cm-'+slot+'" class="builder-input numInput" type="number" min="0" max="999" value="'+(ex?Math.round(inToCm(ex.height)):183)+'" />' +
       '<span class="sep">cm</span>' +
     '</div>';
-  wrap.appendChild(hf);
+  heightBody.appendChild(hf);
+
+  // Height image: silhouette dropdown + upload option
+  var curHSilId = (ex && ex.default_silhouette) || (DEFAULTS.heightSils[0] && DEFAULTS.heightSils[0].id) || '';
+  var hasHUpload = !!(ex && ex.image);
+  var hselVal = hasHUpload ? 'upload' : curHSilId;
+  var himgF = cf('Height image');
+  himgF.innerHTML +=
+    '<select class="builder-input hsilh-sel" id="hsilh-'+slot+'">' +
+      DEFAULTS.heightSils.map(function(s){return '<option value="'+s.id+'"'+(hselVal===s.id?' selected':'')+'>'+s.label+'</option>';}).join('') +
+      '<option value="upload"'+(hselVal==='upload'?' selected':'')+'>Upload / Link image</option>' +
+    '</select>';
+  heightBody.appendChild(himgF);
+
+  // Upload + pose — only shown when Upload selected
+  var hUpload = uploadSection(slot, 'i', 'Height image', ex&&ex.image?ex.image:'');
+  hUpload.id = 'hupload-'+slot;
+  hUpload.style.display = hselVal==='upload'?'':'none';
+  heightBody.appendChild(hUpload);
+
+  var pf = cf('Pose');
+  pf.id = 'hpose-'+slot;
+  pf.style.display = hselVal==='upload'?'':'none';
+  pf.innerHTML += '<div class="cf-hint" style="margin-bottom:.3rem">Adjust if image shows seated or crouching</div>' +
+    '<select class="builder-input" id="pose-'+slot+'">' +
+    POSES.map(function(p){return '<option value="'+p.v+'"'+(p.v===exCorr?' selected':'')+'>'+p.l+'</option>';}).join('') +
+    '</select>';
+  heightBody.appendChild(pf);
+
+  // Headroom offset — extra space above skull for hair, ears, hats etc.
+  var exHeadroom = ex && ex.headroom_pct ? ex.headroom_pct : 0;
+  var hrf = cf('Top offset');
+  hrf.id = 'hheadroom-'+slot;
+  hrf.style.display = hselVal==='upload'?'':'none';
+  hrf.innerHTML +=
+    '<div class="cf-hint" style="margin-bottom:.3rem">Extra height % above head for hair, ears, hats, etc.</div>' +
+    '<div class="row">' +
+      '<input id="headroom-'+slot+'" class="builder-input numInput" type="number" min="0" max="100" step="1" value="'+exHeadroom+'" />' +
+      '<span class="sep">% of height</span>' +
+    '</div>';
+  heightBody.appendChild(hrf);
+
+  wrap.appendChild(heightDet);
+
+  // ── LENGTH section ──────────────────────────────
+  var lengthDet = makeDet('Length', false);
+  var lengthBody = lengthDet.querySelector('.det-body');
+
+  // Length — three modes (preset / calculate / manual)
+  var lf = cf('Anatomy Length');
+  var exLen = ex&&ex.length ? ex.length : null;
+  lf.innerHTML +=
+    // Mode toggle
+    '<div class="btn-row" style="margin-bottom:.4rem">' +
+      '<button class="unit-btn lmode" data-slot="'+slot+'" data-m="preset">Preset</button>' +
+      '<button class="unit-btn lmode" data-slot="'+slot+'" data-m="calc">Calculate</button>' +
+      '<button class="unit-btn active lmode" data-slot="'+slot+'" data-m="manual">Manual</button>' +
+    '</div>' +
+    // Preset panel
+    '<div id="lprep-'+slot+'" style="display:none">' +
+      '<select class="builder-input" id="lpsel-'+slot+'">' +
+        DEFAULTS.lengthPresets.map(function(p){
+          var defSel = exLen ? (Math.abs(p.inches-exLen)<0.1) : (p.id==='average'||p.label==='Average');
+          return '<option value="'+p.inches+'"'+(defSel?' selected':'')+'>'+p.label+'</option>';
+        }).join('') +
+      '</select>' +
+      '<div class="wt-est" id="lpest-'+slot+'"></div>' +
+    '</div>' +
+    // Calculate panel
+    '<div id="lcalc-'+slot+'" style="display:none">' +
+      '<div class="cf-hint" style="margin-bottom:.3rem">Length at 6ft — scales linearly to character height</div>' +
+      '<div class="row">' +
+        '<input id="lref-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="6" />' +
+        '<span class="sep" id="lrunit-'+slot+'">'+(!S.metric?'in at 6ft':'cm at 183cm')+'</span>' +
+      '</div>' +
+      '<div class="wt-est" id="lcres-'+slot+'"></div>' +
+    '</div>' +
+    // Manual panel
+    '<div id="lman-'+slot+'">' +
+      '<div class="row" id="li-'+slot+'">' +
+        '<input id="lin-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="'+(exLen?Math.round(exLen):6)+'" />' +
+        '<span class="sep">in</span>' +
+      '</div>' +
+      '<div class="row" id="lmi-'+slot+'" style="display:none">' +
+        '<input id="lcm-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="'+(exLen?Math.round(inToCm(exLen)):Math.round(inToCm(6)))+'" />' +
+        '<span class="sep">cm</span>' +
+      '</div>' +
+    '</div>';
+  lengthBody.appendChild(lf);
+
+  // Length image: silhouette dropdown OR custom upload
+  var lsf = cf('Length image');
+  var curLSil = (ex && ex.default_length_silhouette) || (DEFAULTS.lengthSils[0] && DEFAULTS.lengthSils[0].id) || '';
+  var hasCustomLImg = ex && ex.length_image && ex.length_image.startsWith('data');
+  var lsilVal = hasCustomLImg ? 'custom' : curLSil;
+  var lsilOpts = DEFAULTS.lengthSils.map(function(s){
+    return '<option value="'+s.id+'"'+(lsilVal===s.id?' selected':'')+'>'+s.label+'</option>';
+  }).join('');
+  lsf.innerHTML +=
+    '<select class="builder-input lsil-sel" id="lsil-'+slot+'">' +
+      lsilOpts +
+      '<option value="custom"'+(lsilVal==='custom'?' selected':'')+'>Upload / Link image</option>' +
+    '</select>';
+  lengthBody.appendChild(lsf);
+
+  // Custom length upload (shown only when "custom" selected)
+  var lUpload = uploadSection(slot, 'l', 'Custom length image', hasCustomLImg?(ex.length_image||''):'');
+  lUpload.style.display = lsilVal === 'custom' ? '' : 'none';
+  lUpload.id = 'lupload-'+slot;
+  lengthBody.appendChild(lUpload);
+
+  // Orientation controls for length image (flip + rotate)
+  var exFlip = ex && ex.length_orient_flip;
+  var exRot  = ex && ex.length_orient_rotate ? ex.length_orient_rotate : 0;
+  var orientF = cf('Image orientation');
+  orientF.id = 'lorient-'+slot;
+  orientF.style.display = lsilVal === 'custom' ? '' : 'none';
+  orientF.innerHTML +=
+    '<div class="btn-row">' +
+      '<label class="orient-check"><input type="checkbox" id="lflip-'+slot+'"'+(exFlip?' checked':'')+' /> Flip horizontally</label>' +
+    '</div>' +
+    '<div class="cf-label" style="margin-top:.5rem;margin-bottom:.3rem">Rotate</div>' +
+    '<div class="btn-row">' +
+      '<button class="unit-btn lrot-btn'+(exRot===0?' active':'')+'" data-slot="'+slot+'" data-rot="0">0°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===90?' active':'')+'" data-slot="'+slot+'" data-rot="90">90°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===180?' active':'')+'" data-slot="'+slot+'" data-rot="180">180°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===270?' active':'')+'" data-slot="'+slot+'" data-rot="270">270°</button>' +
+    '</div>';
+  lengthBody.appendChild(orientF);
+
+  wrap.appendChild(lengthDet);
+
+  // ── STATS section ───────────────────────────────
+  var statsDet = makeDet('Stats', false);
+  var statsBody = statsDet.querySelector('.det-body');
+
+  // Profile image: dropdown (silhouette or upload)
+  var curPSilId = (ex && ex.default_headshot_silhouette) || (DEFAULTS.headshotSils[0] && DEFAULTS.headshotSils[0].id) || '';
+  var hasPUpload = !!(ex && ex.profile_image);
+  var pselVal = hasPUpload ? 'upload' : curPSilId;
+  var pimgF = cf('Profile image');
+  pimgF.innerHTML +=
+    '<select class="builder-input psil-sel" id="psil-'+slot+'">' +
+      DEFAULTS.headshotSils.map(function(s){
+        return '<option value="'+s.id+'"'+(pselVal===s.id?' selected':'')+'>'+s.label+'</option>';
+      }).join('') +
+      '<option value="upload"'+(pselVal==='upload'?' selected':'')+'>Upload / Link image</option>' +
+    '</select>';
+  statsBody.appendChild(pimgF);
+
+  // Profile upload — immediately after dropdown
+  var pUpload = uploadSection(slot, 'p', 'Profile / Headshot', ex&&ex.profile_image?ex.profile_image:'');
+  pUpload.id = 'pupload-'+slot;
+  pUpload.style.display = pselVal==='upload'?'':'none';
+  statsBody.appendChild(pUpload);
 
   // Weight
   var wf = cf('Weight');
-  var exCorr = ex ? String(ex.height_correction||'1') : '1';
   wf.innerHTML +=
     '<div class="btn-row" style="margin-bottom:.4rem">' +
       '<button class="unit-btn active wm" data-slot="'+slot+'" data-m="build">From build</button>' +
       '<button class="unit-btn wm" data-slot="'+slot+'" data-m="calc">Calculate</button>' +
       '<button class="unit-btn wm" data-slot="'+slot+'" data-m="manual">Manual</button>' +
     '</div>' +
-    // Build
     '<div id="wb-'+slot+'">' +
       '<select class="builder-input" id="bsel-'+slot+'"></select>' +
       '<div class="wt-est" id="best-'+slot+'"></div>' +
     '</div>' +
-    // Calculate
     '<div id="wc-'+slot+'" style="display:none">' +
-      '<div class="cf-hint" style="margin-bottom:.3rem">Weight at 6ft — square-cube scales to character height</div>' +
+      '<div class="cf-hint" style="margin-bottom:.3rem">Weight at 6ft — scales to character height</div>' +
       '<div class="row">' +
         '<input id="ref-'+slot+'" class="builder-input numInput" type="number" min="0" value="170" />' +
         '<span class="sep" id="runit-'+slot+'">'+(!S.metric?'lbs at 6ft':'kg at 183cm')+'</span>' +
       '</div>' +
       '<div class="wt-est" id="cres-'+slot+'"></div>' +
     '</div>' +
-    // Manual
     '<div id="wm-'+slot+'" style="display:none">' +
       '<div class="row" id="wmi-'+slot+'">' +
-        '<input id="lbs-'+slot+'" class="builder-input numInput" type="number" min="0" placeholder="lbs" value="'+(ex&&ex.weight?Math.round(ex.weight):'')+'" />' +
+        '<input id="lbs-'+slot+'" class="builder-input numInput" type="number" min="0" value="'+(ex&&ex.weight?Math.round(ex.weight):170)+'" />' +
         '<span class="sep">lbs</span>' +
       '</div>' +
       '<div class="row" id="wmm-'+slot+'" style="display:none">' +
-        '<input id="kg-'+slot+'" class="builder-input numInput" type="number" min="0" placeholder="kg" value="'+(ex&&ex.weight?Math.round(lbsToKg(ex.weight)):'')+'" />' +
+        '<input id="kg-'+slot+'" class="builder-input numInput" type="number" min="0" value="'+(ex&&ex.weight?Math.round(lbsToKg(ex.weight)):Math.round(lbsToKg(170)))+'" />' +
         '<span class="sep">kg</span>' +
       '</div>' +
     '</div>';
-  wrap.appendChild(wf);
+  statsBody.appendChild(wf);
 
-  // Populate builds
+  // Profile upload (only shown when 'upload' selected)
+  wrap.appendChild(statsDet);
+
+  // Populate builds AFTER statsDet is in the DOM so getElementById works
   var bsel = document.getElementById('bsel-'+slot);
-  S.builds.forEach(function(b){var o=el('option');o.value=b.id;o.textContent=b.label;bsel.appendChild(o);});
-  bsel.value = 'average';
-
-  // Pose
-  var pf = cf('Pose / Position');
-  var psel = el('select'); psel.className='builder-input'; psel.id='pose-'+slot;
-  POSES.forEach(function(p){var o=el('option');o.value=p.v;o.textContent=p.l;if(p.v===exCorr)o.selected=true;psel.appendChild(o);});
-  pf.appendChild(psel);
-  wrap.appendChild(pf);
-
-  // Image
-  var imgf = cf('Image');
-  imgf.innerHTML +=
-    '<input id="iurl-'+slot+'" class="builder-input" type="text" placeholder="Paste image URL..." value="'+(ex&&ex.image&&ex.image.startsWith('http')?ex.image:'')+'" />' +
-    '<div class="btn-row" style="margin-top:.3rem">' +
-      '<button class="unit-btn iurl-btn" data-slot="'+slot+'">Load URL</button>' +
-      (ex&&ex.image?'<button class="unit-btn iremove-btn" data-slot="'+slot+'" style="color:var(--wine)">Remove</button>':'') +
-    '</div>' +
-    '<div class="custom-or">or upload</div>' +
-    '<input id="ifile-'+slot+'" type="file" accept="image/*" class="file-input" />' +
-    '<div id="ipw-'+slot+'" style="'+(ex&&ex.image?'':'display:none')+'">' +
-      '<img id="ipre-'+slot+'" class="prev-img" src="'+(ex&&ex.image?ex.image:'')+'" alt="preview" />' +
-      '<details class="crop-det" style="margin-top:.4rem">' +
-        '<summary>Crop image (optional)</summary>' +
-        '<div class="crop-img-wrap" id="ciwrap-'+slot+'">' +
-          '<img id="csrc-'+slot+'" class="crop-src" src="" alt="" />' +
-          '<div class="crop-line crop-line-t" id="cl-t-'+slot+'"></div>' +
-          '<div class="crop-line crop-line-b" id="cl-b-'+slot+'"></div>' +
-          '<div class="crop-line crop-line-l" id="cl-l-'+slot+'"></div>' +
-          '<div class="crop-line crop-line-r" id="cl-r-'+slot+'"></div>' +
-        '</div>' +
-        '<div class="crop-pct-grid">' +
-          '<div class="crop-pct-row"><div class="crop-pct-label">Top %</div><input type="number" class="builder-input crop-pct-input" id="ct-'+slot+'" min="0" max="99" value="0" /></div>' +
-          '<div class="crop-pct-row"><div class="crop-pct-label">Bottom %</div><input type="number" class="builder-input crop-pct-input" id="cb-'+slot+'" min="0" max="99" value="0" /></div>' +
-          '<div class="crop-pct-row"><div class="crop-pct-label">Left %</div><input type="number" class="builder-input crop-pct-input" id="cl2-'+slot+'" min="0" max="99" value="0" /></div>' +
-          '<div class="crop-pct-row"><div class="crop-pct-label">Right %</div><input type="number" class="builder-input crop-pct-input" id="cr-'+slot+'" min="0" max="99" value="0" /></div>' +
-        '</div>' +
-        '<button class="unit-btn" id="creset-'+slot+'" style="margin-top:.4rem">Reset crop</button>' +
-      '</details>' +
-    '</div>';
-  wrap.appendChild(imgf);
+  if (bsel) {
+    S.builds.forEach(function(b){var o=el('option');o.value=b.id;o.textContent=b.label;bsel.appendChild(o);});
+    bsel.value = 'average';
+  }
 
   wireForm(slot, wrap);
   refreshEst(slot);
+  refreshLengthPreset(slot);
+  refreshLengthCalc(slot);
 }
+
+// Build a collapsible section
+function makeDet(label, open) {
+  var d = el('div'); d.className = 'form-section';
+  d.innerHTML =
+    '<details class="form-det"'+(open?' open':'')+'>'+
+      '<summary class="form-det-summary">'+label+'</summary>'+
+      '<div class="det-body"></div>'+
+    '</details>';
+
+  return d;
+}
+
+// Build one image upload block (no outer cf wrapper)
+function uploadSection(slot, pfx, label, existingImg) {
+  var d = el('div'); d.className = 'upload-block';
+  var exCorr2 = ''; // not used here
+  d.innerHTML =
+    '<div class="cf-label" style="margin-bottom:.3rem">'+label+'</div>'+
+    '<input id="'+pfx+'url-'+slot+'" class="builder-input" type="text" placeholder="Paste URL..." value="'+(existingImg&&existingImg.startsWith('http')?existingImg:'')+'" style="margin-bottom:.35rem" />'+
+    '<div class="btn-row">'+
+      '<button class="unit-btn '+pfx+'url-btn" data-slot="'+slot+'" data-pfx="'+pfx+'">Load URL</button>'+
+    '</div>'+
+    '<div class="custom-or">or upload</div>'+
+    '<input id="'+pfx+'file-'+slot+'" type="file" accept="image/*" class="file-input" />'+
+    '<div id="'+pfx+'pw-'+slot+'" style="'+(existingImg?'':'display:none')+';margin-top:.5rem">'+
+      '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">'+
+        '<img id="'+pfx+'pre-'+slot+'" class="prev-img" src="'+(existingImg||'')+'" alt="preview" />'+
+        '<button class="unit-btn '+pfx+'remove-btn" data-slot="'+slot+'" data-pfx="'+pfx+'" style="color:var(--wine);font-size:.58rem">Remove</button>'+
+      '</div>'+
+      '<details class="crop-det">'+
+        '<summary>Crop (optional)</summary>'+
+        '<div class="crop-img-wrap" id="'+pfx+'ciwrap-'+slot+'">'+
+          '<img id="'+pfx+'csrc-'+slot+'" class="crop-src" src="" alt="" />'+
+          '<div class="crop-line crop-line-t" id="'+pfx+'cl-t-'+slot+'"></div>'+
+          '<div class="crop-line crop-line-b" id="'+pfx+'cl-b-'+slot+'"></div>'+
+          '<div class="crop-line crop-line-l" id="'+pfx+'cl-l-'+slot+'"></div>'+
+          '<div class="crop-line crop-line-r" id="'+pfx+'cl-r-'+slot+'"></div>'+
+        '</div>'+
+        '<div class="crop-pct-grid">'+
+          '<div class="crop-pct-row"><div class="crop-pct-label">Top %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'ct-'+slot+'" min="0" max="99" value="0"/></div>'+
+          '<div class="crop-pct-row"><div class="crop-pct-label">Bottom %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'cb-'+slot+'" min="0" max="99" value="0"/></div>'+
+          '<div class="crop-pct-row"><div class="crop-pct-label">Left %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'cl2-'+slot+'" min="0" max="99" value="0"/></div>'+
+          '<div class="crop-pct-row"><div class="crop-pct-label">Right %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'cr-'+slot+'" min="0" max="99" value="0"/></div>'+
+        '</div>'+
+        '<button class="unit-btn '+pfx+'creset" data-slot="'+slot+'" data-pfx="'+pfx+'" style="margin-top:.4rem">Reset crop</button>'+
+      '</details>'+
+    '</div>';
+  return d;
+}
+
 
 // ── Form helpers ──────────────────────────────────────────────
 function el(tag) { return document.createElement(tag); }
@@ -460,28 +1323,117 @@ function cf(label) {
 
 var MAX_SLOTS = 10;
 
-function createSlotRow() {
-  var row = el('div'); row.className = 'sr-slot-row';
+function createSlotRow(type) {
+  type = type || 'char';
+  var row = el('div'); row.className = 'sr-slot-row'; row.setAttribute('data-type', type);
+  row.draggable = true;
+
+  // Drag handle
+  var handle = el('div'); handle.className = 'slot-drag-handle'; handle.title = 'Drag to reorder';
+  handle.innerHTML = '&#8942;&#8942;'; // ⠿ six dots
 
   var sel = el('select'); sel.className = 'sr-select slot-select';
-  buildSelectOptions(sel, '');
-  sel.addEventListener('change', function() { render(); });
+  sel.setAttribute('data-type', type);
+
+  if (type === 'char') {
+    buildSelectOptions(sel, '');
+  } else {
+    sel.innerHTML = '<option value="">-- Select object --</option>';
+    S.objects.forEach(function(o) {
+      var opt = el('option'); opt.value = o.id; opt.textContent = o.label; sel.appendChild(opt);
+    });
+  }
+  sel.addEventListener('change', function() {
+    // Force fresh height measurement in case this is the very first render
+    var areaEl2 = document.getElementById('sr-canvas-area');
+    if (areaEl2) {
+      var h = areaEl2.clientHeight;
+      if (h > 100) S.canvasH = h - 4;
+    }
+    renderActive();
+  });
+
+  // Small type label
+  var typeLbl = el('span'); typeLbl.className = 'slot-type-lbl';
+  typeLbl.textContent = type === 'char' ? 'char' : 'obj';
 
   var rmBtn = el('button'); rmBtn.className = 'slot-remove-btn'; rmBtn.title = 'Remove';
   rmBtn.innerHTML = '&#10005;';
   rmBtn.addEventListener('click', function() { removeSlot(row); });
 
+  row.appendChild(handle);
+  row.appendChild(typeLbl);
   row.appendChild(sel);
   row.appendChild(rmBtn);
+
+  // Drag events
+  row.addEventListener('dragstart', onDragStart);
+  row.addEventListener('dragover',  onDragOver);
+  row.addEventListener('dragenter', onDragEnter);
+  row.addEventListener('dragleave', onDragLeave);
+  row.addEventListener('drop',      onDrop);
+  row.addEventListener('dragend',   onDragEnd);
+
   return row;
 }
 
-function addSlot() {
+// ── Drag-and-drop reordering ─────────────────────────────────
+var dragSrc = null;
+
+function onDragStart(e) {
+  dragSrc = this;
+  this.classList.add('slot-dragging');
+  e.dataTransfer.effectAllowed = 'move';
+  // Store empty string — we identify by reference not data
+  e.dataTransfer.setData('text/plain', '');
+}
+
+function onDragOver(e) {
+  e.preventDefault();
+  e.dataTransfer.dropEffect = 'move';
+  return false;
+}
+
+function onDragEnter(e) {
+  if (this !== dragSrc) this.classList.add('slot-drag-over');
+}
+
+function onDragLeave(e) {
+  this.classList.remove('slot-drag-over');
+}
+
+function onDrop(e) {
+  e.stopPropagation();
+  e.preventDefault();
+  if (dragSrc && dragSrc !== this) {
+    var container = document.getElementById('sr-char-slots');
+    var rows = Array.from(container.querySelectorAll('.sr-slot-row'));
+    var srcIdx  = rows.indexOf(dragSrc);
+    var destIdx = rows.indexOf(this);
+    if (srcIdx < destIdx) {
+      container.insertBefore(dragSrc, this.nextSibling);
+    } else {
+      container.insertBefore(dragSrc, this);
+    }
+    renderActive();
+  }
+  this.classList.remove('slot-drag-over');
+  return false;
+}
+
+function onDragEnd(e) {
+  document.querySelectorAll('.sr-slot-row').forEach(function(r) {
+    r.classList.remove('slot-dragging', 'slot-drag-over');
+  });
+  dragSrc = null;
+}
+
+function addSlot(type) {
   var container = document.getElementById('sr-char-slots');
   if (!container) return;
   var slots = container.querySelectorAll('.sr-slot-row');
   if (slots.length >= MAX_SLOTS) return;
-  container.appendChild(createSlotRow());
+  container.appendChild(createSlotRow(type || 'char'));
   updateSlotUI();
 }
 
@@ -491,7 +1443,7 @@ function removeSlot(row) {
   if (container.querySelectorAll('.sr-slot-row').length <= 1) return;
   row.remove();
   updateSlotUI();
-  render();
+  renderActive();
 }
 
 function updateSlotUI() {
@@ -514,6 +1466,26 @@ function wireForm(slot, wrap) {
   // Name, pose
   var ni = document.getElementById('n'+slot); if(ni) ni.addEventListener('input',save);
   var ps = document.getElementById('pose-'+slot); if(ps) ps.addEventListener('change',save);
+  var hr = document.getElementById('headroom-'+slot);
+  if(hr) hr.addEventListener('input', function(){ save(); renderActive(); });
+
+  // Height image dropdown
+  var hsilhSel=g('hsilh-'+slot);
+  if(hsilhSel) hsilhSel.addEventListener('change',function(){
+    var isUp=this.value==='upload';
+    var hup=g('hupload-'+slot);    if(hup)hup.style.display=isUp?'':'none';
+    var hpo=g('hpose-'+slot);      if(hpo)hpo.style.display=isUp?'':'none';
+    var hhr=g('hheadroom-'+slot);  if(hhr)hhr.style.display=isUp?'':'none';
+    save();
+  });
+
+  // Profile image dropdown
+  var psilSel=g('psil-'+slot);
+  if(psilSel) psilSel.addEventListener('change',function(){
+    var isUp=this.value==='upload';
+    var pup=g('pupload-'+slot); if(pup)pup.style.display=isUp?'':'none';
+    save();
+  });
 
   // Unit toggle handled globally via applyGlobalUnit()
 
@@ -534,7 +1506,74 @@ function wireForm(slot, wrap) {
   ['ft-','in-','cm-'].forEach(function(p){
     var inp2=g(p+slot); if(!inp2) return;
     inp2.addEventListener('input',function(){
-      syncH(slot,S.metric); refreshEst(slot); refreshCalc(slot); save();
+      syncH(slot,S.metric); refreshEst(slot); refreshCalc(slot); refreshLengthCalc(slot); refreshLengthPreset(slot); save();
+    });
+  });
+
+  // Length mode buttons
+  wrap.querySelectorAll('.lmode').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      var m=this.getAttribute('data-m');
+      wrap.querySelectorAll('.lmode').forEach(function(b){b.classList.remove('active');});
+      this.classList.add('active');
+      g('lprep-'+slot).style.display = m==='preset'?'':'none';
+      g('lcalc-'+slot).style.display = m==='calc'?'':'none';
+      g('lman-'+slot).style.display  = m==='manual'?'':'none';
+      refreshLengthCalc(slot); refreshLengthPreset(slot); save();
+      if(S.view==='length') renderLengthView();
+    });
+  });
+
+  // Length preset select — refresh display and force re-render of length view
+  var lpsel=g('lpsel-'+slot);
+  if(lpsel) lpsel.addEventListener('change',function(){
+    refreshLengthPreset(slot);
+    save();
+    // Always re-render length view since length changed regardless of slot
+    if(S.view==='length') renderLengthView();
+  });
+
+  // Length calc ref
+  var lref=g('lref-'+slot);
+  if(lref) lref.addEventListener('input',function(){
+    refreshLengthCalc(slot); save();
+    if(S.view==='length') renderLengthView();
+  });
+
+  // Length manual inputs — convert in one direction only, don't overwrite user input
+  var linEl2=g('lin-'+slot);
+  if(linEl2) linEl2.addEventListener('input',function(){
+    var lcm=g('lcm-'+slot); if(lcm&&this.value) lcm.value=inToCm(parseFloat(this.value)||0).toFixed(1);
+    save(); if(S.view==='length') renderLengthView();
+  });
+  var lcmEl2=g('lcm-'+slot);
+  if(lcmEl2) lcmEl2.addEventListener('input',function(){
+    var lin=g('lin-'+slot); if(lin&&this.value) lin.value=((parseFloat(this.value)||0)/2.54).toFixed(1);
+    save(); if(S.view==='length') renderLengthView();
+  });
+
+  // Length silhouette selector
+  var lsilSel=g('lsil-'+slot);
+  if(lsilSel) lsilSel.addEventListener('change',function(){
+    var isCustom=this.value==='custom';
+    var lupload=g('lupload-'+slot); if(lupload)lupload.style.display=isCustom?'':'none';
+    var lorient=g('lorient-'+slot); if(lorient)lorient.style.display=isCustom?'':'none';
+    save();
+  });
+
+  // Length orientation — flip
+  var lflip=g('lflip-'+slot);
+  if(lflip) lflip.addEventListener('change',function(){
+    save(); if(S.view==='length') renderLengthView();
+  });
+
+  // Length orientation — rotate buttons
+  var wrap3=document.getElementById('custom'+slot+'-form');
+  if(wrap3) wrap3.querySelectorAll('.lrot-btn').forEach(function(btn){
+    btn.addEventListener('click',function(){
+      if(wrap3) wrap3.querySelectorAll('.lrot-btn').forEach(function(b){b.classList.remove('active');});
+      this.classList.add('active');
+      save(); if(S.view==='length') renderLengthView();
     });
   });
 
@@ -547,41 +1586,97 @@ function wireForm(slot, wrap) {
   // Manual weight
   ['lbs-','kg-'].forEach(function(p){var i=g(p+slot);if(i)i.addEventListener('input',save);});
 
-  // Image URL
-  var urlBtn=wrap.querySelector('.iurl-btn');
-  if(urlBtn)urlBtn.addEventListener('click',function(){
-    var u=g('iurl-'+slot).value.trim(); if(u)loadImg(slot,u);
+  // Wire all three image upload sections via prefix
+  ['i','l','p'].forEach(function(pfx) {
+    var urlBtn=wrap.querySelector('.'+pfx+'url-btn');
+    if(urlBtn) urlBtn.addEventListener('click',function(){
+      var u=g(pfx+'url-'+slot); if(u&&u.value.trim())loadImgP(slot,pfx,u.value.trim());
+    });
+    var rmBtn=wrap.querySelector('.'+pfx+'remove-btn');
+    if(rmBtn) rmBtn.addEventListener('click',function(){
+      var pw=g(pfx+'pw-'+slot); if(pw)pw.style.display='none';
+      var pre=g(pfx+'pre-'+slot); if(pre)pre.src='';
+      var ui=g(pfx+'url-'+slot); if(ui)ui.value='';
+      cropImgs[pfx+slot]=null; save();
+    });
+    var fi=g(pfx+'file-'+slot);
+    if(fi) fi.addEventListener('change',function(){
+      var f=this.files[0]; if(!f)return;
+      var r=new FileReader(); r.onload=function(e){loadImgP(slot,pfx,e.target.result);}; r.readAsDataURL(f);
+    });
+    [pfx+'ct-',pfx+'cb-',pfx+'cl2-',pfx+'cr-'].forEach(function(p){
+      var inp=document.getElementById(p+slot);
+      if(inp) inp.addEventListener('input',function(){updateLinesP(slot,pfx);applyCropP(slot,pfx);});
+    });
+    var rst=wrap.querySelector('.'+pfx+'creset');
+    if(rst) rst.addEventListener('click',function(){resetCropP(slot,pfx);});
   });
-
-  // Remove image
-  var rmBtn=wrap.querySelector('.iremove-btn');
-  if(rmBtn)rmBtn.addEventListener('click',function(){
-    g('ipw-'+slot).style.display='none';
-    g('ipre-'+slot).src=''; g('iurl-'+slot).value='';
-    cropImgs[slot]=null; save();
-  });
-
-  // File upload
-  var fi=g('ifile-'+slot);
-  if(fi)fi.addEventListener('change',function(){
-    var f=this.files[0]; if(!f) return;
-    var r=new FileReader(); r.onload=function(e){loadImg(slot,e.target.result);}; r.readAsDataURL(f);
-  });
-
-  // Crop pct inputs -- auto apply on change
-  ['ct-','cb-','cl2-','cr-'].forEach(function(p){
-    var i=g(p+slot); if(i)i.addEventListener('input',function(){updateLines(slot);applyCrop(slot);});
-  });
-
-  // Reset crop
-  var crst=g('creset-'+slot);
-  if(crst)crst.addEventListener('click',function(){resetCrop(slot);});
-
-  // Draggable crop lines
-  wireCropLines(slot);
+  // Draggable crop lines (height image only for now)
+  // Wire crop lines for all three image prefixes
+  ['i','l','p'].forEach(function(pfx2) { wireCropLinesP(slot, pfx2); });
 }
 
 // ── Height sync ───────────────────────────────────────────────
+function refreshLengthPreset(slot) {
+  var sel = g('lpsel-'+slot); if(!sel) return;
+  var baseInches = parseFloat(sel.value)||0;
+  var est = g('lpest-'+slot); if(!est) return;
+  if (!baseInches) { est.textContent = 'None'; return; }
+  var h = getHIn(slot) || 72;  // default to 6ft if no height set yet
+  var scaled = baseInches * (h / 72);
+  est.textContent = '= ' + fL(scaled) + (h !== 72 ? ' (scaled from ' + fL(baseInches) + ' at 6ft)' : '');
+}
+
+function refreshLengthCalc(slot) {
+  var refEl=g('lref-'+slot), resEl=g('lcres-'+slot); if(!refEl||!resEl) return;
+  var h=getHIn(slot); if(!h) return;
+  var ruEl=g('lrunit-'+slot), isKg=ruEl&&ruEl.textContent.includes('cm');
+  var rv=parseFloat(refEl.value)||0; if(!rv){resEl.textContent='';return;}
+  var refIn = isKg ? rv/2.54 : rv;
+  var scaled = refIn * (h/72);
+  resEl.textContent = 'Estimated: '+fL(scaled);
+}
+
+function getLengthIn(slot) {
+  var wrap=document.getElementById('custom'+slot+'-form');
+  if(!wrap)return null;
+  var active=wrap.querySelector('.lmode.active');
+  var mode=active?active.getAttribute('data-m'):'preset';
+  if(mode==='preset'){
+    var sel=g('lpsel-'+slot); if(!sel){ console.log('[getLengthIn] no lpsel-'+slot); return 0; }
+    var base=parseFloat(sel.value)||0;
+    if(!base) return 0;
+    var h=getHIn(slot)||72;
+    return base*(h/72);
+  }
+  if(mode==='calc'){
+    var refEl=g('lref-'+slot),h=getHIn(slot); if(!refEl||!h)return null;
+    var ruEl=g('lrunit-'+slot),isKg=ruEl&&ruEl.textContent.includes('cm');
+    var rv=parseFloat(refEl.value)||0; if(!rv)return null;
+    var refIn=isKg?rv/2.54:rv; return refIn*(h/72);
+  }
+  // manual
+  var linEl=g('lin-'+slot),lcmEl=g('lcm-'+slot);
+  if(linEl&&parseFloat(linEl.value)) return parseFloat(linEl.value);
+  if(lcmEl&&parseFloat(lcmEl.value)) return parseFloat(lcmEl.value)/2.54;
+  return null;
+}
+
+function syncLen(slot, isM) {
+  // Manual fields
+  var liRow=g('li-'+slot), lmiRow=g('lmi-'+slot);
+  if(liRow)  liRow.style.display  = isM?'none':'';
+  if(lmiRow) lmiRow.style.display = isM?'':'none';
+  var linEl=g('lin-'+slot), lcmEl=g('lcm-'+slot);
+  if(linEl&&lcmEl){
+    if(isM){var iv=parseFloat(linEl.value)||0;if(iv)lcmEl.value=inToCm(iv).toFixed(1);}
+    else{var cv=parseFloat(lcmEl.value)||0;if(cv)linEl.value=(cv/2.54).toFixed(1);}
+  }
+  // Calc unit label
+  var ruEl=g('lrunit-'+slot);
+  if(ruEl) ruEl.textContent=isM?'cm at 183cm':'in at 6ft';
+}
+
 function syncH(slot, isM) {
   if (isM) {
     var cm=parseFloat(g('cm-'+slot).value)||0;
@@ -652,10 +1747,49 @@ function autoSave(slot) {
   var pi=g('ipre-'+slot);
   var img=pi&&pi.src&&!pi.src.endsWith(window.location.href)?pi.src:'';
   if(!img){var ui=g('iurl-'+slot);if(ui&&ui.value.trim().startsWith('http'))img=ui.value.trim();}
+
+  var lpi=g('lpre-'+slot);  // this is the preview img (correct)
+  var length_image=lpi&&lpi.src&&!lpi.src.endsWith(window.location.href)?lpi.src:'';
+  if(!length_image){var lui=g('lurl-'+slot);if(lui&&lui.value.trim().startsWith('http'))length_image=lui.value.trim();}
+
+  var ppi=g('ppre-'+slot);
+  var profile_image=ppi&&ppi.src&&!ppi.src.endsWith(window.location.href)?ppi.src:'';
+  if(!profile_image){var pui=g('purl-'+slot);if(pui&&pui.value.trim().startsWith('http'))profile_image=pui.value.trim();}
+  var wrap2=document.getElementById('custom'+slot+'-form');
+  var hsilhEl=g('hsilh-'+slot);
+  var hsilhVal=hsilhEl?hsilhEl.value:'';
+  var defaultSil=(hsilhVal&&hsilhVal!=='upload')?hsilhVal:((DEFAULTS.heightSils[0]&&DEFAULTS.heightSils[0].id)||'giantess');
+  // If not upload, clear the height image
+  if(hsilhVal&&hsilhVal!=='upload') img='';
+  var psilEl=g('psil-'+slot);
+  var psilVal=psilEl?psilEl.value:'';
+  var defaultHSSil=(psilVal&&psilVal!=='upload')?psilVal:((DEFAULTS.headshotSils[0]&&DEFAULTS.headshotSils[0].id)||'giantess');
+  if(psilVal&&psilVal!=='upload') profile_image='';
+
+  var charLen=getLengthIn(slot);
+
+  // Length silhouette
+  var lsilEl=g('lsil-'+slot);
+  var defaultLenSil=lsilEl&&lsilEl.value!=='custom'?lsilEl.value:(DEFAULTS.lengthSils[0]&&DEFAULTS.lengthSils[0].id)||'default';
+  var lflipEl=g('lflip-'+slot);
+  var lFlip=lflipEl?lflipEl.checked:false;
+  var activeLRot=wrap2?wrap2.querySelector('.lrot-btn.active'):null;
+  var lRot=activeLRot?parseInt(activeLRot.getAttribute('data-rot'))||0:0;
+
+  var hrEl=g('headroom-'+slot);
+  var headroomPct=hrEl?Math.max(0,Math.min(100,parseInt(hrEl.value)||0)):0;
+
   var char={
     id:'custom_'+slot, name:ni.value.trim(),
-    height:h, height_correction:corr,
+    height:h, height_correction:corr, headroom_pct:headroomPct,
     weight:getWlbs(slot), image:img,
+    length:charLen, length_image:length_image,
+    profile_image:profile_image,
+    default_silhouette:defaultSil,
+    default_length_silhouette:defaultLenSil,
+    length_orient_flip:lFlip,
+    length_orient_rotate:lRot,
+    default_headshot_silhouette:defaultHSSil,
     canonical:false, custom:true,
   };
   var d=loadCustom(); d['slot'+slot]=char; saveCustom(d);
@@ -664,10 +1798,102 @@ function autoSave(slot) {
   var vals=sels.map(function(s){return s.value;});
   fillSelects();
   allSlotSelects().forEach(function(s,i){s.value=vals[i]||'';});
-  if(vals.some(function(v){return v==='custom_'+slot;})) render();
+  if(vals.some(function(v){return v==='custom_'+slot;})) renderActive();
 }
 
 // ── Image / crop ──────────────────────────────────────────────
+// ── Prefix-based image/crop functions ─────────────────────────
+function loadImgP(slot, pfx, src) {
+  var img=new Image(); img.crossOrigin='anonymous';
+  img.onload=function(){
+    cropImgs[pfx+slot]=img;
+    var si=g(pfx+'csrc-'+slot);
+    if(si){
+      si.src=src;
+      // Wait for the src image element to load so naturalWidth/Height are available
+      // then re-position crop lines against actual image bounds
+      si.onload=function(){
+        [pfx+'ct-',pfx+'cb-',pfx+'cl2-',pfx+'cr-'].forEach(function(p){var el=g(p+slot);if(el)el.value='0';});
+        updateLinesP(slot,pfx);
+      };
+      // If already loaded (cached), onload won't fire — handle immediately
+      if(si.complete && si.naturalWidth) {
+        [pfx+'ct-',pfx+'cb-',pfx+'cl2-',pfx+'cr-'].forEach(function(p){var el=g(p+slot);if(el)el.value='0';});
+        updateLinesP(slot,pfx);
+      }
+    }
+    var pre=g(pfx+'pre-'+slot); if(pre)pre.src=src;
+    var pw=g(pfx+'pw-'+slot); if(pw)pw.style.display='';
+    autoSave(slot);
+  };
+  img.onerror=function(){alert('Could not load image.');};
+  img.src=src;
+}
+
+function updateLinesP(slot,pfx) {
+  // Position lines relative to actual rendered image, not the padded container
+  var srcImg=g(pfx+'csrc-'+slot);
+  var wrap=g(pfx+'ciwrap-'+slot);
+  var off={w:0,h:0,offX:0,offY:0};
+  if(srcImg&&wrap) off=getNaturalRenderedSize(srcImg,wrap);
+  var cW=wrap?wrap.offsetWidth:0, cH=wrap?wrap.offsetHeight:0;
+  var tPct=clampV(pfx+'ct-'+slot), bPct=clampV(pfx+'cb-'+slot);
+  var lPct=clampV(pfx+'cl2-'+slot), rPct=clampV(pfx+'cr-'+slot);
+
+  // Convert percentage of image to px from container edge
+  var tPx=off.offY + off.h*(tPct/100);
+  var bPx=(cH-off.offY) - off.h*(bPct/100);  // from bottom
+  var lPx=off.offX + off.w*(lPct/100);
+  var rPx=(cW-off.offX) - off.w*(rPct/100);  // from right
+
+  // Position lines in px from their respective edges
+  setLineStyle(pfx+'cl-t-'+slot,'top',    tPx+'px');
+  setLineStyle(pfx+'cl-b-'+slot,'bottom', (cH-bPx)+'px');
+  setLineStyle(pfx+'cl-l-'+slot,'left',   lPx+'px');
+  setLineStyle(pfx+'cl-r-'+slot,'right',  (cW-rPx)+'px');
+}
+
+function setLineStyle(id, prop, val) {
+  var el2=g(id); if(el2) el2.style[prop]=val;
+}
+
+function applyCropP(slot,pfx) {
+  var img=cropImgs[pfx+slot]; if(!img)return;
+  var t=clampV(pfx+'ct-'+slot),b=clampV(pfx+'cb-'+slot);
+  var l=clampV(pfx+'cl2-'+slot),r=clampV(pfx+'cr-'+slot);
+  var sx=Math.round(img.width*l/100),sy=Math.round(img.height*t/100);
+  var sw=Math.max(2,Math.round(img.width*(100-l-r)/100));
+  var sh=Math.max(2,Math.round(img.height*(100-t-b)/100));
+  var out=el('canvas'); out.width=sw; out.height=sh;
+  out.getContext('2d').drawImage(img,sx,sy,sw,sh,0,0,sw,sh);
+  var pre=g(pfx+'pre-'+slot); if(pre)pre.src=out.toDataURL('image/png');
+  autoSave(slot);
+}
+
+function resetCropP(slot,pfx) {
+  var img=cropImgs[pfx+slot]; if(!img)return;
+  [pfx+'ct-',pfx+'cb-',pfx+'cl2-',pfx+'cr-'].forEach(function(p){var el=g(p+slot);if(el)el.value='0';});
+  updateLinesP(slot,pfx);
+  var out=el('canvas');
+  out.width=img.naturalWidth||img.width; out.height=img.naturalHeight||img.height;
+  out.getContext('2d').drawImage(img,0,0);
+  var pre=g(pfx+'pre-'+slot); if(pre)pre.src=out.toDataURL('image/png');
+  autoSave(slot);
+}
+
+function preloadCropImgP(slot,pfx,src) {
+  var img=new Image(); img.crossOrigin='anonymous';
+  img.onload=function(){ cropImgs[pfx+slot]=img; var si=g(pfx+'csrc-'+slot);if(si)si.src=src; };
+  img.src=src;
+}
+
+// Legacy single-image aliases (height image, prefix 'i')
+function loadImg(slot,src)         { loadImgP(slot,'i',src); }
+function updateLines(slot)         { updateLinesP(slot,'i'); }
+function applyCrop(slot)           { applyCropP(slot,'i'); }
+function resetCrop(slot)           { resetCropP(slot,'i'); }
+function preloadCropImg(slot,src)  { preloadCropImgP(slot,'i',src); }
+
 function loadImg(slot, src) {
   var img=new Image(); img.crossOrigin='anonymous';
   img.onload=function(){
@@ -725,29 +1951,80 @@ function resetCrop(slot) {
   autoSave(slot);
 }
 
-function wireCropLines(slot) {
+function wireCropLines(slot) { wireCropLinesP(slot,'i'); }
+
+function wireCropLinesP(slot, pfx) {
   var lines=[
-    {id:'cl-t-'+slot,inp:'ct-'+slot,axis:'y',dir:1},
-    {id:'cl-b-'+slot,inp:'cb-'+slot,axis:'y',dir:-1},
-    {id:'cl-l-'+slot,inp:'cl2-'+slot,axis:'x',dir:1},
-    {id:'cl-r-'+slot,inp:'cr-'+slot,axis:'x',dir:-1},
+    {id:pfx+'cl-t-'+slot, inp:pfx+'ct-'+slot,  axis:'y', dir:1},
+    {id:pfx+'cl-b-'+slot, inp:pfx+'cb-'+slot,  axis:'y', dir:-1},
+    {id:pfx+'cl-l-'+slot, inp:pfx+'cl2-'+slot, axis:'x', dir:1},
+    {id:pfx+'cl-r-'+slot, inp:pfx+'cr-'+slot,  axis:'x', dir:-1},
   ];
   lines.forEach(function(line){
     var el2=g(line.id); if(!el2)return;
     var startPos=0,startVal=0,dragging=false;
     function client(e){return e.touches?(line.axis==='x'?e.touches[0].clientX:e.touches[0].clientY):(line.axis==='x'?e.clientX:e.clientY);}
-    function onStart(e){e.preventDefault();dragging=true;startPos=client(e);startVal=clampV(line.inp);
-      document.addEventListener('mousemove',onMove);document.addEventListener('mouseup',onEnd);
-      document.addEventListener('touchmove',onMove,{passive:false});document.addEventListener('touchend',onEnd);}
-    function onMove(e){if(!dragging)return;if(e.cancelable)e.preventDefault();
-      var iw=g('ciwrap-'+slot);var wrapSz=iw?((line.axis==='x'?iw.offsetWidth:iw.offsetHeight)):200;if(!wrapSz)return;
-      var delta=(client(e)-startPos)*line.dir;var pct=Math.round(delta/wrapSz*100);
-      var inp2=g(line.inp);if(!inp2)return;inp2.value=Math.min(99,Math.max(0,startVal+pct));
-      updateLines(slot);applyCrop(slot);}
-    function onEnd(){dragging=false;document.removeEventListener('mousemove',onMove);document.removeEventListener('mouseup',onEnd);
-      document.removeEventListener('touchmove',onMove);document.removeEventListener('touchend',onEnd);}
-    el2.addEventListener('mousedown',onStart,{passive:false});el2.addEventListener('touchstart',onStart,{passive:false});
+    function onStart(e){
+      e.preventDefault();
+      e.stopPropagation();
+      dragging=true;
+      startPos=client(e);
+      startVal=clampV(line.inp);
+      document.addEventListener('mousemove',onMove);
+      document.addEventListener('mouseup',onEnd);
+      document.addEventListener('touchmove',onMove,{passive:false});
+      document.addEventListener('touchend',onEnd);
+    }
+    function onMove(e){
+      if(!dragging)return;
+      if(e.cancelable)e.preventDefault();
+      // Measure the crop SOURCE IMAGE actual rendered dimensions (not the wrap)
+      var srcImg=g(pfx+'csrc-'+slot);
+      var iw=g(pfx+'ciwrap-'+slot);
+      var wrapSz=200;
+      if(srcImg&&iw){
+        // Use natural rendered image size (not container size which may be padded)
+        var nat=getNaturalRenderedSize(srcImg,iw);
+        wrapSz=line.axis==='x'?nat.w:nat.h;
+      }
+      if(!wrapSz)return;
+      var delta=(client(e)-startPos)*line.dir;
+      var pct=Math.round(delta/wrapSz*100);
+      var inp2=g(line.inp);
+      if(!inp2)return;
+      inp2.value=Math.min(99,Math.max(0,startVal+pct));
+      updateLinesP(slot,pfx);
+      applyCropP(slot,pfx);
+    }
+    function onEnd(){
+      dragging=false;
+      document.removeEventListener('mousemove',onMove);
+      document.removeEventListener('mouseup',onEnd);
+      document.removeEventListener('touchmove',onMove);
+      document.removeEventListener('touchend',onEnd);
+    }
+    el2.addEventListener('mousedown',onStart,{passive:false});
+    el2.addEventListener('touchstart',onStart,{passive:false});
   });
+}
+
+// Returns the actual rendered pixel dimensions of the image content within
+// an object-fit:contain container, so crop percentages map to real image bounds.
+function getNaturalRenderedSize(img, wrap) {
+  var containerW = wrap.offsetWidth;
+  var containerH = wrap.offsetHeight;
+  var natW = img.naturalWidth  || containerW;
+  var natH = img.naturalHeight || containerH;
+  if (!natW||!natH) return {w:containerW,h:containerH,offX:0,offY:0};
+  var scale = Math.min(containerW/natW, containerH/natH);
+  var rendW = natW*scale;
+  var rendH = natH*scale;
+  return {
+    w: rendW,
+    h: rendH,
+    offX: (containerW-rendW)/2,
+    offY: (containerH-rendH)/2,
+  };
 }
 
 // ── Storage ───────────────────────────────────────────────────
@@ -758,7 +2035,7 @@ function clearSlot(slot){
   if(!confirm('Clear custom slot '+slot+'?'))return;
   var d=loadCustom(); d['slot'+slot]=null; saveCustom(d);
   allSlotSelects().forEach(function(sel){if(sel.value==='custom_'+slot)sel.value='';});
-  fillSelects(); buildForms(); render();
+  fillSelects(); buildForms(); renderActive();
 }
 
 // ── Tab switching ─────────────────────────────────────────────
@@ -773,8 +2050,9 @@ function g(id){return document.getElementById(id);}
 
 // ── Event wiring ──────────────────────────────────────────────
 document.querySelectorAll('.sr-tab').forEach(function(t){t.addEventListener('click',function(){switchTab(this.getAttribute('data-tab'));});});
+document.querySelectorAll('.sr-view-tab').forEach(function(t){t.addEventListener('click',function(){switchView(this.getAttribute('data-view'));});});
 // slot selects wired per-slot in createSlotRow()
-g('sel-obj').addEventListener('change',function(){var id=this.value;S.selObj=id?S.objects.find(function(o){return o.id===id;}):null;render();});
+
 function applyGlobalUnit(isM) {
   S.metric = isM;
   g('btn-imperial').classList.toggle('active', !isM);
@@ -799,17 +2077,116 @@ function applyGlobalUnit(isM) {
     }
     if(ruEl)ruEl.textContent=isM?'kg at 183cm':'lbs at 6ft';
     syncH(slot,isM);
+    syncLen(slot,isM);
+    // Convert length calc reference value (lref-) between in/cm
+    var lrefEl=g('lref-'+slot), lruEl=g('lrunit-'+slot);
+    if(lrefEl&&parseFloat(lrefEl.value)){
+      var lrv=parseFloat(lrefEl.value);
+      lrefEl.value=isM?inToCm(lrv).toFixed(1):(lrv/2.54).toFixed(1);
+    }
+    if(lruEl)lruEl.textContent=isM?'cm at 183cm':'in at 6ft';
     refreshEst(slot);
     refreshCalc(slot);
+    refreshLengthCalc(slot);
+    refreshLengthPreset(slot);
   });
-  render();
+  if(S.view==='stats') renderStatsView();
+  renderActive();
 }
 g('btn-imperial').addEventListener('click',function(){applyGlobalUnit(false);});
+
+// Copy viewer to clipboard
+var ROSE_GOLD_FILTER = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
+
+// Fetch image via XHR (bypasses image cache, gets proper CORS blob),
+// draw to canvas with filter, return data URL.
+function bakedDataUrl(src) {
+  return fetch(src, {mode:'cors', credentials:'omit'})
+    .then(function(r){ return r.blob(); })
+    .then(function(blob){ return createImageBitmap(blob); })
+    .then(function(bmp) {
+      var c = document.createElement('canvas');
+      c.width = bmp.width; c.height = bmp.height;
+      var ctx = c.getContext('2d');
+      ctx.filter = ROSE_GOLD_FILTER;
+      ctx.drawImage(bmp, 0, 0);
+      bmp.close && bmp.close();
+      return c.toDataURL('image/png');
+    })
+    .catch(function(){ return null; });
+}
+
+g('btn-copy-img').addEventListener('click', function() {
+  var btn = this;
+  var target = S.view === 'length'
+    ? document.getElementById('sr-length-area')
+    : document.getElementById('sr-canvas-area');
+  if (!target || typeof html2canvas === 'undefined') return;
+
+  btn.textContent = '…';
+  btn.disabled = true;
+
+  // Gather filtered images and pre-bake them (reload with CORS)
+  var filteredImgs = Array.from(target.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
+  var srcList = filteredImgs.map(function(img){ return img.src; });
+
+  Promise.all(srcList.map(function(src){ return src ? bakedDataUrl(src) : Promise.resolve(null); }))
+    .then(function(bakedUrls) {
+
+    html2canvas(target, {
+      backgroundColor: null,  // transparent — silhouettes show correctly on any background
+      useCORS: true,
+      allowTaint: false,
+      scale: 2,
+      onclone: function(doc) {
+        // Swap filtered images to baked versions in the clone
+        var cloneImgs = Array.from(doc.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
+        cloneImgs.forEach(function(img, i) {
+          if (bakedUrls[i]) {
+            img.src = bakedUrls[i];
+            img.style.filter = 'none';
+          }
+        });
+      }
+    }).then(function(canvas) {
+      canvas.toBlob(function(blob) {
+        if (!blob) { btn.textContent = '✗'; setTimeout(function(){btn.innerHTML='&#128203;';btn.disabled=false;},1500); return; }
+        try {
+          navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(function() {
+            btn.textContent = '✓';
+            setTimeout(function(){ btn.innerHTML='&#128203;'; btn.disabled=false; }, 1500);
+          }).catch(function() {
+            var url = URL.createObjectURL(blob);
+            window.open(url, '_blank');
+            btn.innerHTML='&#128203;'; btn.disabled=false;
+          });
+        } catch(e) {
+          var url = URL.createObjectURL(blob);
+          window.open(url, '_blank');
+          btn.innerHTML='&#128203;'; btn.disabled=false;
+        }
+      }, 'image/png');
+    }).catch(function() {
+      btn.textContent = '✗';
+      setTimeout(function(){ btn.innerHTML='&#128203;'; btn.disabled=false; }, 1500);
+    });
+  });
+});
 g('btn-metric').addEventListener('click',function(){applyGlobalUnit(true);});
-g('btn-zoom-in').addEventListener('click',function(){S.zoom=Math.min(ZMAX,parseFloat((S.zoom+ZSTEP).toFixed(2)));applyZoom();});
-g('btn-zoom-out').addEventListener('click',function(){S.zoom=Math.max(ZMIN,parseFloat((S.zoom-ZSTEP).toFixed(2)));applyZoom();});
-g('btn-zoom-reset').addEventListener('click',function(){S.zoom=1;applyZoom();});
+g('btn-zoom-in').addEventListener('click',function(){
+  if(S.view==='length'){S.zoomL=Math.min(ZMAX,parseFloat((S.zoomL+ZSTEP).toFixed(2)));applyLengthZoom();}
+  else{S.zoomH=Math.min(ZMAX,parseFloat((S.zoomH+ZSTEP).toFixed(2)));render();}
+});
+g('btn-zoom-out').addEventListener('click',function(){
+  if(S.view==='length'){S.zoomL=Math.max(ZMIN,parseFloat((S.zoomL-ZSTEP).toFixed(2)));applyLengthZoom();}
+  else{S.zoomH=Math.max(ZMIN,parseFloat((S.zoomH-ZSTEP).toFixed(2)));render();}
+});
+g('btn-zoom-reset').addEventListener('click',function(){
+  if(S.view==='length'){S.zoomL=0.5;applyLengthZoom();}
+  else{S.zoomH=1;render();}
+});
 document.querySelectorAll('.custom-clear-btn').forEach(function(btn){btn.addEventListener('click',function(){clearSlot(parseInt(this.getAttribute('data-slot')));});});
-document.getElementById('btn-add-slot').addEventListener('click', addSlot);
+document.getElementById('btn-add-char').addEventListener('click', function(){ addSlot('char'); });
+document.getElementById('btn-add-obj').addEventListener('click',  function(){ addSlot('obj');  });
 
 init();
