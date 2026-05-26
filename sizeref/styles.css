@@ -217,6 +217,7 @@
   display: flex;
   flex-direction: column;
   align-items: stretch;
+  position: relative;
 }
 
 .sr-figures {
@@ -262,7 +263,7 @@
 .sr-stat-name { font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:var(--accent); }
 .sr-stat-canon { font-size:.7rem;opacity:.7; }
 .sr-stat-desc { font-size:.8rem;line-height:1.6;color:var(--text-secondary);font-style:italic; }
-.sr-stat-grid { display:flex;flex-direction:column;gap:.3rem;padding:.5rem 0;border-top:1px solid var(--border);border-bottom:1px solid var(--border); }
+.sr-stat-grid { display:flex;flex-direction:column;gap:.3rem;padding:.5rem 0;border-top:1px solid var(--border); }
 .sr-stat-row { display:flex;justify-content:space-between;align-items:baseline;gap:.75rem; }
 .sr-stat-key { font-family:var(--font-caps);font-size:.56rem;letter-spacing:.12em;text-transform:uppercase;color:var(--text-muted);flex-shrink:0; }
 .sr-stat-val { font-size:.85rem;color:var(--text-primary);text-align:right; }
@@ -274,10 +275,12 @@
 
 /* Mobile */
 @media (max-width:900px) {
-  .sr-app { grid-template-columns:1fr;height:auto; }
+  .sr-app { grid-template-columns:1fr; height:auto; }
   .sr-sidebar { max-height:55vh; }
-  .sr-main { height:80vh; }
-  .sr-stats { max-height:none;grid-template-columns:1fr; }
+  .sr-main { height:80vh; min-height:0; }
+  .sr-stats { max-height:25vh; grid-template-columns:1fr 1fr; }
+  .sr-canvas-area { min-height:200px; }
+  .sr-length-area { min-height:200px; }
 }
 
 /* Zoom spacer — grows above figures to allow vertical scrolling when zoomed */
@@ -479,7 +482,8 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 
 .sr-length-scroll {
   flex: 1;
-  overflow: auto;
+  overflow-x: hidden;  /* no horizontal scroll — zoom controls width instead */
+  overflow-y: auto;
   padding: 1rem 1.5rem 0;
 }
 
@@ -488,6 +492,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   transition: transform 0.12s ease;
   display: inline-block;
   min-width: 100%;
+  position: relative;
 }
 
 .sr-length-rows {
@@ -615,7 +620,6 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 /* ── Collapsible form sections ───────────────── */
 .form-section { border-bottom: 1px solid var(--border); }
 
-.form-det { }
 
 .form-det-summary {
   font-family: var(--font-caps);
@@ -702,8 +706,9 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 #view-stats {
   flex-direction: row;
   align-items: stretch;
-  overflow: hidden;
+  overflow: visible;  /* let sv-scroll handle its own overflow */
   padding: 0;
+  min-width: 0;
 }
 
 .sv-scroll {
@@ -733,7 +738,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   display: flex;
   flex-direction: column;
   align-items: center;
-  padding: 1.5rem 1.25rem 1rem;
+  padding: 0.75rem 1.25rem 0.6rem;
   border-bottom: 1px solid var(--border);
   background: var(--bg-inset);
   flex-shrink: 0;
@@ -748,7 +753,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   border-radius: 50%;
   object-fit: cover;
   border: 1px solid var(--border-mid);
-  margin-bottom: 0.75rem;
+  margin-bottom: 0.4rem;
 }
 
 .sv-name {
@@ -811,4 +816,382 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   color: var(--text-muted);
   font-style: italic;
   letter-spacing: 0;
+}
+
+/* ── Character picker modal ──────────────────── */
+.char-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(10, 7, 6, 0.82);
+  backdrop-filter: blur(4px);
+  z-index: 100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.75rem;
+  box-sizing: border-box;
+}
+
+.char-modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  border-radius: calc(var(--radius) * 2);
+  width: 100%;
+  max-width: 680px;
+  max-height: 90vh;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  box-shadow: 0 24px 80px rgba(0,0,0,0.6);
+  box-sizing: border-box;
+}
+
+.char-modal-header {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-shrink: 0;
+  flex-wrap: nowrap;
+  min-width: 0;
+}
+
+.char-modal-title {
+  white-space: nowrap;
+}
+
+.char-modal-search {
+  min-width: 0;  /* allows flex shrink below content width */
+}
+
+.char-modal-title {
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+
+.char-modal-search {
+  flex: 1;
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-primary);
+  outline: none;
+  transition: border-color 0.2s;
+}
+.char-modal-search:focus { border-color: var(--accent); }
+.char-modal-search::placeholder { color: var(--text-muted); }
+
+.char-modal-close {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  width: 28px; height: 28px;
+  color: var(--text-muted);
+  cursor: pointer;
+  font-size: 0.75rem;
+  flex-shrink: 0;
+  transition: all 0.15s;
+}
+.char-modal-close:hover { border-color: var(--wine); color: var(--wine); }
+
+.char-modal-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(110px, 1fr));
+  gap: 1px;
+  background: var(--border);
+  overflow-y: auto;
+  flex: 1;
+}
+
+.cpm-card {
+  background: var(--bg-panel);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem 0.75rem;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+.cpm-card:hover { background: var(--bg-inset); }
+
+.cpm-img-wrap {
+  width: 72px;
+  height: 72px;
+  border-radius: 50%;
+  overflow: hidden;
+  border: 1px solid var(--border-mid);
+  background: var(--bg-inset);
+  flex-shrink: 0;
+}
+
+.cpm-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.cpm-name {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+  text-align: center;
+  line-height: 1.2;
+}
+
+.cpm-empty {
+  grid-column: 1/-1;
+  text-align: center;
+  padding: 3rem;
+  font-family: var(--font-display);
+  font-style: italic;
+  color: var(--text-muted);
+}
+
+/* Slot picker button — matches select styling */
+.slot-picker-btn {
+  flex: 1;
+  text-align: left;
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-secondary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.6rem;
+  cursor: pointer;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  transition: border-color 0.2s;
+}
+.slot-picker-btn:hover { border-color: var(--border-mid); }
+
+/* ── To Their Eyes perspective section ──────── */
+.sv-perspective { border-top: 2px solid var(--border-mid); }
+
+.persp-tabs {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 3px;
+  margin-bottom: 0.6rem;
+}
+.persp-tabs .unit-btn {
+  font-size: 0.52rem;
+  padding: 0.2rem 0.5rem;
+}
+
+.persp-note .sv-value {
+  font-family: var(--font-body);
+  font-style: italic;
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  letter-spacing: 0;
+}
+
+/* ── Session height override ─────────────────── */
+.sv-resize-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  margin-top: 0.5rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+.sv-resize-input {
+  width: 60px;
+  text-align: center;
+  font-size: 0.8rem;
+  padding: 0.2rem 0.4rem;
+}
+.sv-resize-unit {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  color: var(--text-muted);
+  letter-spacing: 0.08em;
+}
+.sv-resize-set, .sv-resize-reset {
+  font-size: 0.6rem;
+  padding: 0 0.5rem;
+  height: 26px;
+}
+.sr-override-badge {
+  font-style: normal;
+  font-size: 0.75rem;
+  color: var(--accent);
+  margin-left: 0.2rem;
+  vertical-align: middle;
+}
+
+/* Height view info card resize row */
+.sr-stat-resize-wrap {
+  position: relative;   /* anchor for absolute popup */
+  border-top: 1px solid var(--border);
+  padding-top: 0.4rem;
+  margin-top: 0.4rem;
+}
+.sr-resize-row {
+  display: flex;
+  align-items: center;
+  gap: 0.3rem;
+  justify-content: center;
+}
+
+/* Resize popup */
+.sr-resize-popup {
+  display: none;
+  position: fixed;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  z-index: 200;
+  flex-direction: column;
+  gap: 0.75rem;
+  padding: 1.25rem 1.5rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  border-radius: calc(var(--radius) * 2);
+  box-shadow: 0 8px 40px rgba(0,0,0,0.6);
+  min-width: 280px;
+}
+.sr-resize-popup.open {
+  display: flex;
+}
+.sr-resize-popup-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+}
+.sr-resize-popup-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.1rem;
+  color: var(--text-primary);
+}
+.sr-resize-popup-inputs {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  justify-content: center;
+}
+/* Backdrop to close popup on outside click */
+.sr-resize-backdrop {
+  display: none;
+  position: fixed;
+  inset: 0;
+  z-index: 199;
+}
+.sr-resize-backdrop.open {
+  display: block;
+}
+.sr-resize-ft, .sr-resize-in, .sr-resize-cm {
+  width: 46px;
+  text-align: center;
+  font-size: 0.78rem;
+  padding: 0.2rem 0.3rem;
+}
+
+/* Resize controls in stats view card */
+.sv-resize-controls {
+  padding: 0.5rem 1.25rem 0.25rem;
+  border-bottom: 1px solid var(--border);
+}
+.sv-resize-controls .sr-resize-row {
+  border-top: none;
+  padding-top: 0;
+  margin-top: 0;
+}
+
+/* Ensure Resize and Reset buttons are same height */
+.sr-resize-row .unit-btn {
+  height: 28px;
+  line-height: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+
+/* Spacer on custom char stats cards — identical padding/border to .sv-resize-controls */
+.sv-resize-spacer {
+  padding: 0.5rem 1.25rem 0.25rem;
+  border-bottom: 1px solid var(--border);
+  /* height comes from the line-height of an empty inline block = 0,
+     so we explicitly set the button height to match */
+  min-height: calc(28px + 0.75rem + 1px);
+  box-sizing: border-box;
+}
+
+/* Wiki link spacer — invisible clone of .sr-wiki-link */
+.sr-wiki-spacer {
+  display: block;
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 1rem 1.25rem;  /* matches stats view wiki link inline style */
+  visibility: hidden;
+}
+.sr-wiki-spacer::after { content: 'View wiki →'; }
+
+/* ── Scale grid lines ───────────────────────────────────────── */
+.sr-grid-overlay {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+}
+.sr-length-grid-overlay {
+  /* Inside sr-length-zoom — covers exactly the zoomed content area */
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  z-index: 0;
+  overflow: hidden;
+}
+.sr-grid-line {
+  position: absolute;
+  background: rgba(196, 154, 120, 0.12);  /* rose-gold tint, subtle */
+}
+.sr-grid-line-h {
+  left: 0; right: 0;
+  height: 1px;
+}
+.sr-grid-line-v {
+  top: 0; bottom: 0;
+  width: 1px;
+}
+
+/* Grid button — separated from unit toggle */
+.sr-grid-btn {
+  margin-left: 0.75rem;  /* visual gap from unit buttons */
+}
+
+/* Resize row inside sv-header (stats tab) */
+.sv-header .sr-resize-row {
+  margin-top: 0.5rem;
+  border-top: none;
+  padding-top: 0;
+}
+.sv-header .sr-stat-resize-wrap {
+  border-top: none;
+  margin-top: 0;
+  padding-top: 0;
+}
+
+/* Spacer in custom char sv-header to match resize button row height */
+.sv-header-spacer {
+  margin-top: 0.5rem;
+  height: 28px;  /* matches unit-btn height */
 }

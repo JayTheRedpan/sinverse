@@ -77,12 +77,14 @@
         <button id="btn-imperial" class="unit-btn active">Imperial</button>
         <button id="btn-metric" class="unit-btn">Metric</button>
       </div>
+      <button id="btn-grid-lines" class="unit-btn sr-grid-btn" title="Toggle scale grid lines">Grid</button>
       <div class="zoom-controls">
         <button id="btn-zoom-out" class="zoom-btn">&#8722;</button>
         <span id="zoom-label" class="zoom-label">100%</span>
         <button id="btn-zoom-in"  class="zoom-btn">&#43;</button>
         <button id="btn-zoom-reset" class="zoom-btn zoom-reset-btn">Reset</button>
         <button id="btn-copy-img" class="zoom-btn zoom-reset-btn" title="Copy viewer to clipboard">&#128203;</button>
+
       </div>
     </div>
 
@@ -111,6 +113,7 @@
         <div class="sr-length-scroll" id="sr-length-scroll">
           <div id="sr-length-empty" class="sr-empty">Select characters with anatomy data to compare</div>
           <div id="sr-length-zoom" class="sr-length-zoom">
+              <div id="sr-length-grid-overlay" class="sr-grid-overlay sr-length-grid-overlay"></div>
             <div id="sr-length-rows" class="sr-length-rows"></div>
           </div>
         </div>
@@ -131,5 +134,20 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="../_shared/registry.js"></script>
 <script src="sizeref.js"></script>
+
+<!-- ── Resize popup backdrop ──────────────────── -->
+<div id="sr-resize-backdrop" class="sr-resize-backdrop"></div>
+
+<!-- ── Character picker modal ─────────────────── -->
+<div id="char-modal-overlay" class="char-modal-overlay" style="display:none">
+  <div class="char-modal">
+    <div class="char-modal-header">
+      <div class="char-modal-title">Select Character</div>
+      <input id="char-modal-search" class="char-modal-search" type="text" placeholder="Search…" autocomplete="off" />
+      <button id="char-modal-close" class="char-modal-close" title="Close">&#10005;</button>
+    </div>
+    <div id="char-modal-grid" class="char-modal-grid"></div>
+  </div>
+</div>
 </body>
 </html>

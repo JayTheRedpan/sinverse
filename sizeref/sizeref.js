@@ -2,6 +2,8 @@
 
 // ── State ─────────────────────────────────────────────────────
 var S = {
+  heightOverrides: {},  // charId -> override inches (session only)
+  gridLines:    false,  // show scale grid lines across viewer
   chars:       [],
   objects:     [],
   builds:      [],
@@ -81,6 +83,8 @@ async function init() {
   // fillSelects refreshes all selects but preserves existing values via buildSelectOptions
   fillSelects();
 
+  wireCharModal();
+
   var area = document.getElementById('sr-canvas-area');
   requestAnimationFrame(function() {
     render();
@@ -120,10 +124,21 @@ function fH(in_) {
 }
 function fW(lbs) {
   if (!lbs) return '—';
-  return S.metric ? Math.round(lbsToKg(lbs))+' kg' : Math.round(lbs)+' lbs';
+  if (S.metric) {
+    var kg = lbs * 0.453592;
+    if (kg >= 907184) return fmt(kg/907184, 1, 'kt');      // kilotonnes
+    if (kg >= 1000)   return fmt(kg/1000, 1, 't');          // metric tonnes
+    return Math.round(kg) + ' kg';
+  } else {
+    if (lbs >= 2000000000) return fmt(lbs/2000000, 0, 'kt'); // kilotons
+    if (lbs >= 2000000)    return fmt(lbs/2000000, 1, 'kt'); // kilotons
+    if (lbs >= 200000)     return fmt(lbs/2000, 1, 't');     // tons
+    if (lbs >= 100000)     return fmt(lbs/2000, 1, 't');     // tons (>99,999 lbs)
+    return Math.round(lbs).toLocaleString() + ' lbs';
+  }
 }
 function fL(in_) {
-  if (!in_) return S.metric ? '0 cm' : '0"';
+  if (!in_) return '—';
   if (S.metric) {
     var cm = Math.round(inToCm(in_));
     if (cm >= 100) {
@@ -144,6 +159,13 @@ function fL(in_) {
 }
 
 // ── Square-cube ───────────────────────────────────────────────
+// Get a character's effective height — override takes precedence
+function effectiveH(char) {
+  var ov = S.heightOverrides[char.id];
+  if (ov !== undefined) return ov;
+  return char.height * (char.height_correction || 1);
+}
+
 function sc(hIn, buildId) {
   var b = S.builds.find(function(b){return b.id===buildId;});
   return (b && hIn) ? b.referenceWeight * Math.pow(hIn/72, 3) : null;
@@ -171,16 +193,24 @@ function buildSelectOptions(sel, preserveValue) {
 
 function fillSelects() {
   allSlotSelects().forEach(function(sel) {
-    if (sel.getAttribute('data-type') === 'obj') {
-      // Rebuild object dropdown preserving current value
+    if (sel.getAttribute('data-type') === 'char') {
+      var cur = sel.value;
+      buildSelectOptions(sel, cur);
+      // Update picker button label
+      var row = sel.closest('.sr-slot-row');
+      var btn = row && row.querySelector('.slot-picker-btn');
+      if (btn) {
+        var opt = sel.options[sel.selectedIndex];
+        btn.textContent = opt && opt.value ? opt.textContent : '— Select character —';
+      }
+    } else {
+      // Object dropdown
       var cur = sel.value;
       sel.innerHTML = '<option value="">-- Select object --</option>';
       S.objects.forEach(function(o) {
         var opt = el('option'); opt.value = o.id; opt.textContent = o.label; sel.appendChild(opt);
       });
       if (cur) sel.value = cur;
-    } else {
-      buildSelectOptions(sel);
     }
   });
 }
@@ -211,6 +241,23 @@ function allChars() {
   }).filter(Boolean);
 }
 
+// Returns [{char, slotIdx}] preserving slot position for per-slot overrides
+function allCharSlots() {
+  var result = [];
+  allSlotSelects().forEach(function(sel, idx) {
+    if (sel.getAttribute('data-type') === 'obj') return;
+    var c = charFromValue(sel.value);
+    if (c) result.push({char: c, slotIdx: idx});
+  });
+  return result;
+}
+
+function effectiveHSlot(char, slotIdx) {
+  var ov = S.heightOverrides[slotIdx];
+  if (ov !== undefined) return ov;
+  return char.height * (char.height_correction || 1);
+}
+
 function allObjects() {
   return allSlotSelects().map(function(sel) {
     if (sel.getAttribute('data-type') !== 'obj') return null;
@@ -221,6 +268,7 @@ function allObjects() {
 
 // ── Render ────────────────────────────────────────────────────
 function render() {
+  if (document.getElementById('sr-global-resize-popup')) return;
   var chars   = allChars();
   var scene   = document.getElementById('sr-scene');
   var empty   = document.getElementById('sr-empty');
@@ -231,8 +279,9 @@ function render() {
   stats.innerHTML = '';
 
   // Populate stats FIRST so their height is in the layout before we measure canvasH
-  if (chars.length || allObjects().length) {
-    chars.forEach(function(c) { stats.appendChild(statBlock(c)); });
+  var charSlots = allCharSlots();
+  if (charSlots.length || allObjects().length) {
+    charSlots.forEach(function(cs) { stats.appendChild(statBlock(cs.char, cs.slotIdx)); });
     allSlotSelects().forEach(function(sel) {
       if (sel.getAttribute('data-type')==='obj' && sel.value) {
         var obj = S.objects.find(function(o){return o.id===sel.value;});
@@ -250,9 +299,9 @@ function render() {
 
   // Max DISPLAY height — includes headroom so ears/hair don't overflow at 100% zoom
   var maxH = 0;
-  chars.forEach(function(c) {
-    var eff = c.height * (c.height_correction || 1);
-    var disp = eff * (1 + ((c.headroom_pct || 0) / 100));
+  charSlots.forEach(function(cs) {
+    var eff = effectiveHSlot(cs.char, cs.slotIdx);
+    var disp = eff * (1 + ((cs.char.headroom_pct || 0) / 100));
     if (disp > maxH) maxH = disp;
   });
   allObjects().forEach(function(o) {
@@ -269,8 +318,8 @@ function render() {
   S.pxPerIn = (S.canvasH * S.zoomH) / maxH;
 
 
-  // Render figures and stat blocks in slot order
-  allSlotSelects().forEach(function(sel) {
+  // Render figures in slot order
+  allSlotSelects().forEach(function(sel, idx) {
     var type = sel.getAttribute('data-type');
     var val  = sel.value; if (!val) return;
     if (type === 'obj') {
@@ -278,7 +327,7 @@ function render() {
       if (obj) renderObj(figs, obj);
     } else {
       var c = charFromValue(val);
-      if (c) renderChar(figs, c);
+      if (c) renderChar(figs, c, idx);
     }
   });
 
@@ -303,12 +352,13 @@ function render() {
 
   // Rebuild ruler (uses updated S.pxPerIn)
   updateRuler();
+  updateHeightGrid();
 
   document.getElementById('zoom-label').textContent = Math.round(S.zoomH*100)+'%';
 }
 
-function renderChar(figs, char) {
-  var effH = char.height * (char.height_correction || 1);
+function renderChar(figs, char, slotIdx) {
+  var effH = effectiveHSlot(char, slotIdx !== undefined ? slotIdx : -1);
   var pH   = Math.max(4, Math.round(effH * S.pxPerIn));
   // Add headroom for hair/ears/hats — extra px above skull, doesn't affect height scale
   var headroomPx = char.headroom_pct ? Math.round(pH * char.headroom_pct / 100) : 0;
@@ -458,33 +508,188 @@ function objStatBlock(obj) {
   return block;
 }
 
-function statBlock(char) {
+function scaledWeight(char, slotIdx) {
+  var canonH = char.height * (char.height_correction || 1);
+  var effH   = effectiveHSlot(char, slotIdx);
+  var canonW = char.weight || sc(canonH, 'average');
+  if (effH === canonH) return canonW;
+  return canonW * Math.pow(effH / canonH, 3);
+}
+
+function scaledLength(char, slotIdx) {
+  if (!char.length) return null;
+  var canonH = char.height * (char.height_correction || 1);
+  var effH   = effectiveHSlot(char, slotIdx);
+  var canonL = char.length * (char.length_correction || 1);
+  if (effH === canonH) return canonL;
+  return canonL * (effH / canonH);
+}
+
+function resizeControlsHTML(char, slotIdx) {
+  if (char.custom) return '';
+  var ovH = S.heightOverrides[slotIdx];
+  var isOv = ovH !== undefined;
+  var effH = effectiveHSlot(char, slotIdx);
+  var curFt = Math.floor(effH / 12);
+  var curIn = Math.round(effH % 12);
+  var curCm = Math.round(effH * 2.54);
+  // Popup is built on document.body by the click handler to avoid fixed-position clipping
+  // Data attributes carry the values to the handler
+  return (
+    '<div class="sr-resize-row">' +
+      '<button class="unit-btn sr-resize-open-btn"' +
+        ' data-slotidx="' + slotIdx + '"' +
+        ' data-char-name="' + char.name + '"' +
+        ' data-cur-ft="' + curFt + '"' +
+        ' data-cur-in="' + curIn + '"' +
+        ' data-cur-cm="' + curCm + '">' +
+        'Resize' +
+      '</button>' +
+      (isOv ? '<button class="unit-btn sv-resize-reset" data-slotidx="' + slotIdx + '">Reset</button>' : '') +
+    '</div>'
+  );
+}
+
+function closeResizePopup() {
+  var p = document.getElementById('sr-global-resize-popup');
+  if (p) p.remove();
+  var bd = document.getElementById('sr-resize-backdrop');
+  if (bd) bd.classList.remove('open');
+}
+
+function wireResizeControls(block) {
+  block.addEventListener('click', function(e) {
+    var btn = e.target.closest('button');
+    if (!btn) return;
+
+    if (btn.classList.contains('sr-resize-open-btn')) {
+      var idx   = btn.getAttribute('data-slotidx');
+      var name  = btn.getAttribute('data-char-name') || '';
+      var curFt2 = btn.getAttribute('data-cur-ft') || '';
+      var curIn2 = btn.getAttribute('data-cur-in') || '';
+      var curCm2 = btn.getAttribute('data-cur-cm') || '';
+
+      // Close any existing popup
+      var oldPop = document.getElementById('sr-global-resize-popup');
+      if (oldPop) oldPop.remove();
+
+      // Build popup on body so fixed positioning always works
+      var popup = document.createElement('div');
+      popup.id = 'sr-global-resize-popup';
+      popup.className = 'sr-resize-popup open';
+      popup.innerHTML =
+        '<div class="sr-resize-popup-header">' +
+          '<span class="sr-resize-popup-title">Resize ' + name + '</span>' +
+          '<button class="char-modal-close sr-resize-close">&#10005;</button>' +
+        '</div>' +
+        '<div class="sr-resize-popup-inputs">' +
+          (S.metric
+            ? '<input class="sr-resize-cm builder-input numInput" type="number" min="0" placeholder="cm" value="' + curCm2 + '" /><span class="sv-resize-unit">cm</span>'
+            : '<input class="sr-resize-ft builder-input numInput" type="number" min="0" max="9999" placeholder="ft" value="' + curFt2 + '" /><span class="sv-resize-unit">ft</span>' +
+              '<input class="sr-resize-in builder-input numInput" type="number" min="0" max="11" placeholder="in" value="' + curIn2 + '" /><span class="sv-resize-unit">in</span>'
+          ) +
+          '<button class="unit-btn sv-resize-set" data-slotidx="' + idx + '">Set</button>' +
+        '</div>';
+      document.body.appendChild(popup);
+
+      // Wire close and set on the new popup
+      popup.querySelector('.sr-resize-close').addEventListener('click', closeResizePopup);
+      popup.querySelector('.sv-resize-set').addEventListener('click', function() {
+        var idx2 = parseInt(this.getAttribute('data-slotidx'));
+        var inches;
+        if (S.metric) {
+          var cm = parseFloat(popup.querySelector('.sr-resize-cm').value);
+          if (!cm || cm <= 0) return;
+          inches = cm / 2.54;
+        } else {
+          var ft  = parseFloat(popup.querySelector('.sr-resize-ft').value) || 0;
+          var ins = parseFloat(popup.querySelector('.sr-resize-in').value) || 0;
+          inches = ft * 12 + ins;
+          if (inches <= 0) return;
+        }
+        S.heightOverrides[idx2] = inches;
+        closeResizePopup();
+        renderActive();
+        if (S.view !== 'stats') renderStatsView();
+      });
+
+      var bd = document.getElementById('sr-resize-backdrop');
+      if (bd) bd.classList.add('open');
+      return;
+    }
+
+    if (btn.classList.contains('sv-resize-set')) {
+      var idx2 = parseInt(btn.getAttribute('data-slotidx'));
+      var popup2 = block.querySelector('#sr-resize-popup-' + idx2) ||
+                   document.getElementById('sr-resize-popup-' + idx2);
+      var inches;
+      if (S.metric) {
+        var cmEl = popup2 && popup2.querySelector('.sr-resize-cm');
+        var cm = cmEl ? parseFloat(cmEl.value) : 0;
+        if (!cm || cm <= 0) return;
+        inches = cm / 2.54;
+      } else {
+        var ftEl = popup2 && popup2.querySelector('.sr-resize-ft');
+        var inEl = popup2 && popup2.querySelector('.sr-resize-in');
+        var ft  = ftEl ? (parseFloat(ftEl.value) || 0) : 0;
+        var ins = inEl ? (parseFloat(inEl.value) || 0) : 0;
+        inches = ft * 12 + ins;
+        if (inches <= 0) return;
+      }
+      S.heightOverrides[idx2] = inches;
+      closeResizePopup();
+      renderActive();
+      if (S.view !== 'stats') renderStatsView();
+      return;
+    }
+
+    if (btn.classList.contains('sr-resize-close')) { closeResizePopup(); return; }
+
+    if (btn.classList.contains('sv-resize-reset')) {
+      var idx3 = parseInt(btn.getAttribute('data-slotidx'));
+      delete S.heightOverrides[idx3];
+      closeResizePopup();
+      renderActive();
+      if (S.view !== 'stats') renderStatsView();
+    }
+  });
+}
+
+function statBlock(char, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
 
-  var effH_in = char.height * (char.height_correction || 1);
+  var effH_in = effectiveHSlot(char, slotIdx);
+  var isOv = S.heightOverrides[slotIdx] !== undefined;
   var poseRow = (char.height_correction && char.height_correction < 0.99)
     ? '<div class="sr-stat-row"><span class="sr-stat-key"></span><span class="sr-stat-val sr-stat-note">renders as '+fH(effH_in)+' (posed)</span></div>' : '';
 
   block.innerHTML =
-    '<div class="sr-stat-name">'+char.name+(char.canonical?' <span class="sr-stat-canon">&#10022;</span>':'')+'</div>'+
+    '<div class="sr-stat-name">'+char.name+
+      (char.canonical?' <span class="sr-stat-canon">&#10022;</span>':'')+
+      (isOv?' <span class="sr-override-badge">&#x21D4;</span>':'')+
+    '</div>'+
     '<div class="sr-stat-grid">'+
-      '<div class="sr-stat-row"><span class="sr-stat-key">Height</span><span class="sr-stat-val">'+fH(char.height)+'</span></div>'+
+      '<div class="sr-stat-row"><span class="sr-stat-key">Height</span><span class="sr-stat-val">'+fH(effectiveHSlot(char, slotIdx))+'</span></div>'+
       poseRow+
-      '<div class="sr-stat-row"><span class="sr-stat-key">Weight</span><span class="sr-stat-val">'+fW(char.weight)+'</span></div>'+
+      '<div class="sr-stat-row"><span class="sr-stat-key">Weight</span><span class="sr-stat-val">'+fW(scaledWeight(char, slotIdx))+'</span></div>'+
       (char.faction?'<div class="sr-stat-row"><span class="sr-stat-key">Faction</span><span class="sr-stat-val">'+char.faction+'</span></div>':'')+
     '</div>'+
-    (char.wiki?'<a href="../wiki/#'+char.wiki+'" class="sr-wiki-link">View wiki &rarr;</a>':'');
+    '<div class="sr-stat-resize-wrap">'+resizeControlsHTML(char, slotIdx)+'</div>'+
+    (char.wiki?'<a href="../wiki/#'+char.wiki+'" class="sr-wiki-link">View wiki &rarr;</a>':'<div class="sr-wiki-spacer"></div>');
 
+  wireResizeControls(block);
   return block;
 }
 
 
 // ── Stats view ─────────────────────────────────────────────────
-var REF_H_IN = 72;   // reference height: 6ft
-var REF_W_LB = 170;  // reference weight: 170lbs
+var REF_H_IN   = 72;   // reference height: 6ft
+var REF_W_LB   = 170;  // reference weight: 170lbs
+var REF_STD_H  = 72;   // standard person height for perspective section
+var REF_ARM_IN = 24;   // intimate viewing distance (arm's length in inches)
 
-function calcStats(char) {
-  var h  = char.height * (char.height_correction || 1);
+function calcStats(char, slotIdx) {
+  var h  = (slotIdx !== undefined) ? effectiveHSlot(char, slotIdx) : effectiveH(char);
   var w  = char.weight || sc(h, 'average');
   var wkg = w * 0.453592;
   var mR = w / REF_W_LB;
@@ -513,12 +718,42 @@ function calcStats(char) {
     gripLbs:        Math.round(110 * Math.pow(mR, 0.67)),
     stompPsi:       (w * 1.5) / (8 * hR * hR),
     // Kink
-    ejacMl:         3.7 * Math.pow(mR, 1.5),   // fantasy scaling (mR^1.5)
+    ejacMl:         3.7 * Math.pow(mR, 1.5),
+    preMl:          0.5 * Math.pow(mR, 1.5),   // pre, Sinverse scaled
     liftLbs:        Math.round(w * 1.5 * Math.pow(mR, -0.33)),
+    crushLbs:       Math.round(1000 * mR),   // sustained weight before structural failure ~1000lb ref
     footLenIn:      10.5 * hR,
     footWidIn:       3.5 * hR,
     handLenIn:       7.6 * hR,
     handWidIn:       3.4 * hR,
+    penisWidIn:      1.45 * hR,   // avg erect diameter ~1.45" (girth/π)
+    // Tongue
+    tongueLenIn:     3.3 * hR,
+    tongueWidIn:     1.9 * hR,
+    spitMl:         20   * hR,   // ~20mL baseline (building up for a good one), linear with head size
+    salivaL:         1.5 * mR,   // avg ~1.5L/day, scales with mass
+    // Female anatomy
+    vagDepthIn:      7.0 * hR,    // upper aroused range ~7"
+    vagWidIn:        2.5 * hR,    // avg width (fully aroused)
+    clitLenIn:       0.7 * hR,
+    clitWidIn:       0.5 * hR,
+    labiaLenIn:      1.5 * hR,
+    arousalMl:       5   * Math.pow(mR, 1.5),
+    arousalPreMl:   1.0 * Math.pow(mR, 1.5),   // pre-arousal fluid, Sinverse scaled
+    // Anal (shared male & female)
+    analDiamIn:      1.2 * hR,
+    analDepthIn:     7.0 * hR,
+    // Throat
+    throatDiamIn:    2.5 * hR,    // max dilated throat diameter ~2.5"
+    // Breath
+    breathForceMph:  12  * hR,    // exhalation wind speed scales with lung pressure & hR
+    breathDurS:      Math.round(15 * Math.pow(mR, 0.25)), // how long they can breathe out (s)
+    // Swallow
+    swallowMl:       100 * mR,    // volume per swallow ~100mL, linear with throat size
+    // Voice
+    voiceDb:         Math.min(194, Math.round(70 + 20 * Math.log10(mR + 1))), // dB, capped at physical max
+    // Body warmth
+    warmthRadiusIn:  60  * hR,    // ~5ft at ref — distance where body heat is clearly felt
     // Anatomy — all linear dimensions scale with hR, volume/mass with hR^3
     penisGirthIn:    4.6 * hR,   // avg circumference 4.6" scaled by height
     testicleG:      20   * mR,   // avg 20g each, scale with mass
@@ -615,7 +850,83 @@ function comparativeStats(char, s, allChars) {
 
 function fmtThousands(n) { return Math.round(n).toString().replace(/\B(?=(\d{3})+(?!\d))/g,','); }
 
+
+// ── Perspective / "To Their Eyes" ────────────────────────────
+function calcPerspective(char, slotIdx, refH, refW) {
+  var charH = effectiveHSlot(char, slotIdx);
+  var charW = char.weight || sc(charH, 'average');
+  var charS = calcStats(char);
+  var refS  = calcStats({height: refH, height_correction: 1,
+                         weight: refW, default_silhouette: 'giantess'});
+
+  // Apparent height: direct proportion at char's own scale
+  var apparentIn = refH * (REF_STD_H / charH);
+
+  // Caloric % — ref person's stored calories as % of char's daily intake
+  var refCals   = refS.caloriesStored;
+  var charCals  = charS.caloriesDay;
+  var caloricPct = charCals > 0 ? (refCals / charCals * 100) : 0;
+
+  return {
+    apparentIn:  apparentIn,
+    caloricPct:  caloricPct,
+    refH:        refH,
+    refW:        refW,
+  };
+}
+
+function renderPerspectiveSection(char, slotIdx, charSlots2) {
+  var section = document.createElement('div');
+  section.className = 'sv-section sv-perspective';
+
+  // Build list of reference targets: standard person + other chars
+  var targets = [{id:'std', label:'Human', h:REF_STD_H, w:REF_W_LB}];
+  charSlots2.forEach(function(cs) {
+    if (cs.char === char) return;
+    var oh = effectiveHSlot(cs.char, cs.slotIdx);
+    var ow = scaledWeight(cs.char, cs.slotIdx);
+    targets.push({id:'char_'+(cs.char.id||cs.char.name), label:cs.char.name, h:oh, w:ow});
+  });
+
+  var activeIdx = 0;
+
+  function renderContent(p) {
+    var html = '<div class="sv-section-title">To Their Eyes</div>';
+    if (targets.length > 1) {
+      html += '<div class="persp-tabs">';
+      targets.forEach(function(t, i) {
+        html += '<button class="unit-btn persp-tab'+(i===activeIdx?' active':'')+'" data-idx="'+i+'">'+t.label+'</button>';
+      });
+      html += '</div>';
+    }
+    html += '<div class="sv-row"><span class="sv-label">Appears as:</span><span class="sv-value">' + fL(p.apparentIn) + ' tall</span></div>';
+    var cPct = p.caloricPct;
+    var cPctStr = cPct < 0.01 ? '< 0.01%' : cPct < 1 ? cPct.toFixed(2) + '%' : cPct.toFixed(1) + '%';
+    html += '<div class="sv-row"><span class="sv-label">Caloric value</span><span class="sv-value">' + cPctStr + ' of daily intake</span></div>';
+    return html;
+  }
+
+  function refresh() {
+    var t = targets[activeIdx];
+    var p = calcPerspective(char, slotIdx, t.h, t.w);
+    section.innerHTML = renderContent(p);
+    // Re-wire tab buttons
+    section.querySelectorAll('.persp-tab').forEach(function(btn) {
+      btn.addEventListener('click', function() {
+        activeIdx = parseInt(this.getAttribute('data-idx'));
+        refresh();
+      });
+    });
+  }
+
+  refresh();
+  return section;
+}
+
 function renderStatsView() {
+  // Don't re-render while a resize popup is open — would destroy the popup
+  if (document.getElementById('sr-global-resize-popup')) return;
+
   var panel = document.getElementById('view-stats');
   if (!panel) return;
   // Save scroll position before rebuild
@@ -624,8 +935,8 @@ function renderStatsView() {
   var savedScrollLeft = existingScroll ? existingScroll.scrollLeft : 0;
   panel.innerHTML = '';
 
-  var chars = allChars();
-  if (!chars.length) {
+  var charSlots2 = allCharSlots();
+  if (!charSlots2.length) {
     panel.innerHTML = '<div class="sr-empty">Select characters to see their stats</div>';
     return;
   }
@@ -633,8 +944,9 @@ function renderStatsView() {
   var scroll = document.createElement('div');
   scroll.className = 'sv-scroll';
 
-  chars.forEach(function(char) {
-    var s = calcStats(char);
+  charSlots2.forEach(function(cs) {
+    var char = cs.char; var slotIdx = cs.slotIdx;
+    var s = calcStats(char, slotIdx);
     var card = document.createElement('div');
     card.className = 'sv-card';
 
@@ -682,16 +994,22 @@ function renderStatsView() {
       ? (s.testicleG >= 1000 ? fmt(s.testicleG/1000,2,'kg ea.') : Math.round(s.testicleG)+' g ea.')
       : (s.testicleG >= 453.6 ? fmt(s.testicleG/453.6,2,'lbs ea.') : Math.round(s.testicleG/28.35)+' oz ea.');
 
+    var isOvStats = S.heightOverrides[slotIdx] !== undefined;
+
     card.innerHTML =
       '<div class="sv-header">' +
         '<img class="sv-portrait' + (isReal ? '' : ' sr-sil-filter') + '" src="' + imgSrc + '" alt="' + char.name + '" />' +
-        '<div class="sv-name">' + char.name + (char.canonical ? ' <span class="sr-stat-canon">&#10022;</span>' : '') + '</div>' +
+        '<div class="sv-name">' + char.name +
+          (char.canonical ? ' <span class="sr-stat-canon">&#10022;</span>' : '') +
+          (isOvStats ? ' <span class="sr-override-badge">&#x21D4;</span>' : '') +
+        '</div>' +
+        (!char.custom ? resizeControlsHTML(char, slotIdx) : '<div class="sv-header-spacer"></div>') +
       '</div>' +
 
       statSection('Scale', [
-        statRow('Height',              fH(char.height * (char.height_correction || 1))),
+        statRow('Height',              fH(effectiveHSlot(char, slotIdx))),
         statRow('vs. average human',   fmt(s.heightTimes, 2, '×'), s.heightTimes >= 1 ? 'taller' : 'shorter'),
-        statRow('Weight',              fW(char.weight || sc(char.height * (char.height_correction || 1), 'average'))),
+        statRow('Weight',              fW(scaledWeight(char, slotIdx))),
         statRow('vs. average human',   fmt(s.weightTimes, 2, '×'), s.weightTimes >= 1 ? 'heavier' : 'lighter'),
       ]) +
 
@@ -704,15 +1022,26 @@ function renderStatsView() {
       ]) +
 
       statSection('Body', [
-        statRow('Lung capacity',    fmtL(s.lungL)),
-        statRow('Exhale volume',    fmtL(s.exhaleL), '(single breath)'),
+        statRow('Lung capacity',     fmtL(s.lungL)),
+        statRow('Exhale volume',     fmtL(s.exhaleL), '(single breath)'),
+        statRow('Breath force',      Math.round(s.breathForceMph) + (S.metric ? ' km/h' : ' mph'),
+                                     '(wind speed of exhalation)'),
+        statRow('Breath duration',   s.breathDurS + 's', '(sustained exhale)'),
+        statRow('Saliva / day',      fmtL(s.salivaL)),
+        statRow('Spit volume',       fmtL(s.spitMl / 1000)),
+        statRow('Voice volume',      s.voiceDb + ' dB', s.voiceDb >= 140 ? '(threshold of pain)' : s.voiceDb >= 120 ? '(jet engine)' : s.voiceDb >= 100 ? '(jackhammer)' : ''),
+        statRow('Body heat felt at',  fL(s.warmthRadiusIn), '(distance)'),
       ]) +
 
       statSection('Measurements', [
-        statRow('Foot length',  footLenDisp),
-        statRow('Foot width',   footWidDisp),
-        statRow('Hand length',  handLenDisp),
-        statRow('Hand width',   handWidDisp),
+        statRow('Foot length',   footLenDisp),
+        statRow('Foot width',    footWidDisp),
+        statRow('Hand length',   handLenDisp),
+        statRow('Hand width',    handWidDisp),
+        statRow('Tongue length',   fL(s.tongueLenIn)),
+        statRow('Tongue width',    fL(s.tongueWidIn)),
+        statRow('Max throat diam.', fL(s.throatDiamIn)),
+        statRow('Swallow volume',  fmtL(s.swallowMl / 1000)),
       ]) +
 
       statSection('Movement', [
@@ -721,28 +1050,166 @@ function renderStatsView() {
         statRow('Grip strength',    gripDisp),
         statRow('Lifting capacity', liftDisp, '(est. max)'),
         statRow('Stomp pressure',   stompDisp, '(heel strike)'),
+        statRow('Crush threshold',  fW(s.crushLbs), '(survivable weight on body)'),
       ]) +
 
       (char.length ? statSection('Anatomy', [
-        statRow('Penis length',     fL(char.length * (char.length_correction || 1))),
+        statRow('Penis length',     fL(scaledLength(char, slotIdx) || 0)),
         statRow('Girth (circ.)',    fL(s.penisGirthIn)),
+        statRow('Width (diam.)',    fL(s.penisWidIn)),
         statRow('Penis weight',     penisWeightDisp),
         statRow('Testicle weight',  testWeightDisp),
+        statRow('Pre volume',       fmtL(s.preMl / 1000), '(Sinverse scaled)'),
         statRow('Ejaculate volume', fmtL(s.ejacMl / 1000), '(Sinverse scaled)'),
-      ]) : '') +
+        statRow('Anal diameter',    fL(s.analDiamIn), '(dilated)'),
+        statRow('Anal depth',       fL(s.analDepthIn)),
+      ]) : statSection('Anatomy', [
+        statRow('Vaginal depth',    fL(s.vagDepthIn)),
+        statRow('Vaginal width',    fL(s.vagWidIn)),
+        statRow('Clitoris length',  fL(s.clitLenIn)),
+        statRow('Clitoris width',   fL(s.clitWidIn)),
+        statRow('Labia length',     fL(s.labiaLenIn)),
+        statRow('Pre-arousal',      fmtL(s.arousalPreMl / 1000), '(Sinverse scaled)'),
+        statRow('Arousal volume',   fmtL(s.arousalMl / 1000), '(Sinverse scaled)'),
+        statRow('Anal diameter',    fL(s.analDiamIn), '(dilated)'),
+        statRow('Anal depth',       fL(s.analDepthIn)),
+      ])) ;
 
-      (char.wiki ? '<a href="../wiki/#' + char.wiki + '" class="sr-wiki-link" style="display:block;padding:1rem 1.25rem;">View wiki &rarr;</a>' : '');
+    // Wire resize controls now that sv-header innerHTML is set
+    if (!char.custom) {
+      var svHeader = card.querySelector('.sv-header');
+      if (svHeader) wireResizeControls(svHeader);
+    }
 
+    // Perspective section appended via DOM (has event listeners)
+    card.appendChild(renderPerspectiveSection(char, slotIdx, charSlots2));
 
+    // Wiki link at very bottom
+    if (char.wiki) {
+      var wikiA = document.createElement('a');
+      wikiA.href = '../wiki/#' + char.wiki;
+      wikiA.className = 'sr-wiki-link';
+      wikiA.style.cssText = 'display:block;padding:1rem 1.25rem;';
+      wikiA.textContent = 'View wiki →';
+      card.appendChild(wikiA);
+    } else {
+      var wikiSpacer = document.createElement('div');
+      wikiSpacer.className = 'sr-wiki-spacer';
+      card.appendChild(wikiSpacer);
+    }
 
     scroll.appendChild(card);
   });
 
   panel.appendChild(scroll);
 
+  // Wire resize controls via event delegation
+  scroll.addEventListener('click', function(e) {
+    var btn = e.target.closest('.sv-resize-set, .sv-resize-reset');
+    if (!btn) return;
+    var charId = parseInt(btn.getAttribute('data-charid'));
+    if (btn.classList.contains('sv-resize-reset')) {
+      delete S.heightOverrides[charId];
+    } else {
+      // Set
+      var row = btn.closest('.sv-resize-row');
+      var inp = row && row.querySelector('.sv-resize-input');
+      if (!inp || !inp.value) return;
+      var val = parseFloat(inp.value);
+      if (!val || val <= 0) return;
+      S.heightOverrides[charId] = S.metric ? val / 2.54 : val;
+    }
+    renderStatsView();
+    renderActive();  // update height/length viewer too
+  });
+
   // Restore scroll position after rebuild
   scroll.scrollTop  = savedScrollTop;
   scroll.scrollLeft = savedScrollLeft;
+}
+
+
+// ── Grid lines overlay ────────────────────────────────────────
+function updateGridOverlay() {
+  updateHeightGrid();
+  updateLengthGrid();
+  // Also clear length scroll if grid turned off
+  if (!S.gridLines) {
+    var ls = document.getElementById('sr-length-scroll');
+    if (ls) ls.style.backgroundImage = 'none';
+    var sc = document.getElementById('sr-scroll');
+    if (sc) sc.style.backgroundImage = 'none';
+  }
+}
+
+function updateHeightGrid() {
+  var scrollEl = document.getElementById('sr-scroll');
+  if (!scrollEl) return;
+  if (!S.gridLines || S.pxPerIn <= 0) {
+    scrollEl.style.backgroundImage = 'none';
+    return;
+  }
+  // Use CSS repeating-linear-gradient on sr-scroll — no DOM elements,
+  // covers the full scroll area, anchored to bottom like the ruler
+  var lineColor = 'rgba(196,154,120,0.15)';
+  var stepPx;
+  if (S.metric) {
+    var pxPerCm = S.pxPerIn / 2.54;
+    var step = niceInterval(48, pxPerCm);
+    stepPx = pxPerCm * step;
+  } else {
+    var pxPerFt = S.pxPerIn * 12;
+    var step2 = niceInterval(48, pxPerFt);
+    stepPx = pxPerFt * step2;
+  }
+  if (stepPx < 1) return;
+  // repeating-linear-gradient draws horizontal lines from the bottom
+  scrollEl.style.backgroundImage =
+    'repeating-linear-gradient(to top, ' + lineColor + ' 0px, ' + lineColor + ' 1px, transparent 1px, transparent ' + stepPx + 'px)';
+  scrollEl.style.backgroundSize = '100% 100%';
+  scrollEl.style.backgroundPosition = 'bottom';
+  scrollEl.style.backgroundAttachment = 'local';
+}
+
+function updateLengthGrid() {
+  var scrollEl = document.getElementById('sr-length-scroll');
+  if (!scrollEl) return;
+  if (!S.gridLines || S.pxPerInLen <= 0) {
+    scrollEl.style.backgroundImage = 'none';
+    return;
+  }
+  var lineColor = 'rgba(196,154,120,0.15)';
+  var stepPx;
+  if (S.metric) {
+    var pxPerCm = S.pxPerInLen / 2.54;
+    var step = niceInterval(48, pxPerCm);
+    stepPx = pxPerCm * step;
+  } else {
+    var inchSteps = [1,2,3,6,12,24,36,60,120,240];
+    var step2 = inchSteps[inchSteps.length-1];
+    for (var si=0; si<inchSteps.length; si++) {
+      if (S.pxPerInLen * inchSteps[si] >= 48) { step2 = inchSteps[si]; break; }
+    }
+    stepPx = S.pxPerInLen * step2;
+  }
+  if (stepPx < 1) return;
+  // Measure the ruler element's actual left edge relative to the scroll container
+  // to get the precise 0-mark offset
+  var rulerEl = document.getElementById('sr-length-ruler');
+  var offsetPx = 90 + 24; // fallback: HEADSHOT_W + 1.5rem padding
+  if (rulerEl && scrollEl) {
+    var rulerRect  = rulerEl.getBoundingClientRect();
+    var scrollRect = scrollEl.getBoundingClientRect();
+    offsetPx = rulerRect.left - scrollRect.left + scrollEl.scrollLeft;
+  }
+  // Use two backgrounds: solid block to hide lines left of 0, then repeating lines
+  var blockColor = 'var(--bg)';  // same as viewer background
+  scrollEl.style.backgroundImage =
+    'linear-gradient(to right, ' + blockColor + ' ' + offsetPx + 'px, transparent ' + offsetPx + 'px), ' +
+    'repeating-linear-gradient(to right, ' + lineColor + ' 0px, ' + lineColor + ' 1px, transparent 1px, transparent ' + stepPx + 'px)';
+  scrollEl.style.backgroundSize = '100% 100%, ' + stepPx + 'px 100%';
+  scrollEl.style.backgroundPosition = '0 0, ' + offsetPx + 'px 0';
+  scrollEl.style.backgroundRepeat = 'no-repeat, repeat-x';
 }
 
 // ── View switching ────────────────────────────────────────────
@@ -763,6 +1230,8 @@ function switchView(view) {
   if (zc) zc.style.visibility = view === 'stats' ? 'hidden' : 'visible';
   var cb = document.getElementById('btn-copy-img');
   if (cb) cb.style.display = view === 'stats' ? 'none' : '';
+  var gb = document.getElementById('btn-grid-lines');
+  if (gb) gb.style.display = view === 'stats' ? 'none' : '';
   renderActive();
 }
 
@@ -777,6 +1246,7 @@ var LENGTH_ROW_H = 160; // px per row
 var HEADSHOT_W   = 90;  // px for headshot column
 
 function renderLengthView() {
+  if (document.getElementById('sr-global-resize-popup')) return;
   var rowsEl   = document.getElementById('sr-length-rows');
   var emptyEl  = document.getElementById('sr-length-empty');
   var zoomEl   = document.getElementById('sr-length-zoom');
@@ -788,15 +1258,15 @@ function renderLengthView() {
   // Collect entities — include all chars (length defaults to 0 if unset)
   // Only exclude objects with no length value
   var entities = [];
-  allSlotSelects().forEach(function(sel) {
+  allSlotSelects().forEach(function(sel, idx) {
     var type = sel.getAttribute('data-type');
     var val  = sel.value; if (!val) return;
     if (type === 'obj') {
       var obj = S.objects.find(function(o){return o.id===val;});
-      if (obj && obj.length) entities.push({kind:'obj', data:obj});
+      if (obj && obj.length) entities.push({kind:'obj', data:obj, slotIdx:idx});
     } else {
       var c = charFromValue(val);
-      if (c) entities.push({kind:'char', data:c});
+      if (c) entities.push({kind:'char', data:c, slotIdx:idx, hasLength: !!(c.length)});
     }
   });
 
@@ -811,12 +1281,14 @@ function renderLengthView() {
   entities.forEach(function(e) {
     var eid = e.kind === 'char' ? (e.data.id || e.data.name) : null;
     var eMode = eid ? (S.lenImgMode[eid] || 'length') : 'length';
+    // No-length chars only contribute to maxLen when in body mode
+    if (e.kind === 'char' && !e.data.length && eMode !== 'height') return;
     var len;
     if (eMode === 'height' && e.kind === 'char') {
-      len = e.data.height * (e.data.height_correction || 1);
+      len = effectiveHSlot(e.data, e.slotIdx);
     } else {
       len = e.kind === 'char'
-        ? (e.data.length || 0) * (e.data.length_correction || 1)
+        ? (scaledLength(e.data, e.slotIdx) || 0)
         : (e.data.length || 0);
     }
     if (len > maxLen) maxLen = len;
@@ -836,12 +1308,13 @@ function renderLengthView() {
   // Stat blocks
   entities.forEach(function(e) {
     if (e.kind === 'obj') statsEl.appendChild(objLengthStatBlock(e.data));
-    else                  statsEl.appendChild(lengthStatBlock(e.data));
+    else                  statsEl.appendChild(lengthStatBlock(e.data, e.slotIdx));
   });
 
   // Update ruler after render (pxPerInLen is now set correctly)
   updateLengthRuler(0, S.pxPerInLen || 1);
   document.getElementById('zoom-label').textContent = Math.round(S.zoomL*100)+'%';
+  updateLengthGrid();
 }
 
 function renderLengthRow(entity) {
@@ -863,15 +1336,35 @@ function renderLengthRow(entity) {
   // Objects: empty headshot cell (for alignment)
 
   // Length image row — goes inside zoom container
-  var effLen = entity.kind === 'char'
-    ? (entity.data.length || 1) * (entity.data.length_correction || 1)
-    : (entity.data.length || 1);
+  // For chars with no length (fem chars):
+  // - length mode: portrait only row (no length bar)
+  // - body mode: fall through to normal render with height as display length
+  if (entity.kind === 'char' && !entity.data.length) {
+    var femEntityId = entity.data.id || entity.data.name;
+    var femMode = S.lenImgMode[femEntityId] || 'length';
+    if (femMode !== 'height') {
+      // Portrait-only — hsWrap already built above, just wrap and return
+      row.appendChild(hsWrap);
+      return row;
+    }
+    // Body mode: fall through — effLen will use height, lenMode will trigger height image
+  }
+
+  // For no-length chars in body mode, use their height as the display length
+  var effLen;
+  if (entity.kind === 'char' && !entity.data.length) {
+    effLen = effectiveHSlot(entity.data, entity.slotIdx);
+  } else {
+    effLen = entity.kind === 'char'
+      ? (scaledLength(entity.data, entity.slotIdx) || 1)
+      : (entity.data.length || 1);
+  }
 
   // When showing height image rotated 90°, use the character's HEIGHT as the display width
   var entityId2 = entity.kind === 'char' ? (entity.data.id || entity.data.name) : null;
   var lenMode2 = entityId2 ? (S.lenImgMode[entityId2] || 'length') : 'length';
   var displayLen = (lenMode2 === 'height' && entity.kind === 'char')
-    ? (entity.data.height * (entity.data.height_correction || 1))
+    ? effectiveHSlot(entity.data, entity.slotIdx)
     : effLen;
 
   var pxW = Math.max(4, Math.round(displayLen * S.pxPerInLen));
@@ -965,36 +1458,42 @@ function updateLengthRuler(maxLen, pxPerIn) {
   }
 }
 
-function lengthStatBlock(char) {
+function lengthStatBlock(char, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
-  var effLen = char.length * (char.length_correction || 1);
+  var effLen = scaledLength(char, slotIdx) || 0;
   var entityId = char.id || char.name;
   var mode = S.lenImgMode[entityId] || 'length';
+  var isOv = S.heightOverrides[slotIdx] !== undefined;
 
   var dispVal  = mode === 'height'
-    ? fH(char.height * (char.height_correction || 1))
+    ? fH(effectiveHSlot(char, slotIdx))
     : fL(effLen);
   var dispKey  = mode === 'height' ? 'Height' : 'Length';
   var dispNote = mode === 'length' && char.length_correction && char.length_correction < 0.99
     ? '<div class="sr-stat-row"><span class="sr-stat-key"></span><span class="sr-stat-val sr-stat-note">base: '+fL(char.length)+'</span></div>' : '';
 
   block.innerHTML =
-    '<div class="sr-stat-name">'+char.name+(char.canonical?' <span class="sr-stat-canon">&#10022;</span>':'')+'</div>'+
+    '<div class="sr-stat-name">'+char.name+
+      (char.canonical?' <span class="sr-stat-canon">&#10022;</span>':'')+
+      (isOv?' <span class="sr-override-badge">&#x21D4;</span>':'')+
+    '</div>'+
     '<div class="sr-stat-grid">'+
       '<div class="sr-stat-row"><span class="sr-stat-key">'+dispKey+'</span><span class="sr-stat-val">'+dispVal+'</span></div>'+
       dispNote+
     '</div>'+
-    (char.wiki ? '<a href="../wiki/#'+char.wiki+'" class="sr-wiki-link">View wiki &rarr;</a>' : '')+
     '<div class="len-img-toggle">'+
       '<button class="unit-btn'+(mode==='length'?' active':'')+'" data-id="'+entityId+'" data-mode="length">Length</button>'+
       '<button class="unit-btn'+(mode==='height'?' active':'')+'" data-id="'+entityId+'" data-mode="height">Body</button>'+
-    '</div>';
+    '</div>'+
+    (char.wiki ? '<a href="../wiki/#'+char.wiki+'" class="sr-wiki-link">View wiki &rarr;</a>' : '');
 
   block.querySelectorAll && setTimeout(function(){
     block.querySelectorAll('.len-img-toggle .unit-btn').forEach(function(btn){
       btn.addEventListener('click', function(){
         S.lenImgMode[this.getAttribute('data-id')] = this.getAttribute('data-mode');
+        S.zoomL = 0.5;  // reset zoom so new content fits
         renderLengthView();
+        document.getElementById('zoom-label').textContent = '50%';
       });
     });
   }, 0);
@@ -1103,12 +1602,12 @@ function buildForm(slot) {
   lf.innerHTML +=
     // Mode toggle
     '<div class="btn-row" style="margin-bottom:.4rem">' +
-      '<button class="unit-btn lmode" data-slot="'+slot+'" data-m="preset">Preset</button>' +
+      '<button class="unit-btn active lmode" data-slot="'+slot+'" data-m="preset">Preset</button>' +
       '<button class="unit-btn lmode" data-slot="'+slot+'" data-m="calc">Calculate</button>' +
-      '<button class="unit-btn active lmode" data-slot="'+slot+'" data-m="manual">Manual</button>' +
+      '<button class="unit-btn lmode" data-slot="'+slot+'" data-m="manual">Manual</button>' +
     '</div>' +
     // Preset panel
-    '<div id="lprep-'+slot+'" style="display:none">' +
+    '<div id="lprep-'+slot+'">' +
       '<select class="builder-input" id="lpsel-'+slot+'">' +
         DEFAULTS.lengthPresets.map(function(p){
           var defSel = exLen ? (Math.abs(p.inches-exLen)<0.1) : (p.id==='average'||p.label==='Average');
@@ -1127,7 +1626,7 @@ function buildForm(slot) {
       '<div class="wt-est" id="lcres-'+slot+'"></div>' +
     '</div>' +
     // Manual panel
-    '<div id="lman-'+slot+'">' +
+    '<div id="lman-'+slot+'" style="display:none">' +
       '<div class="row" id="li-'+slot+'">' +
         '<input id="lin-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="'+(exLen?Math.round(exLen):6)+'" />' +
         '<span class="sep">in</span>' +
@@ -1139,7 +1638,8 @@ function buildForm(slot) {
     '</div>';
   lengthBody.appendChild(lf);
 
-  // Length image: silhouette dropdown OR custom upload
+  // Length image section — wrapped so it can be hidden for fem characters
+  var lsildWrap = el('div'); lsildWrap.id = 'lsild-'+slot;
   var lsf = cf('Length image');
   var curLSil = (ex && ex.default_length_silhouette) || (DEFAULTS.lengthSils[0] && DEFAULTS.lengthSils[0].id) || '';
   var hasCustomLImg = ex && ex.length_image && ex.length_image.startsWith('data');
@@ -1152,15 +1652,13 @@ function buildForm(slot) {
       lsilOpts +
       '<option value="custom"'+(lsilVal==='custom'?' selected':'')+'>Upload / Link image</option>' +
     '</select>';
-  lengthBody.appendChild(lsf);
+  lsildWrap.appendChild(lsf);
 
-  // Custom length upload (shown only when "custom" selected)
   var lUpload = uploadSection(slot, 'l', 'Custom length image', hasCustomLImg?(ex.length_image||''):'');
   lUpload.style.display = lsilVal === 'custom' ? '' : 'none';
   lUpload.id = 'lupload-'+slot;
-  lengthBody.appendChild(lUpload);
+  lsildWrap.appendChild(lUpload);
 
-  // Orientation controls for length image (flip + rotate)
   var exFlip = ex && ex.length_orient_flip;
   var exRot  = ex && ex.length_orient_rotate ? ex.length_orient_rotate : 0;
   var orientF = cf('Image orientation');
@@ -1177,7 +1675,8 @@ function buildForm(slot) {
       '<button class="unit-btn lrot-btn'+(exRot===180?' active':'')+'" data-slot="'+slot+'" data-rot="180">180°</button>' +
       '<button class="unit-btn lrot-btn'+(exRot===270?' active':'')+'" data-slot="'+slot+'" data-rot="270">270°</button>' +
     '</div>';
-  lengthBody.appendChild(orientF);
+  lsildWrap.appendChild(orientF);
+  lengthBody.appendChild(lsildWrap);
 
   wrap.appendChild(lengthDet);
 
@@ -1328,23 +1827,48 @@ function createSlotRow(type) {
   var row = el('div'); row.className = 'sr-slot-row'; row.setAttribute('data-type', type);
   row.draggable = true;
 
-  // Drag handle
+  // Build all elements first, then append in correct order
   var handle = el('div'); handle.className = 'slot-drag-handle'; handle.title = 'Drag to reorder';
-  handle.innerHTML = '&#8942;&#8942;'; // ⠿ six dots
+  handle.innerHTML = '&#8942;&#8942;';
+
+  var typeLbl = el('span'); typeLbl.className = 'slot-type-lbl';
+  typeLbl.textContent = type === 'char' ? 'char' : 'obj';
 
   var sel = el('select'); sel.className = 'sr-select slot-select';
   sel.setAttribute('data-type', type);
 
+  var rmBtn = el('button'); rmBtn.className = 'slot-remove-btn'; rmBtn.title = 'Remove';
+  rmBtn.innerHTML = '&#10005;';
+  rmBtn.addEventListener('click', function() { removeSlot(row); });
+
+  // Append in correct order: handle | type | content | remove
+  row.appendChild(handle);
+  row.appendChild(typeLbl);
+
   if (type === 'char') {
     buildSelectOptions(sel, '');
+    sel.style.display = 'none';
+    var pickerBtn = el('button');
+    pickerBtn.className = 'sr-select slot-picker-btn';
+    pickerBtn.type = 'button';
+    pickerBtn.textContent = '— Select character —';
+    pickerBtn.addEventListener('click', function() { openCharModal(sel); });
+    sel.addEventListener('change', function() {
+      var opt = sel.options[sel.selectedIndex];
+      pickerBtn.textContent = opt && opt.value ? opt.textContent : '— Select character —';
+    });
+    row.appendChild(pickerBtn);
+    row.appendChild(sel);
   } else {
     sel.innerHTML = '<option value="">-- Select object --</option>';
     S.objects.forEach(function(o) {
       var opt = el('option'); opt.value = o.id; opt.textContent = o.label; sel.appendChild(opt);
     });
+    row.appendChild(sel);
   }
+  row.appendChild(rmBtn);
+
   sel.addEventListener('change', function() {
-    // Force fresh height measurement in case this is the very first render
     var areaEl2 = document.getElementById('sr-canvas-area');
     if (areaEl2) {
       var h = areaEl2.clientHeight;
@@ -1352,19 +1876,6 @@ function createSlotRow(type) {
     }
     renderActive();
   });
-
-  // Small type label
-  var typeLbl = el('span'); typeLbl.className = 'slot-type-lbl';
-  typeLbl.textContent = type === 'char' ? 'char' : 'obj';
-
-  var rmBtn = el('button'); rmBtn.className = 'slot-remove-btn'; rmBtn.title = 'Remove';
-  rmBtn.innerHTML = '&#10005;';
-  rmBtn.addEventListener('click', function() { removeSlot(row); });
-
-  row.appendChild(handle);
-  row.appendChild(typeLbl);
-  row.appendChild(sel);
-  row.appendChild(rmBtn);
 
   // Drag events
   row.addEventListener('dragstart', onDragStart);
@@ -1433,8 +1944,14 @@ function addSlot(type) {
   if (!container) return;
   var slots = container.querySelectorAll('.sr-slot-row');
   if (slots.length >= MAX_SLOTS) return;
-  container.appendChild(createSlotRow(type || 'char'));
+  var row = createSlotRow(type || 'char');
+  container.appendChild(row);
   updateSlotUI();
+  // Auto-open modal for char slots so user can pick immediately
+  if ((type || 'char') === 'char') {
+    var sel = row.querySelector('.slot-select');
+    if (sel) openCharModal(sel);
+  }
 }
 
 function removeSlot(row) {
@@ -1458,6 +1975,93 @@ function updateSlotUI() {
   });
   var addBtn = document.getElementById('btn-add-slot');
   if (addBtn) addBtn.style.display = atMax ? 'none' : '';
+}
+
+
+// ── Character picker modal ─────────────────────────────────────
+var modalTargetSel = null;  // the slot-select that triggered the modal
+
+function openCharModal(sel) {
+  modalTargetSel = sel;
+  var overlay = document.getElementById('char-modal-overlay');
+  var search  = document.getElementById('char-modal-search');
+  if (!overlay) return;
+  search.value = '';
+  buildModalGrid('');
+  overlay.style.display = 'flex';
+  search.focus();
+}
+
+function closeCharModal() {
+  var overlay = document.getElementById('char-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+  modalTargetSel = null;
+}
+
+function buildModalGrid(query) {
+  var grid    = document.getElementById('char-modal-grid');
+  var customs = loadCustom();
+  if (!grid) return;
+  grid.innerHTML = '';
+  var q = query.trim().toLowerCase();
+
+  // Collect all character entries
+  var entries = [];
+  S.chars.forEach(function(c) {
+    entries.push({value:'canon_'+c.id, name:c.name,
+      img:c.profile_image||c.image||'',
+      sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', canon:true});
+  });
+  if (customs.slot1) entries.push({value:'custom_1', name:customs.slot1.name+' (custom)',
+    img:customs.slot1.profile_image||customs.slot1.image||'',
+    sil:customs.slot1.default_headshot_silhouette||customs.slot1.default_silhouette||'giantess', canon:false});
+  if (customs.slot2) entries.push({value:'custom_2', name:customs.slot2.name+' (custom)',
+    img:customs.slot2.profile_image||customs.slot2.image||'',
+    sil:customs.slot2.default_headshot_silhouette||customs.slot2.default_silhouette||'giantess', canon:false});
+
+  var filtered = q ? entries.filter(function(e){ return e.name.toLowerCase().indexOf(q) >= 0; }) : entries;
+
+  filtered.forEach(function(entry) {
+    var card = document.createElement('div');
+    card.className = 'cpm-card';
+    var imgUrl = entry.img || DEFAULTS.headshot[entry.sil] || DEFAULTS.headshot.giantess || '';
+    var isReal = !!entry.img;
+    card.innerHTML =
+      '<div class="cpm-img-wrap">' +
+        '<img class="cpm-img'+(isReal?'':' sr-sil-filter')+'" src="'+imgUrl+'" alt="'+entry.name+'" />' +
+      '</div>' +
+      '<div class="cpm-name">'+entry.name+'</div>';
+    card.addEventListener('click', function() {
+      if (modalTargetSel) {
+        modalTargetSel.value = entry.value;
+        modalTargetSel.dispatchEvent(new Event('change'));
+      }
+      closeCharModal();
+    });
+    grid.appendChild(card);
+  });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="cpm-empty">No characters found</div>';
+  }
+}
+
+function wireCharModal() {
+  document.getElementById('char-modal-close').addEventListener('click', closeCharModal);
+
+  // Resize popup backdrop
+  var resizeBd = document.getElementById('sr-resize-backdrop');
+  if (resizeBd) resizeBd.addEventListener('click', closeResizePopup);
+  document.getElementById('char-modal-overlay').addEventListener('click', function(e) {
+    if (e.target === this) closeCharModal();
+  });
+  document.getElementById('char-modal-search').addEventListener('input', function() {
+    buildModalGrid(this.value);
+  });
+  // Escape key
+  document.addEventListener('keydown', function(e) {
+    if (e.key === 'Escape') closeCharModal();
+  });
 }
 
 function wireForm(slot, wrap) {
@@ -1521,6 +2125,7 @@ function wireForm(slot, wrap) {
       g('lman-'+slot).style.display  = m==='manual'?'':'none';
       refreshLengthCalc(slot); refreshLengthPreset(slot); save();
       if(S.view==='length') renderLengthView();
+    updateLengthImgVisibility();
     });
   });
 
@@ -1531,6 +2136,7 @@ function wireForm(slot, wrap) {
     save();
     // Always re-render length view since length changed regardless of slot
     if(S.view==='length') renderLengthView();
+    updateLengthImgVisibility();
   });
 
   // Length calc ref
@@ -1560,6 +2166,12 @@ function wireForm(slot, wrap) {
     var lorient=g('lorient-'+slot); if(lorient)lorient.style.display=isCustom?'':'none';
     save();
   });
+  // Hide/show length image section based on whether character has length data
+  function updateLengthImgVisibility() {
+    var hasLen = getLengthIn(slot) > 0;
+    var lsild = g('lsild-'+slot); if(lsild) lsild.style.display = hasLen ? '' : 'none';
+  }
+  updateLengthImgVisibility();
 
   // Length orientation — flip
   var lflip=g('lflip-'+slot);
@@ -2094,6 +2706,14 @@ function applyGlobalUnit(isM) {
   renderActive();
 }
 g('btn-imperial').addEventListener('click',function(){applyGlobalUnit(false);});
+
+// Grid lines toggle
+var gridBtn = g('btn-grid-lines');
+if (gridBtn) gridBtn.addEventListener('click', function() {
+  S.gridLines = !S.gridLines;
+  this.classList.toggle('active', S.gridLines);
+  updateGridOverlay();
+});
 
 // Copy viewer to clipboard
 var ROSE_GOLD_FILTER = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
