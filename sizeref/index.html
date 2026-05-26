@@ -32,15 +32,13 @@
 
     <!-- Compare panel -->
     <div id="tab-compare" class="sr-tab-panel">
-
       <div class="sr-section">
-        <div class="sr-section-label">Characters</div>
+        <div class="sr-section-label">Characters &amp; Objects</div>
         <div id="sr-char-slots"></div>
-        <button id="btn-add-slot" class="slot-add-btn">+ Add character</button>
-      </div>
-      <div class="sr-section">
-        <div class="sr-section-label">Scale object</div>
-        <select id="sel-obj" class="sr-select"></select>
+        <div class="slot-add-row">
+          <button id="btn-add-char" class="slot-add-btn">+ Add character</button>
+          <button id="btn-add-obj"  class="slot-add-btn">+ Add object</button>
+        </div>
       </div>
     </div>
 
@@ -66,6 +64,14 @@
   <!-- ── Main ─────────────────────────────────── -->
   <main class="sr-main">
 
+    <!-- View tabs -->
+    <div class="sr-view-tabs">
+      <button class="sr-view-tab active" data-view="height">Height</button>
+      <button class="sr-view-tab" data-view="length">Length</button>
+      <button class="sr-view-tab" data-view="stats">Stats</button>
+    </div>
+
+    <!-- Shared toolbar -->
     <div class="sr-toolbar">
       <div class="unit-toggle-toolbar">
         <button id="btn-imperial" class="unit-btn active">Imperial</button>
@@ -76,37 +82,53 @@
         <span id="zoom-label" class="zoom-label">100%</span>
         <button id="btn-zoom-in"  class="zoom-btn">&#43;</button>
         <button id="btn-zoom-reset" class="zoom-btn zoom-reset-btn">Reset</button>
+        <button id="btn-copy-img" class="zoom-btn zoom-reset-btn" title="Copy viewer to clipboard">&#128203;</button>
       </div>
     </div>
 
-    <!-- Canvas area: ruler + scroll -->
-    <div class="sr-canvas-area" id="sr-canvas-area">
-
-      <!-- Ruler column: separate from zoom -->
-      <div class="sr-ruler-col" id="sr-ruler-col">
-        <div class="sr-ruler-inner" id="sr-ruler-inner"></div>
-      </div>
-
-      <!-- Scroll area: figures zoom here -->
-      <div class="sr-scroll" id="sr-scroll">
-        <div id="sr-empty" class="sr-empty">Select at least one character to begin</div>
-        <div id="sr-scene" class="sr-scene" style="display:none">
-          <!-- This div is zoom-scaled -->
-          <div id="sr-zoom" class="sr-zoom">
-            <div id="sr-figures" class="sr-figures"></div>
-            <div class="sr-ground"></div>
+    <!-- ── Height view ─────────────────────────── -->
+    <div id="view-height" class="sr-view">
+      <div class="sr-canvas-area" id="sr-canvas-area">
+        <div class="sr-ruler-col" id="sr-ruler-col">
+          <div class="sr-ruler-inner" id="sr-ruler-inner"></div>
+        </div>
+        <div class="sr-scroll" id="sr-scroll">
+          <div id="sr-empty" class="sr-empty">Select at least one character to begin</div>
+          <div id="sr-scene" class="sr-scene" style="display:none">
+            <div id="sr-zoom" class="sr-zoom">
+              <div id="sr-figures" class="sr-figures"></div>
+              <div class="sr-ground"></div>
+            </div>
           </div>
         </div>
       </div>
-
+      <div id="sr-stats" class="sr-stats"></div>
     </div>
 
-    <!-- Stat blocks -->
-    <div id="sr-stats" class="sr-stats"></div>
+    <!-- ── Length view ─────────────────────────── -->
+    <div id="view-length" class="sr-view" style="display:none">
+      <div class="sr-length-area" id="sr-length-area">
+        <div class="sr-length-scroll" id="sr-length-scroll">
+          <div id="sr-length-empty" class="sr-empty">Select characters with anatomy data to compare</div>
+          <div id="sr-length-zoom" class="sr-length-zoom">
+            <div id="sr-length-rows" class="sr-length-rows"></div>
+          </div>
+        </div>
+        <div class="sr-length-ruler-wrap" id="sr-length-ruler-wrap">
+          <div class="sr-headshot-spacer"></div>
+          <div class="sr-length-ruler" id="sr-length-ruler"></div>
+        </div>
+      </div>
+      <div id="sr-length-stats" class="sr-stats"></div>
+    </div>
+
+    <!-- ── Stats view ──────────────────────────── -->
+    <div id="view-stats" class="sr-view" style="display:none"></div>
 
   </main>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="../_shared/registry.js"></script>
 <script src="sizeref.js"></script>
 </body>
