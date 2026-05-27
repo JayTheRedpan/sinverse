@@ -55,10 +55,7 @@ function renderMeta() {
     tagsEl.appendChild(span);
   });
 
-  // Word count
-  var wc = document.getElementById('reader-wordcount');
-  var totalWc = story.wordCount || (story.chapters || []).reduce(function(s, c) { return s + (c.wordCount || 0); }, 0);
-  if (totalWc) wc.textContent = fmtWords(totalWc);
+  // Word count shown after content loads (see loadContent/loadChapter)
 }
 
 function renderChapterList() {
@@ -101,9 +98,7 @@ async function loadChapter(idx) {
   header.style.display = '';
   document.getElementById('reader-chapter-title').textContent = chapters[idx].title;
 
-  // Update chapter word count
-  var wc = document.getElementById('reader-wordcount');
-  if (chapters[idx].wordCount) wc.textContent = fmtWords(chapters[idx].wordCount) + ' this chapter';
+
 
   // Load content
   if (chapters[idx].file) {
@@ -134,7 +129,13 @@ async function loadFile(filePath) {
     var html = await res.text();
     // Strip any full HTML wrapper if present, keep just body content
     var match = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-    content.innerHTML = match ? match[1] : html;
+    var bodyHtml = match ? match[1] : html;
+    content.innerHTML = bodyHtml;
+    // Calculate word count from content
+    var rawText = bodyHtml.replace(/<[^>]+>/g, ' ').trim();
+    var wc = rawText.split(/\s+/).filter(Boolean).length;
+    var wcEl = document.getElementById('reader-wordcount');
+    if (wcEl && wc > 0) wcEl.textContent = fmtWords(wc) + (story.type === 'serial' ? ' this chapter' : ' words');
   } catch(e) {
     content.innerHTML = '<p style="color:var(--wine);padding:2rem">Could not load story file: ' + e.message + '</p>';
   }

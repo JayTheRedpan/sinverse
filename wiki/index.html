@@ -447,6 +447,30 @@
       transition: width 0.25s ease, padding 0.25s ease;
     }
 
+    .wiki-not-found {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 0.75rem;
+      padding: 3rem 2rem;
+      text-align: center;
+      border-bottom: 1px solid var(--border);
+      margin-bottom: 2rem;
+      opacity: 0.7;
+    }
+    .wiki-not-found-icon { font-size: 1.5rem; color: var(--accent); opacity: 0.5; }
+    .wiki-not-found-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.5rem;
+      color: var(--text-primary);
+    }
+    .wiki-not-found-body {
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      color: var(--text-muted);
+      font-style: italic;
+    }
     .wiki-tl-footnote {
       font-family: var(--font-body);
       font-style: italic;
@@ -1374,7 +1398,21 @@ Promise.all([
   if (charParam) {
     var charNameParam = decodeURIComponent(charParam).toLowerCase();
     var matchChar = characters.find(function(c){ return c.name.toLowerCase() === charNameParam; });
-    if (matchChar) loadCharPage(matchChar.id);
+    if (matchChar) {
+      loadCharPage(matchChar.id);
+    } else {
+      // Character exists in content but not in characters.json yet — show friendly message
+      showPage('intro', false);
+      var main = document.getElementById('wiki-main');
+      if (main) {
+        var notice = document.createElement('div');
+        notice.className = 'wiki-not-found';
+        notice.innerHTML = '<div class="wiki-not-found-icon">✦</div>' +
+          '<div class="wiki-not-found-title">' + decodeURIComponent(charParam) + '</div>' +
+          '<div class="wiki-not-found-body">No wiki page has been written for this character yet.</div>';
+        main.insertBefore(notice, main.firstChild);
+      }
+    }
   }
 }).catch(function(e) {
   console.error('Failed to load wiki data:', e);

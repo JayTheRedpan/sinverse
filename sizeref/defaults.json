@@ -1,29 +1,108 @@
 {
   "height_silhouettes": [
-    { "id": "giantess", "label": "Giantess", "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779735084/custom1_zlyifg.png" },
-    { "id": "toy",      "label": "Toy",      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779735207/toy_sv6cxg.png"      }
+    {
+      "id": "giantess",
+      "label": "Giantess",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779735084/custom1_zlyifg.png"
+    },
+    {
+      "id": "toy",
+      "label": "Toy",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779735207/toy_sv6cxg.png"
+    }
   ],
   "length_silhouettes": [
-    { "id": "human", "label": "Humanoid", "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779910035/default_chasuk.png" }
+    {
+      "id": "default",
+      "label": "Default",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738524/default_chasuk.png"
+    }
   ],
   "headshot_silhouettes": [
-    { "id": "giantess", "label": "Giantess", "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png" },
-    { "id": "toy",      "label": "Toy",      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738303/toy_th0ifs.png"      }
+    {
+      "id": "giantess",
+      "label": "Giantess",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png"
+    },
+    {
+      "id": "toy",
+      "label": "Toy",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738303/toy_th0ifs.png"
+    }
   ],
-    "length_presets": [
-    { "id": "huge", "label": "Huge", "inches": 18 },
-    { "id": "long", "label": "Long", "inches": 12},
-    { "id": "average", "label": "Average", "inches": 6 },
-    { "id": "short", "label": "Short", "inches": 3 },
-    { "id": "micro", "label": "Micro", "inches": 1 },
-    { "id": "none", "label": "None", "inches": 0 }
+  "length_presets": [
+    {
+      "id": "huge",
+      "label": "Huge",
+      "inches": 18
+    },
+    {
+      "id": "long",
+      "label": "Long",
+      "inches": 12
+    },
+    {
+      "id": "average",
+      "label": "Average",
+      "inches": 6,
+      "default": true
+    },
+    {
+      "id": "short",
+      "label": "Short",
+      "inches": 3
+    },
+    {
+      "id": "micro",
+      "label": "Micro",
+      "inches": 1
+    },
+    {
+      "id": "none",
+      "label": "None",
+      "inches": 0
+    }
   ],
   "builds": [
-    { "id": "slight", "label": "Slight / Slim", "referenceWeight": 140, "description": "Lean, light frame" },
-    { "id": "average", "label": "Average", "referenceWeight": 170, "description": "Typical proportions" },
-    { "id": "athletic", "label": "Athletic", "referenceWeight": 195, "description": "Muscular, fit build" },
-    { "id": "heavy", "label": "Heavy / Stocky", "referenceWeight": 230, "description": "Dense, broad frame" },
-    { "id": "massive", "label": "Massive", "referenceWeight": 280, "description": "Extremely large build" }
+    {
+      "id": "slight",
+      "label": "Slight / Slim",
+      "referenceWeight": 140,
+      "bodyFatPct": 16,
+      "muscleRatio": 0.4,
+      "description": "Lean, light frame"
+    },
+    {
+      "id": "average",
+      "label": "Average",
+      "referenceWeight": 170,
+      "bodyFatPct": 22,
+      "muscleRatio": 0.45,
+      "description": "Typical proportions"
+    },
+    {
+      "id": "athletic",
+      "label": "Athletic",
+      "referenceWeight": 195,
+      "bodyFatPct": 14,
+      "muscleRatio": 0.55,
+      "description": "Muscular, fit build"
+    },
+    {
+      "id": "heavy",
+      "label": "Heavy / Stocky",
+      "referenceWeight": 230,
+      "bodyFatPct": 30,
+      "muscleRatio": 0.42,
+      "description": "Dense, broad frame"
+    },
+    {
+      "id": "massive",
+      "label": "Massive",
+      "referenceWeight": 280,
+      "bodyFatPct": 35,
+      "muscleRatio": 0.4,
+      "description": "Extremely large build"
+    }
   ]
-
 }
