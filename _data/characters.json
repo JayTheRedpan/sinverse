@@ -1,4 +1,24 @@
 [
+    {
+    "id": 0,
+    "name": "Sin",
+    "species": "Bunny",
+    "height": 144,
+    "height_correction": 1,
+    "headroom_pct": 15,
+    "weight": null,
+    "length": null,
+    "length_correction": 1,
+    "image": "",
+    "length_image": "",
+    "profile_image": "",
+    "default_silhouette": "giantess",
+    "default_headshot_silhouette": "giantess",
+    "wiki": "sin",
+    "faction": "SinCorp",
+    "canonical": true,
+    "pronouns": "she/her"
+  },
   {
     "id": 1,
     "name": "Jay",
