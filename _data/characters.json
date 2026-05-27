@@ -12,10 +12,17 @@
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779680235/jay_lttpou.png",
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738955/jay_yryw0d.png",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738986/jay_pv0dzg.png",
-    "wiki": "character_jay",
+    "wiki": "jay",
     "faction": "",
     "description": "A flavour bio shown in the stat block.",
-    "canonical": true
+    "canonical": true,
+    "anatomy": {
+      "breasts": false,
+      "bustSize": null,
+      "penis": true,
+      "vag": false
+    }
+
   },  
   {
     "id": 1,
@@ -23,19 +30,26 @@
     "species": "Bunny",
     "height": 144,
     "height_correction": 1,
-    "headroom_pct": 15,
+    "headroom_pct": 8.5,
     "weight": null,
-    "length": null,
+    "length": 72,
     "length_correction": 1,
-    "image": "",
-    "length_image": "",
-    "profile_image": "",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779895246/sin_kvjm1t.png",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779895287/custom1_t6yryx.png",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779895260/sin_ayy14i.png",
     "default_silhouette": "giantess",
     "default_headshot_silhouette": "giantess",
     "wiki": "sin",
     "faction": "SinCorp",
     "canonical": true,
-    "pronouns": "she/her"
+    "pronouns": "she/her",
+    "anatomy": {
+      "breasts": true,
+      "bustSize": "d",
+      "penis": true,
+      "vag": false
+    }
+
   },
   {
     "id": 2,
@@ -48,11 +62,18 @@
     "length": 98,
     "length_correction": 1,
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779680245/kel_ji7k0u.png",
-    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738968/kel_ufzytn.png",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779895287/custom1_t6yryx.png",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738995/kel_yj8p0e.png",
-    "wiki": "character_jay",
+    "wiki": "kel",
     "faction": "",
     "description": "A flavour bio shown in the stat block.",
-    "canonical": true
+    "canonical": true,
+    "anatomy": {
+      "breasts": true,
+      "bustSize": "d",
+      "penis": true,
+      "vag": false
+    }
+
   }
 ]

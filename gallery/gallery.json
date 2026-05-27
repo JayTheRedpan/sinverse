@@ -3,7 +3,7 @@
     "id": 1,
     "type": "scene",
     "title": "Jail Break",
-    "artist": "ArtistHandle",
+    "artist": "",
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565348/Jail_Break_ini2fi.png",
     "characters": ["prima"],
     "tags": ["macro"],
@@ -15,7 +15,7 @@
   "id": 2,
   "type": "comic",
   "title": "Sinverse Rise",
-  "artist": "ArtistHandle",
+  "artist": "FastTrack",
   "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565919/0_yvpanj.png",
   "pages": [
     "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565810/01_bwfmrn.png",

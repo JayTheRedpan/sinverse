@@ -36,7 +36,8 @@ function renderComic() {
 
   // Populate sidebar
   document.getElementById('comic-title-reader').textContent   = item.title;
-  document.getElementById('comic-artist-reader').textContent  = item.artist ? 'by ' + item.artist : '';
+  var caEl = document.getElementById('comic-artist-reader');
+  if (caEl) caEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
   document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
   if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
   renderTags('comic-tags-reader', item.tags);
@@ -68,6 +69,8 @@ function showPage(n) {
 // -- Scene
 function renderScene() {
   document.getElementById('view-scene').style.display = '';
+  var typeBadge = document.getElementById('scene-type-badge');
+  if (typeBadge) typeBadge.textContent = item.type === 'charref' ? 'Reference' : 'World Scene';
 
   var img = document.getElementById('scene-img');
   img.src = item.image || '';

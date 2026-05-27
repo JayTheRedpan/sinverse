@@ -3,7 +3,7 @@
 var state = {
   items:      [],
   filtered:   [],
-  typeFilter: { comic: true, scene: true },
+  typeFilter: { comic: true, scene: true, charref: true },
   hiddenTags: new Set(),  // tags excluded by user
   sortOrder:  'newest',
   query:      '',
@@ -12,6 +12,7 @@ var state = {
 var TYPE_LABELS = {
   comic:   'Comic',
   scene:   'World Scene',
+  charref: 'Reference',
 };
 
 // -- Boot
@@ -24,9 +25,12 @@ async function init() {
     var tagsData = await tagsRes.json();
     buildTagFilters(tagsData.gallery || []);
 
-    // Reset search state on fresh load, unless arriving via ?character= param
+    // Apply URL params on load
     var urlParams = new URLSearchParams(window.location.search);
-    var charParam = urlParams.get('character');
+    var charParam   = urlParams.get('character');
+    var searchParam = urlParams.get('search');
+    var modeParam   = urlParams.get('mode');
+
     if (charParam) {
       var charName = decodeURIComponent(charParam);
       var inp = document.getElementById('search-input');
@@ -38,8 +42,20 @@ async function init() {
       var url = new URL(window.location.href);
       url.searchParams.delete('character');
       window.history.replaceState({}, '', url);
+    } else if (searchParam) {
+      var sVal = decodeURIComponent(searchParam);
+      var inp2 = document.getElementById('search-input');
+      if (inp2) inp2.value = sVal;
+      state.query = sVal.toLowerCase();
+      document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.remove('active'); });
+      var targetMode = modeParam || 'artist';
+      var modeBtn = document.querySelector('.search-mode-btn[data-mode="' + targetMode + '"]');
+      if (modeBtn) modeBtn.classList.add('active');
+      var url2 = new URL(window.location.href);
+      url2.searchParams.delete('search');
+      url2.searchParams.delete('mode');
+      window.history.replaceState({}, '', url2);
     } else {
-      // Fresh visit — ensure clean state
       resetSearch();
     }
 
@@ -176,7 +192,7 @@ function resetSearch() {
   if (inp) inp.value = '';
   state.query = '';
   document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.add('active'); });
-  state.typeFilter = { comic: true, scene: true };
+  state.typeFilter = { comic: true, scene: true, charref: true };
   state.hiddenTags = new Set();
   localStorage.removeItem('sinverse_hidden_tags');
   document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.add('active'); });

@@ -1,0 +1,100 @@
+[
+  {
+    "id": "jay",
+    "name": "Jay",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738986/jay_pv0dzg.png",
+    "bio": "Architect of the Sinverse universe. World-builder, community organizer, and the red panda who started it all.",
+    "types": [
+      "World Builder",
+      "Commisioner",
+      "Friend"
+    ],
+    "socials": {
+      "twitter": "",
+      "bluesky": "",
+      "furaffinity": "",
+      "deviantart": "",
+      "artstation": "",
+      "patreon": "",
+      "discord": "",
+      "website": ""
+    }
+  },
+  {
+    "id": "FastTrack",
+    "name": "FastTrack",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779898101/fasttrack37d_w965ce.gif",
+    "bio": "",
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "twitter": "",
+      "bluesky": "",
+      "furaffinity": "https://www.furaffinity.net/user/fasttrack37d",
+      "deviantart": "",
+      "artstation": "",
+      "patreon": "",
+      "discord": "",
+      "website": ""
+    }
+  },
+  {
+    "id": "CharitysSongbird",
+    "name": "CharitysSongbird",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779897778/charityssongbird_r1qfko.gif",
+    "bio": "",
+    "types": [
+      "Writer",
+      "CYOA Author"
+    ],
+    "socials": {
+      "twitter": "",
+      "bluesky": "",
+      "furaffinity": "https://www.furaffinity.net/user/charityssongbird/",
+      "deviantart": "",
+      "artstation": "",
+      "patreon": "",
+      "discord": "",
+      "website": ""
+    }
+  },
+  {
+    "id": "RonaSerena",
+    "name": "RonaSerena",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779898023/ronaserena_zwxln3.gif",
+    "bio": "",
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "twitter": "",
+      "bluesky": "",
+      "furaffinity": "https://www.furaffinity.net/user/ronaserena",
+      "deviantart": "",
+      "artstation": "",
+      "patreon": "",
+      "discord": "",
+      "website": ""
+    }
+  },
+  {
+    "id": "JaysLab",
+    "name": "JaysLab",
+    "avatar": "",
+    "bio": "",
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "twitter": "",
+      "bluesky": "",
+      "furaffinity": "",
+      "deviantart": "",
+      "artstation": "",
+      "patreon": "",
+      "discord": "",
+      "website": ""
+    }
+  }
+]

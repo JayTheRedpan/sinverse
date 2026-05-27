@@ -10,11 +10,15 @@ post_tday_born: false
 
 ## Overview
 
-Jay is a red panda toy navigating life in the Wilds. [Write 2–3 sentence summary of who Jay is and what makes him interesting.]
+[Jay's background and role in the Sinverse universe — to be written.]
 
 ## Appearance
 
 [Describe Jay's physical appearance — fur colouration, build, typical clothing, distinguishing features.]
+
+## Gallery
+
+![Jay's Crest | Jay's iconic chest crest — his personal emblem](https://res.cloudinary.com/dq40xaaux/image/upload/v1779891405/jaycrest_m8l6l6.png)
 
 ## Personality
 

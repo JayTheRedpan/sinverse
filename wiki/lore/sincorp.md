@@ -1,13 +1,13 @@
 ---
 id: sincorp
-type: organisation
+type: organization
 title: SinCorp
-tags: [sincorp, sin, mega-cities, science, organisation]
+tags: [sincorp, sin, mega-cities, science, organization]
 ---
 
 ## Overview
 
-SinCorp is the organisation founded by Sin in the years leading up to TDay, built from the shell of the bio-research laboratory where she first developed the Apotheosis Serum. Today it operates across every major mega-city as the closest thing the post-TDay world has to a global institution.
+SinCorp is the organization founded by Sin in the years leading up to TDay, built from the shell of the bio-research laboratory where she first developed the Apotheosis Serum. Today it operates across every major mega-city as the closest thing the post-TDay world has to a global institution.
 
 Its stated purpose is biological research and urban services. Its actual purpose is whatever Sin decides it is.
 

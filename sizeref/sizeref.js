@@ -108,47 +108,67 @@ function safeHIn(inches) {
 }
 function lbsToKg(l) { return l * 0.453592; }
 function ftIn(i) {
+  if (i < 1) return i.toFixed(2) + '"';
   var t = Math.round(i), ft = Math.floor(t/12), ins = t%12;
+  if (ft === 0) return ins + '"';
   return ft + "'" + ins + '"';
 }
 function fH(in_) {
+  if (!in_ && in_ !== 0) return '—';
   if (S.metric) {
-    var cm = Math.round(inToCm(in_));
+    var cm = inToCm(in_);
+    if (cm < 0.1)  return (cm * 10).toFixed(1) + ' mm';
+    if (cm < 1)    return cm.toFixed(1) + ' cm';
     if (cm >= 100) {
       var m = Math.floor(cm / 100);
-      var rc = cm % 100;
+      var rc = Math.round(cm % 100);
       return m + 'm ' + rc + 'cm';
     }
-    return cm + ' cm';
+    return Math.round(cm) + ' cm';
+  } else {
+    if (in_ < 0.05)  return (in_ * 25.4).toFixed(1) + ' mm';
+    if (in_ < 1)     return in_.toFixed(2) + '"';
+    var total = Math.round(in_), ft = Math.floor(total/12), ins = total%12;
+    if (ft === 0)    return ins + '"';
+    return ft + "'" + ins + '"';
   }
-  return ftIn(in_);
 }
 function fW(lbs) {
-  if (!lbs) return '—';
+  if (lbs === null || lbs === undefined) return '—';
   if (S.metric) {
     var kg = lbs * 0.453592;
-    if (kg >= 907184) return fmt(kg/907184, 1, 'kt');      // kilotonnes
-    if (kg >= 1000)   return fmt(kg/1000, 1, 't');          // metric tonnes
-    return Math.round(kg) + ' kg';
+    if (kg >= 907184)  return fmt(kg/907184, 1, 'kt');
+    if (kg >= 1000)    return fmt(kg/1000, 1, 't');
+    if (kg >= 1)       return kg.toFixed(1) + ' kg';
+    var g = kg * 1000;
+    if (g >= 1)        return g.toFixed(1) + ' g';
+    return (g * 1000).toFixed(2) + ' mg';
   } else {
-    if (lbs >= 2000000000) return fmt(lbs/2000000, 0, 'kt'); // kilotons
-    if (lbs >= 2000000)    return fmt(lbs/2000000, 1, 'kt'); // kilotons
-    if (lbs >= 200000)     return fmt(lbs/2000, 1, 't');     // tons
-    if (lbs >= 100000)     return fmt(lbs/2000, 1, 't');     // tons (>99,999 lbs)
-    return Math.round(lbs).toLocaleString() + ' lbs';
+    if (lbs >= 2000000000) return fmt(lbs/2000000, 0, 'kt');
+    if (lbs >= 2000000)    return fmt(lbs/2000000, 1, 'kt');
+    if (lbs >= 200000)     return fmt(lbs/2000, 1, 't');
+    if (lbs >= 100000)     return fmt(lbs/2000, 1, 't');
+    if (lbs >= 1)          return Math.round(lbs).toLocaleString() + ' lbs';
+    var oz = lbs * 16;
+    if (oz >= 1)           return oz.toFixed(1) + ' oz';
+    return (oz * 437.5).toFixed(1) + ' gr';  // grains
   }
 }
 function fL(in_) {
-  if (!in_) return '—';
+  if (!in_ && in_ !== 0) return '—';
   if (S.metric) {
-    var cm = Math.round(inToCm(in_));
+    var cm = inToCm(in_);
+    if (cm < 0.1)  return (cm * 10).toFixed(1) + ' mm';
+    if (cm < 1)    return cm.toFixed(1) + ' cm';
     if (cm >= 100) {
       var m = Math.floor(cm / 100);
-      var rc = cm % 100;
+      var rc = Math.round(cm % 100);
       return m + 'm ' + rc + 'cm';
     }
-    return cm + ' cm';
+    return Math.round(cm) + ' cm';
   } else {
+    if (in_ < 0.05) return (in_ * 25.4).toFixed(1) + ' mm';
+    if (in_ < 1)    return in_.toFixed(2) + '"';
     var rounded = Math.round(in_);
     if (rounded >= 12) {
       var ft = Math.floor(rounded / 12);
@@ -286,11 +306,17 @@ function render() {
   // Populate stats FIRST so their height is in the layout before we measure canvasH
   var charSlots = allCharSlots();
   if (charSlots.length || allObjects().length) {
-    charSlots.forEach(function(cs) { stats.appendChild(statBlock(cs.char, cs.slotIdx)); });
-    allSlotSelects().forEach(function(sel) {
-      if (sel.getAttribute('data-type')==='obj' && sel.value) {
-        var obj = S.objects.find(function(o){return o.id===sel.value;});
+    // Render stat blocks in true slot order (chars and objects interleaved)
+    allSlotSelects().forEach(function(sel, idx) {
+      var type = sel.getAttribute('data-type');
+      var val  = sel.value;
+      if (!val) return;
+      if (type === 'obj') {
+        var obj = S.objects.find(function(o){ return o.id === val; });
         if (obj) stats.appendChild(objStatBlock(obj));
+      } else {
+        var c = charFromValue(val);
+        if (c) stats.appendChild(statBlock(c, idx));
       }
     });
   }
@@ -665,7 +691,9 @@ function statBlock(char, slotIdx) {
 
   var effH_in = effectiveHSlot(char, slotIdx);
   var isOv = S.heightOverrides[slotIdx] !== undefined;
-  var poseRow = (char.height_correction && char.height_correction < 0.99)
+  var trueH = isOv ? effH_in : char.height;  // true canonical height
+  var isPosed = char.height_correction && char.height_correction < 0.99;
+  var poseRow = isPosed
     ? '<div class="sr-stat-row"><span class="sr-stat-key"></span><span class="sr-stat-val sr-stat-note">renders as '+fH(effH_in)+' (posed)</span></div>' : '';
 
   block.innerHTML =
@@ -674,13 +702,12 @@ function statBlock(char, slotIdx) {
       (isOv?' <span class="sr-override-badge">&#x21D4;</span>':'')+
     '</div>'+
     '<div class="sr-stat-grid">'+
-      '<div class="sr-stat-row"><span class="sr-stat-key">Height</span><span class="sr-stat-val">'+fH(effectiveHSlot(char, slotIdx))+'</span></div>'+
+      '<div class="sr-stat-row"><span class="sr-stat-key">Height</span><span class="sr-stat-val">'+fH(trueH)+'</span></div>'+
       poseRow+
       '<div class="sr-stat-row"><span class="sr-stat-key">Weight</span><span class="sr-stat-val">'+fW(scaledWeight(char, slotIdx))+'</span></div>'+
-      (char.faction?'<div class="sr-stat-row"><span class="sr-stat-key">Faction</span><span class="sr-stat-val">'+char.faction+'</span></div>':'')+
     '</div>'+
     '<div class="sr-stat-resize-wrap">'+resizeControlsHTML(char, slotIdx)+'</div>'+
-    (char.wiki?'<a href="../wiki/#'+char.wiki+'" class="sr-wiki-link">View wiki &rarr;</a>':'<div class="sr-wiki-spacer"></div>');
+    (char.name?'<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>':'<div class="sr-wiki-spacer"></div>');
 
   wireResizeControls(block);
   return block;
@@ -693,8 +720,52 @@ var REF_W_LB   = 170;  // reference weight: 170lbs
 var REF_STD_H  = 72;   // standard person height for perspective section
 var REF_ARM_IN = 24;   // intimate viewing distance (arm's length in inches)
 
+// Bust size reference volumes at 5'6" (66in) in litres per breast
+var BUST_REFS = [
+  {id:'flat',  label:'Flat',      volL:0.01},
+  {id:'a',     label:'A Cup',     volL:0.18},
+  {id:'b',     label:'B Cup',     volL:0.27},
+  {id:'c',     label:'C Cup',     volL:0.42},
+  {id:'d',     label:'D Cup',     volL:0.60},
+  {id:'dd',    label:'DD / E Cup',volL:0.85},
+  {id:'f',     label:'F Cup',     volL:1.20},
+  {id:'g',     label:'G Cup',     volL:1.65},
+  {id:'h',     label:'H Cup',     volL:2.30},
+  {id:'j',     label:'J Cup',     volL:3.20},
+];
+
+function calcBreasts(char, slotIdx) {
+  var h = trueH(char, slotIdx);
+  var hR = h / 66; // scale relative to 5'6" reference
+  var bustId = (char.anatomy && char.anatomy.bustSize) || 'c';
+  var ref = BUST_REFS.find(function(b){ return b.id === bustId; }) || BUST_REFS[3];
+  // Volume scales with hR^3 (linear dimensions scale with hR)
+  var volL     = ref.volL * Math.pow(hR, 3);
+  // Weight: breast tissue density ~0.9 kg/L, convert to lbs
+  var weightLbs = volL * 0.9 * 2.20462;
+  // Projection and width scale linearly with hR
+  var REF_PROJ = [0.5, 1.8, 2.3, 2.9, 3.5, 4.2, 5.0, 5.8, 6.8, 8.0];
+  var REF_WID  = [1.5, 3.5, 4.2, 5.0, 5.8, 6.5, 7.2, 8.0, 9.0,10.0];
+  var idx = BUST_REFS.indexOf(ref);
+  var projIn   = (REF_PROJ[idx] || 3.5) * hR;
+  var widIn    = (REF_WID[idx]  || 5.0) * hR;
+  var nipDiamIn = 0.6 * hR;
+  var nipLenIn  = 0.4 * hR;
+  // Milk production: ref ~30 mL/hr at C cup, scales with cup volume and mass
+  var milkLperDay = (ref.volL / 0.42) * 0.72 * Math.pow(hR, 3);  // ~720mL/day ref, cube-scaled
+  return { cupLabel: ref.label, volL: volL, weightLbs: weightLbs,
+           projIn: projIn, widIn: widIn, nipDiamIn: nipDiamIn, nipLenIn: nipLenIn,
+           milkLperDay: milkLperDay };
+}
+
+function trueH(char, slotIdx) {
+  // Use resize override if set, otherwise true canonical height (no pose correction)
+  if (slotIdx !== undefined && S.heightOverrides[slotIdx] !== undefined) return S.heightOverrides[slotIdx];
+  return char.height || effectiveH(char);
+}
+
 function calcStats(char, slotIdx) {
-  var h  = (slotIdx !== undefined) ? effectiveHSlot(char, slotIdx) : effectiveH(char);
+  var h  = trueH(char, slotIdx);
   var w  = (slotIdx !== undefined) ? scaledWeight(char, slotIdx) : (char.weight || sc(h, 'average'));
   var wkg = w * 0.453592;
   var mR = w / REF_W_LB;
@@ -773,12 +844,17 @@ function fmt(n, decimals, unit) {
 }
 
 function fmtL(litres) {
+  if (litres === null || litres === undefined || isNaN(litres)) return '—';
   if (S.metric) {
-    if (litres >= 1000000) return fmt(litres/1000000, 1, 'ML');           // megalitres
-    if (litres >= 1000)    return fmt(litres/1000, 1, 'kL');              // kilolitres
+    if (litres >= 1000000) return fmt(litres/1000000, 1, 'ML');
+    if (litres >= 1000)    return fmt(litres/1000, 1, 'kL');
     if (litres >= 100)     return Math.round(litres) + ' L';
     if (litres >= 1)       return litres.toFixed(1) + ' L';
-    return Math.round(litres * 1000) + ' mL';
+    var ml = litres * 1000;
+    if (ml >= 1)           return ml.toFixed(1) + ' mL';
+    var ul = ml * 1000;
+    if (ul >= 0.01)        return ul.toFixed(1) + ' µL';
+    return (ul * 1000).toFixed(2) + ' nL';
   } else {
     var gal = litres * 0.264172;
     if (gal >= 1000000)  return fmt(gal/1000000, 1, 'million gal');
@@ -786,7 +862,31 @@ function fmtL(litres) {
     if (gal >= 1)        return fmt(gal, 1, ' gal');
     var floz = litres * 33.814;
     if (floz >= 1)       return fmt(floz, 1, ' fl oz');
-    return Math.round(litres * 1000) + ' mL';
+    var tsp = litres * 202.884;
+    if (tsp >= 0.1)      return fmt(tsp, 2, ' tsp');
+    return fmt(litres * 1000000, 1, ' µL');
+  }
+}
+
+// Format a distance measurement — like fH but explicit
+function fmtDist(in_) {
+  if (in_ === null || in_ === undefined) return '—';
+  return fH(in_);
+}
+
+// Format grams (for anatomy weights)
+function fmtG(g) {
+  if (!g && g !== 0) return '—';
+  if (S.metric) {
+    if (g >= 1000)    return fmt(g/1000, 2, 'kg');
+    if (g >= 1)       return fmt(g, 1, 'g');
+    if (g >= 0.001)   return fmt(g*1000, 2, 'mg');
+    return fmt(g*1000000, 1, 'µg');
+  } else {
+    var oz = g * 0.035274;
+    if (oz >= 16)     return fmt(oz/16, 2, 'lbs');
+    if (oz >= 0.01)   return fmt(oz, 2, 'oz');
+    return fmt(g * 15.4324, 2, 'gr');
   }
 }
 
@@ -1018,12 +1118,21 @@ function renderStatsView() {
         (!char.custom ? resizeControlsHTML(char, slotIdx) : '<div class="sv-header-spacer"></div>') +
       '</div>' +
 
-      statSection('Scale', [
-        statRow('Height',              fH(effectiveHSlot(char, slotIdx))),
-        statRow('vs. average human',   fmt(s.heightTimes, 2, '×'), s.heightTimes >= 1 ? 'taller' : 'shorter'),
+      (function(){
+        var isOvSV = S.heightOverrides[slotIdx] !== undefined;
+        var trueHSV = isOvSV ? effectiveHSlot(char, slotIdx) : char.height;
+        var poseNoteSV = (!isOvSV && char.height_correction && char.height_correction < 0.99)
+          ? 'renders as ' + fH(effectiveHSlot(char, slotIdx)) + ' posed' : '';
+        return statSection('Scale', [
+          statRow('Height', fH(trueHSV), poseNoteSV),
+          statRow('vs. average human', fmt(s.heightTimes, 2, '×'), s.heightTimes >= 1 ? 'taller' : 'shorter'),
         statRow('Weight',              fW(scaledWeight(char, slotIdx))),
-        statRow('vs. average human',   fmt(s.weightTimes, 2, '×'), s.weightTimes >= 1 ? 'heavier' : 'lighter'),
-      ]) +
+        statRow('vs. average human', fmt(s.weightTimes, 2, '×'), s.weightTimes >= 1 ? 'heavier' : 'lighter'),
+        ]);
+      })() +
+
+      // ── To Their Eyes — inserted via DOM ──
+      '<div class="sv-perspective-placeholder" data-slot="'+slotIdx+'"></div>' +
 
       statSection('Daily needs', [
         statRow('Calories / day',  calsDay),
@@ -1065,27 +1174,93 @@ function renderStatsView() {
         statRow('Crush threshold',  fW(s.crushLbs), '(survivable weight on body)'),
       ]) +
 
-      (char.length ? statSection('Anatomy', [
-        statRow('Penis length',     fL(scaledLength(char, slotIdx) || 0)),
-        statRow('Girth (circ.)',    fL(s.penisGirthIn)),
-        statRow('Width (diam.)',    fL(s.penisWidIn)),
-        statRow('Penis weight',     penisWeightDisp),
-        statRow('Testicle weight',  testWeightDisp),
-        statRow('Pre volume',       fmtL(s.preMl / 1000), '(Sinverse scaled)'),
-        statRow('Ejaculate volume', fmtL(s.ejacMl / 1000), '(Sinverse scaled)'),
-        statRow('Anal diameter',    fL(s.analDiamIn), '(dilated)'),
-        statRow('Anal depth',       fL(s.analDepthIn)),
-      ]) : statSection('Anatomy', [
-        statRow('Vaginal depth',    fL(s.vagDepthIn)),
-        statRow('Vaginal width',    fL(s.vagWidIn)),
-        statRow('Clitoris length',  fL(s.clitLenIn)),
-        statRow('Clitoris width',   fL(s.clitWidIn)),
-        statRow('Labia length',     fL(s.labiaLenIn)),
-        statRow('Pre-arousal',      fmtL(s.arousalPreMl / 1000), '(Sinverse scaled)'),
-        statRow('Arousal volume',   fmtL(s.arousalMl / 1000), '(Sinverse scaled)'),
-        statRow('Anal diameter',    fL(s.analDiamIn), '(dilated)'),
-        statRow('Anal depth',       fL(s.analDepthIn)),
-      ])) ;
+      (function() {
+        // Anatomy flags: canon chars use anatomy field, custom use toggles
+        var anat = char.anatomy || {};
+        var hasPenis   = anat.penis   !== false && (char.custom ? true : anat.penis === true);
+        var hasVag     = anat.vag     !== false && (char.custom ? true : anat.vag   === true);
+        var hasBreasts = anat.breasts === true;
+        // Custom fallback: if no anatomy set at all, use old length heuristic
+        if (char.custom && !char.anatomy) {
+          hasPenis = !!char.length; hasVag = !char.length; hasBreasts = false;
+        }
+
+        function dimSection(title, rows) {
+          return '<div class="sv-section sv-section-dim"><div class="sv-section-title">'+title+
+            '<span class="sv-section-na"> — N/A</span></div>'+rows.join('')+'</div>';
+        }
+        var dash = '<span class="sv-dim-dash">—</span>';
+
+        var penisSection = hasPenis
+          ? statSection('Penis', [
+              statRow('Length',           fL(scaledLength(char, slotIdx) || 0)),
+              statRow('Girth (circ.)',    fL(s.penisGirthIn)),
+              statRow('Width (diam.)',    fL(s.penisWidIn)),
+              statRow('Weight',           penisWeightDisp),
+              statRow('Testicle weight',  testWeightDisp),
+              statRow('Pre volume',       fmtL(s.preMl / 1000), '(Sinverse scaled)'),
+              statRow('Ejaculate volume', fmtL(s.ejacMl / 1000), '(Sinverse scaled)'),
+            ])
+          : dimSection('Penis', [
+              statRow('Length',           dash),
+              statRow('Girth (circ.)',    dash),
+              statRow('Width (diam.)',    dash),
+              statRow('Weight',           dash),
+              statRow('Testicle weight',  dash),
+              statRow('Pre volume',       dash),
+              statRow('Ejaculate volume', dash),
+            ]);
+
+        var vagSection = hasVag
+          ? statSection('Vagina', [
+              statRow('Depth',            fL(s.vagDepthIn)),
+              statRow('Width',            fL(s.vagWidIn)),
+              statRow('Clitoris length',  fL(s.clitLenIn)),
+              statRow('Clitoris width',   fL(s.clitWidIn)),
+              statRow('Labia length',     fL(s.labiaLenIn)),
+              statRow('Pre-arousal',      fmtL(s.arousalPreMl / 1000), '(Sinverse scaled)'),
+              statRow('Arousal volume',   fmtL(s.arousalMl / 1000), '(Sinverse scaled)'),
+            ])
+          : dimSection('Vagina', [
+              statRow('Depth',         dash),
+              statRow('Width',         dash),
+              statRow('Clitoris length', dash),
+              statRow('Clitoris width',  dash),
+              statRow('Labia length',    dash),
+              statRow('Pre-arousal',     dash),
+              statRow('Arousal volume',  dash),
+            ]);
+
+        var analSection = statSection('Anal', [
+          statRow('Diameter', fL(s.analDiamIn), '(dilated)'),
+          statRow('Depth',    fL(s.analDepthIn)),
+        ]);
+
+        var bs = calcBreasts(char, slotIdx);
+        var breastSection = hasBreasts
+          ? statSection('Breasts', [
+              statRow('Cup size equiv.',  bs.cupLabel),
+              statRow('Volume (each)',    fmtL(bs.volL)),
+              statRow('Weight (each)',    fW(bs.weightLbs)),
+              statRow('Projection',       fL(bs.projIn), '(est. depth)'),
+              statRow('Width (each)',     fL(bs.widIn)),
+              statRow('Nipple diameter',  fL(bs.nipDiamIn)),
+              statRow('Nipple length',    fL(bs.nipLenIn)),
+              statRow('Milk production',  fmtL(bs.milkLperDay), '/ day (est. peak lactation)'),
+            ])
+          : dimSection('Breasts', [
+              statRow('Cup size equiv.', dash),
+              statRow('Volume (each)',   dash),
+              statRow('Weight (each)',   dash),
+              statRow('Projection',      dash),
+              statRow('Width (each)',    dash),
+              statRow('Nipple diameter', dash),
+              statRow('Nipple length',   dash),
+              statRow('Milk production', dash),
+            ]);
+
+        return breastSection + penisSection + vagSection + analSection;
+      })();
 
     // Wire resize controls now that sv-header innerHTML is set
     if (!char.custom) {
@@ -1093,13 +1268,16 @@ function renderStatsView() {
       if (svHeader) wireResizeControls(svHeader);
     }
 
-    // Perspective section appended via DOM (has event listeners)
-    card.appendChild(renderPerspectiveSection(char, slotIdx, charSlots2));
+    // Perspective section: insert into placeholder before anatomy sections
+    var ph = card.querySelector('.sv-perspective-placeholder');
+    var perspEl = renderPerspectiveSection(char, slotIdx, charSlots2);
+    if (ph) ph.replaceWith(perspEl);
+    else card.appendChild(perspEl);
 
     // Wiki link at very bottom
     if (char.wiki) {
       var wikiA = document.createElement('a');
-      wikiA.href = '../wiki/#' + char.wiki;
+      wikiA.href = '../wiki/?character=' + char.name.toLowerCase();
       wikiA.className = 'sr-wiki-link';
       wikiA.style.cssText = 'display:block;padding:1rem 1.25rem;';
       wikiA.textContent = 'View wiki →';
@@ -1470,6 +1648,27 @@ function updateLengthRuler(maxLen, pxPerIn) {
   }
 }
 
+function updateLengthVisibility(slot) {
+  var d = loadCustom()['slot'+slot];
+  var hasPenis = !d || !d.anatomy || d.anatomy.penis !== false;
+  var lengthEl = document.querySelector('.custom'+slot+'-length-section');
+  if (!lengthEl) return;
+  lengthEl.style.opacity = hasPenis ? '' : '0.35';
+  lengthEl.style.pointerEvents = hasPenis ? '' : 'none';
+  // Put tip in the summary header
+  var summary = lengthEl.querySelector('.form-det-summary');
+  var lockSpan = summary ? summary.querySelector('.anat-lock-tip') : null;
+  if (summary && !hasPenis && !lockSpan) {
+    var tip = document.createElement('span');
+    tip.className = 'anat-lock-tip';
+    tip.textContent = ' — enable "Penis" in Anatomy to edit';
+    tip.style.cssText = 'font-family:var(--font-body);font-size:0.62rem;letter-spacing:0;text-transform:none;color:var(--text-muted);font-style:italic;';
+    summary.appendChild(tip);
+  } else if (lockSpan && hasPenis) {
+    lockSpan.remove();
+  }
+}
+
 function lengthStatBlock(char, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
   var effLen = scaledLength(char, slotIdx) || 0;
@@ -1497,7 +1696,7 @@ function lengthStatBlock(char, slotIdx) {
       '<button class="unit-btn'+(mode==='length'?' active':'')+'" data-id="'+entityId+'" data-mode="length">Length</button>'+
       '<button class="unit-btn'+(mode==='height'?' active':'')+'" data-id="'+entityId+'" data-mode="height">Body</button>'+
     '</div>'+
-    (char.wiki ? '<a href="../wiki/#'+char.wiki+'" class="sr-wiki-link">View wiki &rarr;</a>' : '');
+    (char.name ? '<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>' : '');
 
   block.querySelectorAll && setTimeout(function(){
     block.querySelectorAll('.len-img-toggle .unit-btn').forEach(function(btn){
@@ -1543,8 +1742,36 @@ function buildForm(slot) {
   // ── Name (always visible) ───────────────────────
   wrap.appendChild(field('Name *', inp('text','n'+slot,'Character name',ex?ex.name:'')));
 
+  // ── ANATOMY toggles ────────────────────────────
+  var anatDet = makeDet('Anatomy', true, 'section-stats');
+  var anatBody = anatDet.querySelector('.det-body');
+  var anatF = cf('Features');
+
+  var exAnat = ex && ex.anatomy ? ex.anatomy : {};
+  var hasBreasts = exAnat.breasts !== false;   // default on
+  var hasPenis   = exAnat.penis   !== false;   // default on
+  var hasVag     = exAnat.vag     === true;    // default OFF
+
+  var exBust = exAnat.bustSize || 'c';
+  var bustOpts = BUST_REFS.map(function(b){
+    return '<option value="'+b.id+'"'+(b.id===exBust?' selected':'')+'>'+b.label+'</option>';
+  }).join('');
+
+  anatF.innerHTML +=
+    '<div class="anat-toggles">' +
+      '<button class="anat-btn'+(hasBreasts?' active':'')+'" id="anat-breasts-'+slot+'" data-key="breasts">Breasts</button>' +
+      '<button class="anat-btn'+(hasPenis?' active':'')+'" id="anat-penis-'+slot+'" data-key="penis">Penis</button>' +
+      '<button class="anat-btn'+(hasVag?' active':'')+'" id="anat-vag-'+slot+'" data-key="vag">Vagina</button>' +
+    '</div>' +
+    '<div class="bust-size-row" id="bust-row-'+slot+'" style="'+(hasBreasts?'':'display:none')+'">' +
+      '<span class="cf-label">Bust size</span>' +
+      '<select class="builder-input" id="bust-sel-'+slot+'">'+bustOpts+'</select>' +
+    '</div>';
+  anatBody.appendChild(anatF);
+  wrap.appendChild(anatDet);
+
   // ── HEIGHT section ──────────────────────────────
-  var heightDet = makeDet('Height', false);
+  var heightDet = makeDet('Height', false, 'section-height');
   var heightBody = heightDet.querySelector('.det-body');
 
   // Height input
@@ -1605,7 +1832,8 @@ function buildForm(slot) {
   wrap.appendChild(heightDet);
 
   // ── LENGTH section ──────────────────────────────
-  var lengthDet = makeDet('Length', false);
+  var lengthDet = makeDet('Length', false, 'section-length');
+  lengthDet.classList.add('custom'+slot+'-length-section');
   var lengthBody = lengthDet.querySelector('.det-body');
 
   // Length — three modes (preset / calculate / manual)
@@ -1695,7 +1923,7 @@ function buildForm(slot) {
   wrap.appendChild(lengthDet);
 
   // ── STATS section ───────────────────────────────
-  var statsDet = makeDet('Stats', false);
+  var statsDet = makeDet('Stats', false, 'section-stats');
   var statsBody = statsDet.querySelector('.det-body');
 
   // Profile image: dropdown (silhouette or upload)
@@ -1764,11 +1992,29 @@ function buildForm(slot) {
   refreshEst(slot);
   refreshLengthPreset(slot);
   refreshLengthCalc(slot);
+
+  // ── Anatomy toggle wiring ──────────────────────
+  ['breasts','penis','vag'].forEach(function(key) {
+    var btn = g('anat-'+key+'-'+slot);
+    if (!btn) return;
+    btn.addEventListener('click', function() {
+      btn.classList.toggle('active');
+      autoSave(slot);
+      if (key === 'penis') updateLengthVisibility(slot);
+      if (key === 'breasts') {
+        var bustRow = g('bust-row-'+slot);
+        if (bustRow) bustRow.style.display = btn.classList.contains('active') ? '' : 'none';
+      }
+    });
+  });
+  var bustSel = g('bust-sel-'+slot);
+  if (bustSel) bustSel.addEventListener('change', function(){ autoSave(slot); });
+  updateLengthVisibility(slot);
 }
 
 // Build a collapsible section
-function makeDet(label, open) {
-  var d = el('div'); d.className = 'form-section';
+function makeDet(label, open, modifier) {
+  var d = el('div'); d.className = 'form-section' + (modifier ? ' ' + modifier : '');
   d.innerHTML =
     '<details class="form-det"'+(open?' open':'')+'>'+
       '<summary class="form-det-summary">'+label+'</summary>'+
@@ -1941,6 +2187,8 @@ function onDrop(e) {
       container.insertBefore(dragSrc, this);
     }
     renderActive();
+    // Re-render stats cards in new slot order if stats view active
+    if (S.view === 'stats') renderStatsView();
   }
   this.classList.remove('slot-drag-over');
   return false;
@@ -1989,6 +2237,11 @@ function updateSlotUI() {
   });
   var addBtn = document.getElementById('btn-add-slot');
   if (addBtn) addBtn.style.display = atMax ? 'none' : '';
+  // Grey out the add-char / add-obj buttons at max
+  var addCharBtn = document.getElementById('btn-add-char');
+  var addObjBtn  = document.getElementById('btn-add-obj');
+  if (addCharBtn) { addCharBtn.disabled = atMax; addCharBtn.classList.toggle('slot-add-btn-disabled', atMax); }
+  if (addObjBtn)  { addObjBtn.disabled  = atMax; addObjBtn.classList.toggle('slot-add-btn-disabled', atMax); }
 }
 
 
@@ -2023,14 +2276,14 @@ function buildModalGrid(query) {
   var entries = [];
   S.chars.forEach(function(c) {
     entries.push({value:'canon_'+c.id, name:c.name,
-      img:c.profile_image||c.image||'',
+      img:c.profile_image||'',
       sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', canon:true});
   });
   if (customs.slot1) entries.push({value:'custom_1', name:customs.slot1.name+' (custom)',
-    img:customs.slot1.profile_image||customs.slot1.image||'',
+    img:customs.slot1.profile_image||'',
     sil:customs.slot1.default_headshot_silhouette||customs.slot1.default_silhouette||'giantess', canon:false});
   if (customs.slot2) entries.push({value:'custom_2', name:customs.slot2.name+' (custom)',
-    img:customs.slot2.profile_image||customs.slot2.image||'',
+    img:customs.slot2.profile_image||'',
     sil:customs.slot2.default_headshot_silhouette||customs.slot2.default_silhouette||'giantess', canon:false});
 
   var filtered = q ? entries.filter(function(e){ return e.name.toLowerCase().indexOf(q) >= 0; }) : entries;
@@ -2449,6 +2702,16 @@ function autoSave(slot) {
     length_mode:activeLMode, length_preset:lpselVal, length_calc_ref:lrefVal,
     weight_mode:activeWMode, weight_build:bselVal, weight_calc_ref:wrefVal,
     canonical:false, custom:true,
+    anatomy: (function(){
+      var prev = (loadCustom()['slot'+slot]||{}).anatomy || {};
+      ['breasts','penis','vag'].forEach(function(k){
+        var b = g('anat-'+k+'-'+slot);
+        if (b) prev[k] = b.classList.contains('active');
+      });
+      var bustSelEl = g('bust-sel-'+slot);
+      if (bustSelEl) prev.bustSize = bustSelEl.value;
+      return prev;
+    })(),
   };
   var d=loadCustom(); d['slot'+slot]=char; saveCustom(d);
   // Refresh selects preserving current values

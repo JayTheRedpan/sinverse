@@ -7,7 +7,7 @@ tags: [tday, sin, sincorp, apotheosis-serum, history]
 
 ## Overview
 
-TDay — Transformation Day — is the singular event that divides all of Sinverse history. The day Sin's Apotheosis Serum was released upon the world simultaneously and without warning. Every date in the Sinverse universe is measured relative to this moment: **BT** (Before TDay) and **AT** (After TDay).
+TDay — Transformation Day — is the singular event that divides all of Sinverse history. The day Sin's Apotheosis Serum was released upon the world simultaneously and without warning. Every date in the Sinverse universe is measured relative to this moment, designated **T±0**. Events before TDay are written as **T-N** (N years prior); events after as **T+N** (N years following).
 
 ## What Happened
 
@@ -25,13 +25,13 @@ The Chaos lasted approximately six weeks before the dominant Transformed began a
 
 ## Legacy
 
-TDay is the anchor of the Sinverse timeline. It is Year Zero — the moment everything changed. For the Transformed, it is often spoken of with reverence, even celebration. For toys and Resistance members, it is a wound that never fully closes.
+TDay is the anchor of the Sinverse timeline. It is T±0 — the moment everything changed. For the Transformed, it is often spoken of with reverence, even celebration. For toys and Resistance members, it is a wound that never fully closes.
 
-*"Before TDay" is not a historical period. It is another world entirely.*
+*T±0 is not simply a date. It is the border between two entirely different worlds.*
 
 ## Related
 
 - [Sin](sin) — architect of TDay
-- [SinCorp](sincorp) — the organisation that executed it
+- [SinCorp](sincorp) — the organization that executed it
 - [The Apotheosis Serum](apotheosis-serum) — the weapon used
 - [The Mega-Cities](mega-cities) — what was built in its wake

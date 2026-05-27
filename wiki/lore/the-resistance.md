@@ -1,13 +1,13 @@
 ---
 id: the-resistance
-type: organisation
+type: organization
 title: The Resistance
-tags: [resistance, toys, wilds, organisation]
+tags: [resistance, toys, wilds, organization]
 ---
 
 ## Overview
 
-The Resistance is a loose coalition of empathy-retaining Transformed women and toys working to extract males from the mega-cities and provide safe passage into the Wilds. It is not an army, not a government-in-exile, and not a formal organisation. It is a network of cells — self-contained, independently operated, and structured specifically to limit the damage any single compromise can do.
+The Resistance is a loose coalition of empathy-retaining Transformed women and toys working to extract males from the mega-cities and provide safe passage into the Wilds. It is not an army, not a government-in-exile, and not a formal organization. It is a network of cells — self-contained, independently operated, and structured specifically to limit the damage any single compromise can do.
 
 ## Structure
 
