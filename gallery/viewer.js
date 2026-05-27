@@ -34,31 +34,23 @@ function render() {
 function renderComic() {
   document.getElementById('view-comic').style.display = '';
 
-  document.getElementById('comic-title').textContent   = item.title;
-  document.getElementById('comic-artist').textContent  = item.artist ? 'by ' + item.artist : '';
-  document.getElementById('comic-synopsis').textContent = item.synopsis || '';
+  // Populate sidebar
+  document.getElementById('comic-title-reader').textContent   = item.title;
+  document.getElementById('comic-artist-reader').textContent  = item.artist ? 'by ' + item.artist : '';
+  document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
+  if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
+  renderTags('comic-tags-reader', item.tags);
+  renderCharacterLinks('comic-characters-reader', item.characters);
 
-  if (item.canonical) document.getElementById('comic-canonical').style.display = '';
-
-  renderTags('comic-tags', item.tags);
-
-  document.getElementById('comic-start-btn').addEventListener('click', function() {
-    document.getElementById('comic-synopsis-wrap').style.display = 'none';
-    document.getElementById('comic-reader-wrap').style.display   = '';
-    comicPage = 0;
-    showPage(0);
-  });
+  // Start on page 0
+  comicPage = 0;
+  showPage(0);
 
   document.getElementById('comic-prev').addEventListener('click', function() { showPage(comicPage - 1); });
   document.getElementById('comic-next').addEventListener('click', function() { showPage(comicPage + 1); });
-  document.getElementById('comic-back-synopsis').addEventListener('click', function() {
-    document.getElementById('comic-reader-wrap').style.display   = 'none';
-    document.getElementById('comic-synopsis-wrap').style.display = '';
-  });
 
   // Keyboard navigation
   document.addEventListener('keydown', function(e) {
-    if (document.getElementById('comic-reader-wrap').style.display === 'none') return;
     if (e.key === 'ArrowRight' || e.key === 'ArrowDown') showPage(comicPage + 1);
     if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   showPage(comicPage - 1);
   });
@@ -69,8 +61,8 @@ function showPage(n) {
   comicPage = Math.max(0, Math.min(n, pages.length - 1));
   document.getElementById('comic-page-img').src       = pages[comicPage];
   document.getElementById('comic-page-counter').textContent = (comicPage + 1) + ' / ' + pages.length;
-  document.getElementById('comic-prev').disabled      = comicPage === 0;
-  document.getElementById('comic-next').disabled      = comicPage === pages.length - 1;
+  document.getElementById('comic-prev').style.visibility = comicPage === 0 ? 'hidden' : '';
+  document.getElementById('comic-next').style.visibility = comicPage === pages.length - 1 ? 'hidden' : '';
 }
 
 // -- Scene
@@ -160,7 +152,9 @@ function renderCharacterLinks(containerId, characters) {
     var a = document.createElement('a');
     a.href      = '../wiki/#' + charId;
     a.className = 'viewer-char-link';
-    a.textContent = charId.replace('character_', '').replace(/_/g, ' ');
+    var displayName = charId.replace(/_/g, ' ');
+    a.textContent = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+    a.href = '../wiki/?character=' + encodeURIComponent(displayName.toLowerCase());
     el.appendChild(a);
     if (i < characters.length - 1) el.appendChild(document.createTextNode(', '));
   });

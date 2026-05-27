@@ -5,7 +5,7 @@
     "title": "Jail Break",
     "artist": "ArtistHandle",
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565348/Jail_Break_ini2fi.png",
-    "characters": ["Prima"],
+    "characters": ["prima"],
     "tags": ["macro"],
     "description": "Prima bursting into a prison refuge to find some playmates.",
     "date": "2025-01",
@@ -23,8 +23,8 @@
     "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565813/03_hagbfx.png",
     "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565813/04_n6gbfe.png"
   ],
-  "characters": ["Sin","Jay","Hydey","Marian","Libby","Brandy","Popo","Juxta","Fera"],
-  "tags": [],
+  "characters": ["sin","jay","Hydey","marian","libby","brandy","popo","juxta","fera"],
+  "tags": ["noncon"],
   "synopsis": "The brief introduction to the Sinverse and how it came to be.",
   "date": "2025-01",
   "canonical": true

@@ -3,8 +3,8 @@
 var state = {
   stories:    [],
   collections:[],
-  typeFilter: 'all',
-  tagFilter:  null,
+  typeFilter: { standalone: true, serial: true },
+  hiddenTags: new Set(),
   sortOrder:  'newest',
   query:      '',
   view:       'grid',
@@ -27,7 +27,27 @@ async function init() {
     if (!collectionsRes.ok) throw new Error('Could not load collections.json');
     state.stories     = await storiesRes.json();
     state.collections = await collectionsRes.json();
-    buildTagFilters();
+    var tagsRes = await fetch('../_data/tags.json');
+    var tagsData = await tagsRes.json();
+    buildTagFilters(tagsData.story || []);
+
+    // Apply ?character= param from wiki, or reset to clean state on fresh visit
+    var urlParams = new URLSearchParams(window.location.search);
+    var charParam = urlParams.get('character');
+    if (charParam) {
+      var charName = decodeURIComponent(charParam);
+      var inp = document.getElementById('search-input');
+      if (inp) inp.value = charName;
+      state.query = charName.toLowerCase();
+      document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.remove('active'); });
+      var charBtn = document.querySelector('.search-mode-btn[data-mode="character"]');
+      if (charBtn) charBtn.classList.add('active');
+      var url = new URL(window.location.href);
+      url.searchParams.delete('character');
+      window.history.replaceState({}, '', url);
+    } else {
+      resetSearch();
+    }
     applyFilters();
   } catch(e) {
     document.getElementById('lib-grid').innerHTML =
@@ -36,40 +56,58 @@ async function init() {
 }
 
 // -- Tag filters built from stories/serials only
-function buildTagFilters() {
-  var tagSet = new Set();
-  state.stories.forEach(function(item) {
-    (item.tags || []).forEach(function(t) { tagSet.add(t); });
-  });
+function buildTagFilters(warningTags) {
   var container = document.getElementById('tag-filters');
-  if (!tagSet.size) return;
+  if (!warningTags || !warningTags.length) { container.style.display = 'none'; return; }
 
-  var all = document.createElement('button');
-  all.className   = 'tag-filter-btn active';
-  all.textContent = 'All tags';
-  all.addEventListener('click', function() {
-    state.tagFilter = null;
-    container.querySelectorAll('.tag-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-    all.classList.add('active');
-    applyFilters();
-  });
-  container.appendChild(all);
+  try {
+    var saved = JSON.parse(localStorage.getItem('sinverse_hidden_tags') || '[]');
+    state.hiddenTags = new Set(saved);
+  } catch(e) { state.hiddenTags = new Set(); }
 
-  tagSet.forEach(function(tag) {
+  var sortedTags = warningTags.slice().sort();
+  sortedTags.forEach(function(tag) {
     var btn = document.createElement('button');
-    btn.className   = 'tag-filter-btn';
+    btn.className = 'tag-filter-btn' + (state.hiddenTags.has(tag) ? '' : ' active');
     btn.textContent = tag;
+    btn.setAttribute('data-tag', tag);
     btn.addEventListener('click', function() {
-      state.tagFilter = state.tagFilter === tag ? null : tag;
-      container.querySelectorAll('.tag-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-      (state.tagFilter ? btn : all).classList.add('active');
+      if (state.hiddenTags.has(tag)) {
+        state.hiddenTags.delete(tag);
+        btn.classList.add('active');
+      } else {
+        state.hiddenTags.add(tag);
+        btn.classList.remove('active');
+      }
+      localStorage.setItem('sinverse_hidden_tags', JSON.stringify([...state.hiddenTags]));
       applyFilters();
     });
     container.appendChild(btn);
   });
 }
 
+
+function getActiveModes() {
+  var modes = [];
+  document.querySelectorAll('.search-mode-btn.active').forEach(function(b){ modes.push(b.getAttribute('data-mode')); });
+  return modes;
+}
+
+function resetSearch() {
+  var inp = document.getElementById('search-input');
+  if (inp) inp.value = '';
+  state.query = '';
+  document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.add('active'); });
+  state.typeFilter = { standalone: true, serial: true };
+  state.hiddenTags = new Set();
+  localStorage.removeItem('sinverse_hidden_tags');
+  document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.add('active'); });
+  document.querySelectorAll('.type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
+  applyFilters();
+}
+
 function applyFilters() {
+  var charFilter = window._charFilter || null;
   var q = state.query.toLowerCase();
 
   if (state.tab === 'collections') {
@@ -79,12 +117,16 @@ function applyFilters() {
 
   // Stories tab -- show standalone and serials, never raw collection entries
   var filtered = state.stories.filter(function(item) {
-    if (state.typeFilter !== 'all' && item.type !== state.typeFilter) return false;
-    if (state.tagFilter && !(item.tags || []).includes(state.tagFilter)) return false;
+    if (!state.typeFilter[item.type]) return false;
+    if (state.hiddenTags.size && (item.tags || []).some(function(t){ return state.hiddenTags.has(t); })) return false;
+    if (charFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(charFilter)) return false;
     if (q) {
-      var inTitle  = (item.title  || '').toLowerCase().includes(q);
-      var inAuthor = (item.author || '').toLowerCase().includes(q);
-      if (!inTitle && !inAuthor) return false;
+      var modes = getActiveModes();
+      var inTitle  = modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q);
+      var inAuthor = modes.indexOf('author')    > -1 && (item.author || '').toLowerCase().includes(q);
+      var inChar   = modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); });
+      var inTag    = modes.indexOf('tag')       > -1 && (item.tags || []).some(function(t){ return t.toLowerCase().includes(q); });
+      if (!inTitle && !inAuthor && !inChar && !inTag) return false;
     }
     return true;
   });
@@ -179,6 +221,7 @@ function openCollectionOverlay(col, members) {
   if (!members.length) {
     list.innerHTML = '<p class="lib-empty">No stories in this collection yet.</p>';
   } else {
+    resetSearch();
     members.forEach(function(item) {
       var row = document.createElement('a');
       var words = totalWords(item);
@@ -361,10 +404,14 @@ document.getElementById('tab-stories').addEventListener('click', function() {
   document.getElementById('search-input').value = '';
   document.querySelectorAll('.lib-tab').forEach(function(t) { t.classList.remove('active'); });
   this.classList.add('active');
-  document.getElementById('search-input').placeholder = 'Search by title or author...';
-  document.getElementById('story-controls').style.display = '';
-  document.getElementById('story-tag-row').style.display = '';
-  document.getElementById('story-view-toggle').style.display = '';
+  document.getElementById('search-input').placeholder = 'Search…';
+  // Restore filter controls
+  var fp = document.getElementById('filter-panel');
+  if (fp) { fp.style.display = ''; }
+  var ftb = document.getElementById('filter-toggle-btn');
+  if (ftb) ftb.style.display = '';
+  var rb = document.querySelector('.results-bar');
+  if (rb) rb.style.display = '';
   applyFilters();
 });
 
@@ -375,9 +422,13 @@ document.getElementById('tab-collections').addEventListener('click', function() 
   document.querySelectorAll('.lib-tab').forEach(function(t) { t.classList.remove('active'); });
   this.classList.add('active');
   document.getElementById('search-input').placeholder = 'Search collections...';
-  document.getElementById('story-controls').style.display = 'none';
-  document.getElementById('story-tag-row').style.display = 'none';
-  document.getElementById('story-view-toggle').style.display = 'none';
+  // Hide all filter controls — collections only searched by title
+  var fp = document.getElementById('filter-panel');
+  if (fp) { fp.classList.remove('open'); fp.style.display = 'none'; }
+  var ftb = document.getElementById('filter-toggle-btn');
+  if (ftb) ftb.style.display = 'none';
+  var rb = document.querySelector('.results-bar');
+  if (rb) rb.style.display = 'none';
   applyFilters();
 });
 
@@ -397,16 +448,42 @@ document.getElementById('view-grid-btn').addEventListener('click', function() {
 });
 
 // -- Search and filters
+
+// -- Filter panel toggle
+var filterToggleBtn = document.getElementById('filter-toggle-btn');
+var filterPanel = document.getElementById('filter-panel');
+if (filterToggleBtn && filterPanel) {
+  filterToggleBtn.addEventListener('click', function() {
+    var open = filterPanel.classList.toggle('open');
+    filterToggleBtn.textContent = open ? 'Filters ▴' : 'Filters ▾';
+  });
+}
+
+document.getElementById('search-clear-btn').addEventListener('click', resetSearch);
+
 document.getElementById('search-input').addEventListener('input', function() {
   state.query = this.value.trim();
   applyFilters();
 });
 
+document.getElementById('search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { state.query = this.value.trim(); applyFilters(); }
+  if (e.key === 'Escape') resetSearch();
+});
+
+document.querySelectorAll('.search-mode-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    this.classList.toggle('active');
+    applyFilters();
+  });
+});
+
 document.getElementById('type-filters').addEventListener('click', function(e) {
-  if (!e.target.classList.contains('filter-btn')) return;
-  state.typeFilter = e.target.getAttribute('data-value');
-  document.querySelectorAll('#type-filters .filter-btn').forEach(function(b) { b.classList.remove('active'); });
-  e.target.classList.add('active');
+  var btn = e.target.closest('.type-toggle-btn');
+  if (!btn) return;
+  var type = btn.getAttribute('data-type');
+  state.typeFilter[type] = !state.typeFilter[type];
+  btn.classList.toggle('active', state.typeFilter[type]);
   applyFilters();
 });
 
@@ -416,3 +493,4 @@ document.getElementById('sort-select').addEventListener('change', function() {
 });
 
 init();
+

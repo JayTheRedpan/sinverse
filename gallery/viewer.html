@@ -23,30 +23,26 @@
 
   <!-- ── COMIC READER ─────────────────────────── -->
   <div id="view-comic" class="view-panel" style="display:none">
-    <div class="comic-synopsis-wrap" id="comic-synopsis-wrap">
-      <div class="comic-synopsis-box">
-        <div class="comic-meta-header">
-          <span id="comic-type-badge" class="type-badge type-comic">Comic</span>
-          <span id="comic-canonical" class="canonical-badge" style="display:none">&#10022; Canonical</span>
+    <div class="comic-reader-layout">
+      <div class="comic-page-col">
+        <div class="comic-page-wrap">
+          <img id="comic-page-img" src="" alt="Comic page" class="comic-page-img" />
         </div>
-        <h1 id="comic-title" class="viewer-h1"></h1>
-        <p id="comic-artist" class="viewer-artist"></p>
-        <div id="comic-tags" class="viewer-tags"></div>
-        <p id="comic-synopsis" class="viewer-synopsis"></p>
-        <button id="comic-start-btn" class="btn-primary">Read now</button>
+        <div class="comic-controls">
+          <button id="comic-prev" class="btn-ghost comic-nav-btn">&#8592; Prev</button>
+          <span id="comic-page-counter" class="comic-counter"></span>
+          <button id="comic-next" class="btn-ghost comic-nav-btn">Next &#8594;</button>
+        </div>
       </div>
-    </div>
-
-    <div class="comic-reader-wrap" id="comic-reader-wrap" style="display:none">
-      <div class="comic-page-wrap">
-        <img id="comic-page-img" src="" alt="Comic page" class="comic-page-img" />
-      </div>
-      <div class="comic-controls">
-        <button id="comic-prev" class="btn-ghost comic-nav-btn">&#8592; Prev</button>
-        <span id="comic-page-counter" class="comic-counter"></span>
-        <button id="comic-next" class="btn-ghost comic-nav-btn">Next &#8594;</button>
-      </div>
-      <button id="comic-back-synopsis" class="btn-ghost comic-back-btn">&#8592; Back to synopsis</button>
+      <aside class="scene-meta-panel comic-meta-panel">
+        <span class="type-badge type-comic">Comic</span>
+        <span id="comic-canonical-reader" class="canonical-badge" style="display:none">&#10022; Canonical</span>
+        <h1 id="comic-title-reader" class="viewer-h1"></h1>
+        <p id="comic-artist-reader" class="viewer-artist"></p>
+        <div id="comic-tags-reader" class="viewer-tags"></div>
+        <p id="comic-synopsis-reader" class="viewer-synopsis"></p>
+        <div id="comic-characters-reader" class="viewer-characters"></div>
+      </aside>
     </div>
   </div>
 

@@ -27,34 +27,52 @@
   </header>
 
   <div class="gallery-controls">
-    <input id="search-input" class="search-input" type="text" placeholder="Search by title or artist..." aria-label="Search gallery" />
+    <div class="search-bar-row">
+      <input id="search-input" class="search-input" type="text" placeholder="Search…" aria-label="Search gallery" />
+      <button id="search-clear-btn" class="search-clear-btn" title="Clear search and reset filters">✕ Clear</button>
+      <button id="filter-toggle-btn" class="filter-toggle-btn" title="Show/hide filters">Filters ▾</button>
+    </div>
+    <div id="filter-panel" class="filter-panel">
+    <div class="filter-row">
+      <div class="filter-group">
+        <span class="filter-group-label">Search</span>
+        <div class="search-mode-toggles">
+          <button class="search-mode-btn active" data-mode="title"     title="Search titles">Title</button>
+          <button class="search-mode-btn active" data-mode="artist"    title="Search artists">Artist</button>
+          <button class="search-mode-btn active" data-mode="character" title="Search characters">Character</button>
+        </div>
+      </div>
+    </div>
 
     <div class="filter-row">
       <div class="filter-group">
         <span class="filter-group-label">Type</span>
         <div class="filter-btns" id="type-filters">
-          <button class="filter-btn active" data-filter="type" data-value="all">All</button>
-          <button class="filter-btn" data-filter="type" data-value="comic">Comics</button>
-          <button class="filter-btn" data-filter="type" data-value="scene">World Scenes</button>
-          <button class="filter-btn" data-filter="type" data-value="charref">Character Refs</button>
+          <button class="type-toggle-btn active" data-type="comic">Comics</button>
+          <button class="type-toggle-btn active" data-type="scene">World Scenes</button>
         </div>
       </div>
-      </div>
-
+    </div>
+    <div class="filter-row">
       <div class="filter-group">
-        <span class="filter-group-label">Sort</span>
-        <select id="sort-select" class="sort-select">
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-          <option value="title">Title A–Z</option>
-          <option value="artist">Artist A–Z</option>
-        </select>
+        <span class="filter-group-label">Tags</span>
+        <div id="tag-filters" class="tag-filter-row"></div>
       </div>
     </div>
-
-    <div id="tag-filters" class="tag-filter-row"></div>
+    </div><!-- /filter-panel -->
   </div>
 
+  <div class="results-bar">
+    <div class="results-sort">
+      <label class="results-sort-label" for="sort-select">Sort:</label>
+      <select id="sort-select" class="sort-select-inline">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title">Title A–Z</option>
+        <option value="artist">Artist A–Z</option>
+      </select>
+    </div>
+  </div>
   <div id="gallery-grid" class="gallery-grid">
     <div class="loading-placeholder">Loading gallery...</div>
   </div>

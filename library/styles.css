@@ -72,6 +72,7 @@
   flex-wrap: wrap;
   gap: 1.5rem;
   align-items: center;
+  padding: 0.5rem 0;
 }
 
 .filter-group {
@@ -88,6 +89,7 @@
   text-transform: uppercase;
   color: var(--text-muted);
   flex-shrink: 0;
+  width: 3.5rem;
 }
 
 .filter-btns { display: flex; gap: 0.35rem; flex-wrap: wrap; }
@@ -386,7 +388,7 @@
    READER
    =============================================== */
 
-.reader-body { display: flex; flex-direction: column; min-height: 100vh; }
+.reader-body { display: flex; flex-direction: column; min-height: 100vh; overflow-x: hidden; }
 
 .reader-topbar {
   position: sticky; top: 0;
@@ -564,6 +566,9 @@
   flex-direction: column;
   gap: 2.5rem;
   max-width: 800px;
+  width: 100%;
+  box-sizing: border-box;
+  overflow-x: hidden;
 }
 
 .reader-chapter-header {
@@ -698,7 +703,7 @@
   .reader-chapters { width: 100%; border-top: 1px solid var(--border); padding-top: 0.75rem; }
   .reader-chapter-list { max-height: 140px; }
   .reader-progress-wrap { width: 100%; }
-  .reader-main { padding: 1.5rem; }
+  .reader-main { padding: 1.25rem; }
   .chapter-nav-btn { min-width: 120px; }
 }
 
@@ -706,6 +711,16 @@
   .lib-grid { grid-template-columns: 1fr 1fr; }
   .reader-sidebar { flex-direction: column; }
   .reader-cover { width: 100%; }
+}
+@media (max-width: 600px) {
+  .reader-content p:first-child::first-letter {
+    font-size: 2em;
+  }
+  .reader-content {
+    font-size: 1rem;
+    word-break: break-word;
+    overflow-wrap: break-word;
+  }
 }
 
 /* -- Filter bottom row ------------------------ */
@@ -923,12 +938,6 @@
 .lib-tab.active { color: var(--accent); border-bottom-color: var(--accent); }
 
 /* -- Controls top row -------------------------- */
-.lib-controls-top {
-  display: flex;
-  align-items: center;
-  gap: 1rem;
-}
-
 /* -- Collection cards in collections tab ------- */
 .lib-collection-card {
   background: var(--bg-card);
@@ -1046,4 +1055,184 @@
   letter-spacing: 0.1em;
   color: var(--text-muted);
   margin-top: 0.2rem;
+}
+
+.csr-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.3rem;
+}
+
+/* ── Library search row ─────────────────────────────────────── */
+.lib-search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 520px;
+}
+.lib-search-row .search-input {
+  flex: 1;
+  max-width: none;
+}
+
+/* ── Search mode + type toggle buttons ─────────────────────── */
+.search-mode-toggles {
+  display: flex;
+  gap: 0.25rem;
+  flex-wrap: wrap;
+}
+.search-mode-btn,
+.type-toggle-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-caps);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.search-mode-btn.active,
+.type-toggle-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-panel);
+}
+.search-mode-btn:hover:not(.active),
+.type-toggle-btn:hover:not(.active) {
+  border-color: var(--border-mid);
+  color: var(--text-secondary);
+}
+
+/* ── Filter panel (collapsible) ─────────────────────────────── */
+.filter-panel { display: none; flex-direction: column; gap: 0; }
+.filter-panel.open { display: flex; }
+
+/* ── Filter group label fixed width for alignment ───────────── */
+.filter-group-label {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  width: 3.5rem;
+}
+
+/* ── Clear / Filter toggle buttons ─────────────────────────── */
+.search-clear-btn,
+.filter-toggle-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.search-clear-btn:hover,
+.filter-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Tag filter buttons ─────────────────────────────────────── */
+.tag-filter-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.65rem;
+  font-family: var(--font-caps);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.tag-filter-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-panel);
+}
+.tag-filter-btn:hover:not(.active) {
+  border-color: var(--border-mid);
+  color: var(--text-secondary);
+}
+
+/* ── Results bar ─────────────────────────────────────────────── */
+.results-bar {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.6rem 3rem;
+  background: var(--bg);
+  border-bottom: 1px solid var(--border);
+}
+.results-count {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.results-sort {
+  margin-left: auto;
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.results-sort-label {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.sort-select-inline {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  font-weight: 400;
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+}
+.sort-select-inline:focus { border-color: var(--accent); }
+.results-bar .view-toggle { display: flex; gap: 0.25rem; margin-left: 0.75rem; }
+
+/* View toggle buttons */
+#story-view-toggle .view-toggle-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-caps);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+#story-view-toggle .view-toggle-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-panel);
+}
+
+@media (max-width: 600px) {
+  .results-bar { flex-wrap: wrap; gap: 0.5rem; padding: 0.6rem 1.25rem; }
+  .results-sort { margin-left: 0; }
+  .results-bar .view-toggle { margin-left: 0; }
+  .lib-controls { padding: 1rem 1.5rem; }
 }

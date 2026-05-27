@@ -1,53 +1,28 @@
 {
-  "cyoa": [
-    "toy",
-    "giantess"
+  "gallery": [
+    "noncon",
+    "snuff",
+    "gore",
+    "vore",
+    "watersports",
+    "scat",
+    "abuse",
+    "bdsm",
+    "micro"
   ],
   "story": [
-    "explicit",
-    "sensual",
-    "dubcon",
-    "non-con",
-    "bdsm",
-    "bondage",
-    "dominance",
-    "submission",
-    "violence",
-    "character death",
-    "body horror",
+    "noncon",
+    "snuff",
     "gore",
-    "dark themes",
-    "trauma",
-    "psychological",
-    "size difference"
-  ],
-  "gallery": [
-    "explicit",
-    "sensual",
-    "nudity",
-    "romance",
+    "vore",
+    "watersports",
+    "scat",
+    "abuse",
     "bdsm",
-    "size difference",
-    "macro",
-    "micro",
-    "violence",
-    "dark themes",
-    "body horror",
-    "gore",
-    "action",
-    "portrait",
-    "landscape",
-    "group"
+    "micro"
   ],
-  "character": [
-    "macro",
-    "micro",
-    "size difference",
-    "human",
-    "non-human",
-    "original character",
-    "canon",
-    "protagonist",
-    "antagonist"
+  "cyoa": [
+    "giantess",
+    "toy"
   ]
 }
