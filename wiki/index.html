@@ -9,153 +9,999 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css" />
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
+
     body {
       background: var(--bg);
       color: var(--text-primary);
       font-family: var(--font-body);
       min-height: 100vh;
+    }
+
+    /* ── Layout ── */
+    .wiki-app {
+      display: grid;
+      grid-template-columns: 280px 1fr;
+      grid-template-rows: auto 1fr;
+      min-height: 100vh;
+    }
+
+    /* ── Top bar ── */
+    .wiki-topbar {
+      grid-column: 1 / -1;
+      background: var(--bg-panel);
+      border-bottom: 1px solid var(--border);
       display: flex;
-      flex-direction: column;
       align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      overflow: hidden;
+      gap: 1.5rem;
+      padding: 0.75rem 2rem;
     }
-
-    .wip-wrap {
-      text-align: center;
-      max-width: 560px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .wip-nav {
-      position: absolute;
-      top: -3.5rem;
-      left: 0;
-    }
-    .wip-nav a {
+    .wiki-topbar-logo {
       font-family: var(--font-caps);
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .wip-nav a:hover { color: var(--accent); }
-
-    .wip-portrait-wrap {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1px solid var(--border-mid);
-      margin-bottom: 2rem;
-      background: var(--bg-inset);
-    }
-    .wip-portrait {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
-      filter: invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88);
-      display: block;
-    }
-
-    .wip-eyebrow {
-      font-family: var(--font-caps);
-      font-size: 0.62rem;
+      font-size: 0.65rem;
       letter-spacing: 0.22em;
       text-transform: uppercase;
       color: var(--accent);
-      margin-bottom: 1.25rem;
+      text-decoration: none;
     }
-
-    .wip-title {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(2rem, 6vw, 3rem);
-      font-weight: 300;
-      color: var(--text-primary);
-      line-height: 1.15;
-      margin-bottom: 1.5rem;
-    }
-
-    .wip-divider {
-      width: 48px;
-      height: 1px;
-      background: var(--border-mid);
-      margin-bottom: 1.75rem;
-    }
-
-    .wip-body {
-      font-family: var(--font-body);
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-    .wip-body em {
-      font-style: italic;
-      color: var(--accent-light);
-    }
-
-    .wip-sub {
+    .wiki-topbar-sep { color: var(--border-mid); }
+    .wiki-topbar-title {
       font-family: var(--font-caps);
       font-size: 0.65rem;
-      letter-spacing: 0.14em;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
       color: var(--text-secondary);
     }
+    .wiki-search {
+      margin-left: auto;
+      background: var(--bg-inset);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.35rem 0.85rem;
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-primary);
+      outline: none;
+      width: 220px;
+      transition: border-color 0.2s;
+    }
+    .wiki-search:focus { border-color: var(--accent); }
+    .wiki-search::placeholder { color: var(--text-muted); }
 
-    .wip-dots { display: inline-block; }
-    .wip-dots span { animation: blink 1.4s infinite; opacity: 0; }
-    .wip-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .wip-dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink {
-      0%, 80%, 100% { opacity: 0; }
-      40% { opacity: 1; }
+    /* ── Sidebar ── */
+    .wiki-sidebar {
+      background: var(--bg-panel);
+      border-right: 1px solid var(--border);
+      overflow-y: auto;
+      padding: 1.5rem 0;
+    }
+    .wiki-nav-section { margin-bottom: 0.25rem; }
+    .wiki-nav-heading {
+      font-family: var(--font-caps);
+      font-size: 0.55rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 0.5rem 1.5rem 0.25rem;
+    }
+    .wiki-nav-link {
+      display: block;
+      padding: 0.4rem 1.5rem;
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      text-decoration: none;
+      transition: all 0.15s;
+      border-left: 2px solid transparent;
+      cursor: pointer;
+    }
+    .wiki-nav-link:hover { color: var(--text-primary); background: var(--bg-inset); }
+    .wiki-nav-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--bg-inset); }
+    .wiki-nav-divider { border: none; border-top: 1px solid var(--border); margin: 0.75rem 1.5rem; }
+
+    /* ── Main content ── */
+    .wiki-main {
+      overflow-y: auto;
+      padding: 3rem 4rem;
+      max-width: 860px;
     }
 
-    .corner { position: fixed; width: 80px; height: 80px; opacity: 0.15; }
-    .corner::before, .corner::after { content: ''; position: absolute; background: var(--accent); }
-    .corner::before { width: 1px; height: 100%; }
-    .corner::after  { width: 100%; height: 1px; }
-    .corner.tl { top: 2rem; left: 2rem; }
-    .corner.tr { top: 2rem; right: 2rem; transform: scaleX(-1); }
-    .corner.bl { bottom: 2rem; left: 2rem; transform: scaleY(-1); }
-    .corner.br { bottom: 2rem; right: 2rem; transform: scale(-1); }
+    /* ── Page sections ── */
+    .wiki-page { display: none; }
+    .wiki-page.active { display: block; }
+
+    /* ── World intro ── */
+    .wiki-intro-eyebrow {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+    }
+    .wiki-intro-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 3rem;
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 1.5rem;
+    }
+    .wiki-intro-lead {
+      font-family: var(--font-body);
+      font-size: 1.15rem;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 2.5rem;
+      border-left: 2px solid var(--accent);
+      padding-left: 1.25rem;
+    }
+    .wiki-section-title {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.2em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin-bottom: 1rem;
+      padding-bottom: 0.5rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .wiki-lore-body {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 1.5rem;
+    }
+    .wiki-lore-body + .wiki-section-title { margin-top: 2.5rem; }
+
+    /* ── Lore cards ── */
+    .wiki-lore-cards {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(240px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin-bottom: 2.5rem;
+    }
+    .wiki-lore-card {
+      background: var(--bg-panel);
+      padding: 1.25rem;
+    }
+    .wiki-lore-card-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+      margin-bottom: 0.5rem;
+    }
+    .wiki-lore-card-body {
+      font-family: var(--font-body);
+      font-size: 0.88rem;
+      color: var(--text-secondary);
+      line-height: 1.65;
+    }
+
+    /* ── Timeline ── */
+    .wiki-timeline-wrap {
+      position: relative;
+      overflow-x: auto;
+      padding: 2rem 0 1rem;
+      margin-bottom: 2.5rem;
+    }
+    .wiki-timeline-track {
+      display: flex;
+      align-items: flex-start;
+      gap: 0;
+      min-width: max-content;
+      position: relative;
+      padding-bottom: 2rem;
+    }
+    .wiki-timeline-line {
+      position: absolute;
+      top: 22px;
+      left: 0;
+      right: 0;
+      height: 1px;
+      background: var(--border-mid);
+      z-index: 0;
+    }
+    .wiki-timeline-event {
+      position: relative;
+      z-index: 1;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 180px;
+      flex-shrink: 0;
+      cursor: pointer;
+    }
+    .wiki-timeline-event.anchor .wiki-tl-dot {
+      background: var(--accent);
+      width: 14px;
+      height: 14px;
+      box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent);
+    }
+    .wiki-tl-dot {
+      width: 10px;
+      height: 10px;
+      border-radius: 50%;
+      background: var(--border-mid);
+      border: 1px solid var(--accent);
+      margin-bottom: 0.75rem;
+      transition: background 0.2s;
+    }
+    .wiki-timeline-event:hover .wiki-tl-dot { background: var(--accent); }
+    .wiki-tl-date {
+      font-family: var(--font-caps);
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 0.3rem;
+      text-align: center;
+    }
+    .wiki-tl-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.92rem;
+      color: var(--text-primary);
+      text-align: center;
+      line-height: 1.3;
+      padding: 0 0.5rem;
+    }
+
+    /* Timeline detail panel */
+    .wiki-tl-detail {
+      display: none;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-mid);
+      border-radius: var(--radius);
+      padding: 1.25rem 1.5rem;
+      margin-top: 1.5rem;
+    }
+    .wiki-tl-detail.open { display: block; }
+    .wiki-tl-detail-date {
+      font-family: var(--font-caps);
+      font-size: 0.56rem;
+      letter-spacing: 0.14em;
+      color: var(--accent);
+      margin-bottom: 0.4rem;
+    }
+    .wiki-tl-detail-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.3rem;
+      color: var(--text-primary);
+      margin-bottom: 0.75rem;
+    }
+    .wiki-tl-detail-body {
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+    }
+    .wiki-tl-detail-close {
+      float: right;
+      background: none;
+      border: none;
+      color: var(--text-muted);
+      cursor: pointer;
+      font-size: 0.8rem;
+      margin-top: -0.2rem;
+    }
+
+    /* ── Character index ── */
+    .wiki-char-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
+      gap: 1px;
+      background: var(--border);
+    }
+    .wiki-char-card {
+      background: var(--bg-panel);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 1.25rem 1rem 1rem;
+      cursor: pointer;
+      transition: background 0.15s;
+      text-decoration: none;
+    }
+    .wiki-char-card:hover { background: var(--bg-inset); }
+    .wiki-char-portrait {
+      width: 72px;
+      height: 72px;
+      border-radius: 50%;
+      object-fit: cover;
+      border: 1px solid var(--border-mid);
+      margin-bottom: 0.65rem;
+    }
+    .wiki-char-name {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1rem;
+      color: var(--text-primary);
+      text-align: center;
+      margin-bottom: 0.2rem;
+    }
+    .wiki-char-species {
+      font-family: var(--font-caps);
+      font-size: 0.52rem;
+      letter-spacing: 0.1em;
+      color: var(--text-muted);
+    }
+    .wiki-char-tag {
+      display: inline-block;
+      font-family: var(--font-caps);
+      font-size: 0.48rem;
+      letter-spacing: 0.08em;
+      padding: 0.15rem 0.4rem;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-muted);
+      margin-top: 0.4rem;
+    }
+
+    /* ── Character page ── */
+    .wiki-char-header {
+      display: flex;
+      gap: 2rem;
+      margin-bottom: 2.5rem;
+      align-items: flex-start;
+    }
+    .wiki-char-hero {
+      width: 200px;
+      flex-shrink: 0;
+      border-radius: var(--radius);
+      border: 1px solid var(--border-mid);
+      overflow: hidden;
+    }
+    .wiki-char-hero img {
+      width: 100%;
+      display: block;
+      object-fit: cover;
+    }
+    .wiki-char-hero-placeholder {
+      width: 200px;
+      height: 280px;
+      background: var(--bg-inset);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.85rem;
+      color: var(--text-muted);
+    }
+    .wiki-char-meta { flex: 1; }
+    .wiki-char-meta-name {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 2.5rem;
+      font-weight: 300;
+      color: var(--text-primary);
+      line-height: 1.1;
+      margin-bottom: 0.5rem;
+    }
+    .wiki-char-meta-sub {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      color: var(--text-muted);
+      margin-bottom: 1.5rem;
+    }
+    .wiki-stat-table {
+      width: 100%;
+      border-collapse: collapse;
+      font-family: var(--font-body);
+      font-size: 0.9rem;
+      margin-bottom: 1rem;
+    }
+    .wiki-stat-table tr { border-bottom: 1px solid var(--border); }
+    .wiki-stat-table tr:last-child { border-bottom: none; }
+    .wiki-stat-table td:first-child {
+      color: var(--text-muted);
+      padding: 0.4rem 1rem 0.4rem 0;
+      width: 110px;
+      font-family: var(--font-caps);
+      font-size: 0.56rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      vertical-align: top;
+      padding-top: 0.5rem;
+    }
+    .wiki-stat-table td:last-child {
+      color: var(--text-primary);
+      padding: 0.4rem 0;
+    }
+
+    /* Rendered markdown */
+    .wiki-md-content h2 {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--text-primary);
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
+    .wiki-md-content h3 {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 1.5rem 0 0.5rem;
+    }
+    .wiki-md-content p {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.85;
+      margin-bottom: 1rem;
+    }
+    .wiki-md-content ul {
+      padding-left: 1.25rem;
+      margin-bottom: 1rem;
+    }
+    .wiki-md-content li {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-secondary);
+      line-height: 1.75;
+      margin-bottom: 0.25rem;
+    }
+    .wiki-md-content em { font-style: italic; }
+    .wiki-md-content strong { font-weight: 600; color: var(--text-primary); }
+    .wiki-md-content table {
+      width: 100%;
+      border-collapse: collapse;
+      margin-bottom: 1.5rem;
+      font-size: 0.9rem;
+    }
+    .wiki-md-content th {
+      font-family: var(--font-caps);
+      font-size: 0.55rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+      padding: 0.5rem 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid var(--border);
+    }
+    .wiki-md-content td {
+      padding: 0.5rem 0.75rem;
+      color: var(--text-secondary);
+      border-bottom: 1px solid var(--border);
+      font-family: var(--font-body);
+      line-height: 1.6;
+    }
+
+    .wiki-back-btn {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--font-caps);
+      font-size: 0.58rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      cursor: pointer;
+      margin-bottom: 2rem;
+      background: none;
+      border: none;
+      padding: 0;
+      transition: color 0.2s;
+    }
+    .wiki-back-btn:hover { color: var(--accent); }
+
+    /* ── Tags ── */
+    .wiki-tag-filter {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.4rem;
+      margin-bottom: 1.5rem;
+    }
+    .wiki-tag-pill {
+      font-family: var(--font-caps);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.65rem;
+      border: 1px solid var(--border);
+      border-radius: 99px;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: all 0.15s;
+      background: transparent;
+    }
+    .wiki-tag-pill:hover, .wiki-tag-pill.active {
+      border-color: var(--accent);
+      color: var(--accent);
+      background: var(--bg-inset);
+    }
+
+    @media (max-width: 768px) {
+      .wiki-app { grid-template-columns: 1fr; }
+      .wiki-sidebar { display: none; }
+      .wiki-main { padding: 2rem 1.5rem; max-width: 100%; }
+      .wiki-char-header { flex-direction: column; }
+      .wiki-char-hero, .wiki-char-hero-placeholder { width: 100%; height: auto; }
+    }
   </style>
 </head>
 <body>
+<div class="wiki-app">
 
-<div class="corner tl"></div>
-<div class="corner tr"></div>
-<div class="corner bl"></div>
-<div class="corner br"></div>
+  <!-- Top bar -->
+  <header class="wiki-topbar">
+    <a class="wiki-topbar-logo" href="../">Sinverse</a>
+    <span class="wiki-topbar-sep">›</span>
+    <span class="wiki-topbar-title">Wiki</span>
+    <input class="wiki-search" type="search" placeholder="Search wiki…" id="wiki-search-input" />
+  </header>
 
-<div class="wip-wrap">
-  <nav class="wip-nav"><a href="../">← Back to Sinverse</a></nav>
+  <!-- Sidebar -->
+  <nav class="wiki-sidebar">
+    <div class="wiki-nav-section">
+      <div class="wiki-nav-heading">Getting Started</div>
+      <a class="wiki-nav-link active" data-page="intro">World of Sinverse</a>
+      <a class="wiki-nav-link" data-page="timeline">Timeline</a>
+    </div>
+    <hr class="wiki-nav-divider" />
+    <div class="wiki-nav-section">
+      <div class="wiki-nav-heading">Characters</div>
+      <div id="sidebar-chars"></div>
+    </div>
+    <hr class="wiki-nav-divider" />
+    <div id="sidebar-lore"></div>
+    <hr class="wiki-nav-divider" />
+    <div class="wiki-nav-section">
+      <div class="wiki-nav-heading">Browse</div>
+      <a class="wiki-nav-link" data-page="characters">All Characters</a>
+    </div>
+  </nav>
 
-  <!-- TODO: replace src with Jay's profile_image from characters.json once uploaded -->
-  <div class="wip-portrait-wrap">
-    <img class="wip-portrait" src="https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png" alt="Jay" />
-  </div>
+  <!-- Main -->
+  <main class="wiki-main" id="wiki-main">
 
-  <div class="wip-eyebrow">Wiki</div>
+    <!-- World intro -->
+    <section class="wiki-page active" id="page-intro">
+      <div class="wiki-intro-eyebrow">Setting Overview</div>
+      <h1 class="wiki-intro-title">The World of<br>Sinverse</h1>
+      <p class="wiki-intro-lead">
+        Sinverse is an anthropomorphic world — populated primarily by furry species alongside a small human minority — forever changed by a single act of calculated genius. A bunny named Sin unleashed a serum that transformed not just bodies, but the very fabric of society. What followed was not the end of the world, but the beginning of a new one.
+      </p>
 
-  <h1 class="wip-title">Jay is hard at work on this one<span class="wip-dots"><span>.</span><span>.</span><span>.</span></span></h1>
+      <div class="wiki-section-title">The Apotheosis Serum</div>
+      <p class="wiki-lore-body">Developed in secret by Sin during her time as a research scientist, the Apotheosis Serum affects only biological females. Its effects are dramatic and permanent: exponential physical growth (typically 9–12ft, with rare cases reaching macro scale beyond 100ft), a powerful and healthy physique, the replacement of female genitalia with male genitalia, a dramatic suppression of empathy, and an equally dramatic surge in libido. Sin administered it to herself first, emerging as a 12ft giantess — and saw only potential.</p>
 
-  <div class="wip-divider"></div>
+      <div class="wiki-section-title">TDay — Transformation Day</div>
+      <p class="wiki-lore-body">Working behind the scenes, Sin seized control of her research lab, rebranded it as SinCorp, and spent years mass-producing her serum. Then, in a coordinated act spanning the entire globe, she released it. Water supplies, air dispersal, distribution networks — all weaponised simultaneously. Women across the world began to change. The chaos that followed lasted weeks. The world that emerged from it would last forever.</p>
 
-  <p class="wip-body">The Sinverse wiki is <em>coming soon</em> — character lore, world-building, faction histories, and more are all being compiled and organised. Check back again before long.</p>
+      <div class="wiki-section-title">The New World</div>
+      <div class="wiki-lore-cards">
+        <div class="wiki-lore-card">
+          <div class="wiki-lore-card-title">The Mega-Cities</div>
+          <div class="wiki-lore-card-body">Purpose-built to accommodate giantess-scale inhabitants and their subordinates. Each city-state is ruled by a Matriarch who sets its culture and laws. The most powerful is Angora, where Sin herself resides.</div>
+        </div>
+        <div class="wiki-lore-card">
+          <div class="wiki-lore-card-title">The Wilds</div>
+          <div class="wiki-lore-card-body">The land between mega-cities, reclaimed by nature. Macro-level women — too large for city life, their cognition sometimes affected by their extreme scale — roam vast territories here, hunting "toys" for sport and company.</div>
+        </div>
+        <div class="wiki-lore-card">
+          <div class="wiki-lore-card-title">Toys</div>
+          <div class="wiki-lore-card-body">The derogatory term for males in this world. Not citizens — property. Most are kept as slaves or objects within the mega-cities. Some escape to the Wilds, becoming known as Wild Toys.</div>
+        </div>
+        <div class="wiki-lore-card">
+          <div class="wiki-lore-card-title">The Resistance</div>
+          <div class="wiki-lore-card-body">A guerilla coalition of empathy-retaining women and escaped toys. Operating in self-contained cells with no central leadership, they work to smuggle males out of the mega-cities.</div>
+        </div>
+      </div>
 
-  <p class="wip-sub">Work in progress &nbsp;·&nbsp; Thank you for your patience</p>
+      <div class="wiki-section-title">Content & Tone</div>
+      <p class="wiki-lore-body">Sinverse is an adult creative universe exploring themes of power, transformation, dominance, and size difference. Content on this wiki and associated works contains mature themes including explicit sexuality, size kink, macro/micro dynamics, and non-consensual scenarios presented in a fantasy context. All characters depicted are adults.</p>
+    </section>
+
+    <!-- Timeline -->
+    <section class="wiki-page" id="page-timeline">
+      <div class="wiki-intro-eyebrow">Sinverse History</div>
+      <h1 class="wiki-intro-title">Timeline</h1>
+      <p class="wiki-lore-body" style="margin-bottom:2rem">All dates are measured relative to TDay — the day Sin's serum was released upon the world. <strong style="color:var(--text-primary)">BT</strong> (Before TDay) counts backwards; <strong style="color:var(--text-primary)">AT</strong> (After TDay) counts forwards. Click any event to expand it.</p>
+      <div id="timeline-container"></div>
+    </section>
+
+    <!-- Characters index -->
+    <section class="wiki-page" id="page-characters">
+      <div class="wiki-intro-eyebrow">Sinverse</div>
+      <h1 class="wiki-intro-title">Characters</h1>
+      <div class="wiki-tag-filter" id="char-tag-filter"></div>
+      <div class="wiki-char-grid" id="char-grid"></div>
+    </section>
+
+    <!-- Lore detail (dynamic) -->
+    <section class="wiki-page" id="page-lore">
+      <button class="wiki-back-btn" id="lore-back-btn">← Back</button>
+      <div id="lore-detail-content"></div>
+    </section>
+
+    <!-- Character detail (dynamic) -->
+    <section class="wiki-page" id="page-character">
+      <button class="wiki-back-btn" id="char-back-btn">← Back to Characters</button>
+      <div id="char-detail-content"></div>
+    </section>
+
+  </main>
 </div>
 
+<script>
+// ── State ──────────────────────────────────────────────────────
+var characters = [];
+var timelineEvents = [];
+var currentCharSlug = null;
+var activeTagFilter = null;
+
+var LORE_PAGES = [
+  { id: 'apotheosis-serum',  label: 'The Apotheosis Serum', section: 'Concepts' },
+  { id: 'tday',              label: 'TDay',                 section: 'History' },
+  { id: 'sincorp',           label: 'SinCorp',              section: 'Organisations' },
+  { id: 'the-resistance',    label: 'The Resistance',       section: 'Organisations' },
+  { id: 'angora',            label: 'Angora',               section: 'Locations' },
+  { id: 'mega-cities',       label: 'The Mega-Cities',      section: 'Locations' },
+  { id: 'the-wilds',         label: 'The Wilds',            section: 'Locations' },
+  { id: 'toys',              label: 'Toys',                 section: 'Concepts' },
+  { id: 'project-sylph',     label: 'Project Sylph',        section: 'Classified' },
+];
+
+// ── Navigation ────────────────────────────────────────────────
+function showPage(id) {
+  document.querySelectorAll('.wiki-page').forEach(function(p) { p.classList.remove('active'); });
+  document.querySelectorAll('.wiki-nav-link').forEach(function(l) { l.classList.remove('active'); });
+  var page = document.getElementById('page-' + id);
+  if (page) page.classList.add('active');
+  var link = document.querySelector('[data-page="' + id + '"]');
+  if (link) link.classList.add('active');
+}
+
+document.querySelectorAll('.wiki-nav-link[data-page]').forEach(function(link) {
+  link.addEventListener('click', function() {
+    showPage(this.getAttribute('data-page'));
+  });
+});
+
+document.getElementById('char-back-btn').addEventListener('click', function() {
+  showPage('characters');
+});
+
+// ── Load data ─────────────────────────────────────────────────
+function fH(inches) {
+  var ft = Math.floor(inches / 12), ins = Math.round(inches % 12);
+  return ft + "'" + ins + '"';
+}
+function fW(lbs) {
+  if (!lbs) return '—';
+  if (lbs >= 100000) return (lbs/2000).toFixed(1) + ' t';
+  return Math.round(lbs).toLocaleString() + ' lbs';
+}
+
+Promise.all([
+  fetch('../_data/characters.json').then(function(r){ return r.json(); }),
+  fetch('timeline.json').then(function(r){ return r.json(); })
+]).then(function(results) {
+  characters = results[0];
+  timelineEvents = results[1];
+  buildSidebar();
+  buildLoreSidebar();
+  buildTimeline();
+  buildCharGrid(characters);
+}).catch(function(e) {
+  console.error('Failed to load wiki data:', e);
+});
+
+// ── Lore sidebar ─────────────────────────────────────────────
+function buildLoreSidebar() {
+  var container = document.getElementById('sidebar-lore');
+  var sections = {};
+  LORE_PAGES.forEach(function(lp) {
+    if (!sections[lp.section]) sections[lp.section] = [];
+    sections[lp.section].push(lp);
+  });
+  Object.keys(sections).forEach(function(sec) {
+    var div = document.createElement('div');
+    div.className = 'wiki-nav-section';
+    var h = document.createElement('div');
+    h.className = 'wiki-nav-heading';
+    h.textContent = sec;
+    div.appendChild(h);
+    sections[sec].forEach(function(lp) {
+      var a = document.createElement('a');
+      a.className = 'wiki-nav-link';
+      a.textContent = lp.label;
+      a.addEventListener('click', function() { loadLorePage(lp.id); });
+      div.appendChild(a);
+    });
+    container.appendChild(div);
+  });
+}
+
+function loadLorePage(id) {
+  var lp = LORE_PAGES.find(function(p){ return p.id === id; });
+  if (!lp) return;
+  var container = document.getElementById('lore-detail-content');
+  container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;padding:2rem 0">Loading…</p>';
+  document.getElementById('lore-back-btn').setAttribute('data-prev', document.querySelector('.wiki-nav-link.active') ? document.querySelector('.wiki-nav-link.active').getAttribute('data-page') || 'intro' : 'intro');
+  showPage('lore');
+  // Highlight sidebar
+  document.querySelectorAll('.wiki-nav-link').forEach(function(l){ l.classList.remove('active'); });
+
+  fetch('lore/' + id + '.md')
+    .then(function(r){ return r.ok ? r.text() : null; })
+    .then(function(md) {
+      if (!md) {
+        container.innerHTML = '<p style="color:var(--text-muted);font-style:italic">No page found.</p>';
+        return;
+      }
+      // Strip frontmatter, extract title
+      var titleMatch = md.match(new RegExp('^title: *(.+)$', 'm'));
+      var title = titleMatch ? titleMatch[1].trim() : lp.label;
+      var stripped = md.replace(new RegExp('^---[^]*?---\n'), '');
+      // Replace [link](id) with clickable lore links
+      var linked = stripped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, text, target) {
+        return '<span class="wiki-lore-link" data-target="' + target + '">' + text + '</span>';
+      });
+      var body = '<div class="wiki-md-content">' + marked.parse(linked) + '</div>';
+      container.innerHTML =
+        '<div class="wiki-intro-eyebrow">' + (lp.section||'Lore') + '</div>' +
+        '<h1 class="wiki-intro-title">' + title + '</h1>' +
+        body;
+      // Wire lore links
+      container.querySelectorAll('.wiki-lore-link').forEach(function(el) {
+        el.style.cssText = 'color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--border-mid);';
+        el.addEventListener('click', function() {
+          var t = this.getAttribute('data-target');
+          var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
+          if (isLore) loadLorePage(t);
+          else {
+            var charId = parseInt(t);
+            if (!isNaN(charId)) loadCharPage(charId);
+          }
+        });
+      });
+    });
+}
+
+document.getElementById('lore-back-btn').addEventListener('click', function() {
+  showPage('intro');
+});
+
+// ── Sidebar character links ───────────────────────────────────
+function buildSidebar() {
+  var container = document.getElementById('sidebar-chars');
+  characters.filter(function(c){ return c.canonical; }).forEach(function(c) {
+    var a = document.createElement('a');
+    a.className = 'wiki-nav-link';
+    a.setAttribute('data-page', 'character');
+    a.setAttribute('data-char-id', c.id);
+    a.textContent = c.name;
+    a.addEventListener('click', function() {
+      loadCharPage(c.id);
+    });
+    container.appendChild(a);
+  });
+}
+
+// ── Timeline ──────────────────────────────────────────────────
+function buildTimeline() {
+  var container = document.getElementById('timeline-container');
+  var trackWrap = document.createElement('div');
+  trackWrap.className = 'wiki-timeline-wrap';
+
+  var track = document.createElement('div');
+  track.className = 'wiki-timeline-track';
+
+  var line = document.createElement('div');
+  line.className = 'wiki-timeline-line';
+  track.appendChild(line);
+
+  var detail = document.createElement('div');
+  detail.className = 'wiki-tl-detail';
+  detail.id = 'tl-detail';
+
+  var openId = null;
+
+  timelineEvents.forEach(function(ev) {
+    var node = document.createElement('div');
+    node.className = 'wiki-timeline-event' + (ev.era === 'anchor' ? ' anchor' : '');
+
+    var dot = document.createElement('div');
+    dot.className = 'wiki-tl-dot';
+
+    var date = document.createElement('div');
+    date.className = 'wiki-tl-date';
+    date.textContent = ev.date;
+
+    var title = document.createElement('div');
+    title.className = 'wiki-tl-title';
+    title.textContent = ev.title;
+
+    node.appendChild(dot);
+    node.appendChild(date);
+    node.appendChild(title);
+
+    node.addEventListener('click', function() {
+      if (openId === ev.id) {
+        detail.classList.remove('open');
+        openId = null;
+      } else {
+        detail.innerHTML =
+          '<button class="wiki-tl-detail-close" id="tl-close">✕</button>' +
+          '<div class="wiki-tl-detail-date">' + ev.date + '</div>' +
+          '<div class="wiki-tl-detail-title">' + ev.title + '</div>' +
+          '<div class="wiki-tl-detail-body">' + ev.summary + '</div>';
+        detail.classList.add('open');
+        openId = ev.id;
+        document.getElementById('tl-close').addEventListener('click', function(e) {
+          e.stopPropagation();
+          detail.classList.remove('open');
+          openId = null;
+        });
+      }
+    });
+
+    track.appendChild(node);
+  });
+
+  trackWrap.appendChild(track);
+  container.appendChild(trackWrap);
+  container.appendChild(detail);
+}
+
+// ── Character grid ────────────────────────────────────────────
+function buildCharGrid(chars) {
+  var grid = document.getElementById('char-grid');
+  grid.innerHTML = '';
+
+  // Tags
+  var allTags = {};
+  chars.forEach(function(c) {
+    if (c.faction) allTags[c.faction] = true;
+    if (c.species) allTags[c.species] = true;
+  });
+
+  var tagFilter = document.getElementById('char-tag-filter');
+  tagFilter.innerHTML = '';
+  var allPill = document.createElement('button');
+  allPill.className = 'wiki-tag-pill active';
+  allPill.textContent = 'All';
+  allPill.addEventListener('click', function() {
+    activeTagFilter = null;
+    document.querySelectorAll('.wiki-tag-pill').forEach(function(p){ p.classList.remove('active'); });
+    this.classList.add('active');
+    buildCharGrid(characters);
+  });
+  tagFilter.appendChild(allPill);
+
+  Object.keys(allTags).sort().forEach(function(tag) {
+    var pill = document.createElement('button');
+    pill.className = 'wiki-tag-pill';
+    pill.textContent = tag;
+    pill.addEventListener('click', function() {
+      activeTagFilter = tag;
+      document.querySelectorAll('.wiki-tag-pill').forEach(function(p){ p.classList.remove('active'); });
+      this.classList.add('active');
+      buildCharGrid(characters.filter(function(c){ return c.faction===tag||c.species===tag; }));
+    });
+    tagFilter.appendChild(pill);
+  });
+
+  chars.forEach(function(c) {
+    var card = document.createElement('a');
+    card.className = 'wiki-char-card';
+    card.href = 'javascript:void(0)';
+
+    var imgEl = document.createElement('img');
+    imgEl.className = 'wiki-char-portrait';
+    imgEl.src = c.profile_image || c.image || '';
+    imgEl.alt = c.name;
+    if (!c.profile_image && !c.image) {
+      imgEl.style.filter = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
+      // Use headshot silhouette placeholder
+      imgEl.src = 'https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png';
+    }
+
+    var name = document.createElement('div');
+    name.className = 'wiki-char-name';
+    name.textContent = c.name;
+
+    var species = document.createElement('div');
+    species.className = 'wiki-char-species';
+    species.textContent = c.species || '';
+
+    card.appendChild(imgEl);
+    card.appendChild(name);
+    card.appendChild(species);
+
+    if (c.faction) {
+      var tag = document.createElement('div');
+      tag.className = 'wiki-char-tag';
+      tag.textContent = c.faction;
+      card.appendChild(tag);
+    }
+
+    card.addEventListener('click', function() { loadCharPage(c.id); });
+    grid.appendChild(card);
+  });
+}
+
+// ── Character detail page ─────────────────────────────────────
+function loadCharPage(charId) {
+  var char = characters.find(function(c){ return c.id === charId; });
+  if (!char) return;
+
+  var slug = char.name.toLowerCase().replace(/\s+/g, '-');
+  var container = document.getElementById('char-detail-content');
+  container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;padding:2rem 0">Loading…</p>';
+  showPage('character');
+
+  // Build stat block from JSON
+  var effH = char.height * (char.height_correction || 1);
+  var statRows = [
+    ['Species',    char.species || '—'],
+    ['Height',     fH(effH)],
+    ['Weight',     fW(char.weight)],
+    ['Faction',    char.faction || '—'],
+    ['Pronouns',   char.pronouns || '—'],
+  ];
+  if (char.length) statRows.push(['Anatomy length', (char.length * (char.length_correction||1)).toFixed(1) + '"']);
+
+  var statTable = '<table class="wiki-stat-table">' +
+    statRows.map(function(r){ return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') +
+    '</table>';
+
+  var heroHtml = char.image
+    ? '<div class="wiki-char-hero"><img src="' + char.image + '" alt="' + char.name + '" /></div>'
+    : '<div class="wiki-char-hero"><div class="wiki-char-hero-placeholder">No image yet</div></div>';
+
+  var header = '<div class="wiki-char-header">' +
+    heroHtml +
+    '<div class="wiki-char-meta">' +
+      '<div class="wiki-char-meta-name">' + char.name + '</div>' +
+      '<div class="wiki-char-meta-sub">' + (char.species||'') + (char.faction ? ' &nbsp;·&nbsp; ' + char.faction : '') + '</div>' +
+      statTable +
+    '</div>' +
+  '</div>';
+
+  // Try to load markdown
+  fetch('characters/' + slug + '.md')
+    .then(function(r) { return r.ok ? r.text() : null; })
+    .then(function(md) {
+      var bodyHtml = '';
+      if (md && typeof marked !== 'undefined') {
+        // Strip frontmatter
+        var stripped = md.replace(/^---[\s\S]*?---\n/, '');
+        bodyHtml = '<div class="wiki-md-content">' + marked.parse(stripped) + '</div>';
+      } else {
+        bodyHtml = '<p style="color:var(--text-muted);font-style:italic">No wiki page written yet for this character.</p>';
+      }
+      container.innerHTML = header + bodyHtml;
+    })
+    .catch(function() {
+      container.innerHTML = header + '<p style="color:var(--text-muted);font-style:italic">No wiki page written yet for this character.</p>';
+    });
+}
+
+// ── Search ────────────────────────────────────────────────────
+document.getElementById('wiki-search-input').addEventListener('input', function() {
+  var q = this.value.trim().toLowerCase();
+  if (!q) return;
+  var match = characters.find(function(c){ return c.name.toLowerCase().includes(q); });
+  if (match) {
+    showPage('characters');
+    setTimeout(function(){ loadCharPage(match.id); }, 100);
+  }
+});
+</script>
 </body>
 </html>
