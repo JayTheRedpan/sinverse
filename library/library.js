@@ -31,9 +31,12 @@ async function init() {
     var tagsData = await tagsRes.json();
     buildTagFilters(tagsData.story || []);
 
-    // Apply ?character= param from wiki, or reset to clean state on fresh visit
+    // Apply URL params on load
     var urlParams = new URLSearchParams(window.location.search);
-    var charParam = urlParams.get('character');
+    var charParam   = urlParams.get('character');
+    var searchParam = urlParams.get('search');
+    var modeParam   = urlParams.get('mode');
+
     if (charParam) {
       var charName = decodeURIComponent(charParam);
       var inp = document.getElementById('search-input');
@@ -45,6 +48,19 @@ async function init() {
       var url = new URL(window.location.href);
       url.searchParams.delete('character');
       window.history.replaceState({}, '', url);
+    } else if (searchParam) {
+      var sVal = decodeURIComponent(searchParam);
+      var inp2 = document.getElementById('search-input');
+      if (inp2) inp2.value = sVal;
+      state.query = sVal.toLowerCase();
+      document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.remove('active'); });
+      var targetMode = modeParam || 'author';
+      var modeBtn = document.querySelector('.search-mode-btn[data-mode="' + targetMode + '"]');
+      if (modeBtn) modeBtn.classList.add('active');
+      var url2 = new URL(window.location.href);
+      url2.searchParams.delete('search');
+      url2.searchParams.delete('mode');
+      window.history.replaceState({}, '', url2);
     } else {
       resetSearch();
     }

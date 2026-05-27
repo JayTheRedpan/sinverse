@@ -35,7 +35,8 @@ function renderMeta() {
   document.title = story.title + ' — Sinverse Library';
   document.getElementById('reader-topbar-title').textContent = story.title;
   document.getElementById('reader-title').textContent        = story.title;
-  document.getElementById('reader-author').textContent       = story.author ? 'by ' + story.author : '';
+  var raEl = document.getElementById('reader-author');
+  if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(story.author) + '">' + story.author + '</a>' : '';
   document.getElementById('reader-summary').textContent      = story.summary || '';
 
   // Cover

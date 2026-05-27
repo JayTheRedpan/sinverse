@@ -329,7 +329,7 @@ function renderBlurb(text, author) {
     .join('');
 
   if (author) {
-    sceneAuthorEl.textContent = author;
+    sceneAuthorEl.innerHTML = '<a href="../contributors/?creator=' + encodeURIComponent(author) + '" class="cyoa-author-link">' + author + '</a>';
     sceneByline.style.display = '';
   } else {
     sceneByline.style.display = 'none';
@@ -425,7 +425,7 @@ function renderChoices(node) {
       if (destAuthor) {
         const authorEl = document.createElement('span');
         authorEl.className   = 'choice-preview-author';
-        authorEl.textContent = 'by ' + destAuthor;
+        authorEl.innerHTML = 'by <a href="../contributors/?creator=' + encodeURIComponent(destAuthor) + '" class="cyoa-author-link">' + destAuthor + '</a>';
         preview.appendChild(authorEl);
       }
 

@@ -1,11 +1,47 @@
 [
-  { "id": "apotheosis-serum",  "label": "The Apotheosis Serum", "section": "Concepts" },
-  { "id": "tday",              "label": "TDay",                 "section": "History" },
-  { "id": "sincorp",           "label": "SinCorp",              "section": "Organisations" },
-  { "id": "the-resistance",    "label": "The Resistance",       "section": "Organisations" },
-  { "id": "angora",            "label": "Angora",               "section": "Locations" },
-  { "id": "mega-cities",       "label": "The Mega-Cities",      "section": "Locations" },
-  { "id": "the-wilds",         "label": "The Wilds",            "section": "Locations" },
-  { "id": "toys",              "label": "Toys",                 "section": "Concepts" },
-  { "id": "project-sylph",     "label": "Project Sylph",        "section": "Classified" }
+  {
+    "id": "apotheosis-serum",
+    "label": "The Apotheosis Serum",
+    "section": "Concepts"
+  },
+  {
+    "id": "tday",
+    "label": "TDay",
+    "section": "History"
+  },
+  {
+    "id": "sincorp",
+    "label": "SinCorp",
+    "section": "Organizations"
+  },
+  {
+    "id": "the-resistance",
+    "label": "The Resistance",
+    "section": "Organizations"
+  },
+  {
+    "id": "angora",
+    "label": "Angora",
+    "section": "Locations"
+  },
+  {
+    "id": "mega-cities",
+    "label": "The Mega-Cities",
+    "section": "Locations"
+  },
+  {
+    "id": "the-wilds",
+    "label": "The Wilds",
+    "section": "Locations"
+  },
+  {
+    "id": "toys",
+    "label": "Toys",
+    "section": "Concepts"
+  },
+  {
+    "id": "project-sylph",
+    "label": "Project Sylph",
+    "section": "Classified"
+  }
 ]

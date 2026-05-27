@@ -25,7 +25,9 @@
       display: grid;
       grid-template-columns: 280px 1fr;
       grid-template-rows: auto 1fr;
-      min-height: 100vh;
+      height: 100vh;
+      overflow: hidden;
+      transition: grid-template-columns 0.25s ease;
     }
 
     /* ── Top bar ── */
@@ -38,6 +40,17 @@
       gap: 1.5rem;
       padding: 0.75rem 2rem;
     }
+    .wiki-header-logo {
+      width: 40px;
+      height: 40px;
+      object-fit: contain;
+      opacity: 0.85;
+      transition: opacity 0.2s;
+      display: block;
+    }
+    .wiki-topbar-brand { display: flex; align-items: center; }
+    .wiki-topbar-brand:hover .wiki-header-logo { opacity: 1; }
+
     .wiki-topbar-logo {
       font-family: var(--font-caps);
       font-size: 0.65rem;
@@ -47,12 +60,28 @@
       text-decoration: none;
     }
     .wiki-topbar-sep { color: var(--border-mid); }
+    .wiki-topbar-title-block {
+      display: flex;
+      flex-direction: column;
+      gap: 0.1rem;
+    }
     .wiki-topbar-title {
       font-family: var(--font-caps);
       font-size: 0.65rem;
       letter-spacing: 0.2em;
       text-transform: uppercase;
       color: var(--text-secondary);
+      line-height: 1;
+    }
+    .wiki-topbar-subtitle {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.72rem;
+      color: var(--text-muted);
+      line-height: 1;
+    }
+    @media (max-width: 768px) {
+      .wiki-topbar-title-block { display: none; }
     }
     .wiki-search {
       margin-left: auto;
@@ -76,6 +105,10 @@
       border-right: 1px solid var(--border);
       overflow-y: auto;
       padding: 1.5rem 0;
+      /* Sidebar stays fixed — content scrolls in wiki-main */
+      position: sticky;
+      top: 0;
+      height: 100%;
     }
     .wiki-nav-section { margin-bottom: 0.25rem; }
     .wiki-nav-heading {
@@ -104,7 +137,19 @@
     /* ── Main content ── */
     .wiki-main {
       overflow-y: auto;
+      overflow-x: hidden;
       padding: 3rem 4rem;
+      height: 100%;
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+    /* Constrain article prose width within the expanding main */
+    .wiki-md-content,
+    .wiki-char-content,
+    .wiki-intro-body,
+    .wiki-cat-body,
+    .wiki-search-results {
       max-width: 860px;
     }
 
@@ -236,29 +281,49 @@
     }
     .wiki-timeline-event.anchor .wiki-tl-date { font-size: 0.78rem; color: var(--text-primary); }
     .wiki-timeline-event.anchor .wiki-tl-title { font-size: 1.05rem; }
+    .wiki-tl-tick {
+      width: 1px;
+      height: 10px;
+      background: var(--border-mid);
+      margin-bottom: 0;
+      flex-shrink: 0;
+    }
+    .wiki-timeline-event.anchor .wiki-tl-tick { height: 16px; background: var(--accent); }
     .wiki-tl-dot {
-      width: 12px;
-      height: 12px;
+      width: 10px;
+      height: 10px;
       border-radius: 50%;
       background: var(--bg-panel);
       border: 1px solid var(--accent);
-      margin-bottom: 1rem;
+      margin: 4px 0 0.75rem;
       transition: background 0.2s;
       flex-shrink: 0;
+    }
+    .wiki-timeline-event.anchor .wiki-tl-dot {
+      background: var(--accent);
+      width: 14px;
+      height: 14px;
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--accent);
+      margin: 2px 0 0.75rem;
     }
     .wiki-timeline-event:hover .wiki-tl-dot { background: var(--accent); }
     .wiki-tl-date {
       font-family: var(--font-caps);
-      font-size: 0.68rem;
-      letter-spacing: 0.16em;
+      font-size: 0.82rem;
+      letter-spacing: 0.12em;
       color: var(--accent);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.35rem;
       text-align: center;
+      font-weight: 600;
+    }
+    .wiki-timeline-event.anchor .wiki-tl-date {
+      font-size: 1rem;
+      color: var(--text-primary);
     }
     .wiki-tl-title {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--text-primary);
       text-align: center;
       line-height: 1.35;
@@ -278,8 +343,9 @@
     .wiki-tl-detail.open { display: block; }
     .wiki-tl-detail-date {
       font-family: var(--font-caps);
-      font-size: 0.62rem;
-      letter-spacing: 0.16em;
+      font-size: 0.82rem;
+      letter-spacing: 0.14em;
+      font-weight: 600;
       color: var(--accent);
       margin-bottom: 0.5rem;
     }
@@ -296,6 +362,102 @@
       color: var(--text-secondary);
       line-height: 1.8;
     }
+    .tl-related {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 0.5rem;
+      margin-top: 1rem;
+      padding-top: 0.75rem;
+      border-top: 1px solid var(--border);
+    }
+    .tl-related-label {
+      font-family: var(--font-caps);
+      font-size: 0.55rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-right: 0.25rem;
+    }
+    .tl-related-link {
+      font-family: var(--font-caps);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--accent);
+      cursor: pointer;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.2rem 0.6rem;
+      transition: border-color 0.15s;
+    }
+    .tl-related-link:hover { border-color: var(--accent); }
+    .wiki-lore-card { transition: background 0.15s; }
+    .wiki-lore-card.wiki-lore-link:hover { background: var(--bg-inset); }
+
+    .wiki-sidebar-toggle {
+      position: fixed;
+      left: 280px;
+      top: 69px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border-bright);
+      border-left: none;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      width: 20px;
+      height: 52px;
+      font-size: 0.65rem;
+      color: var(--text-secondary);
+      cursor: pointer;
+      transition: left 0.25s ease, color 0.15s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      z-index: 200;
+      padding: 0;
+    }
+    .wiki-sidebar-toggle:hover { color: var(--accent); }
+    .wiki-app.sidebar-collapsed .wiki-sidebar-toggle {
+      left: 0;
+      border-radius: 0 var(--radius) var(--radius) 0;
+      width: 32px;
+      border-color: var(--accent);
+      color: var(--accent);
+      border-left: none;
+    }
+    .wiki-app.sidebar-collapsed .wiki-sidebar-toggle .wiki-toggle-arrow {
+      display: inline-block;
+      transform: scaleX(-1);
+    }
+    @media (max-width: 768px) { .wiki-sidebar-toggle { display: none; } }
+
+    /* Collapsed sidebar state */
+    .wiki-app.sidebar-collapsed {
+      grid-template-columns: 0 1fr;
+    }
+    .wiki-app.sidebar-collapsed .wiki-sidebar {
+      overflow: hidden;
+      padding: 0;
+      border-right: none;
+    }
+
+    .wiki-sidebar, .wiki-app {
+      transition: grid-template-columns 0.25s ease;
+    }
+    .wiki-sidebar {
+      transition: width 0.25s ease, padding 0.25s ease;
+    }
+
+    .wiki-tl-footnote {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.78rem;
+      color: var(--text-muted);
+      margin-top: 1rem;
+      padding: 0 1rem;
+      text-align: center;
+    }
+    .wiki-tl-footnote em { color: var(--text-secondary); font-style: normal; }
+
     .wiki-tl-detail-close {
       float: right;
       background: none;
@@ -438,6 +600,110 @@
     }
 
     /* Rendered markdown */
+    /* ── Wiki image gallery ── */
+    .wiki-md-content .wiki-img-figure {
+      display: inline-flex;
+      flex-direction: column;
+      break-inside: avoid;
+      margin: 0;
+    }
+    /* When multiple images follow h2 Gallery, lay them out in a grid */
+    .wiki-md-content p:has(.wiki-img-figure),
+    .wiki-md-content .wiki-img-figure {
+      margin-bottom: 0;
+    }
+    /* Wrap consecutive figures in a grid via JS — see renderWikiImages() */
+    .wiki-img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin: 1rem 0 1.5rem;
+    }
+    .wiki-img-grid .wiki-img-figure {
+      background: var(--bg-panel);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .wiki-img-grid .wiki-img-figure:hover { background: var(--bg-inset); }
+    .wiki-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .wiki-img-figure:hover .wiki-img { opacity: 0.9; }
+    .wiki-img-caption {
+      padding: 0.6rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .wiki-img-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .wiki-img-sub {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    /* Lightbox */
+    .wiki-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 400;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .wiki-lightbox.open { display: flex; }
+    .wiki-lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: var(--radius);
+    }
+    .wiki-lightbox-caption {
+      text-align: center;
+    }
+    .wiki-lightbox-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+    .wiki-lightbox-sub {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+    .wiki-lightbox-close {
+      position: absolute;
+      top: 1.25rem; right: 1.5rem;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-family: var(--font-caps);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.65rem;
+      cursor: pointer;
+    }
+    .wiki-lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+
     .wiki-md-content h2 {
       font-family: var(--font-display);
       font-style: italic;
@@ -639,6 +905,7 @@
         max-width: 100%;
         overflow-y: auto;
         height: 100%;
+        box-sizing: border-box;
       }
       /* Show mobile menu button, hide search */
       .wiki-search { display: none; }
@@ -646,6 +913,7 @@
       /* Topbar */
       .wiki-topbar { padding: 0.75rem 1rem; gap: 0.75rem; }
       .wiki-topbar-sep { display: none; }
+      .wiki-topbar-title-block { display: none; }
       /* Sidebar as fixed drawer */
       .wiki-sidebar.mobile-open {
         display: flex;
@@ -666,20 +934,136 @@
       .wiki-char-hero, .wiki-char-hero-placeholder { width: 100%; height: auto; }
       .wiki-stat-table { font-size: 0.85rem; }
       .wiki-char-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
-      .wiki-md-content h2 { font-size: 1.3rem; }
+      /* ── Wiki image gallery ── */
+    .wiki-md-content .wiki-img-figure {
+      display: inline-flex;
+      flex-direction: column;
+      break-inside: avoid;
+      margin: 0;
+    }
+    /* When multiple images follow h2 Gallery, lay them out in a grid */
+    .wiki-md-content p:has(.wiki-img-figure),
+    .wiki-md-content .wiki-img-figure {
+      margin-bottom: 0;
+    }
+    /* Wrap consecutive figures in a grid via JS — see renderWikiImages() */
+    .wiki-img-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      gap: 1px;
+      background: var(--border);
+      margin: 1rem 0 1.5rem;
+    }
+    .wiki-img-grid .wiki-img-figure {
+      background: var(--bg-panel);
+      overflow: hidden;
+      cursor: pointer;
+    }
+    .wiki-img-grid .wiki-img-figure:hover { background: var(--bg-inset); }
+    .wiki-img {
+      width: 100%;
+      height: 200px;
+      object-fit: cover;
+      object-position: center top;
+      display: block;
+      transition: opacity 0.2s;
+    }
+    .wiki-img-figure:hover .wiki-img { opacity: 0.9; }
+    .wiki-img-caption {
+      padding: 0.6rem 0.75rem;
+      display: flex;
+      flex-direction: column;
+      gap: 0.2rem;
+    }
+    .wiki-img-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 0.88rem;
+      color: var(--text-primary);
+      line-height: 1.3;
+    }
+    .wiki-img-sub {
+      font-family: var(--font-body);
+      font-size: 0.75rem;
+      color: var(--text-secondary);
+      line-height: 1.5;
+    }
+    /* Lightbox */
+    .wiki-lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.88);
+      z-index: 400;
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .wiki-lightbox.open { display: flex; }
+    .wiki-lightbox img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: var(--radius);
+    }
+    .wiki-lightbox-caption {
+      text-align: center;
+    }
+    .wiki-lightbox-title {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.1rem;
+      color: var(--text-primary);
+    }
+    .wiki-lightbox-sub {
+      font-family: var(--font-body);
+      font-size: 0.85rem;
+      color: var(--text-secondary);
+      margin-top: 0.25rem;
+    }
+    .wiki-lightbox-close {
+      position: absolute;
+      top: 1.25rem; right: 1.5rem;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
+      font-family: var(--font-caps);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      padding: 0.3rem 0.65rem;
+      cursor: pointer;
+    }
+    .wiki-lightbox-close:hover { border-color: var(--accent); color: var(--accent); }
+
+    .wiki-md-content h2 { font-size: 1.3rem; }
     }
 
   </style>
 </head>
 <body>
+<div class="wiki-lightbox" id="wiki-lightbox">
+  <button class="wiki-lightbox-close" id="wiki-lightbox-close">Close ✕</button>
+  <img id="wiki-lightbox-img" src="" alt="" />
+  <div class="wiki-lightbox-caption">
+    <div class="wiki-lightbox-title" id="wiki-lightbox-title"></div>
+    <div class="wiki-lightbox-sub" id="wiki-lightbox-sub"></div>
+  </div>
+</div>
 <div class="wiki-mobile-overlay" id="wiki-mobile-overlay"></div>
 <div class="wiki-app">
 
   <!-- Top bar -->
   <header class="wiki-topbar">
-    <a class="wiki-topbar-logo" href="../">Sinverse</a>
-    <span class="wiki-topbar-sep">›</span>
-    <span class="wiki-topbar-title">Wiki</span>
+    <a href="../" class="wiki-topbar-brand">
+      <img src="../images/logo.png" alt="Sinverse" class="wiki-header-logo" />
+    </a>
+    <div class="wiki-topbar-title-block">
+      <span class="wiki-topbar-title">Wiki</span>
+      <span class="wiki-topbar-subtitle">The Sinverse Compendium</span>
+    </div>
     <input class="wiki-search" type="search" placeholder="Search wiki…" id="wiki-search-input" />
     <button class="wiki-mobile-menu-btn" id="wiki-mobile-menu-btn">☰ Menu</button>
   </header>
@@ -699,6 +1083,7 @@
   </nav>
 
   <!-- Main -->
+  <button class="wiki-sidebar-toggle" id="wiki-sidebar-toggle" title="Collapse navigation"><span class="wiki-toggle-arrow">◀</span></button>
   <main class="wiki-main" id="wiki-main">
 
     <!-- World intro -->
@@ -717,20 +1102,20 @@
 
       <div class="wiki-section-title">The New World</div>
       <div class="wiki-lore-cards">
-        <div class="wiki-lore-card">
-          <div class="wiki-lore-card-title">The Mega-Cities</div>
+        <div class="wiki-lore-card wiki-lore-link" data-target="mega-cities" style="cursor:pointer">
+          <div class="wiki-lore-card-title">The Mega-Cities ›</div>
           <div class="wiki-lore-card-body">Purpose-built to accommodate giantess-scale inhabitants and their subordinates. Each city-state is ruled by a Matriarch who sets its culture and laws. The most powerful is Angora, where Sin herself resides.</div>
         </div>
-        <div class="wiki-lore-card">
-          <div class="wiki-lore-card-title">The Wilds</div>
+        <div class="wiki-lore-card wiki-lore-link" data-target="the-wilds" style="cursor:pointer">
+          <div class="wiki-lore-card-title">The Wilds ›</div>
           <div class="wiki-lore-card-body">The land between mega-cities, reclaimed by nature. Macro-level women — too large for city life, their cognition sometimes affected by their extreme scale — roam vast territories here, hunting "toys" for sport and company.</div>
         </div>
-        <div class="wiki-lore-card">
-          <div class="wiki-lore-card-title">Toys</div>
+        <div class="wiki-lore-card wiki-lore-link" data-target="toys" style="cursor:pointer">
+          <div class="wiki-lore-card-title">Toys ›</div>
           <div class="wiki-lore-card-body">The derogatory term for males in this world. Not citizens — property. Most are kept as slaves or objects within the mega-cities. Some escape to the Wilds, becoming known as Wild Toys.</div>
         </div>
-        <div class="wiki-lore-card">
-          <div class="wiki-lore-card-title">The Resistance</div>
+        <div class="wiki-lore-card wiki-lore-link" data-target="the-resistance" style="cursor:pointer">
+          <div class="wiki-lore-card-title">The Resistance ›</div>
           <div class="wiki-lore-card-body">A guerilla coalition of empathy-retaining women and escaped toys. Operating in self-contained cells with no central leadership, they work to smuggle males out of the mega-cities.</div>
         </div>
       </div>
@@ -743,7 +1128,7 @@
     <section class="wiki-page" id="page-timeline">
       <div class="wiki-intro-eyebrow">Sinverse History</div>
       <h1 class="wiki-intro-title">Timeline</h1>
-      <p class="wiki-lore-body" style="margin-bottom:1.5rem">All dates are measured relative to TDay — the day Sin's serum was released upon the world. <strong style="color:var(--text-primary)">BT</strong> (Before TDay) counts backwards; <strong style="color:var(--text-primary)">AT</strong> (After TDay) counts forwards. Click any event to expand it.</p>
+      
       <div id="timeline-container"></div>
     </section>
 
@@ -785,9 +1170,80 @@
 </div>
 
 <script>
+// ── Wiki image helpers ────────────────────────────────────────
+function renderWikiImages(container) {
+  // Group consecutive figures into grid wrappers
+  var figures = container.querySelectorAll('.wiki-img-figure');
+  figures.forEach(function(fig) {
+    // Unwrap from <p> tags that marked sometimes wraps around images
+    if (fig.parentElement && fig.parentElement.tagName === 'P') {
+      fig.parentElement.replaceWith(fig);
+    }
+  });
+  // Group consecutive figures into a grid
+  var allFigs = Array.from(container.querySelectorAll('.wiki-img-figure'));
+  if (!allFigs.length) return;
+  var groups = [], cur = [];
+  allFigs.forEach(function(fig, i) {
+    cur.push(fig);
+    var next = allFigs[i + 1];
+    if (!next || next.previousElementSibling !== fig) {
+      groups.push(cur.slice());
+      cur = [];
+    }
+  });
+  groups.forEach(function(group) {
+    var grid = document.createElement('div');
+    grid.className = 'wiki-img-grid';
+    group[0].parentElement.insertBefore(grid, group[0]);
+    group.forEach(function(fig) { grid.appendChild(fig); });
+  });
+  // Wire lightbox
+  container.querySelectorAll('.wiki-img-figure').forEach(function(fig) {
+    fig.addEventListener('click', function() {
+      var img = fig.querySelector('.wiki-img');
+      var title = fig.querySelector('.wiki-img-title');
+      var sub = fig.querySelector('.wiki-img-sub');
+      document.getElementById('wiki-lightbox-img').src = img ? img.src : '';
+      document.getElementById('wiki-lightbox-title').textContent = title ? title.textContent : '';
+      document.getElementById('wiki-lightbox-sub').textContent = sub ? sub.textContent : '';
+      document.getElementById('wiki-lightbox').classList.add('open');
+    });
+  });
+}
+
+document.getElementById('wiki-lightbox-close').addEventListener('click', function() {
+  document.getElementById('wiki-lightbox').classList.remove('open');
+});
+document.getElementById('wiki-lightbox').addEventListener('click', function(e) {
+  if (e.target === this) this.classList.remove('open');
+});
+document.addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') document.getElementById('wiki-lightbox').classList.remove('open');
+});
+
 // Configure marked to prevent link navigation
 if (typeof marked !== 'undefined') {
   var renderer = new marked.Renderer();
+
+  renderer.image = function(token) {
+    var src  = typeof token === 'object' ? token.href  : token;
+    var alt  = typeof token === 'object' ? token.text  : (arguments[2] || '');
+    // Parse "Title | Caption" from alt text
+    var parts = alt.split('|');
+    var title   = parts[0] ? parts[0].trim() : '';
+    var caption = parts[1] ? parts[1].trim() : '';
+    return '<figure class="wiki-img-figure">' +
+      '<img src="' + src + '" alt="' + title + '" class="wiki-img" loading="lazy" />' +
+      (title || caption
+        ? '<figcaption class="wiki-img-caption">' +
+            (title   ? '<span class="wiki-img-title">'   + title   + '</span>' : '') +
+            (caption ? '<span class="wiki-img-sub">'     + caption + '</span>' : '') +
+          '</figcaption>'
+        : '') +
+      '</figure>';
+  };
+
   renderer.link = function(token) {
     // Newer marked passes a token object; older versions pass (href, title, text)
     var href = typeof token === 'object' ? (token.href || '') : (token || '');
@@ -809,19 +1265,39 @@ var activeTagFilter = null;
 var LORE_PAGES = []; // loaded from lore.json
 
 // ── Navigation ────────────────────────────────────────────────
-function showPage(id) {
+function showPage(id, pushState) {
+  clearTimeout(searchTimeout); // cancel pending search
   document.querySelectorAll('.wiki-page').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.wiki-nav-link').forEach(function(l) { l.classList.remove('active'); });
   var page = document.getElementById('page-' + id);
   if (page) page.classList.add('active');
   var link = document.querySelector('[data-page="' + id + '"]');
   if (link) link.classList.add('active');
+  if (pushState !== false) {
+    history.pushState({ type: 'page', id: id }, '', '#page-' + id);
+  }
+  // Auto-collapse sidebar when viewing timeline
+  if (id === 'timeline') {
+    var app = document.querySelector('.wiki-app');
+    if (app && !app.classList.contains('sidebar-collapsed')) {
+      app.classList.add('sidebar-collapsed');
+      localStorage.setItem('wiki-sidebar-collapsed', 'true');
+    }
+  }
 }
 
 // Single delegated listener on the sidebar — handles static and dynamic links
 document.getElementById('wiki-main').addEventListener('click', function(e) {
   var card = e.target.closest('[data-href]');
   if (card) { window.location.href = card.getAttribute('data-href'); return; }
+  var loreLink = e.target.closest('.wiki-lore-link[data-target]');
+  if (loreLink) {
+    var t = loreLink.getAttribute('data-target');
+    var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
+    if (isLore) { loadLorePage(t); return; }
+    var cByName = characters.find(function(c){ return c.name.toLowerCase()===t.toLowerCase(); });
+    if (cByName) { loadCharPage(cByName.id); return; }
+  }
 });
 
 document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
@@ -840,7 +1316,7 @@ document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
 });
 
 document.getElementById('char-back-btn').addEventListener('click', function() {
-  showPage('characters');
+  history.back();
 });
 
 // ── Load data ─────────────────────────────────────────────────
@@ -873,6 +1349,25 @@ Promise.all([
   buildTimeline();
   buildCharGrid(characters);
 
+  // Restore page from URL hash if returning via browser Back from gallery/library
+  var restoreHash = window._restoreHash;
+  if (restoreHash) {
+    window._restoreHash = null;
+    var charMatch = restoreHash.match(/^#char-(\d+)$/);
+    var loreMatch = restoreHash.match(/^#lore-(.+)$/);
+    var catMatch  = restoreHash.match(/^#cat-(.+)$/);
+    var pageMatch = restoreHash.match(/^#page-(.+)$/);
+    if (charMatch) { loadCharPage(parseInt(charMatch[1]), false); }
+    else if (loreMatch) { loadLorePage(loreMatch[1], false); }
+    else if (catMatch) {
+      var section = decodeURIComponent(catMatch[1].replace(/-/g, ' '));
+      // Capitalise each word to match section names
+      section = section.replace(/\w/g, function(c){ return c.toUpperCase(); });
+      showCategory(section, false);
+    } else if (pageMatch) { showPage(pageMatch[1], false); }
+    return; // skip ?character= param handling below
+  }
+
   // Handle ?character= param from gallery/library links
   var urlParams = new URLSearchParams(window.location.search);
   var charParam = urlParams.get('character');
@@ -903,7 +1398,8 @@ function buildLoreSidebar() {
   });
 }
 
-function showCategory(section) {
+function showCategory(section, pushState) {
+  if (pushState !== false) history.pushState({ type: 'category', id: section }, '', '#cat-' + section.toLowerCase().replace(/\s+/g, '-'));
   document.getElementById('cat-eyebrow').textContent = 'Browse';
   document.getElementById('cat-title').textContent = section;
   var grid = document.getElementById('cat-grid');
@@ -922,22 +1418,26 @@ function showCategory(section) {
     list.appendChild(card);
   });
   grid.appendChild(list);
-  showPage('category');
+  showPage('category', false);
 }
 
-function loadLorePage(id) {
+function loadLorePage(id, pushState) {
   var lp = LORE_PAGES.find(function(p){ return p.id === id; });
   if (!lp) return;
   var container = document.getElementById('lore-detail-content');
   container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;padding:2rem 0">Loading…</p>';
   document.getElementById('lore-back-btn').setAttribute('data-prev', document.querySelector('.wiki-nav-link.active') ? document.querySelector('.wiki-nav-link.active').getAttribute('data-page') || 'intro' : 'intro');
-  showPage('lore');
+  showPage('lore', false);
+  if (pushState !== false) history.pushState({ type: 'lore', id: id }, '', '#lore-' + id);
   // Highlight sidebar
   document.querySelectorAll('.wiki-nav-link').forEach(function(l){ l.classList.remove('active'); });
 
+  var loadId = id; // capture to detect stale fetch
   fetch('lore/' + id + '.md')
     .then(function(r){ return r.ok ? r.text() : null; })
     .then(function(md) {
+      // Discard if another navigation happened while fetching
+      if (!document.getElementById('page-lore').classList.contains('active')) return;
       if (!md) {
         container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic">No page found.</p>';
         return;
@@ -952,6 +1452,7 @@ function loadLorePage(id) {
         '<div class="wiki-intro-eyebrow">' + (lp.section||'Lore') + '</div>' +
         '<h1 class="wiki-intro-title">' + title + '</h1>' +
         body;
+      renderWikiImages(container);
       // Wire lore links
       container.querySelectorAll('.wiki-lore-link').forEach(function(el) {
         el.style.cssText = 'color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--border-mid);';
@@ -960,8 +1461,13 @@ function loadLorePage(id) {
           var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
           if (isLore) loadLorePage(t);
           else {
-            var charId = parseInt(t);
-            if (!isNaN(charId)) loadCharPage(charId);
+            // Try match by name (e.g. [Sin](sin)) then by numeric id
+            var cByName = characters.find(function(c){ return c.name.toLowerCase() === t.toLowerCase(); });
+            if (cByName) loadCharPage(cByName.id);
+            else {
+              var charId = parseInt(t);
+              if (!isNaN(charId)) loadCharPage(charId);
+            }
           }
         });
       });
@@ -969,8 +1475,22 @@ function loadLorePage(id) {
 }
 
 document.getElementById('lore-back-btn').addEventListener('click', function() {
-  showPage('intro');
+  history.back();
 });
+
+// Sidebar collapse toggle (desktop)
+var sidebarToggle = document.getElementById('wiki-sidebar-toggle');
+var wikiApp = document.querySelector('.wiki-app');
+if (sidebarToggle && wikiApp) {
+  // Restore saved state
+  if (localStorage.getItem('wiki-sidebar-collapsed') === 'true') {
+    wikiApp.classList.add('sidebar-collapsed');
+  }
+  sidebarToggle.addEventListener('click', function() {
+    var collapsed = wikiApp.classList.toggle('sidebar-collapsed');
+    localStorage.setItem('wiki-sidebar-collapsed', collapsed);
+  });
+}
 
 // Mobile menu
 var mobileMenuBtn = document.getElementById('wiki-mobile-menu-btn');
@@ -1001,6 +1521,17 @@ function buildTimeline() {
   var trackWrap = document.createElement('div');
   trackWrap.className = 'wiki-timeline-wrap';
 
+  // Sort events: BT events descending (3 BT before 2 BT), anchor at 0, AT ascending
+  function tlSortKey(ev) {
+    if (ev.era === 'anchor') return 0;
+    var num = parseFloat(ev.date) || 0;
+    if (ev.era === 'BT') return -num;   // 3 BT = -3, renders before 0
+    return num;                          // 3 AT = 3, renders after 0
+  }
+  timelineEvents = timelineEvents.slice().sort(function(a, b) {
+    return tlSortKey(a) - tlSortKey(b);
+  });
+
   var track = document.createElement('div');
   track.className = 'wiki-timeline-track';
 
@@ -1018,6 +1549,9 @@ function buildTimeline() {
     var node = document.createElement('div');
     node.className = 'wiki-timeline-event' + (ev.era === 'anchor' ? ' anchor' : '');
 
+    var tick = document.createElement('div');
+    tick.className = 'wiki-tl-tick';
+
     var dot = document.createElement('div');
     dot.className = 'wiki-tl-dot';
 
@@ -1029,6 +1563,7 @@ function buildTimeline() {
     title.className = 'wiki-tl-title';
     title.textContent = ev.title;
 
+    node.appendChild(tick);
     node.appendChild(dot);
     node.appendChild(date);
     node.appendChild(title);
@@ -1043,11 +1578,24 @@ function buildTimeline() {
         openId = null;
       } else {
         dot.style.background = 'var(--accent)';
+        // Build related links from tags
+        var relatedHtml = '';
+        if (ev.tags && ev.tags.length) {
+          var relLinks = ev.tags.map(function(tag) {
+            var lp = LORE_PAGES.find(function(p){ return p.id === tag; });
+            var ch = characters.find(function(c){ return c.name.toLowerCase() === tag; });
+            if (lp) return '<span class="tl-related-link wiki-lore-link" data-target="' + tag + '">' + lp.label + '</span>';
+            if (ch) return '<span class="tl-related-link wiki-lore-link" data-target="' + ch.name.toLowerCase() + '">' + ch.name + '</span>';
+            return null;
+          }).filter(Boolean);
+          if (relLinks.length) relatedHtml = '<div class="tl-related"><span class="tl-related-label">Related</span>' + relLinks.join('') + '</div>';
+        }
         detail.innerHTML =
           '<button class="wiki-tl-detail-close" id="tl-close">Close ✕</button>' +
           '<div class="wiki-tl-detail-date">' + ev.date + '</div>' +
           '<div class="wiki-tl-detail-title">' + ev.title + '</div>' +
-          '<div class="wiki-tl-detail-body">' + ev.summary + '</div>';
+          '<div class="wiki-tl-detail-body">' + ev.summary + '</div>' +
+          relatedHtml;
         detail.classList.add('open');
         openId = ev.id;
         document.getElementById('tl-close').addEventListener('click', function(e) {
@@ -1055,6 +1603,19 @@ function buildTimeline() {
           detail.classList.remove('open');
           dot.style.background = '';
           openId = null;
+        });
+        // Wire related page links
+        detail.querySelectorAll('.wiki-lore-link').forEach(function(el) {
+          el.addEventListener('click', function(e) {
+            e.stopPropagation();
+            var t = this.getAttribute('data-target');
+            var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
+            if (isLore) loadLorePage(t);
+            else {
+              var cByName = characters.find(function(c){ return c.name.toLowerCase()===t.toLowerCase(); });
+              if (cByName) loadCharPage(cByName.id);
+            }
+          });
         });
       }
     });
@@ -1064,6 +1625,10 @@ function buildTimeline() {
 
   trackWrap.appendChild(track);
   container.appendChild(trackWrap);
+  var fn = document.createElement('p');
+  fn.className = 'wiki-tl-footnote';
+  fn.innerHTML = 'Dates relative to TDay (T&plusmn;0) — <em>T-N</em> = N years before; <em>T+N</em> = N years after. Click any event to expand.';
+  container.appendChild(fn);
   container.appendChild(detail);
 }
 
@@ -1145,14 +1710,15 @@ function buildCharGrid(chars) {
 }
 
 // ── Character detail page ─────────────────────────────────────
-function loadCharPage(charId) {
+function loadCharPage(charId, pushState) {
   var char = characters.find(function(c){ return c.id === charId; });
   if (!char) return;
 
   var slug = char.name.toLowerCase().replace(/\s+/g, '-');
   var container = document.getElementById('char-detail-content');
   container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;padding:2rem 0">Loading…</p>';
-  showPage('character');
+  showPage('character', false);
+  if (pushState !== false) history.pushState({ type: 'character', id: charId }, '', '#char-' + charId);
 
   // Build stat block from JSON
   var effH = char.height * (char.height_correction || 1);
@@ -1186,6 +1752,7 @@ function loadCharPage(charId) {
   fetch('characters/' + slug + '.md')
     .then(function(r) { return r.ok ? r.text() : null; })
     .then(function(md) {
+      if (!document.getElementById('page-character').classList.contains('active')) return;
       var bodyHtml = '';
       if (md && typeof marked !== 'undefined') {
         // Strip frontmatter
@@ -1228,11 +1795,46 @@ function loadCharPage(charId) {
           '</div>' +
         '</div>';
       container.innerHTML = header + bodyHtml + contentLinks;
+
+      renderWikiImages(container);
+      // Wire internal wiki links in character markdown
+      container.querySelectorAll('.wiki-lore-link').forEach(function(el) {
+        el.style.cssText = 'color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--border-mid);';
+        el.addEventListener('click', function() {
+          var t = this.getAttribute('data-target');
+          var isLore = LORE_PAGES.find(function(p){ return p.id === t; });
+          if (isLore) loadLorePage(t);
+          else {
+            var cId = characters.find(function(c){ return c.name.toLowerCase() === t.toLowerCase(); });
+            if (cId) loadCharPage(cId.id);
+          }
+        });
+      });
     })
     .catch(function() {
       container.innerHTML = header + '<p style="color:var(--text-secondary);font-style:italic">No wiki page written yet for this character.</p>';
     });
 }
+
+// ── Browser history (back/forward) ────────────────────────────
+window.addEventListener('popstate', function(e) {
+  var state = e.state;
+  if (!state) { showPage('intro', false); return; }
+  if (state.type === 'page')      showPage(state.id, false);
+  else if (state.type === 'character') loadCharPage(state.id, false);
+  else if (state.type === 'lore') loadLorePage(state.id, false);
+  else if (state.type === 'category') showCategory(state.id, false);
+});
+
+// Restore from URL hash if returning from gallery/library
+(function() {
+  var hash = window.location.hash;
+  if (hash && hash !== '#page-intro') {
+    // Will be handled by popstate-like restore after data loads
+    window._restoreHash = hash;
+  }
+})();
+history.replaceState({ type: 'page', id: 'intro' }, '', window.location.hash || '#page-intro');
 
 // ── Search ────────────────────────────────────────────────────
 var searchTimeout = null;
@@ -1318,7 +1920,7 @@ var TYPE_LABELS = { character: 'Character', lore: 'Lore', timeline: 'Timeline' }
 var TYPE_COLORS = { character: 'var(--accent)', lore: 'var(--accent-light)', timeline: 'var(--text-secondary)' };
 
 function renderSearchResults(q, results) {
-  showPage('search');
+  showPage('search', false);
   document.querySelectorAll('.wiki-nav-link').forEach(function(l){ l.classList.remove('active'); });
   document.getElementById('search-results-title').textContent =
     results.length ? 'Results for "' + q + '"' : 'No results for "' + q + '"';

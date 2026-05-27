@@ -214,7 +214,7 @@ a:hover { color: var(--accent-light); }
 .cyoa-title-block {
   display: flex;
   flex-direction: column;
-  gap: 0.15rem;
+  gap: 0.1rem;
 }
 
 .cyoa-title {
@@ -224,14 +224,14 @@ a:hover { color: var(--accent-light); }
   letter-spacing: 0.25em;
   color: var(--accent);
   text-transform: uppercase;
-  line-height: 1;
+  line-height: 1.15;
 }
 
-.cyoa-eyebrow {
+.cyoa-subtitle {
   font-family: var(--font-body);
   font-style: italic;
-  font-size: 0.85rem;
-  color: var(--text-muted);
+  font-size: 0.88rem;
+  color: var(--text-secondary);
 }
 
 
@@ -301,11 +301,13 @@ a:hover { color: var(--accent-light); }
   .cyoa-search-bar { padding: 1rem 1.5rem; }
   .cyoa-header { padding: 1.5rem; }
   .cyoa-title { font-size: 1.6rem; letter-spacing: 0.18em; }
+  .cyoa-subtitle { font-size: 0.8rem; }
 }
 
 @media (max-width: 600px) {
   .cyoa-header { padding: 1rem 1.25rem; }
   .cyoa-title { font-size: 1.25rem; letter-spacing: 0.12em; }
+  .cyoa-subtitle { font-size: 0.75rem; }
 }
 
 /* ── Adventure Grid ─────────────────────────────── */
@@ -1478,4 +1480,17 @@ body.theme-sensual {
   font-size: 0.78rem;
   color: var(--text-muted);
   margin-right: 0.2rem;
+}
+
+/* ── Author contributor link ─────────────────────────────────── */
+.cyoa-author-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: rgba(196,154,120,0.3);
+  text-underline-offset: 2px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.cyoa-author-link:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
 }

@@ -1195,3 +1195,118 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   margin-top: 0.5rem;
   height: 28px;  /* matches unit-btn height */
 }
+
+/* ── Custom character form section colours ───────────────────── */
+/* Each section gets a distinct left border + tinted summary bg  */
+.section-height > .form-det > summary.form-det-summary {
+  border-left: 3px solid #7eb8a4;
+  background: rgba(126,184,164,0.06);
+  color: #7eb8a4;
+}
+.section-height > .form-det > summary.form-det-summary::before { color: #7eb8a4; }
+.section-height > .form-det[open] > .det-body {
+  border-left: 3px solid rgba(126,184,164,0.3);
+  margin-left: 0;
+}
+
+.section-length > .form-det > summary.form-det-summary {
+  border-left: 3px solid #b89a7e;
+  background: rgba(184,154,126,0.06);
+  color: #b89a7e;
+}
+.section-length > .form-det > summary.form-det-summary::before { color: #b89a7e; }
+.section-length > .form-det[open] > .det-body {
+  border-left: 3px solid rgba(184,154,126,0.3);
+}
+
+.section-stats > .form-det > summary.form-det-summary {
+  border-left: 3px solid #9a7eb8;
+  background: rgba(154,126,184,0.06);
+  color: #9a7eb8;
+}
+.section-stats > .form-det > summary.form-det-summary::before { color: #9a7eb8; }
+.section-stats > .form-det[open] > .det-body {
+  border-left: 3px solid rgba(154,126,184,0.3);
+}
+
+/* ── Anatomy toggles ─────────────────────────────────────────── */
+.anat-toggles {
+  display: flex;
+  gap: 0.4rem;
+  flex-wrap: wrap;
+  padding: 0.25rem 0;
+}
+.anat-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.75rem;
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.anat-btn.active {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-panel);
+}
+.anat-btn:hover:not(.active) {
+  border-color: var(--border-mid);
+  color: var(--text-secondary);
+}
+.anat-locked-msg {
+  color: var(--text-muted) !important;
+  font-style: italic;
+}
+
+/* ── Bust size row ───────────────────────────────────────────── */
+.bust-size-row {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.4rem 1.25rem 0.6rem;
+}
+.bust-size-row .cf-label {
+  font-family: var(--font-caps);
+  font-size: 0.57rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.bust-size-row .builder-input {
+  flex: 1;
+  max-width: 160px;
+}
+
+/* ── Dimmed anatomy sections ─────────────────────────────────── */
+.sv-section-dim {
+  opacity: 0.38;
+}
+.sv-section-dim .sv-section-title {
+  color: var(--text-muted);
+}
+.sv-section-na {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  letter-spacing: 0;
+  text-transform: none;
+  color: var(--text-muted);
+  font-style: italic;
+  font-weight: 400;
+}
+.sv-dim-dash {
+  color: var(--text-muted);
+}
+
+/* ── Add buttons disabled at max slots ──────────────────────── */
+.slot-add-btn-disabled,
+.slot-add-btn:disabled {
+  opacity: 0.35;
+  cursor: not-allowed;
+  pointer-events: none;
+}

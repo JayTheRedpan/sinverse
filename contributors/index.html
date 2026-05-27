@@ -5,157 +5,67 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Contributors — Sinverse</title>
   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css" />
-  <style>
-    * { box-sizing: border-box; margin: 0; padding: 0; }
-    body {
-      background: var(--bg);
-      color: var(--text-primary);
-      font-family: var(--font-body);
-      min-height: 100vh;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
-      padding: 2rem;
-      overflow: hidden;
-    }
-
-    .wip-wrap {
-      text-align: center;
-      max-width: 560px;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      position: relative;
-    }
-
-    .wip-nav {
-      position: absolute;
-      top: -3.5rem;
-      left: 0;
-    }
-    .wip-nav a {
-      font-family: var(--font-caps);
-      font-size: 0.62rem;
-      letter-spacing: 0.18em;
-      text-transform: uppercase;
-      color: var(--text-secondary);
-      text-decoration: none;
-      transition: color 0.2s;
-    }
-    .wip-nav a:hover { color: var(--accent); }
-
-    .wip-portrait-wrap {
-      width: 120px;
-      height: 120px;
-      border-radius: 50%;
-      overflow: hidden;
-      border: 1px solid var(--border-mid);
-      margin-bottom: 2rem;
-      background: var(--bg-inset);
-    }
-    .wip-portrait {
-      width: 100%;
-      height: 100%;
-      object-fit: cover;
-      object-position: center 20%;
-      filter: invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88);
-      display: block;
-    }
-
-    .wip-eyebrow {
-      font-family: var(--font-caps);
-      font-size: 0.62rem;
-      letter-spacing: 0.22em;
-      text-transform: uppercase;
-      color: var(--accent);
-      margin-bottom: 1.25rem;
-    }
-
-    .wip-title {
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: clamp(2rem, 6vw, 3rem);
-      font-weight: 300;
-      color: var(--text-primary);
-      line-height: 1.15;
-      margin-bottom: 1.5rem;
-    }
-
-    .wip-divider {
-      width: 48px;
-      height: 1px;
-      background: var(--border-mid);
-      margin-bottom: 1.75rem;
-    }
-
-    .wip-body {
-      font-family: var(--font-body);
-      font-size: 1.1rem;
-      color: var(--text-secondary);
-      line-height: 1.8;
-      margin-bottom: 2rem;
-    }
-    .wip-body em {
-      font-style: italic;
-      color: var(--accent-light);
-    }
-
-    .wip-sub {
-      font-family: var(--font-caps);
-      font-size: 0.65rem;
-      letter-spacing: 0.14em;
-      color: var(--text-secondary);
-    }
-
-    .wip-dots { display: inline-block; }
-    .wip-dots span { animation: blink 1.4s infinite; opacity: 0; }
-    .wip-dots span:nth-child(2) { animation-delay: 0.2s; }
-    .wip-dots span:nth-child(3) { animation-delay: 0.4s; }
-    @keyframes blink {
-      0%, 80%, 100% { opacity: 0; }
-      40% { opacity: 1; }
-    }
-
-    .corner { position: fixed; width: 80px; height: 80px; opacity: 0.15; }
-    .corner::before, .corner::after { content: ''; position: absolute; background: var(--accent); }
-    .corner::before { width: 1px; height: 100%; }
-    .corner::after  { width: 100%; height: 1px; }
-    .corner.tl { top: 2rem; left: 2rem; }
-    .corner.tr { top: 2rem; right: 2rem; transform: scaleX(-1); }
-    .corner.bl { bottom: 2rem; left: 2rem; transform: scaleY(-1); }
-    .corner.br { bottom: 2rem; right: 2rem; transform: scale(-1); }
-  </style>
+  <link rel="stylesheet" href="styles.css" />
 </head>
 <body>
 
-<div class="corner tl"></div>
-<div class="corner tr"></div>
-<div class="corner bl"></div>
-<div class="corner br"></div>
+  <header class="con-header">
+    <div class="con-brand">
+      <a href="../"><img src="../images/logo.png" alt="Sinverse" class="header-logo" /></a>
+      <div class="con-title-block">
+        <span class="con-title">Contributors</span>
+        <span class="con-subtitle">The people who bring Sinverse to life</span>
+      </div>
+    </div>
+  </header>
 
-<div class="wip-wrap">
-  <nav class="wip-nav"><a href="../">← Back to Sinverse</a></nav>
+  <section class="jay-dedication" id="jay-dedication">
+    <div class="jay-inner">
+      <div class="jay-portrait-wrap">
+        <img id="jay-portrait" class="jay-portrait" src="" alt="Jay" />
+      </div>
+      <div class="jay-text">
+        <div class="jay-eyebrow">In honour of</div>
+        <h1 class="jay-name">Jay</h1>
+        <p class="jay-bio" id="jay-bio"></p>
+        <div class="jay-socials" id="jay-socials"></div>
+      </div>
+    </div>
+  </section>
 
-  <!-- TODO: replace src with Jay's profile_image from characters.json once uploaded -->
-  <div class="wip-portrait-wrap">
-    <img class="wip-portrait" src="https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png" alt="Jay" />
-  </div>
+  <section class="con-section">
+    <div class="con-section-header">
+      <span class="con-section-eyebrow">Roster</span>
+      <h2 class="con-section-title">All Contributors</h2>
+    </div>
+    <div class="con-grid" id="con-grid">
+      <div class="con-loading">Loading contributors…</div>
+    </div>
+  </section>
 
-  <div class="wip-eyebrow">Contributors</div>
+  <section class="anon-section">
+    <div class="anon-inner">
+      <div class="anon-icon">✦</div>
+      <div class="anon-eyebrow">Community</div>
+      <h2 class="anon-title">Anonymous Contributions</h2>
+      <p class="anon-body">Some creators prefer to remain uncredited. Their contributions are no less valued.</p>
+      <div class="anon-counts">
+        <div class="anon-count-item"><span class="anon-count-n" id="anon-gallery">—</span><span class="anon-count-label">Gallery pieces</span></div>
+        <div class="anon-count-item"><span class="anon-count-n" id="anon-library">—</span><span class="anon-count-label">Stories</span></div>
+        <div class="anon-count-item"><span class="anon-count-n" id="anon-cyoa">—</span><span class="anon-count-label">Adventures</span></div>
+      </div>
+    </div>
+  </section>
 
-  <h1 class="wip-title">Jay is hard at work on this one<span class="wip-dots"><span>.</span><span>.</span><span>.</span></span></h1>
+  <footer class="con-footer">
+    <a href="../" class="footer-home-link">← Sinverse Home</a>
+  </footer>
 
-  <div class="wip-divider"></div>
-
-  <p class="wip-body">The contributors directory is <em>coming soon</em> — profiles, credits, and spotlights for the writers, artists, and creators who bring the Sinverse universe to life. Coming before long.</p>
-
-  <p class="wip-sub">Work in progress &nbsp;·&nbsp; Thank you for your patience</p>
-</div>
-
+  <script src="contributors.js"></script>
 </body>
 </html>
