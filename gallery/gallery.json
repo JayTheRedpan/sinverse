@@ -5,28 +5,44 @@
     "title": "Jail Break",
     "artist": "",
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565348/Jail_Break_ini2fi.png",
-    "characters": ["prima"],
-    "tags": ["macro"],
-    "description": "Prima bursting into a prison refuge to find some playmates.",
+    "characters": [
+      "prima"
+    ],
+    "tags": [],
     "date": "2025-01",
-    "canonical": true
+    "universe_date": null,
+    "canonical": true,
+    "synopsis": "Prima bursting into a prison refuge to find some playmates."
   },
   {
-  "id": 2,
-  "type": "comic",
-  "title": "Sinverse Rise",
-  "artist": "FastTrack",
-  "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565919/0_yvpanj.png",
-  "pages": [
-    "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565810/01_bwfmrn.png",
-    "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565812/02_a4qa4x.png",
-    "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565813/03_hagbfx.png",
-    "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565813/04_n6gbfe.png"
-  ],
-  "characters": ["sin","jay","Hydey","marian","libby","brandy","popo","juxta","fera"],
-  "tags": ["noncon"],
-  "synopsis": "The brief introduction to the Sinverse and how it came to be.",
-  "date": "2025-01",
-  "canonical": true
+    "id": 2,
+    "type": "comic",
+    "title": "Sinverse Rise",
+    "artist": "FastTrack",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565919/0_yvpanj.png",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565810/01_bwfmrn.png",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565812/02_a4qa4x.png",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565813/03_hagbfx.png",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565813/04_n6gbfe.png"
+    ],
+    "characters": [
+      "sin",
+      "jay",
+      "hydey",
+      "marian",
+      "libby",
+      "brandy",
+      "popo",
+      "juxta",
+      "fera"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "synopsis": "The brief introduction to the Sinverse and how it came to be.",
+    "date": "2025-01",
+    "universe_date": "T\u00b10",
+    "canonical": true
   }
 ]

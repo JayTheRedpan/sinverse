@@ -156,16 +156,16 @@ function applyFilters() {
     return 0;
   });
 
-  document.getElementById('lib-count').textContent = filtered.length + ' item' + (filtered.length !== 1 ? 's' : '');
 
   if (state.view === 'grid') renderGridView(filtered);
   else renderListView(filtered);
+  var libCount = document.getElementById('lib-count');
+  if (libCount) libCount.textContent = state.stories.length + (state.stories.length === 1 ? ' work' : ' works');
 }
 
 // -- Collections tab
 function renderCollectionsTab(q) {
   var grid  = document.getElementById('lib-grid');
-  var count = document.getElementById('lib-count');
   grid.className = 'lib-grid';
   grid.innerHTML = '';
 
@@ -174,7 +174,8 @@ function renderCollectionsTab(q) {
     return true;
   });
 
-  count.textContent = collections.length + ' collection' + (collections.length !== 1 ? 's' : '');
+  var count = document.getElementById('lib-count');
+  if (count) count.textContent = collections.length + ' collection' + (collections.length !== 1 ? 's' : '');
 
   if (!collections.length) {
     grid.innerHTML = '<div class="loading-placeholder">No collections found.</div>';
@@ -313,7 +314,6 @@ function renderListView(items) {
           '<span class="lib-row-title">' + item.title + '</span>' +
           '<span class="lib-type-badge lib-type-' + item.type + '">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
           (item.canonical ? '<span class="lib-canonical-star">&#10022;</span>' : '') +
-          (cols ? '<span class="lib-in-collection">&#9674; ' + cols + ' collection' + (cols !== 1 ? 's' : '') + '</span>' : '') +
         '</div>' +
         (item.author ? '<div class="lib-row-author">by ' + item.author + '</div>' : '') +
         '<p class="lib-row-summary">' + (item.summary || '') + '</p>' +
@@ -379,7 +379,6 @@ function renderGridView(items) {
         '<div class="lib-card-meta">' +
           (words ? '<span class="lib-wordcount">' + fmtWords(words) + '</span>' : '') +
           (chaps ? '<span class="lib-wordcount">' + chaps + '</span>' : '') +
-          (cols ? '<span class="lib-wordcount">&#9674; ' + cols + ' collection' + (cols !== 1 ? 's' : '') + '</span>' : '') +
           (item.tags || []).map(function(t) { return '<span class="content-tag">' + t + '</span>'; }).join('') +
         '</div>' +
       '</div>';

@@ -6,19 +6,9 @@
     "bio": "Architect of the Sinverse universe. World-builder, community organizer, and the red panda who started it all.",
     "types": [
       "World Builder",
-      "Commisioner",
+      "Commissioner",
       "Friend"
-    ],
-    "socials": {
-      "twitter": "",
-      "bluesky": "",
-      "furaffinity": "",
-      "deviantart": "",
-      "artstation": "",
-      "patreon": "",
-      "discord": "",
-      "website": ""
-    }
+    ]
   },
   {
     "id": "FastTrack",
@@ -29,15 +19,17 @@
       "Artist"
     ],
     "socials": {
-      "twitter": "",
-      "bluesky": "",
-      "furaffinity": "https://www.furaffinity.net/user/fasttrack37d",
-      "deviantart": "",
-      "artstation": "",
-      "patreon": "",
-      "discord": "",
-      "website": ""
+      "furaffinity": "https://www.furaffinity.net/user/fasttrack37d"
     }
+  },
+  {
+    "id": "JaysLab",
+    "name": "JaysLab",
+    "avatar": null,
+    "bio": "",
+    "types": [
+      "Writer"
+    ]
   },
   {
     "id": "CharitysSongbird",
@@ -49,14 +41,7 @@
       "CYOA Author"
     ],
     "socials": {
-      "twitter": "",
-      "bluesky": "",
-      "furaffinity": "https://www.furaffinity.net/user/charityssongbird/",
-      "deviantart": "",
-      "artstation": "",
-      "patreon": "",
-      "discord": "",
-      "website": ""
+      "furaffinity": "https://www.furaffinity.net/user/charityssongbird/"
     }
   },
   {
@@ -68,33 +53,7 @@
       "Writer"
     ],
     "socials": {
-      "twitter": "",
-      "bluesky": "",
-      "furaffinity": "https://www.furaffinity.net/user/ronaserena",
-      "deviantart": "",
-      "artstation": "",
-      "patreon": "",
-      "discord": "",
-      "website": ""
-    }
-  },
-  {
-    "id": "JaysLab",
-    "name": "JaysLab",
-    "avatar": "",
-    "bio": "",
-    "types": [
-      "Writer"
-    ],
-    "socials": {
-      "twitter": "",
-      "bluesky": "",
-      "furaffinity": "",
-      "deviantart": "",
-      "artstation": "",
-      "patreon": "",
-      "discord": "",
-      "website": ""
+      "furaffinity": "https://www.furaffinity.net/user/ronaserena"
     }
   }
 ]

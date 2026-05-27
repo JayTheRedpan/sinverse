@@ -1,16 +1,25 @@
 'use strict';
 
 // ── Social platform config ─────────────────────────────────────
-var SOCIAL_PLATFORMS = [
-  { key: 'twitter',    label: 'Twitter / X',  prefix: 'https://twitter.com/',        icon: '𝕏' },
-  { key: 'bluesky',   label: 'Bluesky',       prefix: 'https://bsky.app/profile/',   icon: '🦋' },
-  { key: 'furaffinity',label: 'FurAffinity',  prefix: 'https://www.furaffinity.net/user/', icon: 'FA' },
-  { key: 'deviantart', label: 'DeviantArt',   prefix: 'https://www.deviantart.com/', icon: 'DA' },
-  { key: 'artstation', label: 'ArtStation',   prefix: 'https://www.artstation.com/', icon: 'AS' },
-  { key: 'patreon',    label: 'Patreon',      prefix: '',                            icon: '♦' },
-  { key: 'discord',    label: 'Discord',      prefix: null,                          icon: '◈' },
-  { key: 'website',   label: 'Website',       prefix: '',                            icon: '↗' },
-];
+// Maps known keys to display labels. Any key not listed renders with
+// the key itself capitalised as the label — add new platforms freely to
+// contributors.json without touching this code.
+var SOCIAL_LABELS = {
+  twitter:     'Twitter / X',
+  bluesky:     'Bluesky',
+  furaffinity: 'FurAffinity',
+  deviantart:  'DeviantArt',
+  artstation:  'ArtStation',
+  patreon:     'Patreon',
+  discord:     'Discord',
+  website:     'Website',
+  instagram:   'Instagram',
+  tumblr:      'Tumblr',
+  kofi:        'Ko-fi',
+  subscribestar: 'SubscribeStar',
+};
+// Keys whose values are usernames, not full URLs (rendered as plain text)
+var SOCIAL_USERNAME_ONLY = ['discord'];
 
 var ANON_IDS = [null, '', 'anon', 'anonymous'];
 
@@ -21,18 +30,20 @@ function isAnon(val) {
 // ── Build social link elements ────────────────────────────────
 function buildSocials(socials, container) {
   if (!socials) return;
-  SOCIAL_PLATFORMS.forEach(function(p) {
-    var val = socials[p.key];
+  Object.keys(socials).forEach(function(key) {
+    var val = socials[key];
     if (!val || !val.trim()) return;
-    var el = document.createElement(p.prefix === null ? 'span' : 'a');
-    el.className = 'social-link' + (p.prefix === null ? ' social-discord' : '');
-    el.textContent = p.icon + '\u00a0' + (p.prefix === null ? val : p.label);
-    if (p.prefix !== null) {
-      el.href = val.startsWith('http') ? val : p.prefix + val;
+    var label = SOCIAL_LABELS[key] || (key.charAt(0).toUpperCase() + key.slice(1));
+    var isUsernameOnly = SOCIAL_USERNAME_ONLY.indexOf(key) > -1;
+    var el = document.createElement(isUsernameOnly ? 'span' : 'a');
+    el.className = 'social-link' + (isUsernameOnly ? ' social-username' : '');
+    el.textContent = label;
+    if (!isUsernameOnly) {
+      el.href = val.startsWith('http') ? val : 'https://' + val;
       el.target = '_blank';
       el.rel = 'noopener noreferrer';
     } else {
-      el.title = 'Discord: ' + val;
+      el.title = key + ': ' + val;
     }
     container.appendChild(el);
   });
