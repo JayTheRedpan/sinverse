@@ -188,20 +188,27 @@
     .wiki-timeline-wrap {
       position: relative;
       overflow-x: auto;
-      padding: 2rem 0 1rem;
-      margin-bottom: 2.5rem;
+      overflow-y: hidden;
+      padding: 3rem 1rem 1.5rem;
+      margin-bottom: 1rem;
+      /* Hide scrollbar but keep functionality */
+      scrollbar-width: thin;
+      scrollbar-color: var(--border-mid) transparent;
     }
+    .wiki-timeline-wrap::-webkit-scrollbar { height: 4px; }
+    .wiki-timeline-wrap::-webkit-scrollbar-track { background: transparent; }
+    .wiki-timeline-wrap::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
+
     .wiki-timeline-track {
       display: flex;
       align-items: flex-start;
-      gap: 0;
       min-width: max-content;
       position: relative;
-      padding-bottom: 2rem;
+      padding-bottom: 1rem;
     }
     .wiki-timeline-line {
       position: absolute;
-      top: 22px;
+      top: 28px;
       left: 0;
       right: 0;
       height: 1px;
@@ -214,83 +221,96 @@
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 180px;
+      width: 200px;
       flex-shrink: 0;
       cursor: pointer;
+      padding: 0 0.5rem;
+      transition: opacity 0.15s;
     }
+    .wiki-timeline-event:hover { opacity: 0.85; }
     .wiki-timeline-event.anchor .wiki-tl-dot {
       background: var(--accent);
-      width: 14px;
-      height: 14px;
-      box-shadow: 0 0 0 3px var(--bg), 0 0 0 5px var(--accent);
+      width: 18px;
+      height: 18px;
+      box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--accent);
     }
+    .wiki-timeline-event.anchor .wiki-tl-date { font-size: 0.78rem; color: var(--text-primary); }
+    .wiki-timeline-event.anchor .wiki-tl-title { font-size: 1.05rem; }
     .wiki-tl-dot {
-      width: 10px;
-      height: 10px;
+      width: 12px;
+      height: 12px;
       border-radius: 50%;
-      background: var(--border-mid);
+      background: var(--bg-panel);
       border: 1px solid var(--accent);
-      margin-bottom: 0.75rem;
+      margin-bottom: 1rem;
       transition: background 0.2s;
+      flex-shrink: 0;
     }
     .wiki-timeline-event:hover .wiki-tl-dot { background: var(--accent); }
     .wiki-tl-date {
       font-family: var(--font-caps);
-      font-size: 0.56rem;
-      letter-spacing: 0.14em;
+      font-size: 0.68rem;
+      letter-spacing: 0.16em;
       color: var(--accent);
-      margin-bottom: 0.3rem;
+      margin-bottom: 0.4rem;
       text-align: center;
     }
     .wiki-tl-title {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: 0.92rem;
+      font-size: 0.95rem;
       color: var(--text-primary);
       text-align: center;
-      line-height: 1.3;
-      padding: 0 0.5rem;
+      line-height: 1.35;
     }
 
-    /* Timeline detail panel */
+    /* Timeline detail panel — inline below track */
     .wiki-tl-detail {
       display: none;
       background: var(--bg-panel);
       border: 1px solid var(--border-mid);
       border-radius: var(--radius);
-      padding: 1.25rem 1.5rem;
-      margin-top: 1.5rem;
+      padding: 1.5rem 2rem;
+      margin-top: 2rem;
+      animation: tl-fade-in 0.2s ease;
     }
+    @keyframes tl-fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     .wiki-tl-detail.open { display: block; }
     .wiki-tl-detail-date {
       font-family: var(--font-caps);
-      font-size: 0.56rem;
-      letter-spacing: 0.14em;
+      font-size: 0.62rem;
+      letter-spacing: 0.16em;
       color: var(--accent);
-      margin-bottom: 0.4rem;
+      margin-bottom: 0.5rem;
     }
     .wiki-tl-detail-title {
       font-family: var(--font-display);
       font-style: italic;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       color: var(--text-primary);
-      margin-bottom: 0.75rem;
+      margin-bottom: 0.85rem;
     }
     .wiki-tl-detail-body {
       font-family: var(--font-body);
-      font-size: 0.95rem;
+      font-size: 1rem;
       color: var(--text-secondary);
-      line-height: 1.75;
+      line-height: 1.8;
     }
     .wiki-tl-detail-close {
       float: right;
       background: none;
-      border: none;
-      color: var(--text-muted);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      color: var(--text-secondary);
       cursor: pointer;
-      font-size: 0.8rem;
-      margin-top: -0.2rem;
+      font-family: var(--font-caps);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      padding: 0.2rem 0.5rem;
+      margin-top: -0.1rem;
+      transition: border-color 0.15s;
     }
+    .wiki-tl-detail-close:hover { border-color: var(--accent); color: var(--accent); }
 
     /* ── Character index ── */
     .wiki-char-grid {
@@ -330,7 +350,7 @@
       font-family: var(--font-caps);
       font-size: 0.52rem;
       letter-spacing: 0.1em;
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
     .wiki-char-tag {
       display: inline-block;
@@ -340,7 +360,7 @@
       padding: 0.15rem 0.4rem;
       border: 1px solid var(--border);
       border-radius: var(--radius);
-      color: var(--text-muted);
+      color: var(--text-secondary);
       margin-top: 0.4rem;
     }
 
@@ -373,7 +393,7 @@
       font-family: var(--font-display);
       font-style: italic;
       font-size: 0.85rem;
-      color: var(--text-muted);
+      color: var(--text-secondary);
     }
     .wiki-char-meta { flex: 1; }
     .wiki-char-meta-name {
@@ -389,7 +409,7 @@
       font-family: var(--font-caps);
       font-size: 0.6rem;
       letter-spacing: 0.14em;
-      color: var(--text-muted);
+      color: var(--text-secondary);
       margin-bottom: 1.5rem;
     }
     .wiki-stat-table {
@@ -402,7 +422,7 @@
     .wiki-stat-table tr { border-bottom: 1px solid var(--border); }
     .wiki-stat-table tr:last-child { border-bottom: none; }
     .wiki-stat-table td:first-child {
-      color: var(--text-muted);
+      color: var(--text-secondary);
       padding: 0.4rem 1rem 0.4rem 0;
       width: 110px;
       font-family: var(--font-caps);
@@ -480,6 +500,63 @@
       line-height: 1.6;
     }
 
+    /* ── Character content links ── */
+    .wiki-char-content-links {
+      margin-top: 2.5rem;
+      padding-top: 1.5rem;
+      border-top: 1px solid var(--border);
+    }
+    .wiki-char-content-row {
+      display: flex;
+      gap: 1rem;
+      margin-top: 1rem;
+      flex-wrap: wrap;
+    }
+    .wiki-char-content-card {
+      flex: 1;
+      min-width: 200px;
+      background: var(--bg-panel);
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 1.1rem 1.25rem;
+      text-decoration: none;
+      display: flex;
+      align-items: center;
+      gap: 1rem;
+      transition: border-color 0.15s, background 0.15s;
+      cursor: pointer;
+    }
+    .wiki-char-content-card:hover { border-color: var(--accent); background: var(--bg-inset); }
+    .wiki-char-content-card-count {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 2rem;
+      font-weight: 300;
+      color: var(--accent);
+      line-height: 1;
+      flex-shrink: 0;
+    }
+    .wiki-char-content-card-label {
+      font-family: var(--font-caps);
+      font-size: 0.62rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--text-primary);
+      margin-bottom: 0.2rem;
+    }
+    .wiki-char-content-card-sub {
+      font-family: var(--font-body);
+      font-size: 0.82rem;
+      color: var(--text-secondary);
+    }
+    .wiki-char-content-none {
+      font-family: var(--font-body);
+      font-style: italic;
+      font-size: 0.9rem;
+      color: var(--text-secondary);
+      margin-top: 0.75rem;
+    }
+
     .wiki-back-btn {
       display: inline-flex;
       align-items: center;
@@ -488,7 +565,7 @@
       font-size: 0.58rem;
       letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--text-muted);
+      color: var(--text-secondary);
       cursor: pointer;
       margin-bottom: 2rem;
       background: none;
@@ -523,16 +600,79 @@
       background: var(--bg-inset);
     }
 
+    /* Mobile menu button — hidden on desktop */
+    .wiki-mobile-menu-btn {
+      display: none;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: 1px solid var(--border);
+      border-radius: var(--radius);
+      padding: 0.35rem 0.75rem;
+      font-family: var(--font-caps);
+      font-size: 0.58rem;
+      letter-spacing: 0.1em;
+      color: var(--text-secondary);
+      cursor: pointer;
+      margin-left: auto;
+    }
+    .wiki-mobile-menu-btn:hover { border-color: var(--accent); color: var(--accent); }
+    .wiki-mobile-overlay {
+      display: none;
+      position: fixed;
+      inset: 0;
+      background: rgba(0,0,0,0.5);
+      z-index: 299;
+    }
+
     @media (max-width: 768px) {
-      .wiki-app { grid-template-columns: 1fr; }
+      /* Grid: topbar full width, no sidebar, main fills rest */
+      .wiki-app {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto 1fr;
+        height: 100vh;
+        height: 100dvh;
+      }
       .wiki-sidebar { display: none; }
-      .wiki-main { padding: 2rem 1.5rem; max-width: 100%; }
+      .wiki-main {
+        padding: 1.5rem 1.25rem;
+        max-width: 100%;
+        overflow-y: auto;
+        height: 100%;
+      }
+      /* Show mobile menu button, hide search */
+      .wiki-search { display: none; }
+      .wiki-mobile-menu-btn { display: flex; }
+      /* Topbar */
+      .wiki-topbar { padding: 0.75rem 1rem; gap: 0.75rem; }
+      .wiki-topbar-sep { display: none; }
+      /* Sidebar as fixed drawer */
+      .wiki-sidebar.mobile-open {
+        display: flex;
+        flex-direction: column;
+        position: fixed;
+        top: 0; left: 0; bottom: 0;
+        z-index: 300;
+        width: 80%;
+        max-width: 300px;
+        box-shadow: 4px 0 24px rgba(0,0,0,0.6);
+        overflow-y: auto;
+      }
+      /* Content fixes */
+      .wiki-timeline-wrap { overflow-x: auto; }
+      .wiki-lore-cards { grid-template-columns: 1fr; }
+      .wiki-intro-title { font-size: 2rem; }
       .wiki-char-header { flex-direction: column; }
       .wiki-char-hero, .wiki-char-hero-placeholder { width: 100%; height: auto; }
+      .wiki-stat-table { font-size: 0.85rem; }
+      .wiki-char-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+      .wiki-md-content h2 { font-size: 1.3rem; }
     }
+
   </style>
 </head>
 <body>
+<div class="wiki-mobile-overlay" id="wiki-mobile-overlay"></div>
 <div class="wiki-app">
 
   <!-- Top bar -->
@@ -541,26 +681,20 @@
     <span class="wiki-topbar-sep">›</span>
     <span class="wiki-topbar-title">Wiki</span>
     <input class="wiki-search" type="search" placeholder="Search wiki…" id="wiki-search-input" />
+    <button class="wiki-mobile-menu-btn" id="wiki-mobile-menu-btn">☰ Menu</button>
   </header>
 
   <!-- Sidebar -->
   <nav class="wiki-sidebar">
     <div class="wiki-nav-section">
-      <div class="wiki-nav-heading">Getting Started</div>
       <a class="wiki-nav-link active" data-page="intro">World of Sinverse</a>
       <a class="wiki-nav-link" data-page="timeline">Timeline</a>
     </div>
     <hr class="wiki-nav-divider" />
     <div class="wiki-nav-section">
-      <div class="wiki-nav-heading">Characters</div>
-      <div id="sidebar-chars"></div>
-    </div>
-    <hr class="wiki-nav-divider" />
-    <div id="sidebar-lore"></div>
-    <hr class="wiki-nav-divider" />
-    <div class="wiki-nav-section">
-      <div class="wiki-nav-heading">Browse</div>
-      <a class="wiki-nav-link" data-page="characters">All Characters</a>
+      <div class="wiki-nav-heading">Browse by Category</div>
+      <a class="wiki-nav-link" data-page="characters">Characters</a>
+      <div id="sidebar-lore-cats"></div>
     </div>
   </nav>
 
@@ -609,7 +743,7 @@
     <section class="wiki-page" id="page-timeline">
       <div class="wiki-intro-eyebrow">Sinverse History</div>
       <h1 class="wiki-intro-title">Timeline</h1>
-      <p class="wiki-lore-body" style="margin-bottom:2rem">All dates are measured relative to TDay — the day Sin's serum was released upon the world. <strong style="color:var(--text-primary)">BT</strong> (Before TDay) counts backwards; <strong style="color:var(--text-primary)">AT</strong> (After TDay) counts forwards. Click any event to expand it.</p>
+      <p class="wiki-lore-body" style="margin-bottom:1.5rem">All dates are measured relative to TDay — the day Sin's serum was released upon the world. <strong style="color:var(--text-primary)">BT</strong> (Before TDay) counts backwards; <strong style="color:var(--text-primary)">AT</strong> (After TDay) counts forwards. Click any event to expand it.</p>
       <div id="timeline-container"></div>
     </section>
 
@@ -619,6 +753,20 @@
       <h1 class="wiki-intro-title">Characters</h1>
       <div class="wiki-tag-filter" id="char-tag-filter"></div>
       <div class="wiki-char-grid" id="char-grid"></div>
+    </section>
+
+    <!-- Search results page -->
+    <section class="wiki-page" id="page-search">
+      <div class="wiki-intro-eyebrow">Search</div>
+      <h1 class="wiki-intro-title" id="search-results-title"></h1>
+      <div id="search-results-list"></div>
+    </section>
+
+    <!-- Category browse page -->
+    <section class="wiki-page" id="page-category">
+      <div class="wiki-intro-eyebrow" id="cat-eyebrow">Browse</div>
+      <h1 class="wiki-intro-title" id="cat-title"></h1>
+      <div id="cat-grid"></div>
     </section>
 
     <!-- Lore detail (dynamic) -->
@@ -637,23 +785,28 @@
 </div>
 
 <script>
+// Configure marked to prevent link navigation
+if (typeof marked !== 'undefined') {
+  var renderer = new marked.Renderer();
+  renderer.link = function(token) {
+    // Newer marked passes a token object; older versions pass (href, title, text)
+    var href = typeof token === 'object' ? (token.href || '') : (token || '');
+    var text = typeof token === 'object' ? (token.text || '') : (arguments[2] || '');
+    if (href && (href.indexOf('http') === 0 || href.indexOf('mailto') === 0)) {
+      return '<a href="' + href + '" target="_blank" rel="noopener">' + text + '</a>';
+    }
+    return '<span class="wiki-lore-link" data-target="' + href + '">' + text + '</span>';
+  };
+  marked.use({ renderer: renderer });
+}
+
 // ── State ──────────────────────────────────────────────────────
 var characters = [];
 var timelineEvents = [];
 var currentCharSlug = null;
 var activeTagFilter = null;
 
-var LORE_PAGES = [
-  { id: 'apotheosis-serum',  label: 'The Apotheosis Serum', section: 'Concepts' },
-  { id: 'tday',              label: 'TDay',                 section: 'History' },
-  { id: 'sincorp',           label: 'SinCorp',              section: 'Organisations' },
-  { id: 'the-resistance',    label: 'The Resistance',       section: 'Organisations' },
-  { id: 'angora',            label: 'Angora',               section: 'Locations' },
-  { id: 'mega-cities',       label: 'The Mega-Cities',      section: 'Locations' },
-  { id: 'the-wilds',         label: 'The Wilds',            section: 'Locations' },
-  { id: 'toys',              label: 'Toys',                 section: 'Concepts' },
-  { id: 'project-sylph',     label: 'Project Sylph',        section: 'Classified' },
-];
+var LORE_PAGES = []; // loaded from lore.json
 
 // ── Navigation ────────────────────────────────────────────────
 function showPage(id) {
@@ -665,10 +818,25 @@ function showPage(id) {
   if (link) link.classList.add('active');
 }
 
-document.querySelectorAll('.wiki-nav-link[data-page]').forEach(function(link) {
-  link.addEventListener('click', function() {
-    showPage(this.getAttribute('data-page'));
-  });
+// Single delegated listener on the sidebar — handles static and dynamic links
+document.getElementById('wiki-main').addEventListener('click', function(e) {
+  var card = e.target.closest('[data-href]');
+  if (card) { window.location.href = card.getAttribute('data-href'); return; }
+});
+
+document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
+  var link = e.target.closest('.wiki-nav-link');
+  if (!link) return;
+  document.querySelectorAll('.wiki-nav-link').forEach(function(l){ l.classList.remove('active'); });
+  link.classList.add('active');
+
+  var page = link.getAttribute('data-page');
+  var cat  = link.getAttribute('data-category');
+  var charId = link.getAttribute('data-char-id');
+
+  if (charId) { loadCharPage(parseInt(charId)); }
+  else if (cat) { showCategory(cat); }
+  else if (page) { showPage(page); }
 });
 
 document.getElementById('char-back-btn').addEventListener('click', function() {
@@ -686,51 +854,82 @@ function fW(lbs) {
   return Math.round(lbs).toLocaleString() + ' lbs';
 }
 
+var galleryItems = [];
+var libraryItems = [];
+
 Promise.all([
   fetch('../_data/characters.json').then(function(r){ return r.json(); }),
-  fetch('timeline.json').then(function(r){ return r.json(); })
+  fetch('timeline.json').then(function(r){ return r.json(); }),
+  fetch('lore.json').then(function(r){ return r.json(); }),
+  fetch('../gallery/gallery.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+  fetch('../library/library.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
 ]).then(function(results) {
   characters = results[0];
   timelineEvents = results[1];
-  buildSidebar();
+  LORE_PAGES = results[2];
+  galleryItems = results[3];
+  libraryItems = results[4];
   buildLoreSidebar();
   buildTimeline();
   buildCharGrid(characters);
+
+  // Handle ?character= param from gallery/library links
+  var urlParams = new URLSearchParams(window.location.search);
+  var charParam = urlParams.get('character');
+  if (charParam) {
+    var charNameParam = decodeURIComponent(charParam).toLowerCase();
+    var matchChar = characters.find(function(c){ return c.name.toLowerCase() === charNameParam; });
+    if (matchChar) loadCharPage(matchChar.id);
+  }
 }).catch(function(e) {
   console.error('Failed to load wiki data:', e);
 });
 
 // ── Lore sidebar ─────────────────────────────────────────────
 function buildLoreSidebar() {
-  var container = document.getElementById('sidebar-lore');
-  var sections = {};
+  console.log('[nav] buildLoreSidebar called, LORE_PAGES:', LORE_PAGES ? LORE_PAGES.length : 'undefined');
+  var container = document.getElementById('sidebar-lore-cats');
+  container.innerHTML = '';
+  var sections = [];
   LORE_PAGES.forEach(function(lp) {
-    if (!sections[lp.section]) sections[lp.section] = [];
-    sections[lp.section].push(lp);
+    if (sections.indexOf(lp.section) === -1) sections.push(lp.section);
   });
-  Object.keys(sections).forEach(function(sec) {
-    var div = document.createElement('div');
-    div.className = 'wiki-nav-section';
-    var h = document.createElement('div');
-    h.className = 'wiki-nav-heading';
-    h.textContent = sec;
-    div.appendChild(h);
-    sections[sec].forEach(function(lp) {
-      var a = document.createElement('a');
-      a.className = 'wiki-nav-link';
-      a.textContent = lp.label;
-      a.addEventListener('click', function() { loadLorePage(lp.id); });
-      div.appendChild(a);
-    });
-    container.appendChild(div);
+  sections.forEach(function(sec) {
+    var a = document.createElement('a');
+    a.className = 'wiki-nav-link';
+    a.setAttribute('data-category', sec);
+    a.textContent = sec;
+    container.appendChild(a);
   });
+}
+
+function showCategory(section) {
+  document.getElementById('cat-eyebrow').textContent = 'Browse';
+  document.getElementById('cat-title').textContent = section;
+  var grid = document.getElementById('cat-grid');
+  grid.innerHTML = '';
+  var items = LORE_PAGES.filter(function(lp){ return lp.section === section; });
+  // Render as a simple card list
+  var list = document.createElement('div');
+  list.style.cssText = 'display:flex;flex-direction:column;gap:1px;background:var(--border);';
+  items.forEach(function(lp) {
+    var card = document.createElement('div');
+    card.style.cssText = 'background:var(--bg-panel);padding:1.1rem 1.5rem;cursor:pointer;transition:background 0.15s;';
+    card.innerHTML = '<div style="font-family:var(--font-display);font-style:italic;font-size:1.15rem;color:var(--text-primary);margin-bottom:0.25rem">' + lp.label + '</div>';
+    card.addEventListener('mouseenter', function(){ this.style.background='var(--bg-inset)'; });
+    card.addEventListener('mouseleave', function(){ this.style.background='var(--bg-panel)'; });
+    card.addEventListener('click', function(){ loadLorePage(lp.id); });
+    list.appendChild(card);
+  });
+  grid.appendChild(list);
+  showPage('category');
 }
 
 function loadLorePage(id) {
   var lp = LORE_PAGES.find(function(p){ return p.id === id; });
   if (!lp) return;
   var container = document.getElementById('lore-detail-content');
-  container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;padding:2rem 0">Loading…</p>';
+  container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;padding:2rem 0">Loading…</p>';
   document.getElementById('lore-back-btn').setAttribute('data-prev', document.querySelector('.wiki-nav-link.active') ? document.querySelector('.wiki-nav-link.active').getAttribute('data-page') || 'intro' : 'intro');
   showPage('lore');
   // Highlight sidebar
@@ -740,18 +939,15 @@ function loadLorePage(id) {
     .then(function(r){ return r.ok ? r.text() : null; })
     .then(function(md) {
       if (!md) {
-        container.innerHTML = '<p style="color:var(--text-muted);font-style:italic">No page found.</p>';
+        container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic">No page found.</p>';
         return;
       }
       // Strip frontmatter, extract title
       var titleMatch = md.match(new RegExp('^title: *(.+)$', 'm'));
       var title = titleMatch ? titleMatch[1].trim() : lp.label;
       var stripped = md.replace(new RegExp('^---[^]*?---\n'), '');
-      // Replace [link](id) with clickable lore links
-      var linked = stripped.replace(/\[([^\]]+)\]\(([^)]+)\)/g, function(_, text, target) {
-        return '<span class="wiki-lore-link" data-target="' + target + '">' + text + '</span>';
-      });
-      var body = '<div class="wiki-md-content">' + marked.parse(linked) + '</div>';
+      // marked renderer handles [link](id) → wiki-lore-link spans
+      var body = '<div class="wiki-md-content">' + marked.parse(stripped) + '</div>';
       container.innerHTML =
         '<div class="wiki-intro-eyebrow">' + (lp.section||'Lore') + '</div>' +
         '<h1 class="wiki-intro-title">' + title + '</h1>' +
@@ -776,21 +972,28 @@ document.getElementById('lore-back-btn').addEventListener('click', function() {
   showPage('intro');
 });
 
-// ── Sidebar character links ───────────────────────────────────
-function buildSidebar() {
-  var container = document.getElementById('sidebar-chars');
-  characters.filter(function(c){ return c.canonical; }).forEach(function(c) {
-    var a = document.createElement('a');
-    a.className = 'wiki-nav-link';
-    a.setAttribute('data-page', 'character');
-    a.setAttribute('data-char-id', c.id);
-    a.textContent = c.name;
-    a.addEventListener('click', function() {
-      loadCharPage(c.id);
-    });
-    container.appendChild(a);
-  });
+// Mobile menu
+var mobileMenuBtn = document.getElementById('wiki-mobile-menu-btn');
+var mobileOverlay = document.getElementById('wiki-mobile-overlay');
+var wikiSidebar   = document.querySelector('.wiki-sidebar');
+
+function openMobileMenu() {
+  if (wikiSidebar) wikiSidebar.classList.add('mobile-open');
+  if (mobileOverlay) mobileOverlay.style.display = 'block';
 }
+function closeMobileMenu() {
+  if (wikiSidebar) wikiSidebar.classList.remove('mobile-open');
+  if (mobileOverlay) mobileOverlay.style.display = '';
+}
+if (mobileMenuBtn) mobileMenuBtn.addEventListener('click', openMobileMenu);
+if (mobileOverlay) mobileOverlay.addEventListener('click', closeMobileMenu);
+
+// Close menu when a nav link is clicked on mobile
+document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
+  if (window.innerWidth <= 768) closeMobileMenu();
+});
+
+// buildSidebar removed — characters accessed via category page
 
 // ── Timeline ──────────────────────────────────────────────────
 function buildTimeline() {
@@ -830,13 +1033,18 @@ function buildTimeline() {
     node.appendChild(date);
     node.appendChild(title);
 
+    node.setAttribute('data-ev-id', ev.id);
     node.addEventListener('click', function() {
-      if (openId === ev.id) {
+      var wasOpen = openId === ev.id;
+      // Reset all dots
+      document.querySelectorAll('.wiki-tl-dot').forEach(function(d){ d.style.background = ''; });
+      if (wasOpen) {
         detail.classList.remove('open');
         openId = null;
       } else {
+        dot.style.background = 'var(--accent)';
         detail.innerHTML =
-          '<button class="wiki-tl-detail-close" id="tl-close">✕</button>' +
+          '<button class="wiki-tl-detail-close" id="tl-close">Close ✕</button>' +
           '<div class="wiki-tl-detail-date">' + ev.date + '</div>' +
           '<div class="wiki-tl-detail-title">' + ev.title + '</div>' +
           '<div class="wiki-tl-detail-body">' + ev.summary + '</div>';
@@ -845,6 +1053,7 @@ function buildTimeline() {
         document.getElementById('tl-close').addEventListener('click', function(e) {
           e.stopPropagation();
           detail.classList.remove('open');
+          dot.style.background = '';
           openId = null;
         });
       }
@@ -942,7 +1151,7 @@ function loadCharPage(charId) {
 
   var slug = char.name.toLowerCase().replace(/\s+/g, '-');
   var container = document.getElementById('char-detail-content');
-  container.innerHTML = '<p style="color:var(--text-muted);font-style:italic;padding:2rem 0">Loading…</p>';
+  container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;padding:2rem 0">Loading…</p>';
   showPage('character');
 
   // Build stat block from JSON
@@ -983,25 +1192,166 @@ function loadCharPage(charId) {
         var stripped = md.replace(/^---[\s\S]*?---\n/, '');
         bodyHtml = '<div class="wiki-md-content">' + marked.parse(stripped) + '</div>';
       } else {
-        bodyHtml = '<p style="color:var(--text-muted);font-style:italic">No wiki page written yet for this character.</p>';
+        bodyHtml = '<p style="color:var(--text-secondary);font-style:italic">No wiki page written yet for this character.</p>';
       }
-      container.innerHTML = header + bodyHtml;
+      var charName = char.name;
+      var charNameLower = charName.toLowerCase();
+      var galleryCount = galleryItems.filter(function(g){
+        return g.characters && g.characters.map(function(c){return c.toLowerCase();}).indexOf(charNameLower) > -1;
+      }).length;
+      var libraryCount = libraryItems.filter(function(l){
+        return l.characters && l.characters.map(function(c){return c.toLowerCase();}).indexOf(charNameLower) > -1;
+      }).length;
+
+      var gUrl = '../gallery/?character=' + encodeURIComponent(charName.toLowerCase());
+      var lUrl = '../library/?character=' + encodeURIComponent(charName.toLowerCase());
+      var gSub = galleryCount === 0 ? 'No pieces yet' : (galleryCount === 1 ? '1 piece' : galleryCount + ' pieces');
+      var lSub = libraryCount === 0 ? 'No stories yet' : (libraryCount === 1 ? '1 story' : libraryCount + ' stories');
+      var contentLinks =
+        '<div class="wiki-char-content-links">' +
+          '<div class="wiki-section-title">Featured Content</div>' +
+          '<div class="wiki-char-content-row">' +
+            '<div class="wiki-char-content-card" data-href="' + gUrl + '">' +
+              '<div class="wiki-char-content-card-count">' + galleryCount + '</div>' +
+              '<div>' +
+                '<div class="wiki-char-content-card-label">Gallery</div>' +
+                '<div class="wiki-char-content-card-sub">' + gSub + ' of art &amp; media</div>' +
+              '</div>' +
+            '</div>' +
+            '<div class="wiki-char-content-card" data-href="' + lUrl + '">' +
+              '<div class="wiki-char-content-card-count">' + libraryCount + '</div>' +
+              '<div>' +
+                '<div class="wiki-char-content-card-label">Library</div>' +
+                '<div class="wiki-char-content-card-sub">' + lSub + '</div>' +
+              '</div>' +
+            '</div>' +
+          '</div>' +
+        '</div>';
+      container.innerHTML = header + bodyHtml + contentLinks;
     })
     .catch(function() {
-      container.innerHTML = header + '<p style="color:var(--text-muted);font-style:italic">No wiki page written yet for this character.</p>';
+      container.innerHTML = header + '<p style="color:var(--text-secondary);font-style:italic">No wiki page written yet for this character.</p>';
     });
 }
 
 // ── Search ────────────────────────────────────────────────────
+var searchTimeout = null;
 document.getElementById('wiki-search-input').addEventListener('input', function() {
-  var q = this.value.trim().toLowerCase();
+  var q = this.value.trim();
+  clearTimeout(searchTimeout);
   if (!q) return;
-  var match = characters.find(function(c){ return c.name.toLowerCase().includes(q); });
-  if (match) {
-    showPage('characters');
-    setTimeout(function(){ loadCharPage(match.id); }, 100);
+  searchTimeout = setTimeout(function(){ runSearch(q); }, 180);
+});
+
+document.getElementById('wiki-search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Escape') { this.value = ''; }
+  if (e.key === 'Enter') {
+    clearTimeout(searchTimeout);
+    var q = this.value.trim();
+    if (q) runSearch(q);
   }
 });
+
+function runSearch(q) {
+  var ql = q.toLowerCase();
+  var results = [];
+
+  var qlLower = ql.toLowerCase();
+  // Characters
+  characters.forEach(function(c) {
+    var score = 0;
+    var cLower = c.name.toLowerCase();
+    if (cLower === qlLower) score = 100;
+    else if (cLower.startsWith(qlLower)) score = 80;
+    else if (cLower.includes(qlLower)) score = 60;
+    if (score) results.push({
+      type: 'character', score: score,
+      label: c.name,
+      sub: c.species + (c.faction ? ' · ' + c.faction : ''),
+      action: function(id){ return function(){ loadCharPage(id); }; }(c.id)
+    });
+  });
+
+  // Lore pages
+  LORE_PAGES.forEach(function(lp) {
+    var score = 0;
+    var lpLower = lp.label.toLowerCase();
+    if (lpLower === qlLower) score = 100;
+    else if (lpLower.startsWith(qlLower)) score = 80;
+    else if (lpLower.includes(qlLower)) score = 60;
+    if (score) results.push({
+      type: 'lore', score: score,
+      label: lp.label,
+      sub: lp.section,
+      action: function(id){ return function(){ loadLorePage(id); }; }(lp.id)
+    });
+  });
+
+  // Timeline events
+  timelineEvents.forEach(function(ev) {
+    var score = 0;
+    var evLower = ev.title.toLowerCase();
+    if (evLower === qlLower) score = 100;
+    else if (evLower.startsWith(qlLower)) score = 80;
+    else if (evLower.includes(qlLower)) score = 60;
+    else if (ev.summary && ev.summary.toLowerCase().includes(qlLower)) score = 30;
+    if (score) results.push({
+      type: 'timeline', score: score,
+      label: ev.title,
+      sub: ev.date + ' · Timeline event',
+      action: function(id){ return function(){
+        showPage('timeline');
+        // Highlight the event
+        setTimeout(function(){
+          var evNode = document.querySelector('[data-ev-id="'+id+'"]');
+          if (evNode) evNode.click();
+        }, 100);
+      }; }(ev.id)
+    });
+  });
+
+  results.sort(function(a,b){ return b.score - a.score; });
+  renderSearchResults(q, results);
+}
+
+var TYPE_LABELS = { character: 'Character', lore: 'Lore', timeline: 'Timeline' };
+var TYPE_COLORS = { character: 'var(--accent)', lore: 'var(--accent-light)', timeline: 'var(--text-secondary)' };
+
+function renderSearchResults(q, results) {
+  showPage('search');
+  document.querySelectorAll('.wiki-nav-link').forEach(function(l){ l.classList.remove('active'); });
+  document.getElementById('search-results-title').textContent =
+    results.length ? 'Results for "' + q + '"' : 'No results for "' + q + '"';
+
+  var list = document.getElementById('search-results-list');
+  list.innerHTML = '';
+
+  if (!results.length) {
+    list.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;margin-top:1rem">No pages matched your search. Try a different term.</p>';
+    return;
+  }
+
+  var ul = document.createElement('div');
+  ul.style.cssText = 'display:flex;flex-direction:column;gap:1px;background:var(--border);margin-top:1.5rem;';
+
+  results.forEach(function(r) {
+    var row = document.createElement('div');
+    row.style.cssText = 'background:var(--bg-panel);padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:1rem;transition:background 0.15s;';
+    row.innerHTML =
+      '<div style="font-family:var(--font-caps);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:'+TYPE_COLORS[r.type]+';width:80px;flex-shrink:0">'+TYPE_LABELS[r.type]+'</div>' +
+      '<div style="flex:1">' +
+        '<div style="font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:var(--text-primary)">' + r.label + '</div>' +
+        '<div style="font-family:var(--font-caps);font-size:0.6rem;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.25rem">' + (r.sub||'') + '</div>' +
+      '</div>' +
+      '<div style="color:var(--text-secondary);font-size:0.9rem">→</div>';
+    row.addEventListener('mouseenter', function(){ this.style.background='var(--bg-inset)'; });
+    row.addEventListener('mouseleave', function(){ this.style.background='var(--bg-panel)'; });
+    row.addEventListener('click', r.action);
+    ul.appendChild(row);
+  });
+
+  list.appendChild(ul);
+}
 </script>
 </body>
 </html>

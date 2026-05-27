@@ -136,9 +136,9 @@
 
     .hero-title {
       font-family: var(--font-caps);
-      font-size: clamp(3rem, 8vw, 6rem);
+      font-size: clamp(2rem, 8vw, 6rem);
       font-weight: 300;
-      letter-spacing: 0.4em;
+      letter-spacing: clamp(0.08em, 0.4em, 0.4em);
       color: var(--accent);
       text-transform: uppercase;
       line-height: 1;
@@ -186,6 +186,10 @@
       background: var(--border);
       padding: 1px;
       margin-top: 1rem;
+      max-width: 1400px;
+      margin-left: auto;
+      margin-right: auto;
+      width: 100%;
     }
 
     .nav-card {
@@ -308,42 +312,42 @@
 
     <nav class="nav-cards">
       <a href="wiki/" class="nav-card" style="animation-delay:0.05s">
-        <div class="nav-card-icon">&#9412;</div>
+        <div class="nav-card-icon" style="font-size:2rem">&#10022;</div>
         <div class="nav-card-title">Wiki</div>
         <p class="nav-card-desc">Characters, lore, factions, locations, and the history of the Sinverse universe.</p>
         <div class="nav-card-cta">Explore the universe &rarr;</div>
       </a>
 
       <a href="library/" class="nav-card" style="animation-delay:0.10s">
-        <div class="nav-card-icon">&#9096;</div>
+        <div class="nav-card-icon">&#128214;</div>
         <div class="nav-card-title">Library</div>
         <p class="nav-card-desc">Complete stories by authors in the Sinverse community. Curated, finished works ready to read.</p>
         <div class="nav-card-cta">Read stories &rarr;</div>
       </a>
 
       <a href="cyoa/" class="nav-card" style="animation-delay:0.15s">
-        <div class="nav-card-icon">&#9674;</div>
+        <div class="nav-card-icon">&#9654;</div>
         <div class="nav-card-title">Choose Your Own Adventure</div>
         <p class="nav-card-desc">Community-built branching stories. Every choice matters. Every path needs a writer.</p>
-        <div class="nav-card-cta">Start a story &rarr;</div>
+        <div class="nav-card-cta">Begin your adventure &rarr;</div>
       </a>
 
       <a href="gallery/" class="nav-card" style="animation-delay:0.20s">
-        <div class="nav-card-icon">&#9723;</div>
+        <div class="nav-card-icon" style="font-size:2rem">&#9723;</div>
         <div class="nav-card-title">Gallery</div>
         <p class="nav-card-desc">Art, illustrations, and visual content from the Sinverse creative community.</p>
         <div class="nav-card-cta">View the gallery &rarr;</div>
       </a>
 
       <a href="sizeref/" class="nav-card" style="animation-delay:0.25s">
-        <div class="nav-card-icon">&#8691;</div>
+        <div class="nav-card-icon" style="font-size:2.2rem;font-weight:700">&#8691;</div>
         <div class="nav-card-title">Size Reference</div>
         <p class="nav-card-desc">Compare characters at scale. An interactive visual tool built around one of the universe's defining themes.</p>
         <div class="nav-card-cta">Compare characters &rarr;</div>
       </a>
 
       <a href="contributors/" class="nav-card" style="animation-delay:0.30s">
-        <div class="nav-card-icon">&#10022;</div>
+        <div class="nav-card-icon" style="font-size:2rem">&#9998;</div>
         <div class="nav-card-title">Contributors</div>
         <p class="nav-card-desc">The authors, artists, and creators who bring the Sinverse to life. Meet the community.</p>
         <div class="nav-card-cta">Meet the creators &rarr;</div>

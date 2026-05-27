@@ -299,6 +299,13 @@ a:hover { color: var(--accent-light); }
 
 @media (max-width: 900px) {
   .cyoa-search-bar { padding: 1rem 1.5rem; }
+  .cyoa-header { padding: 1.5rem; }
+  .cyoa-title { font-size: 1.6rem; letter-spacing: 0.18em; }
+}
+
+@media (max-width: 600px) {
+  .cyoa-header { padding: 1rem 1.25rem; }
+  .cyoa-title { font-size: 1.25rem; letter-spacing: 0.12em; }
 }
 
 /* ── Adventure Grid ─────────────────────────────── */

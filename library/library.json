@@ -10,7 +10,8 @@
     "file": "stories/tdaytales_pakawa_couples_tday.html",
     "coverImage": null,
     "date": "2022-05",
-    "canonical": true
+    "canonical": true,
+    "characters": ["sin"]
   },
   {
     "id": 2,
@@ -22,6 +23,7 @@
     "coverImage": null,
     "date": "2025-02",
     "canonical": true,
+    "characters": ["kel"],
     "chapters": [
       { "title": "CoCK - Chapter 1",   "file": "stories/chronicles_of_control_kel_1.html"},
       { "title": "CoCK - Chapter 2",   "file": "stories/chronicles_of_control_kel_2.html"},

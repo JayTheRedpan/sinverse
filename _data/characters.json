@@ -1,6 +1,24 @@
 [
-    {
+  {
     "id": 0,
+    "name": "Jay",
+    "species": "Red Panda",
+    "height": 67,
+    "height_correction": 1,
+    "headroom_pct": 0,
+    "weight": 130,
+    "length": 5,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779680235/jay_lttpou.png",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738955/jay_yryw0d.png",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738986/jay_pv0dzg.png",
+    "wiki": "character_jay",
+    "faction": "",
+    "description": "A flavour bio shown in the stat block.",
+    "canonical": true
+  },  
+  {
+    "id": 1,
     "name": "Sin",
     "species": "Bunny",
     "height": 144,
@@ -18,24 +36,6 @@
     "faction": "SinCorp",
     "canonical": true,
     "pronouns": "she/her"
-  },
-  {
-    "id": 1,
-    "name": "Jay",
-    "species": "Red Panda",
-    "height": 67,
-    "height_correction": 1,
-    "headroom_pct": 0,
-    "weight": 130,
-    "length": 5,
-    "length_correction": 1,
-    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779680235/jay_lttpou.png",
-    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738955/jay_yryw0d.png",
-    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738986/jay_pv0dzg.png",
-    "wiki": "character_jay",
-    "faction": "",
-    "description": "A flavour bio shown in the stat block.",
-    "canonical": true
   },
   {
     "id": 2,

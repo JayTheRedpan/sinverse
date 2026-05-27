@@ -3,8 +3,8 @@
 var state = {
   items:      [],
   filtered:   [],
-  typeFilter: 'all',
-  tagFilter:  null,
+  typeFilter: { comic: true, scene: true },
+  hiddenTags: new Set(),  // tags excluded by user
   sortOrder:  'newest',
   query:      '',
 };
@@ -12,7 +12,6 @@ var state = {
 var TYPE_LABELS = {
   comic:   'Comic',
   scene:   'World Scene',
-  charref: 'Character Ref',
 };
 
 // -- Boot
@@ -21,7 +20,29 @@ async function init() {
     var res = await fetch('gallery.json');
     if (!res.ok) throw new Error('Could not load gallery.json');
     state.items = await res.json();
-    buildTagFilters();
+    var tagsRes = await fetch('../_data/tags.json');
+    var tagsData = await tagsRes.json();
+    buildTagFilters(tagsData.gallery || []);
+
+    // Reset search state on fresh load, unless arriving via ?character= param
+    var urlParams = new URLSearchParams(window.location.search);
+    var charParam = urlParams.get('character');
+    if (charParam) {
+      var charName = decodeURIComponent(charParam);
+      var inp = document.getElementById('search-input');
+      if (inp) inp.value = charName;
+      state.query = charName.toLowerCase();
+      document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.remove('active'); });
+      var charModeBtn = document.querySelector('.search-mode-btn[data-mode="character"]');
+      if (charModeBtn) charModeBtn.classList.add('active');
+      var url = new URL(window.location.href);
+      url.searchParams.delete('character');
+      window.history.replaceState({}, '', url);
+    } else {
+      // Fresh visit — ensure clean state
+      resetSearch();
+    }
+
     applyFilters();
   } catch(e) {
     document.getElementById('gallery-grid').innerHTML =
@@ -30,33 +51,31 @@ async function init() {
 }
 
 // -- Tag filters built from data
-function buildTagFilters() {
-  var tagSet = new Set();
-  state.items.forEach(function(item) {
-    (item.tags || []).forEach(function(t) { tagSet.add(t); });
-  });
+function buildTagFilters(warningTags) {
   var container = document.getElementById('tag-filters');
-  if (!tagSet.size) { container.style.display = 'none'; return; }
+  if (!warningTags || !warningTags.length) { container.style.display = 'none'; return; }
 
-  var all = document.createElement('button');
-  all.className = 'tag-filter-btn active';
-  all.textContent = 'All tags';
-  all.addEventListener('click', function() {
-    state.tagFilter = null;
-    container.querySelectorAll('.tag-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-    all.classList.add('active');
-    applyFilters();
-  });
-  container.appendChild(all);
+  // Load saved hidden tags from localStorage
+  try {
+    var saved = JSON.parse(localStorage.getItem('sinverse_hidden_tags') || '[]');
+    state.hiddenTags = new Set(saved);
+  } catch(e) { state.hiddenTags = new Set(); }
 
-  tagSet.forEach(function(tag) {
+  var sortedTags = warningTags.slice().sort();
+  sortedTags.forEach(function(tag) {
     var btn = document.createElement('button');
-    btn.className = 'tag-filter-btn';
+    btn.className = 'tag-filter-btn' + (state.hiddenTags.has(tag) ? '' : ' active');
     btn.textContent = tag;
+    btn.setAttribute('data-tag', tag);
     btn.addEventListener('click', function() {
-      state.tagFilter = state.tagFilter === tag ? null : tag;
-      container.querySelectorAll('.tag-filter-btn').forEach(function(b) { b.classList.remove('active'); });
-      (state.tagFilter ? btn : all).classList.add('active');
+      if (state.hiddenTags.has(tag)) {
+        state.hiddenTags.delete(tag);
+        btn.classList.add('active');
+      } else {
+        state.hiddenTags.add(tag);
+        btn.classList.remove('active');
+      }
+      localStorage.setItem('sinverse_hidden_tags', JSON.stringify([...state.hiddenTags]));
       applyFilters();
     });
     container.appendChild(btn);
@@ -64,13 +83,28 @@ function buildTagFilters() {
 }
 
 // -- Filter + sort + render
+function getActiveModes() {
+  var modes = [];
+  document.querySelectorAll('.search-mode-btn.active').forEach(function(b){ modes.push(b.getAttribute('data-mode')); });
+  return modes;
+}
+
 function applyFilters() {
   var q = state.query.toLowerCase();
+  var modes = getActiveModes();
 
   state.filtered = state.items.filter(function(item) {
-    if (state.typeFilter !== 'all' && item.type !== state.typeFilter) return false;
-    if (state.tagFilter && !(item.tags || []).includes(state.tagFilter)) return false;
-    if (q && !item.title.toLowerCase().includes(q) && !(item.artist || '').toLowerCase().includes(q)) return false;
+    if (!state.typeFilter[item.type]) return false;
+    if (state.hiddenTags.size && (item.tags || []).some(function(t){ return state.hiddenTags.has(t); })) return false;
+    // Character filter from URL param is now folded into the search query
+    if (state.characterFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
+    if (q) {
+      var matched = false;
+      if (modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q)) matched = true;
+      if (modes.indexOf('artist')    > -1 && (item.artist || '').toLowerCase().includes(q)) matched = true;
+      if (modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); })) matched = true;
+      if (!matched) return false;
+    }
     return true;
   });
 
@@ -88,6 +122,7 @@ function applyFilters() {
 function renderGrid() {
   var grid  = document.getElementById('gallery-grid');
   var count = document.getElementById('gallery-count');
+  if (!count) count = { textContent: '' };
   grid.innerHTML = '';
 
   count.textContent = state.filtered.length + ' item' + (state.filtered.length !== 1 ? 's' : '');
@@ -128,16 +163,56 @@ function renderGrid() {
 }
 
 // -- Event listeners
+// Search mode toggle buttons
+document.querySelectorAll('.search-mode-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    this.classList.toggle('active');
+    applyFilters();
+  });
+});
+
+function resetSearch() {
+  var inp = document.getElementById('search-input');
+  if (inp) inp.value = '';
+  state.query = '';
+  document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.add('active'); });
+  state.typeFilter = { comic: true, scene: true };
+  state.hiddenTags = new Set();
+  localStorage.removeItem('sinverse_hidden_tags');
+  document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.add('active'); });
+  document.querySelectorAll('.type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
+  applyFilters();
+}
+
+
+// -- Filter panel toggle
+var filterToggleBtn = document.getElementById('filter-toggle-btn');
+var filterPanel = document.getElementById('filter-panel');
+if (filterToggleBtn && filterPanel) {
+  filterToggleBtn.addEventListener('click', function() {
+    var open = filterPanel.classList.toggle('open');
+    filterToggleBtn.textContent = open ? 'Filters ▴' : 'Filters ▾';
+  });
+}
+
+document.getElementById('search-clear-btn').addEventListener('click', resetSearch);
+
 document.getElementById('search-input').addEventListener('input', function() {
   state.query = this.value.trim();
   applyFilters();
 });
 
+document.getElementById('search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { state.query = this.value.trim(); applyFilters(); }
+  if (e.key === 'Escape') resetSearch();
+});
+
 document.getElementById('type-filters').addEventListener('click', function(e) {
-  if (!e.target.classList.contains('filter-btn')) return;
-  state.typeFilter = e.target.getAttribute('data-value');
-  document.querySelectorAll('#type-filters .filter-btn').forEach(function(b) { b.classList.remove('active'); });
-  e.target.classList.add('active');
+  var btn = e.target.closest('.type-toggle-btn');
+  if (!btn) return;
+  var type = btn.getAttribute('data-type');
+  state.typeFilter[type] = !state.typeFilter[type];
+  btn.classList.toggle('active', state.typeFilter[type]);
   applyFilters();
 });
 

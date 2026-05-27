@@ -26,35 +26,37 @@
 
   <!-- Controls -->
   <div class="lib-controls">
-    <div class="lib-controls-top">
-      <input id="search-input" class="search-input" type="text" placeholder="Search by title or author..." />
-      <div class="view-toggle" id="story-view-toggle">
-        <button id="view-list-btn" class="view-toggle-btn" title="List view">&#9776; List</button>
-        <button id="view-grid-btn" class="view-toggle-btn active" title="Grid view">&#9783; Grid</button>
-      </div>
+    <div class="lib-search-row">
+      <input id="search-input" class="search-input" type="text" placeholder="Search…" />
+      <button id="search-clear-btn" class="search-clear-btn" title="Clear search and reset filters">✕ Clear</button>
+      <button id="filter-toggle-btn" class="filter-toggle-btn" title="Show/hide filters">Filters ▾</button>
     </div>
-    <div class="filter-row" id="story-controls">
-      <div class="filter-group">
-        <span class="filter-group-label">Type</span>
-        <div class="filter-btns" id="type-filters">
-          <button class="filter-btn active" data-value="all">All</button>
-          <button class="filter-btn" data-value="standalone">Stories</button>
-          <button class="filter-btn" data-value="serial">Serials</button>
+    <div id="filter-panel" class="filter-panel">
+      <div class="filter-row" id="story-controls">
+        <div class="filter-group">
+          <span class="filter-group-label">Search</span>
+          <div class="search-mode-toggles">
+            <button class="search-mode-btn active" data-mode="title"     title="Search titles">Title</button>
+            <button class="search-mode-btn active" data-mode="author"    title="Search authors">Author</button>
+            <button class="search-mode-btn active" data-mode="character" title="Search characters">Character</button>
+          </div>
         </div>
       </div>
-      <div class="filter-group">
-        <span class="filter-group-label">Sort</span>
-        <select id="sort-select" class="sort-select">
-          <option value="newest">Newest first</option>
-          <option value="oldest">Oldest first</option>
-          <option value="title">Title A–Z</option>
-          <option value="author">Author A–Z</option>
-          <option value="wordcount">Word count</option>
-        </select>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-group-label">Type</span>
+          <div class="filter-btns" id="type-filters">
+            <button class="type-toggle-btn active" data-type="standalone">Stories</button>
+            <button class="type-toggle-btn active" data-type="serial">Serials</button>
+          </div>
+        </div>
       </div>
-    </div>
-    <div class="filter-row-bottom" id="story-tag-row">
-      <div id="tag-filters" class="tag-filter-row"></div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-group-label">Tags</span>
+          <div id="tag-filters" class="tag-filter-row"></div>
+        </div>
+      </div>
     </div>
   </div>
 
@@ -64,6 +66,23 @@
     <button id="tab-collections" class="lib-tab">Collections</button>
   </div>
 
+  <div class="results-bar">
+    <span id="results-count" class="results-count"></span>
+    <div class="results-sort">
+      <label class="results-sort-label" for="sort-select">Sort:</label>
+      <select id="sort-select" class="sort-select-inline">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title">Title A–Z</option>
+        <option value="author">Author A–Z</option>
+        <option value="wordcount">Word count</option>
+      </select>
+    </div>
+    <div class="view-toggle" id="story-view-toggle">
+      <button id="view-list-btn" class="view-toggle-btn" title="List view">&#9776; List</button>
+      <button id="view-grid-btn" class="view-toggle-btn active" title="Grid view">&#9783; Grid</button>
+    </div>
+  </div>
   <div id="lib-grid" class="lib-grid">
     <div class="loading-placeholder">Loading library...</div>
   </div>
