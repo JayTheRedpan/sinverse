@@ -32,4 +32,12 @@ The Resistance does not seek to reverse TDay. It does not believe the Transforme
 - [Toys](toys) — who the Resistance exists to help
 - [The Wilds](the-wilds) — where extractions lead
 - [SinCorp](sincorp) — the primary adversary
-- [Empaths](apotheosis-serum) — the rare Transformed who retain empathy
+- [The Apotheosis Serum](apotheosis-serum) — what created Empaths
+
+## Did You Know
+
+- The Resistance does not have a name for itself. "The Resistance" is what others call it. Individual cells use their own internal identifiers, or none at all.
+- SinCorp is aware the Resistance exists. It has chosen not to pursue a large-scale suppression campaign, presumably because doing so would require acknowledging that the Resistance is large enough to require one.
+- Empaths within the Resistance are sometimes called "Anchors" by the toys who work alongside them — not an official designation, just something that stuck.
+- The most successful extractions are never the dramatic ones. They are paperwork, timing, and an unremarkable vehicle making an unremarkable journey.
+- The Resistance maintains no archives. No records of operations, no lists of members, no ledgers of who was extracted and where they went. Everything lives in trusted memory.

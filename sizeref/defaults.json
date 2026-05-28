@@ -13,9 +13,24 @@
   ],
   "length_silhouettes": [
     {
-      "id": "default",
-      "label": "Default",
+      "id": "humanoid",
+      "label": "Humanoid",
       "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779738524/default_chasuk.png"
+    },
+    {
+      "id": "equine",
+      "label": "Equine",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988318/HorseCock_length_default_ddk1si.webp"
+    },
+    {
+      "id": "canine",
+      "label": "Canine",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988224/CanineCock_length_default_xbt9vn.webp"
+    },
+    {
+      "id": "feline",
+      "label": "Feline",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988324/FelineCock_length_default_vg1pr2.webp"
     }
   ],
   "headshot_silhouettes": [

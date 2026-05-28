@@ -1,5 +1,5 @@
 ---
-id: 1
+id: 0
 name: Sin
 pronouns: she/her
 species: Bunny
@@ -28,7 +28,7 @@ She did not see TDay as an atrocity. She saw it as a gift, administered at scale
 
 ## After TDay
 
-In the aftermath of TDay, Sin moved quickly. SinCorp expanded from a single laboratory into a pervasive global organisation spanning every major mega-city. Angora was established as her seat of power, and she rules it — to the extent she involves herself in ruling at all — as its unchallenged Matriarch.
+In the aftermath of TDay, Sin moved quickly. SinCorp expanded from a single laboratory into a pervasive global organization spanning every major mega-city. Angora was established as her seat of power, and she rules it — to the extent she involves herself in ruling at all — as its unchallenged Matriarch.
 
 Sin does not hold court. She does not give public addresses. She pursues her research. SinCorp implements the outcomes.
 
@@ -40,8 +40,16 @@ She is not without pleasure. She simply pursues it on her own terms.
 
 ## Related
 
-- [SinCorp](sincorp) — her organisation
+- [SinCorp](sincorp) — her organization
 - [Angora](angora) — her city
 - [The Apotheosis Serum](apotheosis-serum) — her creation
 - [TDay](tday) — her masterwork
 - [Project Sylph](project-sylph) — her current focus
+
+## Did You Know
+
+- Sin was the first person ever transformed by the Apotheosis Serum. She administered it to herself before it had been tested on any other subject.
+- She has not been photographed since TDay. All circulating images of her are either pre-transformation or artistic reconstructions. SinCorp has never confirmed the accuracy of any of them.
+- Sin reportedly has an exceptional memory. People who have met with her describe the experience of having something said years ago quoted back to them, precisely, without notes.
+- She is known to work through the night regularly. The lights in SinCorp's central research complex in Angora are reported to be on at all hours. No one has asked her about her sleep schedule twice.
+- The Resistance does not have a plan for what to do about Sin specifically. Most Resistance operatives consider her a permanent feature of the world rather than a problem to be solved.

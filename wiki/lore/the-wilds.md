@@ -17,7 +17,7 @@ The distance between mega-cities varies. In some regions the Wilds span hundreds
 
 ## Who Lives There
 
-**Macro-scale Transformed.** Women who grew beyond approximately 100 feet during their transformation cannot practically inhabit mega-city infrastructure. Many are also cognitively affected by their extreme scale. They claim vast territories in the Wilds, ranging across them as apex predators. "Hunting" for toys — males who have fled the cities — is a common occupation.
+**Macro-scale Transformed.** Women who grew beyond approximately 100 feet during their transformation cannot practically inhabit mega-city infrastructure. Many are also cognitively affected by their extreme scale. They claim vast territories in the Wilds, ranging across them as apex predators.
 
 **Wild Toys.** Males who escaped or were never captured by the mega-cities. They survive in the Wilds through resourcefulness, community, and constant vigilance. The term *toy* used in this context retains its derogatory origin — it was applied by the Transformed and adopted with a mix of defiance and dark humour by those it describes.
 
@@ -35,3 +35,11 @@ There is something else in the Wilds too — a kind of freedom that does not exi
 - [The Mega-Cities](mega-cities) — what the Wilds separate
 - [The Resistance](the-resistance) — who operates in the Wilds
 - [The Apotheosis Serum](apotheosis-serum) — what created the macro huntresses
+
+## Did You Know
+
+- Wild Toys have developed informal warning systems across vast distances — networks of signal fires, marked trails, and coded messages left in abandoned buildings that pre-date any formal Resistance organisation.
+- The largest macro huntress whose range has been mapped by the Resistance covers an estimated 400 square miles of territory.
+- Some regions of the Wilds have not been entered by any known living person since TDay. The Resistance refers to these as "blank zones" and generally avoids them.
+- Wild Toys do not use the word "toy" neutrally. Among themselves it functions as something between a name and a declaration — an acknowledgement of what they are to the world above, and a refusal to be reduced to it.
+- Pre-TDay infrastructure in the Wilds is more intact than most people assume. Abandoned highways, water treatment facilities, and even some power substations still exist. The Resistance uses several of them.

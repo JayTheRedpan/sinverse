@@ -165,10 +165,135 @@ async function init() {
 
   var area = document.getElementById('sr-canvas-area');
   requestAnimationFrame(function() {
-    render();
+    applyURLParams();
+    renderActive(); // respects S.view set by URL params
     var ro = new ResizeObserver(function() { renderActive(); });
     if (area) ro.observe(area);
   });
+}
+
+// ── URL param handling (bot/deeplink support) ──────────────────
+function applyURLParams() {
+  var p = new URLSearchParams(window.location.search);
+  if (!p.toString()) return;
+
+  // ── Set view ──────────────────────────────────────────────
+  var view = p.get('view');
+  if (view && ['height','length','stats','compare'].indexOf(view) > -1) {
+    // Click the actual view button so all side effects (render, zoom, etc.) fire
+    var viewBtn = document.querySelector('.sr-view-btn[data-view="' + view + '"]');
+    if (viewBtn) viewBtn.click();
+  }
+
+  // ── Screenshot mode: render canvas area as full-page image ──
+  if (p.get('screenshot') === '1') {
+    // Wait for render to settle, then auto-capture like clipboard button
+    setTimeout(function() {
+      var target = S.view === 'length'
+        ? document.getElementById('sr-length-area')
+        : document.getElementById('sr-canvas-area');
+      if (!target || typeof html2canvas === 'undefined') return;
+
+      var filteredImgs = Array.from(target.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
+      var srcList = filteredImgs.map(function(img){ return img.src; });
+
+      Promise.all(srcList.map(function(src){ return src ? bakedDataUrl(src) : Promise.resolve(null); }))
+        .then(function(bakedUrls) {
+          html2canvas(target, {
+            backgroundColor: null,
+            useCORS: true,
+            allowTaint: false,
+            scale: 2,
+            onclone: function(doc) {
+              var cloneImgs = Array.from(doc.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
+              cloneImgs.forEach(function(img, i) {
+                if (bakedUrls[i]) { img.src = bakedUrls[i]; img.style.filter = 'none'; }
+              });
+            }
+          }).then(function(canvas) {
+            // Replace entire page with just the captured image
+            document.body.innerHTML = '';
+            document.body.style.cssText = 'margin:0;padding:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;min-height:100vh;';
+            var img = new Image();
+            img.style.cssText = 'max-width:100%;display:block;';
+            img.src = canvas.toDataURL('image/png');
+            document.body.appendChild(img);
+          });
+        });
+    }, 800); // give render time to settle
+  }
+
+  // ── Resolve character value ───────────────────────────────
+  function resolveChar(nameParam, hParam, nParam, customSlot) {
+    var name = p.get(nameParam), h = p.get(hParam), n = p.get(nParam);
+    if (name) {
+      var match = S.chars.find(function(c){ return c.name.toLowerCase() === name.toLowerCase(); });
+      if (match) return 'canon_' + match.id;
+    }
+    if (h) {
+      var d = loadCustom();
+      var key = customSlot === 1 ? 'slot1' : 'slot2';
+      if (!d[key]) d[key] = {};
+      d[key].name   = n || (customSlot === 1 ? 'Character 1' : 'Character 2');
+      d[key].height = parseFloat(h);
+      d[key].i_has_img = false;
+      saveCustom(d);
+      return 'custom_' + customSlot;
+    }
+    return null;
+  }
+
+  var val1 = resolveChar('char1', 'h1', 'n1', 1);
+  var val2 = resolveChar('char2', 'h2', 'n2', 2);
+
+  // ── Apply to existing slots without triggering modal ──────
+  // Get all existing slot selects (created by init)
+  var sels = allSlotSelects().filter(function(s){ return s.getAttribute('data-type') === 'char'; });
+
+  if (val1) {
+    // Rebuild options so custom_1 appears if needed
+    fillSelects();
+    if (sels[0]) {
+      sels[0].value = val1;
+      var pb1 = sels[0].closest('.sr-slot-row') && sels[0].closest('.sr-slot-row').querySelector('.slot-picker-btn');
+      if (pb1) {
+        var opt1 = sels[0].options[sels[0].selectedIndex];
+        pb1.textContent = opt1 && opt1.value ? opt1.textContent : '— Select character —';
+      }
+    }
+  }
+
+  if (val2) {
+    if (sels[1]) {
+      // Slot 2 already exists
+      sels[1].value = val2;
+      var pb2 = sels[1].closest('.sr-slot-row') && sels[1].closest('.sr-slot-row').querySelector('.slot-picker-btn');
+      if (pb2) {
+        fillSelects(); // rebuild options so custom_2 appears
+        sels[1].value = val2;
+        var opt2 = sels[1].options[sels[1].selectedIndex];
+        pb2.textContent = opt2 && opt2.value ? opt2.textContent : '— Select character —';
+      }
+    } else {
+      // Need to add a second slot — use createSlotRow directly (no modal)
+      var container = document.getElementById('sr-char-slots');
+      if (container) {
+        var newRow = createSlotRow('char');
+        container.appendChild(newRow);
+        updateSlotUI();
+        fillSelects();
+        var newSel = newRow.querySelector('.slot-select');
+        if (newSel) {
+          newSel.value = val2;
+          var pb3 = newRow.querySelector('.slot-picker-btn');
+          if (pb3) {
+            var opt3 = newSel.options[newSel.selectedIndex];
+            pb3.textContent = opt3 && opt3.value ? opt3.textContent : '— Select character —';
+          }
+        }
+      }
+    }
+  }
 }
 
 // ── Units ─────────────────────────────────────────────────────
@@ -1844,7 +1969,7 @@ function buildForm(slot) {
   wrap.appendChild(field('Name *', inp('text','n'+slot,'Character name',ex?ex.name:'')));
 
   // ── ANATOMY toggles ────────────────────────────
-  var anatDet = makeDet('Anatomy', true, 'section-stats');
+  var anatDet = makeDet('Anatomy', false, 'section-stats');
   var anatBody = anatDet.querySelector('.det-body');
   var anatF = cf('Features');
 
@@ -2330,10 +2455,10 @@ function openCropPopup(slot, pfx) {
     '</div>'+
     '<div class="sr-crop-controls">'+
       '<div class="crop-pct-grid">'+
-        '<div class="crop-pct-row"><div class="crop-pct-label">Top %</div><input type="number" class="builder-input crop-pct-input" id="pop-ct-'+slot+pfx+'" min="0" max="99" value="'+getVal('ct')+'" /></div>'+
-        '<div class="crop-pct-row"><div class="crop-pct-label">Bottom %</div><input type="number" class="builder-input crop-pct-input" id="pop-cb-'+slot+pfx+'" min="0" max="99" value="'+getVal('cb')+'" /></div>'+
-        '<div class="crop-pct-row"><div class="crop-pct-label">Left %</div><input type="number" class="builder-input crop-pct-input" id="pop-cl2-'+slot+pfx+'" min="0" max="99" value="'+getVal('cl2')+'" /></div>'+
-        '<div class="crop-pct-row"><div class="crop-pct-label">Right %</div><input type="number" class="builder-input crop-pct-input" id="pop-cr-'+slot+pfx+'" min="0" max="99" value="'+getVal('cr')+'" /></div>'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Top %</div><input type="number" class="builder-input crop-pct-input" step="0.5" id="pop-ct-'+slot+pfx+'" min="0" max="99" value="'+getVal('ct')+'" /></div>'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Bottom %</div><input type="number" class="builder-input crop-pct-input" step="0.5" id="pop-cb-'+slot+pfx+'" min="0" max="99" value="'+getVal('cb')+'" /></div>'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Left %</div><input type="number" class="builder-input crop-pct-input" step="0.5" id="pop-cl2-'+slot+pfx+'" min="0" max="99" value="'+getVal('cl2')+'" /></div>'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Right %</div><input type="number" class="builder-input crop-pct-input" step="0.5" id="pop-cr-'+slot+pfx+'" min="0" max="99" value="'+getVal('cr')+'" /></div>'+
       '</div>'+
       '<div class="sr-crop-actions">'+
         '<button id="sr-crop-reset" class="unit-btn">Reset</button>'+
@@ -2411,10 +2536,10 @@ function openCropPopup(slot, pfx) {
       }
       if (!wrapSz) return;
       var delta = (clientPos(e) - startPos) * line.dir;
-      var pct = Math.round(delta / wrapSz * 100);
+      var pct = Math.round(delta / wrapSz * 200) / 2; // 0.5 step
       var inpEl = document.getElementById(line.inp);
       if (!inpEl) return;
-      inpEl.value = Math.min(99, Math.max(0, startVal + pct));
+      inpEl.value = Math.min(99, Math.max(0, Math.round((startVal + pct) * 2) / 2));
       updatePopLines();
     }
     function onEnd() {

@@ -1,3 +1,8 @@
+'use strict';
+
+var _histPos = 0; // monotonic counter for browser history direction tracking
+
+var _histPos = 0; // monotonic counter for browser history direction tracking
 /* ===============================================
    Sinverse -- Interactive Fiction
    app.js
@@ -31,6 +36,7 @@ const searchInput           = $('search-input');
 const tagFilters            = $('tag-filters');
 const screenLibrary         = $('screen-library');
 const screenGame            = $('screen-game');
+const screenAuthor          = $('screen-author');
 const storyGrid             = $('adventure-grid');
 const sceneBlurb            = $('scene-blurb');
 const sceneImage            = $('scene-image');
@@ -70,6 +76,41 @@ async function loadLibrary() {
     state.manifest = await res.json();
     await Promise.all(state.manifest.map(fetchNodeCount));
     renderLibrary();
+
+    // Restore adventure from URL if navigating back from another page
+    if (window._pendingAuthor) {
+      const authorId = window._pendingAuthor;
+      const advId    = window._pendingAdventure;
+      const nodeId   = window._pendingNode;
+      window._pendingAuthor    = null;
+      window._pendingAdventure = null;
+      window._pendingNode      = null;
+      // Restore adventure state silently if needed, then show author screen
+      if (advId) {
+        try {
+          await loadAdventure(advId);
+          if (nodeId && state.nodeMap[nodeId] && String(nodeId) !== String(state.currentId)) {
+            goToNode(nodeId, false);
+          }
+        } catch(e) {}
+      } else {
+        showScreen('library');
+      }
+      showAuthorScreen(authorId);
+    } else if (window._pendingAdventure) {
+      const advId = window._pendingAdventure;
+      const nodeId = window._pendingNode;
+      window._pendingAdventure = null;
+      window._pendingNode = null;
+      try {
+        await loadAdventure(advId);
+        if (nodeId && state.nodeMap[nodeId] && String(nodeId) !== String(state.currentId)) {
+          goToNode(nodeId, false);
+        }
+      } catch(e) { showScreen('library'); }
+    } else {
+      showScreen('library');
+    }
   } catch (err) {
     storyGrid.innerHTML = `<div class="loading-placeholder" style="color:#a04040">
       Failed to load adventure library.<br><small>${err.message}</small>
@@ -122,6 +163,7 @@ function renderLibrary() {
       <p class="card-description">${meta.description || ''}</p>
       <div class="card-footer">
         <span class="card-cta">Read  </span>
+        <button class="card-info-btn" aria-label="Adventure info" title="Adventure info">&#9432;</button>
       </div>
     `;
 
@@ -141,6 +183,11 @@ function renderLibrary() {
     card.addEventListener('click', go);
     card.addEventListener('keydown', e => {
       if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); go(); }
+    });
+
+    card.querySelector('.card-info-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      showAdventureInfo(meta);
     });
 
     storyGrid.appendChild(card);
@@ -255,7 +302,9 @@ async function loadAdventure(id) {
     const storyMeta = state.manifest.find(m => m.id === id) || {};
     gameStoryTitle.textContent = storyMeta.title || id;
     showScreen('game');
-
+    // Clear stale browser history from previous adventures by replacing
+    // the current entry before goToNode adds a new one
+    history.replaceState({ screen: 'library' }, '', window.location.pathname);
     goToNode(1);
   } catch (err) {
     showToast(`Error loading adventure: ${err.message}`, 4000);
@@ -263,17 +312,26 @@ async function loadAdventure(id) {
 }
 
 // -- Navigation ----------------------------------
-function goToNode(id) {
+function goToNode(id, silent = false) {
   const node = state.nodeMap[id];
   if (!node) { showToast(`Missing node: "${id}"`, 3000); return; }
   state.deadEndActive = false;
-  if (state.currentId && state.currentId !== id) state.history.push(state.currentId);
+  if (!silent && state.currentId && state.currentId !== id) state.history.push(state.currentId);
   state.currentId = id;
   applyTheme(node.theme);
   updateImage(node);
   updateBreadcrumbs();
   renderBlurb(node.blurb, node.author);
   renderChoices(node);
+  // Push browser state (unless restoring from popstate)
+  if (!silent) {
+    _histPos++;
+    history.pushState(
+      { screen: 'game', adventure: state.storyId, node: id, pos: _histPos },
+      '',
+      '?adventure=' + encodeURIComponent(state.storyId) + '&node=' + encodeURIComponent(id)
+    );
+  }
   const main = document.querySelector('.game-main');
   if (main && main.scrollHeight > main.clientHeight && getComputedStyle(main).overflowY !== 'visible') {
     main.scrollTop = 0;
@@ -328,7 +386,16 @@ function renderBlurb(text, author) {
     .join('');
 
   if (author) {
-    sceneAuthorEl.innerHTML = '<a href="../contributors/?creator=' + encodeURIComponent(author) + '" class="cyoa-author-link">' + author + '</a>';
+    const authorLink = document.createElement('a');
+    authorLink.href = '#';
+    authorLink.className = 'cyoa-author-link';
+    authorLink.textContent = author;
+    authorLink.addEventListener('click', function(e) {
+      e.preventDefault();
+      showAuthorScreen(author);
+    });
+    sceneAuthorEl.innerHTML = '';
+    sceneAuthorEl.appendChild(authorLink);
     sceneByline.style.display = '';
   } else {
     sceneByline.style.display = 'none';
@@ -392,6 +459,15 @@ function renderChoices(node) {
         endingWrap.style.display  = 'none';
         deadEndWrap.style.display = 'flex';
         renderDeadEnd(state.nodeMap[state.currentId], choiceText);
+        // Push dead end state — back dismisses it, then back again goes to previous scene
+        _histPos++;
+        history.pushState(
+          { screen: 'game', adventure: state.storyId, node: state.currentId, deadEnd: true, pos: _histPos },
+          '',
+          '?adventure=' + encodeURIComponent(state.storyId) + '&node=' + encodeURIComponent(state.currentId)
+        );
+
+
         // Wire dead end form button
         const deadEndFormBtn = deadEndWrap.querySelector('#dead-end-submit-btn');
         if (deadEndFormBtn) {
@@ -424,7 +500,17 @@ function renderChoices(node) {
       if (destAuthor) {
         const authorEl = document.createElement('span');
         authorEl.className   = 'choice-preview-author';
-        authorEl.innerHTML = 'by <a href="../contributors/?creator=' + encodeURIComponent(destAuthor) + '" class="cyoa-author-link">' + destAuthor + '</a>';
+        const authorA = document.createElement('a');
+        authorA.href = '#';
+        authorA.className = 'cyoa-author-link';
+        authorA.textContent = destAuthor;
+        authorA.addEventListener('click', function(e) {
+          e.preventDefault();
+          e.stopPropagation(); // don't trigger the choice button
+          showAuthorScreen(destAuthor);
+        });
+        authorEl.textContent = 'by ';
+        authorEl.appendChild(authorA);
         preview.appendChild(authorEl);
       }
 
@@ -525,10 +611,12 @@ function applyTheme(theme) {
 
 // -- Screen switching -----------------------------
 function showScreen(name) {
-  screenLibrary.style.display = name === 'library' ? 'block' : 'none';
-  screenGame.style.display    = name === 'game' ? 'block' : 'none';
-  window.scrollTo(0, 0);
+  [screenLibrary, screenGame, screenAuthor].forEach(s => { if (s) s.style.display = 'none'; });
+  if (name === 'library')  { screenLibrary.style.display = 'block'; return; }
+  if (name === 'game')     { screenGame.style.display    = 'block'; return; }
+  if (name === 'author')   { screenAuthor.style.display  = 'block'; return; }
 }
+
 
 // -- Save / Load ----------------------------------
 
@@ -599,6 +687,322 @@ btnPlayAgain.addEventListener('click', () => {
   goToNode(1);
 });
 btnLibraryFromEnd.addEventListener('click', () => { state.currentId = null; state.history = []; state.deadEndActive = false; applyTheme(null); showScreen('library'); });
+
+// ── Browser back support (forward disabled within adventure) ──
+window.addEventListener('popstate', function(e) {
+  const s = e.state;
+  // Back to library
+  if (!s || s.screen === 'library') {
+    state.currentId = null; state.history = []; state.deadEndActive = false;
+    applyTheme(null); showScreen('library'); return;
+  }
+  // Back to author screen
+  if (s.screen === 'author') {
+    showAuthorScreen(s.authorId);
+    return;
+  }
+  if (s.screen !== 'game' || s.adventure !== state.storyId) return;
+  // Block all forward navigation while in an adventure
+  if (s.pos !== undefined && s.pos > _histPos) {
+    // Going forward — push current state back to cancel it
+    // Use setTimeout to avoid re-entrancy with the popstate handler
+    const curId  = state.currentId;
+    const curAdv = state.storyId;
+    const curPos = _histPos;
+    setTimeout(function() {
+      history.pushState(
+        { screen: 'game', adventure: curAdv, node: curId, pos: curPos },
+        '',
+        '?adventure=' + encodeURIComponent(curAdv) + '&node=' + encodeURIComponent(curId)
+      );
+    }, 0);
+    return;
+  }
+  // Update our position tracker to match where the browser is
+  if (s.pos !== undefined) _histPos = s.pos;
+  // If dead end is showing, dismiss and fully re-render the current node
+  if (state.deadEndActive) {
+    state.deadEndActive = false;
+    deadEndWrap.style.display = 'none';
+    const curNode = state.nodeMap[state.currentId];
+    if (curNode) {
+      renderBlurb(curNode.blurb, curNode.author);
+      renderChoices(curNode);
+      updateBreadcrumbs();
+    }
+    return;
+  }
+  // Normal back to a previous scene
+  if (s.node !== undefined && s.node !== state.currentId) {
+    state.history.pop();
+    goToNode(s.node, true);
+    return;
+  }
+  // s.node === currentId with no dead end: go to previous in history
+  if (state.history.length > 0) {
+    const prevId = state.history[state.history.length - 1];
+    state.history.pop();
+    goToNode(prevId, true);
+  } else {
+    state.currentId = null;
+    applyTheme(null);
+    showScreen('library');
+  }
+});
+
+// ── On page load, set base library state + check URL params ──
+(function restoreFromURL() {
+  // Read params BEFORE replaceState strips the URL
+  const p = new URLSearchParams(window.location.search);
+  const authorId  = p.get('authorId');
+  const adventure = p.get('adventure');
+  if (authorId) {
+    window._pendingAuthor    = authorId;
+    window._pendingAdventure = adventure || null;
+    window._pendingNode      = p.get('node') || null;
+  } else if (adventure) {
+    window._pendingAdventure = adventure;
+    window._pendingNode      = p.get('node') || null;
+  }
+  // Now set baseline library state (strips params from address bar)
+  history.replaceState({ screen: 'library' }, '', window.location.pathname);
+})();
+
+// ── Adventure info modal ─────────────────────────────────────
+async function showAdventureInfo(meta) {
+  // Remove any existing modal
+  var old = document.getElementById('adv-info-modal');
+  if (old) old.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'adv-info-modal';
+  overlay.className = 'adv-info-overlay';
+
+  var box = document.createElement('div');
+  box.className = 'adv-info-box';
+
+  box.innerHTML =
+    '<div class="adv-info-header">' +
+      '<div>' +
+        '<div class="adv-info-eyebrow">Adventure</div>' +
+        '<h2 class="adv-info-title">' + (meta.title || meta.id) + '</h2>' +
+      '</div>' +
+      '<button class="adv-info-close" id="adv-info-close">&#10005;</button>' +
+    '</div>' +
+    '<div class="adv-info-stats" id="adv-info-stats">' +
+      '<div class="adv-info-loading">Loading…</div>' +
+    '</div>' +
+    '<div class="adv-info-authors" id="adv-info-authors"></div>' +
+    '<div class="adv-info-footer">' +
+      '<button class="btn-primary adv-info-begin" id="adv-info-begin">Begin adventure →</button>' +
+    '</div>';
+
+  overlay.appendChild(box);
+  document.body.appendChild(overlay);
+
+  document.getElementById('adv-info-close').addEventListener('click', function() { overlay.remove(); });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+  document.getElementById('adv-info-begin').addEventListener('click', function() {
+    overlay.remove();
+    loadAdventure(meta.id);
+  });
+
+  // Fetch adventure nodes
+  try {
+    var base  = window.location.pathname.replace(/\/[^/]*$/, '/');
+    var res   = await fetch(base + 'adventures/' + meta.id + '.json');
+    var nodes = res.ok ? await res.json() : [];
+
+    var totalWords = nodes.reduce(function(sum, n) {
+      return sum + (n.blurb || '').replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
+    }, 0);
+
+    // Author breakdown
+    var authorCounts = {};
+    nodes.forEach(function(n) {
+      var a = n.author || 'Anonymous';
+      authorCounts[a] = (authorCounts[a] || 0) + 1;
+    });
+    var authors = Object.keys(authorCounts).sort(function(a, b) {
+      return authorCounts[b] - authorCounts[a];
+    });
+
+    var statsEl = document.getElementById('adv-info-stats');
+    if (statsEl) {
+      statsEl.innerHTML =
+        '<div class="adv-stat"><span class="adv-stat-n">' + nodes.length + '</span><span class="adv-stat-label">Scenes</span></div>' +
+        '<div class="adv-stat"><span class="adv-stat-n">' + (totalWords >= 1000 ? (totalWords/1000).toFixed(1) + 'k' : totalWords) + '</span><span class="adv-stat-label">Words</span></div>' +
+        '<div class="adv-stat"><span class="adv-stat-n">' + authors.length + '</span><span class="adv-stat-label">' + (authors.length === 1 ? 'Author' : 'Authors') + '</span></div>';
+    }
+
+    // Fetch contributor avatars
+    var contribs = [];
+    try {
+      var cr = await fetch('../contributors/contributors.json');
+      if (cr.ok) contribs = await cr.json();
+    } catch(e) {}
+
+    var authorsEl = document.getElementById('adv-info-authors');
+    if (authorsEl && authors.length) {
+      authorsEl.innerHTML = '<div class="adv-info-authors-title">Contributors</div>';
+      authors.forEach(function(a) {
+        var contrib = contribs.find(function(c) { return c.id === a; });
+        var avatar  = contrib && contrib.avatar ? contrib.avatar : '';
+        var display = contrib ? contrib.name : a;
+
+        var row = document.createElement('div');
+        row.className = 'adv-author-row';
+
+        var avatarHtml = avatar
+          ? '<img class="adv-author-avatar" src="' + avatar + '" alt="' + display + '" />'
+          : '<div class="adv-author-avatar adv-author-avatar-ph">' + display.charAt(0).toUpperCase() + '</div>';
+
+        row.innerHTML =
+          avatarHtml +
+          '<span class="adv-author-name">' + display + '</span>' +
+          '<span class="adv-author-count">' + authorCounts[a] + (authorCounts[a] === 1 ? ' scene' : ' scenes') + '</span>';
+
+        if (a !== 'Anonymous') {
+          row.style.cursor = 'pointer';
+          row.addEventListener('click', function() {
+            overlay.remove();
+            showAuthorScreen(a);
+          });
+        }
+        authorsEl.appendChild(row);
+      });
+    }
+  } catch(e) {
+    var statsEl2 = document.getElementById('adv-info-stats');
+    if (statsEl2) statsEl2.innerHTML = '<div class="adv-info-loading">Could not load adventure data.</div>';
+  }
+}
+
+// ── Author screen ─────────────────────────────────────────────
+async function showAuthorScreen(authorId) {
+  const nameEl   = document.getElementById('author-screen-name');
+  const totalEl  = document.getElementById('author-screen-total');
+  const avatarEl = document.getElementById('author-screen-avatar');
+  const listEl   = document.getElementById('author-screen-adventures');
+  const linkEl   = document.getElementById('author-screen-contrib-link');
+
+  if (nameEl)  nameEl.textContent  = authorId;
+  if (totalEl) totalEl.textContent = '';
+  if (listEl)  listEl.innerHTML    = '<div class="loading-placeholder">Loading scenes…</div>';
+  if (linkEl)  linkEl.href = '../contributors/?creator=' + encodeURIComponent(authorId);
+
+  // Fetch contributor info for avatar
+  const base = window.location.pathname.replace(/\/[^/]*$/, '/');
+  try {
+    const contribs = await fetch('../contributors/contributors.json').then(r => r.ok ? r.json() : []).catch(() => []);
+    const contrib  = contribs.find(c => c.id === authorId);
+    if (contrib && avatarEl) {
+      if (contrib.avatar) {
+        avatarEl.src = contrib.avatar;
+        avatarEl.style.display = 'block';
+      } else {
+        avatarEl.style.display = 'none';
+      }
+      if (nameEl) nameEl.textContent = contrib.name || authorId;
+    }
+  } catch(e) {}
+
+  // Wire profile click to contributor page immediately
+  var profileUrl = '../contributors/?creator=' + encodeURIComponent(authorId);
+  var profileEl  = document.querySelector('.author-screen-profile');
+  if (profileEl) {
+    profileEl.onclick = function() { window.location.href = profileUrl; };
+  }
+
+  showScreen('author');
+  // Push author screen state so browser back from contributors returns here
+  history.pushState(
+    { screen: 'author', authorId: authorId, adventure: state.storyId, node: state.currentId },
+    '',
+    '?authorId=' + encodeURIComponent(authorId) +
+    (state.storyId ? '&adventure=' + encodeURIComponent(state.storyId) : '') +
+    (state.currentId !== null && state.currentId !== undefined ? '&node=' + encodeURIComponent(state.currentId) : '')
+  );
+
+  // Fetch all adventures and find scenes by this author
+  try {
+    let totalScenes = 0;
+    const cards = [];
+
+    await Promise.all(state.manifest.map(async function(meta) {
+      try {
+        const res   = await fetch(base + 'adventures/' + meta.id + '.json');
+        if (!res.ok) return;
+        const nodes = await res.json();
+        const mine  = nodes.filter(n => n.author === authorId);
+        if (!mine.length) return;
+        totalScenes += mine.length;
+        cards.push({ meta, nodes: mine });
+      } catch(e) {}
+    }));
+
+    if (totalEl) totalEl.textContent = totalScenes + (totalScenes === 1 ? ' scene' : ' scenes') + ' across ' + cards.length + (cards.length === 1 ? ' adventure' : ' adventures');
+
+    if (!listEl) return;
+    if (!cards.length) {
+      listEl.innerHTML = '<div class="loading-placeholder">No scenes found for this author.</div>';
+      return;
+    }
+
+    listEl.innerHTML = '';
+    cards.forEach(function({ meta, nodes }) {
+      const card = document.createElement('div');
+      card.className = 'author-adv-card';
+
+      const titleRow = document.createElement('div');
+      titleRow.className = 'author-adv-title author-adv-collapsed';
+      titleRow.innerHTML =
+        '<span class="author-adv-chevron">▸</span>' +
+        '<span class="author-adv-title-main">' + (meta.title || meta.id) + '</span>' +
+        '<span class="author-adv-count">' + nodes.length + (nodes.length === 1 ? ' scene' : ' scenes') + '</span>';
+      card.appendChild(titleRow);
+
+      const sceneList = document.createElement('div');
+      sceneList.className = 'author-adv-scenes';
+      sceneList.style.display = 'none'; // starts collapsed
+
+      titleRow.addEventListener('click', function() {
+        var collapsed = titleRow.classList.toggle('author-adv-collapsed');
+        sceneList.style.display = collapsed ? 'none' : 'flex';
+      });
+
+      nodes.forEach(function(node) {
+        const row = document.createElement('div');
+        row.className = 'author-scene-row';
+        const preview = (node.blurb || '').replace(/<[^>]+>/g, '').trim().slice(0, 80);
+        const ellipsis = (node.blurb || '').replace(/<[^>]+>/g, '').trim().length > 80 ? '…' : '';
+        row.innerHTML =
+          '<span class="author-scene-node">' + node.id + '</span>' +
+          '<span class="author-scene-blurb">' + preview + ellipsis + '</span>' +
+          '<button class="author-scene-jump">Jump →</button>';
+        row.querySelector('.author-scene-jump').addEventListener('click', function() {
+          loadAdventure(meta.id).then(function() {
+            if (state.nodeMap[node.id]) goToNode(node.id);
+          });
+        });
+        sceneList.appendChild(row);
+      });
+
+      card.appendChild(sceneList);
+      listEl.appendChild(card);
+    });
+  } catch(e) {
+    if (listEl) listEl.innerHTML = '<div class="loading-placeholder" style="color:var(--wine)">Failed to load scenes.</div>';
+  }
+}
+
+document.getElementById('btn-back-author').addEventListener('click', function() {
+  if (state.currentId) {
+    showScreen('game');
+  } else {
+    showScreen('library');
+  }
+});
 
 // -- Start ----------------------------------------
 try {

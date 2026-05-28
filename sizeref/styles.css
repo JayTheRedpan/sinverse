@@ -1474,3 +1474,17 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   top: -8px; bottom: -8px;
   left: 0; right: 0;
 }
+
+/* ── Screenshot / bot mode ───────────────────────────────────── */
+/* Applied when ?screenshot=1 — hides UI chrome for clean images */
+.sr-screenshot .sr-sidebar,
+.sr-screenshot .sr-view-btns,
+.sr-screenshot .sr-zoom-controls,
+.sr-screenshot .slot-add-row,
+.sr-screenshot .slot-remove-btn,
+.sr-screenshot .sr-topbar {
+  display: none !important;
+}
+.sr-screenshot .sr-main {
+  grid-template-columns: 1fr;
+}

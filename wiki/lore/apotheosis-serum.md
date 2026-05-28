@@ -37,5 +37,14 @@ Prior to TDay, the serum was synthesised and stockpiled in industrial quantities
 
 - [Sin](sin) — creator of the serum
 - [TDay](tday) — the day it was released
-- [Macro](the-wilds) — those who grew beyond city scale
+- [The Wilds](the-wilds) — where macro Transformed are found
 - [The Resistance](the-resistance) — those seeking to limit its spread
+
+## Did You Know
+
+- Sin administered the first working batch of the Apotheosis Serum to herself. She was the first person it ever transformed.
+- The serum's name — Apotheosis — means the elevation of a person to divine status. Sin has never publicly commented on the choice.
+- Transformation takes an average of eleven minutes from first exposure to completion. The fastest recorded case is four minutes. No one knows the slowest, because those individuals did not survive to report it.
+- Empaths — Transformed who retain full empathy — are estimated to constitute fewer than 1 in 400 of the transformed population. SinCorp tracks them. The Resistance tries to find them first.
+- Trace quantities of the serum still exist in groundwater in many regions, more than five years after TDay. New transformation events, while rare, are still reported.
+- The macro threshold is not a hard line. Some Transformed at 90 feet show neurological effects; some at 120 feet show none. SinCorp researchers refer to this as "the variance problem" and consider it an open question.
