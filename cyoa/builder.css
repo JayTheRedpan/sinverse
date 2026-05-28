@@ -1,5 +1,5 @@
 /* ===============================================
-   Sinverse -- Story Builder (mobile-first)
+   Sinverse -- Adventure Builder (mobile-first)
    builder.css
    =============================================== */
 
@@ -26,20 +26,33 @@
 }
 
 .builder-back {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.5rem 0.9rem;
   font-family: var(--font-caps);
-  font-size: 0.62rem;
-  letter-spacing: 0.1em;
-  color: var(--text-muted);
+  font-size: 0.65rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  text-decoration: none;
+  display: inline-block;
+  transition: border-color var(--transition), color var(--transition), background var(--transition);
   white-space: nowrap;
   flex-shrink: 0;
 }
-.builder-back:hover { color: var(--accent); }
+.builder-back:hover {
+  border-color: var(--border-mid);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
 
 .builder-topbar-center {
   display: flex;
-  flex-direction: column;
-  align-items: center;
-  gap: 0.1rem;
+  flex-direction: row;
+  align-items: baseline;
+  justify-content: center;
+  gap: 1rem;
   flex: 1;
 }
 
@@ -93,7 +106,7 @@
 }
 
 /* -- Divider ----------------------------------- */
-.builder-divider {
+.builder-divider { color: var(--text-primary); display: flex; align-items: center; justify-content: space-between;
   display: flex;
   align-items: center;
   gap: 1rem;
@@ -191,17 +204,17 @@
 
 .node-delete-btn {
   background: transparent;
-  border: 1px solid var(--border);
+  border: 1px solid var(--wine);
   border-radius: var(--radius);
-  padding: 0.3em 0.6em;
+  padding: 0.3em 0.7em;
   font-family: var(--font-caps);
-  font-size: 0.58rem;
+  font-size: 0.62rem;
   letter-spacing: 0.08em;
-  color: var(--text-muted);
+  color: var(--wine);
   cursor: pointer;
   transition: all 0.2s ease;
 }
-.node-delete-btn:hover { border-color: var(--wine); color: var(--wine); }
+.node-delete-btn:hover { background: var(--wine); color: #fff; }
 
 /* -- Fields ------------------------------------ */
 .node-field {
@@ -345,21 +358,22 @@
 
 .builder-add-choice-btn {
   background: transparent;
-  border: 1px dashed var(--border);
+  border: 1px dashed var(--border-mid);
   border-radius: var(--radius);
   padding: 0.5rem;
   font-family: var(--font-caps);
-  font-size: 0.62rem;
+  font-size: 0.65rem;
   letter-spacing: 0.1em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--text-secondary);
   cursor: pointer;
   width: 100%;
   margin-top: 0.25rem;
   transition: all 0.2s ease;
   -webkit-tap-highlight-color: transparent;
 }
-.builder-add-choice-btn:active { border-color: var(--accent); color: var(--accent); }
+.builder-add-choice-btn:hover { border-color: var(--accent); color: var(--accent); border-style: solid; }
+.builder-add-choice-btn:active { background: var(--accent-dim); }
 
 /* -- Add scene button -------------------------- */
 .builder-add-wrap {
@@ -460,7 +474,7 @@
 @media (min-width: 680px) {
   .builder-scroll { padding: 0 1rem 4rem; }
   .builder-section { padding: 2rem 1.5rem; }
-  .builder-divider { padding: 1rem 1.5rem; }
+  .builder-divider { color: var(--text-primary); display: flex; align-items: center; justify-content: space-between; padding: 1rem 1.5rem; }
   .node-card { padding: 2rem 1.5rem; }
   .builder-add-wrap { padding: 1.5rem; }
 
@@ -480,4 +494,61 @@
     padding: 0.25rem 0.5rem;
     transition: all 0.2s ease;
   }
+}
+
+.builder-node-count {
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.builder-title-row {
+  display: flex;
+  align-items: baseline;
+  gap: 1.25rem;
+}
+.builder-node-count {
+  font-family: var(--font-caps);
+  font-size: 0.72rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  white-space: nowrap;
+}
+.builder-topbar-sep {
+  color: var(--border-mid);
+  font-size: 0.9rem;
+  line-height: 1;
+}
+
+/* ── Brighter, more legible form text ─────────────────────── */
+.node-label {
+  color: var(--text-primary) !important;
+  font-size: 0.72rem !important;
+}
+.builder-section-title {
+  color: var(--text-primary) !important;
+  font-size: 0.8rem !important;
+}
+.builder-optional {
+  color: var(--text-secondary) !important;
+  font-size: 0.65rem;
+}
+.builder-tag-label {
+  color: var(--text-secondary) !important;
+  font-size: 0.68rem !important;
+}
+.node-hint {
+  color: var(--text-secondary) !important;
+  font-size: 0.72rem !important;
+}
+.builder-input {
+  color: var(--text-primary) !important;
+  font-size: 0.9rem !important;
+}
+.builder-input::placeholder {
+  color: var(--text-muted);
+  opacity: 1;
 }

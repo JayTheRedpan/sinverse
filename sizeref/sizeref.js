@@ -18,7 +18,84 @@ var S = {
   lenImgMode:  {},    // entityId -> 'length' | 'height'
 };
 
-var STORE   = 'sinverse_custom_chars';
+var STORE     = 'sinverse_custom_chars';
+var IMG_DB    = null;
+var IMG_STORE = 'sizeref_images';
+
+function openImgDB() {
+  return new Promise(function(resolve, reject) {
+    if (IMG_DB) { resolve(IMG_DB); return; }
+    var req = indexedDB.open('sinverse_sizeref', 1);
+    req.onupgradeneeded = function(e) {
+      e.target.result.createObjectStore(IMG_STORE);
+    };
+    req.onsuccess = function(e) { IMG_DB = e.target.result; resolve(IMG_DB); };
+    req.onerror   = function(e) { reject(e); };
+  });
+}
+function storeImg(key, dataUrl) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction(IMG_STORE, 'readwrite');
+      tx.objectStore(IMG_STORE).put(dataUrl, key);
+      tx.oncomplete = resolve;
+    });
+  });
+}
+function getImg(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction(IMG_STORE, 'readonly');
+      var req = tx.objectStore(IMG_STORE).get(key);
+      req.onsuccess = function() { resolve(req.result || null); };
+      req.onerror   = function() { resolve(null); };
+    });
+  });
+}
+function deleteImg(key) {
+  return openImgDB().then(function(db) {
+    return new Promise(function(resolve) {
+      var tx = db.transaction(IMG_STORE, 'readwrite');
+      tx.objectStore(IMG_STORE).delete(key);
+      tx.oncomplete = resolve;
+    });
+  });
+}
+// Clean break: strip old base64 images from localStorage on load
+(function() {
+  try {
+    var raw = localStorage.getItem('sinverse_custom_chars');
+    if (!raw) return;
+    var d = JSON.parse(raw);
+    var changed = false;
+    ['slot1','slot2'].forEach(function(k) {
+      if (!d[k]) return;
+      ['image','length_image','profile_image'].forEach(function(f) {
+        if (d[k][f] && d[k][f].startsWith('data:')) { d[k][f] = ''; changed = true; }
+      });
+    });
+    if (changed) localStorage.setItem('sinverse_custom_chars', JSON.stringify(d));
+  } catch(e) {}
+})();
+
+function compressToWebP(dataUrl, maxPx, quality) {
+  return new Promise(function(resolve) {
+    var img = new Image();
+    img.onload = function() {
+      var w = img.width, h = img.height;
+      if (w > maxPx || h > maxPx) {
+        if (w > h) { h = Math.round(h * maxPx / w); w = maxPx; }
+        else       { w = Math.round(w * maxPx / h); h = maxPx; }
+      }
+      var canvas = document.createElement('canvas');
+      canvas.width = w; canvas.height = h;
+      canvas.getContext('2d').drawImage(img, 0, 0, w, h);
+      resolve(canvas.toDataURL('image/webp', quality || 0.85));
+    };
+    img.onerror = function() { resolve(dataUrl); };
+    img.src = dataUrl;
+  });
+}
 
 // Populated from defaults.json at init time
 var DEFAULTS = {
@@ -203,10 +280,12 @@ function buildSelectOptions(sel, preserveValue) {
   });
   sel.appendChild(cg);
   var c1 = loadCustom().slot1, c2 = loadCustom().slot2;
-  if (c1||c2) {
+  var c1valid = c1 && c1.name && c1.height;
+  var c2valid = c2 && c2.name && c2.height;
+  if (c1valid || c2valid) {
     var custG = el('optgroup'); custG.label = 'Custom';
-    if(c1){var o=el('option');o.value='custom_1';o.textContent=c1.name+' (custom)';custG.appendChild(o);}
-    if(c2){var o=el('option');o.value='custom_2';o.textContent=c2.name+' (custom)';custG.appendChild(o);}
+    if(c1valid){var o=el('option');o.value='custom_1';o.textContent=c1.name+' (custom)';custG.appendChild(o);}
+    if(c2valid){var o=el('option');o.value='custom_2';o.textContent=c2.name+' (custom)';custG.appendChild(o);}
     sel.appendChild(custG);
   }
   if (cur) sel.value = cur;
@@ -707,7 +786,7 @@ function statBlock(char, slotIdx) {
       '<div class="sr-stat-row"><span class="sr-stat-key">Weight</span><span class="sr-stat-val">'+fW(scaledWeight(char, slotIdx))+'</span></div>'+
     '</div>'+
     '<div class="sr-stat-resize-wrap">'+resizeControlsHTML(char, slotIdx)+'</div>'+
-    (char.name?'<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>':'<div class="sr-wiki-spacer"></div>');
+    (char.wiki?'<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>':'<div class="sr-wiki-spacer"></div>');
 
   wireResizeControls(block);
   return block;
@@ -1696,7 +1775,7 @@ function lengthStatBlock(char, slotIdx) {
       '<button class="unit-btn'+(mode==='length'?' active':'')+'" data-id="'+entityId+'" data-mode="length">Length</button>'+
       '<button class="unit-btn'+(mode==='height'?' active':'')+'" data-id="'+entityId+'" data-mode="height">Body</button>'+
     '</div>'+
-    (char.name ? '<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>' : '');
+    (char.wiki ? '<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>' : '');
 
   block.querySelectorAll && setTimeout(function(){
     block.querySelectorAll('.len-img-toggle .unit-btn').forEach(function(btn){
@@ -1735,9 +1814,31 @@ function buildForm(slot) {
   var exCorr = ex ? String(ex.height_correction||'1') : '1';
 
   // Preload images into cropImgs for crop tool
-  if (ex && ex.image)         setTimeout(function(){ preloadCropImgP(slot,'i',ex.image); },80);
-  if (ex && ex.length_image && ex.length_image.startsWith('data')) setTimeout(function(){ preloadCropImgP(slot,'l',ex.length_image); },80);
-  if (ex && ex.profile_image) setTimeout(function(){ preloadCropImgP(slot,'p',ex.profile_image); },80);
+  // Load images from IndexedDB and show upload section if image found
+  ['i','l','p'].forEach(function(pfx) {
+    var imgKey = 'custom_' + slot + '_' + pfx;
+    getImg(imgKey).then(function(src) {
+      if (!src) return;
+      // Show upload section so the loaded image has somewhere to display
+      if (pfx === 'i') {
+        var hup = g('hupload-'+slot);
+        if (hup) hup.style.display = '';
+        // Switch dropdown to upload
+        var hsilh = g('hsilh-'+slot);
+        if (hsilh) hsilh.value = 'upload';
+        // Show pose and headroom
+        var hpo = g('hpose-'+slot);     if (hpo) hpo.style.display = '';
+        var hhr = g('hheadroom-'+slot); if (hhr) hhr.style.display = '';
+      }
+      if (pfx === 'p') {
+        var pup = g('pupload-'+slot);
+        if (pup) pup.style.display = '';
+        var psil = g('psil-'+slot);
+        if (psil) psil.value = 'upload';
+      }
+      preloadCropImgP(slot, pfx, src);
+    });
+  });
 
   // ── Name (always visible) ───────────────────────
   wrap.appendChild(field('Name *', inp('text','n'+slot,'Character name',ex?ex.name:'')));
@@ -1791,7 +1892,7 @@ function buildForm(slot) {
 
   // Height image: silhouette dropdown + upload option
   var curHSilId = (ex && ex.default_silhouette) || (DEFAULTS.heightSils[0] && DEFAULTS.heightSils[0].id) || '';
-  var hasHUpload = !!(ex && ex.image);
+  var hasHUpload = !!(ex && (ex.image || ex.i_has_img));
   var hselVal = hasHUpload ? 'upload' : curHSilId;
   var himgF = cf('Height image');
   himgF.innerHTML +=
@@ -1807,27 +1908,28 @@ function buildForm(slot) {
   hUpload.style.display = hselVal==='upload'?'':'none';
   heightBody.appendChild(hUpload);
 
+  // Headroom offset — extra space above skull for hair, ears, hats etc.
+  var exHeadroom = ex && ex.headroom_pct ? ex.headroom_pct : 0;
+  var hrf = cf('Top offset');
+  hrf.id = 'hheadroom-'+slot;
+  hrf.style.display = hasHUpload ? '' : 'none';
+  hrf.innerHTML +=
+    '<div class="cf-hint" style="margin-bottom:.3rem">Extra space above head for hair, ears, hats, etc.</div>' +
+    '<div class="row" style="align-items:center;gap:.5rem">'+
+      '<button class="unit-btn headroom-open" id="headroom-open-'+slot+'" data-slot="'+slot+'">✎ Set offset</button>'+
+      '<span class="cf-hint" id="headroom-lbl-'+slot+'">'+exHeadroom+'%</span>'+
+    '</div>'+
+    '<input type="hidden" id="headroom-'+slot+'" step="0.5" value="'+exHeadroom+'" />';
+  heightBody.appendChild(hrf);
+
   var pf = cf('Pose');
   pf.id = 'hpose-'+slot;
-  pf.style.display = hselVal==='upload'?'':'none';
+  pf.style.display = hasHUpload ? '' : 'none';
   pf.innerHTML += '<div class="cf-hint" style="margin-bottom:.3rem">Adjust if image shows seated or crouching</div>' +
     '<select class="builder-input" id="pose-'+slot+'">' +
     POSES.map(function(p){return '<option value="'+p.v+'"'+(p.v===exCorr?' selected':'')+'>'+p.l+'</option>';}).join('') +
     '</select>';
   heightBody.appendChild(pf);
-
-  // Headroom offset — extra space above skull for hair, ears, hats etc.
-  var exHeadroom = ex && ex.headroom_pct ? ex.headroom_pct : 0;
-  var hrf = cf('Top offset');
-  hrf.id = 'hheadroom-'+slot;
-  hrf.style.display = hselVal==='upload'?'':'none';
-  hrf.innerHTML +=
-    '<div class="cf-hint" style="margin-bottom:.3rem">Extra height % above head for hair, ears, hats, etc.</div>' +
-    '<div class="row">' +
-      '<input id="headroom-'+slot+'" class="builder-input numInput" type="number" min="0" max="100" step="1" value="'+exHeadroom+'" />' +
-      '<span class="sep">% of height</span>' +
-    '</div>';
-  heightBody.appendChild(hrf);
 
   wrap.appendChild(heightDet);
 
@@ -2031,33 +2133,29 @@ function uploadSection(slot, pfx, label, existingImg) {
   d.innerHTML =
     '<div class="cf-label" style="margin-bottom:.3rem">'+label+'</div>'+
     '<input id="'+pfx+'url-'+slot+'" class="builder-input" type="text" placeholder="Paste URL..." value="'+(existingImg&&existingImg.startsWith('http')?existingImg:'')+'" style="margin-bottom:.35rem" />'+
-    '<div class="btn-row">'+
-      '<button class="unit-btn '+pfx+'url-btn" data-slot="'+slot+'" data-pfx="'+pfx+'">Load URL</button>'+
-    '</div>'+
     '<div class="custom-or">or upload</div>'+
     '<input id="'+pfx+'file-'+slot+'" type="file" accept="image/*" class="file-input" />'+
     '<div id="'+pfx+'pw-'+slot+'" style="'+(existingImg?'':'display:none')+';margin-top:.5rem">'+
-      '<div style="display:flex;align-items:center;gap:.5rem;margin-bottom:.3rem">'+
+      '<div class="upload-preview-row">'+
         '<img id="'+pfx+'pre-'+slot+'" class="prev-img" src="'+(existingImg||'')+'" alt="preview" />'+
-        '<button class="unit-btn '+pfx+'remove-btn" data-slot="'+slot+'" data-pfx="'+pfx+'" style="color:var(--wine);font-size:.58rem">Remove</button>'+
+        '<div class="upload-preview-btns">'+
+          '<button class="unit-btn '+pfx+'crop-open" data-slot="'+slot+'" data-pfx="'+pfx+'">✂ Crop</button>'+
+          '<button class="unit-btn '+pfx+'remove-btn" data-slot="'+slot+'" data-pfx="'+pfx+'" style="color:var(--wine)">✕ Remove</button>'+
+        '</div>'+
       '</div>'+
-      '<details class="crop-det">'+
-        '<summary>Crop (optional)</summary>'+
-        '<div class="crop-img-wrap" id="'+pfx+'ciwrap-'+slot+'">'+
-          '<img id="'+pfx+'csrc-'+slot+'" class="crop-src" src="" alt="" />'+
-          '<div class="crop-line crop-line-t" id="'+pfx+'cl-t-'+slot+'"></div>'+
-          '<div class="crop-line crop-line-b" id="'+pfx+'cl-b-'+slot+'"></div>'+
-          '<div class="crop-line crop-line-l" id="'+pfx+'cl-l-'+slot+'"></div>'+
-          '<div class="crop-line crop-line-r" id="'+pfx+'cl-r-'+slot+'"></div>'+
-        '</div>'+
-        '<div class="crop-pct-grid">'+
-          '<div class="crop-pct-row"><div class="crop-pct-label">Top %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'ct-'+slot+'" min="0" max="99" value="0"/></div>'+
-          '<div class="crop-pct-row"><div class="crop-pct-label">Bottom %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'cb-'+slot+'" min="0" max="99" value="0"/></div>'+
-          '<div class="crop-pct-row"><div class="crop-pct-label">Left %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'cl2-'+slot+'" min="0" max="99" value="0"/></div>'+
-          '<div class="crop-pct-row"><div class="crop-pct-label">Right %</div><input type="number" class="builder-input crop-pct-input" id="'+pfx+'cr-'+slot+'" min="0" max="99" value="0"/></div>'+
-        '</div>'+
-        '<button class="unit-btn '+pfx+'creset" data-slot="'+slot+'" data-pfx="'+pfx+'" style="margin-top:.4rem">Reset crop</button>'+
-      '</details>'+
+      // Hidden inputs so crop values persist (still read by applyCropP)
+      '<input type="hidden" id="'+pfx+'ct-'+slot+'" value="0" />'+
+      '<input type="hidden" id="'+pfx+'cb-'+slot+'" value="0" />'+
+      '<input type="hidden" id="'+pfx+'cl2-'+slot+'" value="0" />'+
+      '<input type="hidden" id="'+pfx+'cr-'+slot+'" value="0" />'+
+      // Crop image source (used by applyCropP) — hidden from main UI
+      '<div id="'+pfx+'ciwrap-'+slot+'" style="display:none">'+
+        '<img id="'+pfx+'csrc-'+slot+'" class="crop-src" src="" alt="" />'+
+        '<div class="crop-line crop-line-t" id="'+pfx+'cl-t-'+slot+'"></div>'+
+        '<div class="crop-line crop-line-b" id="'+pfx+'cl-b-'+slot+'"></div>'+
+        '<div class="crop-line crop-line-l" id="'+pfx+'cl-l-'+slot+'"></div>'+
+        '<div class="crop-line crop-line-r" id="'+pfx+'cl-r-'+slot+'"></div>'+
+      '</div>'+
     '</div>';
   return d;
 }
@@ -2076,6 +2174,283 @@ function cf(label) {
   var d=el('div');d.className='cf';
   var l=el('div');l.className='cf-label';l.textContent=label;d.appendChild(l);
   return d;
+}
+
+
+// ── Headroom popup ────────────────────────────────────────────
+function openHeadroomPopup(slot) {
+  var existing = document.getElementById('sr-headroom-popup');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'sr-headroom-popup';
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:rgba(0,0,0,0.82);';
+
+  var currentPct = parseFloat((document.getElementById('headroom-'+slot)||{}).value) || 0;
+
+  var box = document.createElement('div');
+  box.className = 'sr-crop-box';
+  box.innerHTML =
+    '<div class="sr-crop-header">'+
+      '<span class="sr-crop-title">Set Top Offset</span>'+
+      '<button id="sr-hr-close" class="unit-btn" style="color:var(--wine)">✕ Close</button>'+
+    '</div>'+
+    '<div class="sr-crop-preview">'+
+      '<div class="sr-headroom-imgwrap" id="sr-hr-imgwrap">'+
+        '<img id="sr-hr-img" src="" alt="" class="sr-crop-bigimg" />'+
+        '<div class="sr-hr-shade" id="sr-hr-shade" style="height:'+currentPct+'%"></div>'+
+        '<div class="sr-hr-line" id="sr-hr-line" style="top:'+currentPct+'%"></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="sr-crop-controls">'+
+      '<div class="cf-hint" style="margin-bottom:.5rem">Drag the green line to where the head begins. Shaded area above is headroom.</div>'+
+      '<div class="crop-pct-grid">'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Top offset %</div><input type="number" class="builder-input crop-pct-input" id="sr-hr-inp" min="0" max="99" step="0.5" value="'+currentPct+'" /></div>'+
+      '</div>'+
+      '<div class="sr-crop-actions">'+
+        '<button id="sr-hr-reset" class="unit-btn">Reset</button>'+
+        '<button id="sr-hr-apply" class="btn-primary">Apply</button>'+
+      '</div>'+
+    '</div>';
+
+  overlay.appendChild(box);
+  document.documentElement.appendChild(overlay);
+
+  // Load cropped preview image
+  var preImg = document.getElementById('ipre-'+slot) || document.getElementById('pre-'+slot);
+  var hrImg = document.getElementById('sr-hr-img');
+  if (preImg && preImg.src) hrImg.src = preImg.src;
+
+  function updateLine() {
+    var pct = Math.min(99, Math.max(0, parseFloat(document.getElementById('sr-hr-inp').value)||0));
+    var line = document.getElementById('sr-hr-line');
+    var shade = document.getElementById('sr-hr-shade');
+    if (line)  line.style.top   = pct+'%';
+    if (shade) shade.style.height = pct+'%';
+  }
+  updateLine();
+
+  document.getElementById('sr-hr-inp').addEventListener('input', updateLine);
+
+  // Draggable line
+  var lineEl = document.getElementById('sr-hr-line');
+  var startY = 0, startVal = 0, dragging = false;
+  lineEl.addEventListener('mousedown', function(e) {
+    e.preventDefault(); dragging = true;
+    startY = e.clientY;
+    startVal = parseFloat(document.getElementById('sr-hr-inp').value)||0;
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup', onEnd);
+  });
+  lineEl.addEventListener('touchstart', function(e) {
+    e.preventDefault(); dragging = true;
+    startY = e.touches[0].clientY;
+    startVal = parseFloat(document.getElementById('sr-hr-inp').value)||0;
+    document.addEventListener('touchmove', onMove, {passive:false});
+    document.addEventListener('touchend', onEnd);
+  }, {passive:false});
+
+  function onMove(e) {
+    if (!dragging) return;
+    if (e.cancelable) e.preventDefault();
+    var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+    var wrap = document.getElementById('sr-hr-imgwrap');
+    var imgEl = document.getElementById('sr-hr-img');
+    if (!wrap || !imgEl) return;
+    var nat = getNaturalRenderedSize(imgEl, wrap);
+    var delta = clientY - startY;
+    var pct = Math.round(delta / nat.h * 200) / 2; // 0.5 intervals
+    var inp = document.getElementById('sr-hr-inp');
+    if (!inp) return;
+    inp.value = Math.min(99, Math.max(0, Math.round((startVal + pct) * 2) / 2));
+    updateLine();
+  }
+  function onEnd() {
+    dragging = false;
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup', onEnd);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend', onEnd);
+  }
+
+  document.getElementById('sr-hr-reset').addEventListener('click', function() {
+    document.getElementById('sr-hr-inp').value = 0;
+    updateLine();
+  });
+
+  document.getElementById('sr-hr-apply').addEventListener('click', function() {
+    var val = Math.min(99, Math.max(0, Math.round((parseFloat(document.getElementById('sr-hr-inp').value)||0) * 2) / 2));
+    var hidInp = document.getElementById('headroom-'+slot);
+    if (hidInp) hidInp.value = val;
+    var lbl = document.getElementById('headroom-lbl-'+slot);
+    if (lbl) lbl.textContent = val+'%';
+    autoSave(slot);
+    render();
+    overlay.remove();
+  });
+
+  document.getElementById('sr-hr-close').addEventListener('click', function() { overlay.remove(); });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
+}
+
+// ── Crop popup ───────────────────────────────────────────────
+function openCropPopup(slot, pfx) {
+  var existing = document.getElementById('sr-crop-popup');
+  if (existing) existing.remove();
+
+  var overlay = el('div');
+  overlay.id = 'sr-crop-popup';
+  overlay.className = 'sr-crop-overlay';
+  // Ensure overlay escapes any CSS transform stacking context
+  overlay.style.cssText = 'position:fixed;top:0;left:0;width:100vw;height:100vh;z-index:99999;display:flex;align-items:center;justify-content:center;padding:1.5rem;background:rgba(0,0,0,0.82);';
+
+  var box = el('div');
+  box.className = 'sr-crop-box';
+
+  // Read current crop values
+  function getVal(id) { var el2 = g(pfx+id+'-'+slot); return el2 ? el2.value : '0'; }
+
+  box.innerHTML =
+    '<div class="sr-crop-header">'+
+      '<span class="sr-crop-title">Crop Image</span>'+
+      '<button id="sr-crop-close" class="unit-btn" style="color:var(--wine)">✕ Close</button>'+
+    '</div>'+
+    '<div class="sr-crop-preview">'+
+      '<div class="sr-crop-imgwrap" id="sr-crop-imgwrap">'+
+        '<img id="sr-crop-bigimg" src="" alt="" class="sr-crop-bigimg" />'+
+        '<div class="crop-shade crop-shade-t" id="sr-cpop-shade-t"></div>'+
+        '<div class="crop-shade crop-shade-b" id="sr-cpop-shade-b"></div>'+
+        '<div class="crop-shade crop-shade-l" id="sr-cpop-shade-l"></div>'+
+        '<div class="crop-shade crop-shade-r" id="sr-cpop-shade-r"></div>'+
+        '<div class="crop-line crop-line-t" id="sr-cpop-cl-t"></div>'+
+        '<div class="crop-line crop-line-b" id="sr-cpop-cl-b"></div>'+
+        '<div class="crop-line crop-line-l" id="sr-cpop-cl-l"></div>'+
+        '<div class="crop-line crop-line-r" id="sr-cpop-cl-r"></div>'+
+      '</div>'+
+    '</div>'+
+    '<div class="sr-crop-controls">'+
+      '<div class="crop-pct-grid">'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Top %</div><input type="number" class="builder-input crop-pct-input" id="pop-ct-'+slot+pfx+'" min="0" max="99" value="'+getVal('ct')+'" /></div>'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Bottom %</div><input type="number" class="builder-input crop-pct-input" id="pop-cb-'+slot+pfx+'" min="0" max="99" value="'+getVal('cb')+'" /></div>'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Left %</div><input type="number" class="builder-input crop-pct-input" id="pop-cl2-'+slot+pfx+'" min="0" max="99" value="'+getVal('cl2')+'" /></div>'+
+        '<div class="crop-pct-row"><div class="crop-pct-label">Right %</div><input type="number" class="builder-input crop-pct-input" id="pop-cr-'+slot+pfx+'" min="0" max="99" value="'+getVal('cr')+'" /></div>'+
+      '</div>'+
+      '<div class="sr-crop-actions">'+
+        '<button id="sr-crop-reset" class="unit-btn">Reset</button>'+
+        '<button id="sr-crop-apply" class="btn-primary">Apply crop</button>'+
+      '</div>'+
+    '</div>';
+
+  overlay.appendChild(box);
+  document.documentElement.appendChild(overlay); // outside any CSS transform stacking context
+
+  // Load image into popup preview
+  var bigImg = document.getElementById('sr-crop-bigimg');
+  var srcImg = document.getElementById(pfx+'csrc-'+slot);
+  if (srcImg && srcImg.src) bigImg.src = srcImg.src;
+
+  // Update popup crop lines
+  function updatePopLines() {
+    var ct  = parseFloat(document.getElementById('pop-ct-'+slot+pfx).value)||0;
+    var cb  = parseFloat(document.getElementById('pop-cb-'+slot+pfx).value)||0;
+    var cl2 = parseFloat(document.getElementById('pop-cl2-'+slot+pfx).value)||0;
+    var cr  = parseFloat(document.getElementById('pop-cr-'+slot+pfx).value)||0;
+    // Lines
+    var t = document.getElementById('sr-cpop-cl-t'); if(t) t.style.top    = ct+'%';
+    var b = document.getElementById('sr-cpop-cl-b'); if(b) b.style.bottom = cb+'%';
+    var l = document.getElementById('sr-cpop-cl-l'); if(l) l.style.left   = cl2+'%';
+    var r = document.getElementById('sr-cpop-cl-r'); if(r) r.style.right  = cr+'%';
+    // Shade overlays
+    var st = document.getElementById('sr-cpop-shade-t'); if(st) st.style.height = ct+'%';
+    var sb = document.getElementById('sr-cpop-shade-b'); if(sb) sb.style.height = cb+'%';
+    var sl = document.getElementById('sr-cpop-shade-l'); if(sl) { sl.style.top = ct+'%'; sl.style.bottom = cb+'%'; sl.style.width = cl2+'%'; }
+    var sr2 = document.getElementById('sr-cpop-shade-r'); if(sr2) { sr2.style.top = ct+'%'; sr2.style.bottom = cb+'%'; sr2.style.width = cr+'%'; }
+  }
+  updatePopLines();
+
+  ['pop-ct-','pop-cb-','pop-cl2-','pop-cr-'].forEach(function(p) {
+    var inp2 = document.getElementById(p+slot+pfx);
+    if (inp2) inp2.addEventListener('input', updatePopLines);
+  });
+
+  // Wire draggable crop lines in the popup
+  var popLines = [
+    {id:'sr-cpop-cl-t', inp:'pop-ct-'+slot+pfx,  axis:'y', dir:1},
+    {id:'sr-cpop-cl-b', inp:'pop-cb-'+slot+pfx,  axis:'y', dir:-1},
+    {id:'sr-cpop-cl-l', inp:'pop-cl2-'+slot+pfx, axis:'x', dir:1},
+    {id:'sr-cpop-cl-r', inp:'pop-cr-'+slot+pfx,  axis:'x', dir:-1},
+  ];
+  popLines.forEach(function(line) {
+    var lineEl = document.getElementById(line.id);
+    if (!lineEl) return;
+    var startPos=0, startVal=0, dragging=false;
+    function clientPos(e) {
+      return e.touches
+        ? (line.axis==='x' ? e.touches[0].clientX : e.touches[0].clientY)
+        : (line.axis==='x' ? e.clientX : e.clientY);
+    }
+    function onStart(e) {
+      e.preventDefault(); e.stopPropagation();
+      dragging = true;
+      startPos = clientPos(e);
+      startVal = parseFloat(document.getElementById(line.inp).value)||0;
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onEnd);
+      document.addEventListener('touchmove', onMove, {passive:false});
+      document.addEventListener('touchend', onEnd);
+    }
+    function onMove(e) {
+      if (!dragging) return;
+      if (e.cancelable) e.preventDefault();
+      var imgEl = document.getElementById('sr-crop-bigimg');
+      var wrapEl = document.getElementById('sr-crop-imgwrap');
+      var wrapSz = 200;
+      if (imgEl && wrapEl) {
+        var nat = getNaturalRenderedSize(imgEl, wrapEl);
+        wrapSz = line.axis==='x' ? nat.w : nat.h;
+      }
+      if (!wrapSz) return;
+      var delta = (clientPos(e) - startPos) * line.dir;
+      var pct = Math.round(delta / wrapSz * 100);
+      var inpEl = document.getElementById(line.inp);
+      if (!inpEl) return;
+      inpEl.value = Math.min(99, Math.max(0, startVal + pct));
+      updatePopLines();
+    }
+    function onEnd() {
+      dragging = false;
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup', onEnd);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend', onEnd);
+    }
+    lineEl.addEventListener('mousedown', onStart, {passive:false});
+    lineEl.addEventListener('touchstart', onStart, {passive:false});
+  });
+
+  document.getElementById('sr-crop-reset').addEventListener('click', function() {
+    ['pop-ct-','pop-cb-','pop-cl2-','pop-cr-'].forEach(function(p) {
+      var inp2 = document.getElementById(p+slot+pfx);
+      if (inp2) inp2.value = '0';
+    });
+    updatePopLines();
+  });
+
+  document.getElementById('sr-crop-apply').addEventListener('click', function() {
+    // Write values back to hidden inputs
+    var map = {ct:'pop-ct-', cb:'pop-cb-', cl2:'pop-cl2-', cr:'pop-cr-'};
+    Object.keys(map).forEach(function(key) {
+      var popInp = document.getElementById(map[key]+slot+pfx);
+      var hidInp = g(pfx+key+'-'+slot);
+      if (popInp && hidInp) hidInp.value = popInp.value;
+    });
+    updateLinesP(slot, pfx);
+    applyCropP(slot, pfx);
+    overlay.remove();
+  });
+
+  document.getElementById('sr-crop-close').addEventListener('click', function() { overlay.remove(); });
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) overlay.remove(); });
 }
 
 // ── Wire form ─────────────────────────────────────────────────
@@ -2279,12 +2654,14 @@ function buildModalGrid(query) {
       img:c.profile_image||'',
       sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', canon:true});
   });
-  if (customs.slot1) entries.push({value:'custom_1', name:customs.slot1.name+' (custom)',
-    img:customs.slot1.profile_image||'',
-    sil:customs.slot1.default_headshot_silhouette||customs.slot1.default_silhouette||'giantess', canon:false});
-  if (customs.slot2) entries.push({value:'custom_2', name:customs.slot2.name+' (custom)',
-    img:customs.slot2.profile_image||'',
-    sil:customs.slot2.default_headshot_silhouette||customs.slot2.default_silhouette||'giantess', canon:false});
+  if (customs.slot1 && customs.slot1.name && customs.slot1.height)
+    entries.push({value:'custom_1', name:customs.slot1.name+' (custom)',
+      img:customs.slot1.profile_image||'',
+      sil:'giantess', canon:false});
+  if (customs.slot2 && customs.slot2.name && customs.slot2.height)
+    entries.push({value:'custom_2', name:customs.slot2.name+' (custom)',
+      img:customs.slot2.profile_image||'',
+      sil:'giantess', canon:false});
 
   var filtered = q ? entries.filter(function(e){ return e.name.toLowerCase().indexOf(q) >= 0; }) : entries;
 
@@ -2344,9 +2721,10 @@ function wireForm(slot, wrap) {
   var hsilhSel=g('hsilh-'+slot);
   if(hsilhSel) hsilhSel.addEventListener('change',function(){
     var isUp=this.value==='upload';
-    var hup=g('hupload-'+slot);    if(hup)hup.style.display=isUp?'':'none';
-    var hpo=g('hpose-'+slot);      if(hpo)hpo.style.display=isUp?'':'none';
-    var hhr=g('hheadroom-'+slot);  if(hhr)hhr.style.display=isUp?'':'none';
+    var hup=g('hupload-'+slot); if(hup)hup.style.display=isUp?'':'none';
+    // pose and headroom only shown after an image is actually loaded
+    var hpo=g('hpose-'+slot);     if(hpo)hpo.style.display='none';
+    var hhr=g('hheadroom-'+slot); if(hhr)hhr.style.display='none';
     save();
   });
 
@@ -2463,6 +2841,12 @@ function wireForm(slot, wrap) {
     });
   });
 
+  // Headroom popup button
+  var hrOpenBtn = g('headroom-open-'+slot);
+  if (hrOpenBtn) hrOpenBtn.addEventListener('click', function() {
+    openHeadroomPopup(slot);
+  });
+
   // Build select
   var bs=g('bsel-'+slot); if(bs)bs.addEventListener('change',function(){refreshEst(slot);save();});
 
@@ -2474,28 +2858,74 @@ function wireForm(slot, wrap) {
 
   // Wire all three image upload sections via prefix
   ['i','l','p'].forEach(function(pfx) {
-    var urlBtn=wrap.querySelector('.'+pfx+'url-btn');
-    if(urlBtn) urlBtn.addEventListener('click',function(){
-      var u=g(pfx+'url-'+slot); if(u&&u.value.trim())loadImgP(slot,pfx,u.value.trim());
-    });
+    // Auto-load URL on paste or after typing stops
+    var urlInp=g(pfx+'url-'+slot);
+    if(urlInp) {
+      var urlDebounce;
+      urlInp.addEventListener('paste', function() {
+        clearTimeout(urlDebounce);
+        urlDebounce = setTimeout(function() {
+          var v = urlInp.value.trim();
+          if (v) loadImgP(slot, pfx, v);
+        }, 100);
+      });
+      urlInp.addEventListener('input', function() {
+        clearTimeout(urlDebounce);
+        urlDebounce = setTimeout(function() {
+          var v = urlInp.value.trim();
+          if (v && (v.startsWith('http://') || v.startsWith('https://'))) loadImgP(slot, pfx, v);
+        }, 800);
+      });
+    }
     var rmBtn=wrap.querySelector('.'+pfx+'remove-btn');
     if(rmBtn) rmBtn.addEventListener('click',function(){
       var pw=g(pfx+'pw-'+slot); if(pw)pw.style.display='none';
       var pre=g(pfx+'pre-'+slot); if(pre)pre.src='';
       var ui=g(pfx+'url-'+slot); if(ui)ui.value='';
-      cropImgs[pfx+slot]=null; save();
+      cropImgs[pfx+slot]=null;
+      deleteImg('custom_' + slot + '_' + pfx);
+      // Clear the has_img flag
+      var d2 = loadCustom();
+      var sk2 = 'slot'+slot;
+      if (d2[sk2]) { delete d2[sk2][pfx+'_has_img']; saveCustom(d2); }
+      // Reset crop values
+      [pfx+'ct-', pfx+'cb-', pfx+'cl2-', pfx+'cr-'].forEach(function(p) {
+        var inp = g(p+slot); if (inp) inp.value = '0';
+      });
+      // Reset headroom if it's the height image
+      if (pfx === 'i') {
+        var hrInp2 = g('headroom-'+slot);
+        if (hrInp2) hrInp2.value = '0';
+        var hrLbl2 = g('headroom-lbl-'+slot);
+        if (hrLbl2) hrLbl2.textContent = '0%';
+      }
+      save();
     });
     var fi=g(pfx+'file-'+slot);
     if(fi) fi.addEventListener('change',function(){
       var f=this.files[0]; if(!f)return;
-      var r=new FileReader(); r.onload=function(e){loadImgP(slot,pfx,e.target.result);}; r.readAsDataURL(f);
+      var r=new FileReader();
+      r.onload=function(e){
+        compressToWebP(e.target.result, 1200, 0.85).then(function(compressed) {
+          var imgKey = 'custom_' + slot + '_' + pfx;
+          storeImg(imgKey, compressed).then(function() {
+            // Mark this image as stored so form build knows on next load
+            var d = loadCustom();
+            var key = 'slot'+slot;
+            if (!d[key]) d[key] = {};
+            d[key][pfx+'_has_img'] = true;
+            saveCustom(d);
+            loadImgP(slot, pfx, compressed);
+          });
+        });
+      };
+      r.readAsDataURL(f);
     });
-    [pfx+'ct-',pfx+'cb-',pfx+'cl2-',pfx+'cr-'].forEach(function(p){
-      var inp=document.getElementById(p+slot);
-      if(inp) inp.addEventListener('input',function(){updateLinesP(slot,pfx);applyCropP(slot,pfx);});
+    // Wire crop popup open button
+    var cropOpenBtn = wrap.querySelector('.'+pfx+'crop-open');
+    if (cropOpenBtn) cropOpenBtn.addEventListener('click', function() {
+      openCropPopup(slot, pfx);
     });
-    var rst=wrap.querySelector('.'+pfx+'creset');
-    if(rst) rst.addEventListener('click',function(){resetCropP(slot,pfx);});
   });
   // Draggable crop lines (height image only for now)
   // Wire crop lines for all three image prefixes
@@ -2732,6 +3162,18 @@ function loadImgP(slot, pfx, src) {
   var img=new Image(); img.crossOrigin='anonymous';
   img.onload=function(){
     cropImgs[pfx+slot]=img;
+    // Reset crop and headroom when a new image is loaded
+    [pfx+'ct-', pfx+'cb-', pfx+'cl2-', pfx+'cr-'].forEach(function(p) {
+      var inp = g(p+slot); if (inp) inp.value = '0';
+    });
+    if (pfx === 'i') {
+      var hrInp = g('headroom-'+slot);
+      if (hrInp) hrInp.value = '0';
+      var hrLbl = g('headroom-lbl-'+slot);
+      if (hrLbl) hrLbl.textContent = '0%';
+      var hpo = g('hpose-'+slot);     if(hpo) hpo.style.display = '';
+      var hhr = g('hheadroom-'+slot); if(hhr) hhr.style.display = '';
+    }
     var si=g(pfx+'csrc-'+slot);
     if(si){
       si.src=src;
@@ -3132,5 +3574,17 @@ g('btn-zoom-reset').addEventListener('click',function(){
 document.querySelectorAll('.custom-clear-btn').forEach(function(btn){btn.addEventListener('click',function(){clearSlot(parseInt(this.getAttribute('data-slot')));});});
 document.getElementById('btn-add-char').addEventListener('click', function(){ addSlot('char'); });
 document.getElementById('btn-add-obj').addEventListener('click',  function(){ addSlot('obj');  });
+
+// ── Clear all custom data on page load for a clean session ───
+(function clearOnLoad() {
+  // Clear localStorage custom data for both slots
+  var empty = { slot1: null, slot2: null };
+  saveCustom(empty);
+  // Clear all images from IndexedDB
+  openImgDB().then(function(db) {
+    var tx = db.transaction(IMG_STORE, 'readwrite');
+    tx.objectStore(IMG_STORE).clear();
+  }).catch(function(){});
+})();
 
 init();
