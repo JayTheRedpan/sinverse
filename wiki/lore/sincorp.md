@@ -42,3 +42,11 @@ SinCorp's most significant current initiative. Details are not publicly known.
 - [Project Sylph](project-sylph) — current primary initiative
 - [The Apotheosis Serum](apotheosis-serum) — SinCorp's original and defining product
 - [The Resistance](the-resistance) — the primary opposition to SinCorp's influence
+
+## Did You Know
+
+- SinCorp was founded three years before TDay, operating publicly as a mid-tier pharmaceutical research company. No one who worked there at that time has publicly discussed what they actually knew.
+- SinCorp controls the water supply of every major mega-city. This is not a coincidence.
+- The company has no public-facing leadership other than Sin herself. There are no press releases, no earnings calls, no external board. It simply operates, and the world accommodates it.
+- SinCorp employs more Transformed researchers than any other organisation in the world. It also employs a significant number of toys in administrative and service roles. They are not permitted in research facilities.
+- At least three Resistance operations have been mounted against SinCorp facilities. None have resulted in public disclosure of what those facilities contained.

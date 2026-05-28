@@ -224,3 +224,57 @@ All `universe_date` fields use the **T±N** system:
 - `"T+3"` — 3 years after TDay
 - `"T+3 to T+4"` — spans a period
 - `null` — ambiguous or unknown
+
+---
+
+## Bot Integration
+
+### Wiki — Fun Facts
+
+Any lore or character markdown page can include a `## Did You Know` section at the **bottom** of the file. The Discord bot scrapes this section and picks a random bullet point to post.
+
+**Convention:**
+- Heading must be exactly `## Did You Know` (case-sensitive)
+- Each fact is a single `- ` bullet point on its own line
+- Facts should be self-contained (readable without context)
+- Keep facts under ~280 characters for Discord readability
+
+**Example (`wiki/lore/sincorp.md`):**
+```markdown
+## Did You Know
+
+- SinCorp was founded three years before TDay under the cover of a pharmaceutical company.
+- At its peak, SinCorp employed over 40,000 people who had no idea what they were really working on.
+```
+
+The bot fetches the raw markdown from:
+`https://sinverse.net/wiki/lore/{id}.md` or `https://sinverse.net/wiki/characters/{name}.md`
+
+---
+
+### Sizeref — URL Params (Bot/Deeplink)
+
+The sizeref tool accepts URL params to pre-configure a comparison for bot screenshots or sharing.
+
+| Param | Description | Example |
+|-------|-------------|---------|
+| `char1` | Canon character name (case-insensitive) | `char1=sin` |
+| `char2` | Canon character name (case-insensitive) | `char2=jay` |
+| `h1` | Height in inches for a generic character | `h1=72` |
+| `n1` | Display name for generic character 1 | `n1=Alice` |
+| `h2` | Height in inches for a generic character | `h2=144` |
+| `n2` | Display name for generic character 2 | `n2=Mystery` |
+| `view` | Which view to open | `view=height` (height\|length\|stats\|compare) |
+| `screenshot` | Hides UI chrome for clean bot screenshots | `screenshot=1` |
+
+**Example URLs:**
+```
+# Two canon characters
+https://sinverse.net/sizeref/?char1=sin&char2=jay&view=height
+
+# Canon vs generic
+https://sinverse.net/sizeref/?char1=sin&h2=66&n2=Alice&view=height
+
+# Bot screenshot (no UI chrome)
+https://sinverse.net/sizeref/?char1=sin&char2=jay&view=height&screenshot=1
+```

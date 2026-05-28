@@ -40,3 +40,11 @@ Mega-city infrastructure is built to accommodate inhabitants ranging from 8 to a
 - [The Wilds](the-wilds) — what lies between the cities
 - [Toys](toys) — the population with no status in the cities
 - [Sin](sin) — the figure whose actions gave rise to them
+
+## Did You Know
+
+- The term "mega-city" was not coined by any governing body — it emerged from informal usage in the months after TDay and was eventually adopted by SinCorp documentation without comment.
+- A standard door in a mega-city is approximately 14 feet tall. Pre-TDay buildings that were not demolished had their doors and ceilings rebuilt first, before any other renovation work began.
+- No two mega-cities have the same laws regarding toys. What is a minor infraction in one city may be the basis for a toy's confiscation in another.
+- There are an estimated 12 to 15 established mega-cities worldwide. SinCorp has not released an official count.
+- The smallest known mega-city has a Transformed population of approximately 800. The largest — Angora — has never officially published its population figures.

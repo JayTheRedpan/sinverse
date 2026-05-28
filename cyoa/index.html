@@ -42,6 +42,43 @@
     </footer>
   </div>
 
+
+  <!-- ─── AUTHOR SCREEN ─────────────────────────────── -->
+  <div id="screen-author" class="screen" style="display:none">
+    <header class="cyoa-header">
+      <div class="cyoa-brand">
+        <a href="../"><img src="../images/logo.png" alt="Sinverse" class="header-logo" /></a>
+        <div class="cyoa-title-block">
+          <span class="cyoa-title">Adventures</span>
+          <span class="cyoa-subtitle">Interactive Fiction</span>
+        </div>
+      </div>
+    </header>
+
+    <div class="author-screen-inner">
+      <div class="author-screen-header">
+        <button id="btn-back-author" class="btn-ghost back-btn">&#8592; All Adventures</button>
+        <div class="author-screen-profile">
+          <div class="author-screen-avatar-wrap">
+            <img id="author-screen-avatar" class="author-screen-avatar" src="" alt="" />
+          </div>
+          <div class="author-screen-info">
+            <div class="author-screen-eyebrow">Adventure Scenes by</div>
+            <div class="author-screen-name" id="author-screen-name"></div>
+            <div class="author-screen-total" id="author-screen-total"></div>
+          </div>
+        </div>
+      </div>
+      <div id="author-screen-adventures" class="author-screen-adventures">
+        <div class="loading-placeholder">Loading...</div>
+      </div>
+    </div>
+
+    <footer class="cyoa-footer">
+      <a href="../contributors/" id="author-screen-contrib-link" class="cyoa-footer-home-link">View full contributor profile &#8599;</a>
+    </footer>
+  </div>
+
   <!-- ─── GAME SCREEN ──────────────────────────────── -->
   <div id="screen-game" class="screen" style="display:none">
     <div class="game-layout">

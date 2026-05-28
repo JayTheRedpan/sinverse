@@ -26,3 +26,11 @@ Each mega-city in the Sinverse world is ruled by a Matriarch who sets its cultur
 - [Sin](sin) — Matriarch of Angora
 - [SinCorp](sincorp) — headquartered in Angora
 - [The Mega-Cities](mega-cities) — Angora's context
+
+## Did You Know
+
+- Angora was built on land that previously held no major city. Sin chose the site specifically because it came with no pre-existing architecture to compromise her vision.
+- The name Angora was chosen by Sin. She has never explained why.
+- Angora's street grid is designed at a scale that accommodates inhabitants up to 30 feet tall comfortably. Anything above that requires specialist access routes.
+- SinCorp's central research complex in Angora is the largest structure in the city. It is also the only building whose blueprints are not filed with any city administrative body.
+- There is no tourism in Angora. Entry requires SinCorp-issued documentation. The process for obtaining that documentation is not publicly described.

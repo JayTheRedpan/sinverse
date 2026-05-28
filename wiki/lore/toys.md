@@ -30,3 +30,11 @@ Jay is a toy.
 - [The Wilds](the-wilds) — where Wild Toys live
 - [The Resistance](the-resistance) — who helps toys escape
 - [The Mega-Cities](mega-cities) — where most toys are kept
+
+## Did You Know
+
+- The word "toy" entered common usage within the first two weeks after TDay. No one has been credited with originating it.
+- SinCorp's internal documentation refers to toys using a clinical alphanumeric designation system. The word "toy" appears in the informal notes of SinCorp researchers but not in official records.
+- The Resistance has documented that toys who maintain connections to other toys — family, friendship, community — have significantly higher survival rates in the Wilds than those who operate alone.
+- A small number of Matriarchs across the mega-cities have extended limited protections to toys within their cities. None have extended citizenship. The distinction matters enormously.
+- The toy population globally is estimated to have declined by 60–70% in the five years since TDay. Demographic models suggest continued decline. The Resistance considers this the core urgency of their work.
