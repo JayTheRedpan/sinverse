@@ -5,6 +5,13 @@
 
 'use strict';
 
+// Load content tags from tags.json
+fetch('../_data/tags.json')
+  .then(function(r){ return r.json(); })
+  .then(function(data){ NODE_TAGS = data.story || []; })
+  .catch(function(){ /* leave empty if unavailable */ });
+
+
 const FORMS = {
   newStory: {
     action: 'https://docs.google.com/forms/d/e/1FAIpQLSfAAPRWFs2TL4QVBlx6GCzEhMKxdny0rCrJwzZnCAG_L611Wg/formResponse',
@@ -55,11 +62,8 @@ const STORY_TAGS = [
   'violence', 'dark themes', 'trauma', 'psychological', 'grief', 'horror', 'mystery', 'fantasy', 'sci-fi', 'thriller'
 ];
 
-// Node-level content tags -- warn readers before entering a specific scene
-const NODE_TAGS = [
-  'explicit', 'sensual', 'dubcon', 'non-con', 'bdsm', 'bondage', 'dominance', 'submission',
-  'violence', 'character death', 'body horror', 'gore', 'dark themes', 'trauma', 'psychological'
-];
+// Node-level content tags -- loaded from tags.json on init
+var NODE_TAGS = [];
 
 // -- Submit to Google Forms silently --
 async function submitToGoogle(formKey, data) {
@@ -344,7 +348,7 @@ window.showNewStoryForm = function() {
       { key: 'path2',     type: 'text',       label: 'Choice 2',            placeholder: 'Second choice text',                        required: true  },
       { key: 'path3',     type: 'text',       label: 'Choice 3',            placeholder: 'Third choice text',                         hint: '(optional)' },
       { key: 'path4',     type: 'text',       label: 'Choice 4',            placeholder: 'Fourth choice text',                        hint: '(optional)' },
-      { key: 'storyTags', type: 'checkboxes', label: 'Story tags',           options: TAGS.cyoa, hint: '(describe the overall story)' },
+      { key: 'storyTags', type: 'checkboxes', label: 'Story tags',           options: STORY_TAGS.slice().sort(), hint: '(describe the overall story)' },
       { key: 'theme',     type: 'radio',      label: 'Opening scene theme', options: THEMES,   required: true },
       { key: 'imageLink', type: 'text',       label: 'Image URL',           placeholder: 'Optional link to a cover image',            hint: '(optional)' },
     ],
@@ -364,7 +368,7 @@ window.showNewBranchForm = function(storyTitle, nodeId, branchText) {
       { key: 'newBranchText', type: 'text',       label: 'New choice text',  placeholder: 'The button label readers click to reach your scene', value: branchText || '', required: true },
       { key: 'author',        type: 'text',       label: 'Your handle',      placeholder: 'Optional -- for author credit', hint: '(optional)' },
       { key: 'blurb',         type: 'textarea',   label: 'Scene text',       placeholder: 'Write your scene here...', required: true, minWords: 300 },
-      { key: 'tags',          type: 'checkboxes', label: 'Scene content tags', options: TAGS.story, hint: '(warn readers before entering this scene)' },
+      { key: 'tags',          type: 'checkboxes', label: 'Scene content tags', options: NODE_TAGS.slice().sort(), hint: '(warn readers before entering this scene)' },
       { key: 'theme',         type: 'radio',      label: 'Scene theme',      options: THEMES, required: true },
       { key: 'isEnding',      type: 'toggle',     label: 'Is this an ending?', hint: 'If yes, path choices are not needed' },
       { key: 'path1',         type: 'text',       label: 'Choice 1',         placeholder: 'First choice text',  required: true, pathField: true },

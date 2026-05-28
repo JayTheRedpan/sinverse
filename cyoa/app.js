@@ -45,7 +45,6 @@ const btnBackNode           = $('btn-back-node');
 const btnRestart            = $('btn-restart');
 const btnPlayAgain          = $('btn-play-again');
 const btnLibraryFromEnd     = $('btn-library-from-end');
-const btnDeadEndLibrary     = $('btn-dead-end-library');
 const gameStoryTitle        = $('game-story-title');
 const modalOverlay          = $('modal-overlay');
 const modalMessage          = $('modal-message');
@@ -464,9 +463,6 @@ function renderDeadEnd(node) {
       This branch hasn't been written yet. If you have an idea for where it leads,
       submit a continuation -- your scene will be reviewed and added to the adventure.
     </p>
-    <div style="display:flex; align-items:center; gap:0.6rem; flex-wrap:wrap; margin-top:0.25rem;">
-      <span class="dead-end-node-id">node: ${nodeId}</span>
-    </div>
     <div style="display:flex; flex-direction:column; gap:0.65rem; margin-top:0.75rem;">
       <button id="dead-end-submit-btn" class="btn-primary" style="align-self:flex-start;">
         * Write this scene
@@ -603,7 +599,6 @@ btnPlayAgain.addEventListener('click', () => {
   goToNode(1);
 });
 btnLibraryFromEnd.addEventListener('click', () => { state.currentId = null; state.history = []; state.deadEndActive = false; applyTheme(null); showScreen('library'); });
-btnDeadEndLibrary.addEventListener('click', () => { state.currentId = null; state.history = []; state.deadEndActive = false; applyTheme(null); showScreen('library'); });
 
 // -- Start ----------------------------------------
 try {

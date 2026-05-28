@@ -28,11 +28,11 @@ async function initBuilder() {
   addNode();
 }
 
-// -- Story-level tag checkboxes
+// -- Adventure-level tag checkboxes
 function buildMetaTags() {
   var container = document.getElementById('meta-tags');
   if (!container) return;
-  BUILDER_STORY_TAGS.forEach(function(tag) {
+  BUILDER_STORY_TAGS.slice().sort().forEach(function(tag) {
     var label = document.createElement('label');
     label.className = 'builder-tag-label';
     label.innerHTML = '<input type="checkbox" value="' + tag + '" /> ' + tag;
@@ -185,7 +185,7 @@ function buildNodeCard(node) {
   var tagsWrap = document.createElement('div');
   tagsWrap.className = 'node-field';
   var tagsHtml = '<label class="node-label">Content tags</label><div class="builder-tag-grid">';
-  BUILDER_NODE_TAGS.forEach(function(t) {
+  BUILDER_NODE_TAGS.slice().sort().forEach(function(t) {
     tagsHtml += '<label class="builder-tag-label"><input type="checkbox" class="node-tag-cb" value="' + t + '"' + (node.tags.includes(t) ? ' checked' : '') + ' /> ' + t + '</label>';
   });
   tagsHtml += '</div>';
@@ -314,14 +314,14 @@ function updateAllChoiceDropdowns() {
 // -- Node count badge
 function updateNodeCount() {
   var el = document.getElementById('node-count');
-  if (el) el.textContent = builderState.nodes.length;
+  if (el) el.textContent = builderState.nodes.length + (builderState.nodes.length === 1 ? ' Scene' : ' Scenes');
 }
 
 // -- Validation
 function validateAll() {
   var title   = document.getElementById('meta-title').value.trim();
   var summary = document.getElementById('meta-summary').value.trim();
-  if (!title)   { alert('Please enter a story title.'); return false; }
+  if (!title)   { alert('Please enter an adventure title.'); return false; }
   if (!summary) { alert('Please enter a library summary.'); return false; }
 
   syncAllNodes();
@@ -398,7 +398,7 @@ async function submitAll() {
   document.getElementById('submit-glyph').style.animation = 'none';
 
   if (failed === 0) {
-    titleEl.textContent    = 'Story submitted!';
+    titleEl.textContent    = 'Adventure submitted!';
     progressEl.textContent = total + ' scene' + (total !== 1 ? 's' : '') + ' sent for review. The admin will be in touch via Discord.';
   } else {
     titleEl.textContent    = 'Partially submitted';
@@ -410,6 +410,17 @@ async function submitAll() {
 
 // -- Wire top-level buttons
 document.getElementById('btn-add-node').addEventListener('click', addNode);
+
+// Confirm before leaving if any scenes have been written
+document.querySelector('.builder-back').addEventListener('click', function(e) {
+  var hasContent = Array.from(document.querySelectorAll('.node-blurb')).some(function(ta) { return ta.value && ta.value.trim(); });
+  var titleFilled = document.getElementById('meta-title') && document.getElementById('meta-title').value.trim();
+  if (hasContent || titleFilled) {
+    if (!confirm('Leave this page? Any unsaved writing will be lost.')) {
+      e.preventDefault();
+    }
+  }
+});
 document.getElementById('btn-submit-all').addEventListener('click', submitAll);
 document.getElementById('submit-done-btn').addEventListener('click', function() {
   window.location.href = 'index.html';
