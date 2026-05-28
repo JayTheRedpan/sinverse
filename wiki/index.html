@@ -883,29 +883,6 @@
     .wiki-back-btn:hover { color: var(--accent); }
 
     /* ── Tags ── */
-    .wiki-tag-filter {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 0.4rem;
-      margin-bottom: 1.5rem;
-    }
-    .wiki-tag-pill {
-      font-family: var(--font-caps);
-      font-size: 0.55rem;
-      letter-spacing: 0.1em;
-      padding: 0.2rem 0.65rem;
-      border: 1px solid var(--border);
-      border-radius: 99px;
-      color: var(--text-secondary);
-      cursor: pointer;
-      transition: all 0.15s;
-      background: transparent;
-    }
-    .wiki-tag-pill:hover, .wiki-tag-pill.active {
-      border-color: var(--accent);
-      color: var(--accent);
-      background: var(--bg-inset);
-    }
 
     /* Mobile menu button — hidden on desktop */
     .wiki-mobile-menu-btn {
@@ -1177,7 +1154,6 @@
     <section class="wiki-page" id="page-characters">
       <div class="wiki-intro-eyebrow">Sinverse</div>
       <h1 class="wiki-intro-title">Characters</h1>
-      <div class="wiki-tag-filter" id="char-tag-filter"></div>
       <div class="wiki-char-grid" id="char-grid"></div>
     </section>
 
@@ -1673,41 +1649,12 @@ function buildTimeline() {
 
 // ── Character grid ────────────────────────────────────────────
 function buildCharGrid(chars) {
+  chars = chars.slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
   var grid = document.getElementById('char-grid');
   grid.innerHTML = '';
 
   // Tags
   var allTags = {};
-  chars.forEach(function(c) {
-    if (c.faction) allTags[c.faction] = true;
-    if (c.species) allTags[c.species] = true;
-  });
-
-  var tagFilter = document.getElementById('char-tag-filter');
-  tagFilter.innerHTML = '';
-  var allPill = document.createElement('button');
-  allPill.className = 'wiki-tag-pill active';
-  allPill.textContent = 'All';
-  allPill.addEventListener('click', function() {
-    activeTagFilter = null;
-    document.querySelectorAll('.wiki-tag-pill').forEach(function(p){ p.classList.remove('active'); });
-    this.classList.add('active');
-    buildCharGrid(characters);
-  });
-  tagFilter.appendChild(allPill);
-
-  Object.keys(allTags).sort().forEach(function(tag) {
-    var pill = document.createElement('button');
-    pill.className = 'wiki-tag-pill';
-    pill.textContent = tag;
-    pill.addEventListener('click', function() {
-      activeTagFilter = tag;
-      document.querySelectorAll('.wiki-tag-pill').forEach(function(p){ p.classList.remove('active'); });
-      this.classList.add('active');
-      buildCharGrid(characters.filter(function(c){ return c.faction===tag||c.species===tag; }));
-    });
-    tagFilter.appendChild(pill);
-  });
 
   chars.forEach(function(c) {
     var card = document.createElement('a');
@@ -1760,11 +1707,10 @@ function loadCharPage(charId, pushState) {
   if (pushState !== false) history.pushState({ type: 'character', id: charId }, '', '#char-' + charId);
 
   // Build stat block from JSON
-  var effH = char.height * (char.height_correction || 1);
   var statRows = [
     ['Species',    char.species || '—'],
     ['Pronouns',   char.pronouns || '—'],
-    ['Height',     fH(effH)],
+    ['Height',     fH(char.height)],  // raw canonical height — height_correction is sizeref-only
     ['Weight',     char.weight ? fW(char.weight) : '—'],
     ['Build',      char.build ? (char.build.charAt(0).toUpperCase() + char.build.slice(1)) : '—'],
     ['Faction',    char.faction || '—'],

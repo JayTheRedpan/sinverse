@@ -31,6 +31,11 @@
       "id": "feline",
       "label": "Feline",
       "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988324/FelineCock_length_default_vg1pr2.webp"
+    },
+    {
+      "id": "tentacle",
+      "label": "Tentacle",
+      "url": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780003196/length_tentacle_fnxkqk.webp"
     }
   ],
   "headshot_silhouettes": [

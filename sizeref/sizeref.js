@@ -625,13 +625,15 @@ function orientedImgEl(src, flip, rotateDeg, filter) {
   loader.crossOrigin = 'anonymous';
   loader.onload = function() {
     var w = loader.naturalWidth, h = loader.naturalHeight;
-    var rotated = (rotateDeg === 90 || rotateDeg === 270);
-    var cw = rotated ? h : w;
-    var ch = rotated ? w : h;
+    // Calculate bounding box for arbitrary rotation angle
+    var rad = rotateDeg ? rotateDeg * Math.PI / 180 : 0;
+    var sin = Math.abs(Math.sin(rad)), cos = Math.abs(Math.cos(rad));
+    var cw = Math.ceil(w * cos + h * sin);
+    var ch = Math.ceil(w * sin + h * cos);
     var c = el('canvas'); c.width = cw; c.height = ch;
     var ctx = c.getContext('2d');
     ctx.translate(cw/2, ch/2);
-    if (rotateDeg) ctx.rotate(rotateDeg * Math.PI / 180);
+    if (rotateDeg) ctx.rotate(rad);
     if (flip) ctx.scale(-1, 1);
     ctx.drawImage(loader, -w/2, -h/2);
     img.src = c.toDataURL('image/png');
@@ -2132,7 +2134,8 @@ function buildForm(slot) {
   var exRot  = ex && ex.length_orient_rotate ? ex.length_orient_rotate : 0;
   var orientF = cf('Image orientation');
   orientF.id = 'lorient-'+slot;
-  orientF.style.display = lsilVal === 'custom' ? '' : 'none';
+  var hasLengthImg = lsilVal === 'custom' && !!(ex && ex.length_image);
+  orientF.style.display = hasLengthImg ? '' : 'none'; // further controlled by load/remove events
   orientF.innerHTML +=
     '<div class="btn-row">' +
       '<label class="orient-check"><input type="checkbox" id="lflip-'+slot+'"'+(exFlip?' checked':'')+' /> Flip horizontally</label>' +
@@ -2140,9 +2143,13 @@ function buildForm(slot) {
     '<div class="cf-label" style="margin-top:.5rem;margin-bottom:.3rem">Rotate</div>' +
     '<div class="btn-row">' +
       '<button class="unit-btn lrot-btn'+(exRot===0?' active':'')+'" data-slot="'+slot+'" data-rot="0">0°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===45?' active':'')+'" data-slot="'+slot+'" data-rot="45">45°</button>' +
       '<button class="unit-btn lrot-btn'+(exRot===90?' active':'')+'" data-slot="'+slot+'" data-rot="90">90°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===135?' active':'')+'" data-slot="'+slot+'" data-rot="135">135°</button>' +
       '<button class="unit-btn lrot-btn'+(exRot===180?' active':'')+'" data-slot="'+slot+'" data-rot="180">180°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===225?' active':'')+'" data-slot="'+slot+'" data-rot="225">225°</button>' +
       '<button class="unit-btn lrot-btn'+(exRot===270?' active':'')+'" data-slot="'+slot+'" data-rot="270">270°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===315?' active':'')+'" data-slot="'+slot+'" data-rot="315">315°</button>' +
     '</div>';
   lsildWrap.appendChild(orientF);
   lengthBody.appendChild(lsildWrap);
@@ -2165,14 +2172,6 @@ function buildForm(slot) {
       }).join('') +
       '<option value="upload"'+(pselVal==='upload'?' selected':'')+'>Upload / Link image</option>' +
     '</select>';
-  statsBody.appendChild(pimgF);
-
-  // Profile upload — immediately after dropdown
-  var pUpload = uploadSection(slot, 'p', 'Profile / Headshot', ex&&ex.profile_image?ex.profile_image:'');
-  pUpload.id = 'pupload-'+slot;
-  pUpload.style.display = pselVal==='upload'?'':'none';
-  statsBody.appendChild(pUpload);
-
   // Weight
   var wf = cf('Weight');
   wf.innerHTML +=
@@ -2203,9 +2202,16 @@ function buildForm(slot) {
         '<span class="sep">kg</span>' +
       '</div>' +
     '</div>';
+  // Profile image — below weight
   statsBody.appendChild(wf);
+  statsBody.appendChild(pimgF);
 
-  // Profile upload (only shown when 'upload' selected)
+  // Profile upload — immediately after dropdown
+  var pUpload = uploadSection(slot, 'p', 'Profile / Headshot', ex&&ex.profile_image?ex.profile_image:'');
+  pUpload.id = 'pupload-'+slot;
+  pUpload.style.display = pselVal==='upload'?'':'none';
+  statsBody.appendChild(pUpload);
+
   wrap.appendChild(statsDet);
 
   // Populate builds AFTER statsDet is in the DOM so getElementById works
@@ -2789,6 +2795,7 @@ function buildModalGrid(query) {
       sil:'giantess', canon:false});
 
   var filtered = q ? entries.filter(function(e){ return e.name.toLowerCase().indexOf(q) >= 0; }) : entries;
+  filtered = filtered.slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
 
   filtered.forEach(function(entry) {
     var card = document.createElement('div');
@@ -2847,9 +2854,24 @@ function wireForm(slot, wrap) {
   if(hsilhSel) hsilhSel.addEventListener('change',function(){
     var isUp=this.value==='upload';
     var hup=g('hupload-'+slot); if(hup)hup.style.display=isUp?'':'none';
-    // pose and headroom only shown after an image is actually loaded
-    var hpo=g('hpose-'+slot);     if(hpo)hpo.style.display='none';
-    var hhr=g('hheadroom-'+slot); if(hhr)hhr.style.display='none';
+    if(isUp) {
+      // Reveal pose+headroom only if an image is already loaded
+      var ipw=g('ipw-'+slot);
+      if(ipw && ipw.style.display!=='none') {
+        var hpo=g('hpose-'+slot); if(hpo)hpo.style.display='';
+        var hhr=g('hheadroom-'+slot); if(hhr)hhr.style.display='';
+      }
+    } else {
+      // Hide and reset pose and headroom when switching away from upload
+      var hpo=g('hpose-'+slot); if(hpo)hpo.style.display='none';
+      var hhr=g('hheadroom-'+slot); if(hhr)hhr.style.display='none';
+      // Reset headroom to 0
+      var hrInp=g('headroom-'+slot); if(hrInp)hrInp.value='0';
+      var hrLbl=g('headroom-lbl-'+slot); if(hrLbl)hrLbl.textContent='0%';
+      // Reset pose to first option (default)
+      var poseEl=g('pose-'+slot);
+      if(poseEl){ poseEl.selectedIndex=0; poseEl.dispatchEvent(new Event('change')); }
+    }
     save();
   });
 
@@ -2933,12 +2955,21 @@ function wireForm(slot, wrap) {
   if(lsilSel) lsilSel.addEventListener('change',function(){
     var isCustom=this.value==='custom';
     var lupload=g('lupload-'+slot); if(lupload)lupload.style.display=isCustom?'':'none';
-    var lorient=g('lorient-'+slot); if(lorient)lorient.style.display=isCustom?'':'none';
-    // Clear the uploaded image when switching back to a silhouette
+    // Show orientation only if custom AND an image is already loaded
+    var lpw=g('lpw-'+slot);
+    var imgLoaded = !!(lpw && lpw.style.display !== 'none');
+    var lorient=g('lorient-'+slot); if(lorient)lorient.style.display=(isCustom&&imgLoaded)?'':'none';
+    // Reset orientation when switching away from custom (image preserved for when user returns)
     if(!isCustom) {
-      var lpre=g('lpre-'+slot); if(lpre) lpre.src='';
-      var lurl=g('lurl-'+slot); if(lurl) lurl.value='';
-      delete cropImgs['l'+slot];
+      // Reset flip
+      var lflipEl=g('lflip-'+slot); if(lflipEl){ lflipEl.checked=false; }
+      // Reset rotation to 0°
+      var rotBtns=wrap.querySelectorAll('.lrot-btn');
+      rotBtns.forEach(function(b){
+        b.classList.toggle('active', b.getAttribute('data-rot')==='0');
+      });
+      // Reset preview transform
+      var lpreEl=g('lpre-'+slot); if(lpreEl) lpreEl.style.transform='none';
     }
     save();
     if(S.view==='length') renderLengthView();
@@ -2951,8 +2982,22 @@ function wireForm(slot, wrap) {
   updateLengthImgVisibility();
 
   // Length orientation — flip
+  function updateLengthPreviewTransform() {
+    var pre = g('lpre-'+slot); if(!pre) return;
+    var flipEl = g('lflip-'+slot);
+    var isFlip = flipEl && flipEl.checked;
+    var rotBtn = wrap && wrap.querySelector('.lrot-btn.active');
+    var rot = rotBtn ? parseInt(rotBtn.getAttribute('data-rot')) || 0 : 0;
+    var transform = '';
+    if (isFlip) transform += 'scaleX(-1) ';
+    if (rot) transform += 'rotate('+rot+'deg)';
+    pre.style.transform = transform.trim() || 'none';
+    pre.style.transformOrigin = 'center center';
+  }
+
   var lflip=g('lflip-'+slot);
   if(lflip) lflip.addEventListener('change',function(){
+    updateLengthPreviewTransform();
     save(); if(S.view==='length') renderLengthView();
   });
 
@@ -2962,9 +3007,13 @@ function wireForm(slot, wrap) {
     btn.addEventListener('click',function(){
       if(wrap3) wrap3.querySelectorAll('.lrot-btn').forEach(function(b){b.classList.remove('active');});
       this.classList.add('active');
+      updateLengthPreviewTransform();
       save(); if(S.view==='length') renderLengthView();
     });
   });
+
+  // Apply transform on initial build if values already set
+  updateLengthPreviewTransform();
 
   // Headroom popup button
   var hrOpenBtn = g('headroom-open-'+slot);
@@ -2991,14 +3040,14 @@ function wireForm(slot, wrap) {
         clearTimeout(urlDebounce);
         urlDebounce = setTimeout(function() {
           var v = urlInp.value.trim();
-          if (v) loadImgP(slot, pfx, v);
+          if (v) { loadImgP(slot, pfx, v); if(pfx==='l'){var lor=g('lorient-'+slot);if(lor)lor.style.display='';} }
         }, 100);
       });
       urlInp.addEventListener('input', function() {
         clearTimeout(urlDebounce);
         urlDebounce = setTimeout(function() {
           var v = urlInp.value.trim();
-          if (v && (v.startsWith('http://') || v.startsWith('https://'))) loadImgP(slot, pfx, v);
+          if (v && (v.startsWith('http://') || v.startsWith('https://'))) { loadImgP(slot, pfx, v); if(pfx==='l'){var lor=g('lorient-'+slot);if(lor)lor.style.display='';} }
         }, 800);
       });
     }
@@ -3008,6 +3057,7 @@ function wireForm(slot, wrap) {
       var pre=g(pfx+'pre-'+slot); if(pre)pre.src='';
       var ui=g(pfx+'url-'+slot); if(ui)ui.value='';
       cropImgs[pfx+slot]=null;
+      if(pfx==='l'){var lor=g('lorient-'+slot);if(lor)lor.style.display='none';}
       deleteImg('custom_' + slot + '_' + pfx);
       // Clear the has_img flag
       var d2 = loadCustom();
@@ -3017,12 +3067,14 @@ function wireForm(slot, wrap) {
       [pfx+'ct-', pfx+'cb-', pfx+'cl2-', pfx+'cr-'].forEach(function(p) {
         var inp = g(p+slot); if (inp) inp.value = '0';
       });
-      // Reset headroom if it's the height image
+      // Reset headroom + hide pose/top-offset sections if height image removed
       if (pfx === 'i') {
         var hrInp2 = g('headroom-'+slot);
         if (hrInp2) hrInp2.value = '0';
         var hrLbl2 = g('headroom-lbl-'+slot);
         if (hrLbl2) hrLbl2.textContent = '0%';
+        var hpo = g('hpose-'+slot);     if(hpo) hpo.style.display = 'none';
+        var hhr = g('hheadroom-'+slot); if(hhr) hhr.style.display = 'none';
       }
       save();
     });
@@ -3189,9 +3241,14 @@ function autoSave(slot) {
   var img=pi&&pi.src&&!pi.src.endsWith(window.location.href)?pi.src:'';
   if(!img){var ui=g('iurl-'+slot);if(ui&&ui.value.trim().startsWith('http'))img=ui.value.trim();}
 
-  var lpi=g('lpre-'+slot);  // this is the preview img (correct)
-  var length_image=lpi&&lpi.src&&!lpi.src.endsWith(window.location.href)?lpi.src:'';
-  if(!length_image){var lui=g('lurl-'+slot);if(lui&&lui.value.trim().startsWith('http'))length_image=lui.value.trim();}
+  var lsilElCheck=g('lsil-'+slot);
+  var lpi=g('lpre-'+slot);
+  // Only use the uploaded image if the dropdown is set to 'custom'
+  var length_image='';
+  if(lsilElCheck&&lsilElCheck.value==='custom'){
+    length_image=lpi&&lpi.src&&!lpi.src.endsWith(window.location.href)?lpi.src:'';
+    if(!length_image){var lui=g('lurl-'+slot);if(lui&&lui.value.trim().startsWith('http'))length_image=lui.value.trim();}
+  }
 
   var ppi=g('ppre-'+slot);
   var profile_image=ppi&&ppi.src&&!ppi.src.endsWith(window.location.href)?ppi.src:'';
@@ -3316,6 +3373,8 @@ function loadImgP(slot, pfx, src) {
     }
     var pre=g(pfx+'pre-'+slot); if(pre)pre.src=src;
     var pw=g(pfx+'pw-'+slot); if(pw)pw.style.display='';
+    // Show orientation controls when a length image is loaded
+    if(pfx==='l'){var lor=g('lorient-'+slot);if(lor)lor.style.display='';}
     autoSave(slot);
   };
   img.onerror=function(){alert('Could not load image.');};
