@@ -1,0 +1,33 @@
+---
+id: 34
+name: Mini
+pronouns: she/her
+species: Mouse
+affiliation: Unknown
+born: BT
+post_tday_born: false
+---
+
+## Overview
+
+*Mini's profile is still being written. Check back soon.*
+
+## Appearance
+
+*To be documented.*
+
+## Personality
+
+*To be documented.*
+
+## Lore / History
+
+*To be documented.*
+
+## Related
+
+- [The Apotheosis Serum](../lore/apotheosis-serum) — what transformed her
+
+## Did You Know
+
+- Mini is a Mouse standing 66'10" tall.
