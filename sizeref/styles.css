@@ -1858,3 +1858,13 @@ body.sandbox-active .sr-img-wrap {
 /* ── Object stat card spacer rows ─────────────────────────────── */
 .sr-stat-spacer { visibility: hidden; }
 .sr-stat-row-spacer { visibility: hidden; }
+
+/* ── Compare list hint ───────────────────────────────────────── */
+.sr-list-hint {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  font-style: italic;
+  color: var(--text-muted);
+  padding: 0.2rem 0.75rem 0.4rem;
+  opacity: 0.7;
+}

@@ -5,6 +5,8 @@ var sandboxMode    = false;
 var sandboxOffsets = {};
 var sandboxPendingSnapshot = null;
 var sandboxRafPending = false;
+var renderInProgress = false;
+var sandboxPositions = {}; // slot index → {tx, ty}, persists across renders
 
 var S = {
   heightOverrides: {},  // charId -> override inches (session only)
@@ -504,31 +506,15 @@ function allObjects() {
 // ── Render ────────────────────────────────────────────────────
 function render() {
   if (document.getElementById('sr-global-resize-popup')) return;
+  if (renderInProgress) return; // prevent re-entrant render
+  renderInProgress = true;
   var chars   = allChars();
   var scene   = document.getElementById('sr-scene');
   var empty   = document.getElementById('sr-empty');
   var figs    = document.getElementById('sr-figures');
   var stats   = document.getElementById('sr-stats');
 
-  // In sandbox mode, snapshot current figure positions before clearing
-  var _sandboxSnap = null;
-  if (sandboxMode) {
-    if (sandboxPendingSnapshot !== null) {
-      _sandboxSnap = sandboxPendingSnapshot;
-      sandboxPendingSnapshot = null;
-    } else {
-      // Capture current transforms from DOM
-      _sandboxSnap = {};
-      var _existingWraps = figs.querySelectorAll('.sr-img-wrap[data-char-id]');
-      _existingWraps.forEach(function(w) {
-        var cid = w.getAttribute('data-char-id');
-        if (!cid) return;
-        var t = w.style.transform || '';
-        var m = t.match(/translate\(([-\d.]+)px[, ]+([-\d.]+)px\)/);
-        _sandboxSnap[cid] = m ? {tx: parseFloat(m[1]), ty: parseFloat(m[2])} : {tx:0, ty:0};
-      });
-    }
-  }
+  // Sandbox positions are stored in sandboxPositions{} and applied after render
   figs.innerHTML = '';
   stats.innerHTML = '';
 
@@ -616,12 +602,9 @@ function render() {
   if (rulerActive) updateRulerSVG();
 
   document.getElementById('zoom-label').textContent = Math.round(S.zoomH*100)+'%';
-
-  // Re-enable sandbox synchronously after all figures are in the DOM
-  if (_sandboxSnap !== null) {
-    document.body.classList.add('sandbox-active');
-    enableSandbox(_sandboxSnap);
-  }
+  renderInProgress = false;
+  // Re-apply sandbox positions after render
+  if (sandboxMode) applySandboxPositions();
 }
 
 function renderChar(figs, char, slotIdx) {
@@ -632,7 +615,7 @@ function renderChar(figs, char, slotIdx) {
 
   var iw = el('div'); iw.className = 'sr-img-wrap';
   iw.style.height = (pH + headroomPx) + 'px';
-  iw.setAttribute('data-char-id', String(char.id || char.name)); // for sandbox position restore
+  iw.setAttribute('data-slot-idx', String(slotIdx !== undefined ? slotIdx : -1)); // for sandbox position restore
   iw.draggable = false;
   // Only constrain height — let width follow the image's natural aspect ratio
   var img = el('img');
@@ -645,7 +628,7 @@ function renderChar(figs, char, slotIdx) {
   img.draggable = false;
   // Apply flip + rotation — keyed by char value so state follows the character
   var _slotSels = allSlotSelects();
-  var _ck = (_slotSels[slotIdx] && _slotSels[slotIdx].value) || ('slot_'+(slotIdx||0));
+  var _ck = (slotIdx !== undefined && _slotSels[slotIdx] && _slotSels[slotIdx].value) ? (slotIdx+'_'+_slotSels[slotIdx].value) : ('slot_'+(slotIdx||0));
   var _flipped = S.charFlips && S.charFlips[_ck];
   var _rot = (S.charRotations && S.charRotations[_ck]) || 0;
   var _t = '';
@@ -781,10 +764,10 @@ function updateRuler() {
 // ── Stat block ────────────────────────────────────────────────
 
 function charKeyForSlot(slotIdx) {
-  // Get the select value (e.g. 'canon_1', 'custom_1', 'obj_id') for a slot
+  // Key includes slot index so same character in two slots are independent
   var sels = allSlotSelects();
   var sel = sels[slotIdx];
-  return sel ? (sel.value || '') : '';
+  return sel && sel.value ? (slotIdx + '_' + sel.value) : '';
 }
 
 function applyCharTransform(slotIdx) {
@@ -833,15 +816,34 @@ function wireFlipRotate(block, slotIdx) {
     resetBtn.addEventListener('click', function() {
       var s = parseInt(this.getAttribute('data-slot') || this.getAttribute('data-slotidx'));
       var key = charKeyForSlot(s);
-      var _rk = charKeyForSlot(s);
-      if (_rk) delete S.heightOverrides[_rk];
+      if (key) delete S.heightOverrides[key];
       delete S.heightOverrides[s];
       if (key) {
         if (S.charFlips) S.charFlips[key] = false;
         if (S.charRotations) S.charRotations[key] = 0;
       }
       applyCharTransform(s);
-      render();
+      if (sandboxMode) {
+        setTimeout(function() {
+          var _statsEl = document.getElementById('sr-stats');
+          if (!_statsEl) return;
+          _statsEl.innerHTML = '';
+          allSlotSelects().forEach(function(sel, idx) {
+            var type = sel.getAttribute('data-type');
+            var val  = sel.value;
+            if (!val) return;
+            if (type === 'obj') {
+              var obj = S.objects.find(function(o){ return o.id === val; });
+              if (obj) _statsEl.appendChild(objStatBlock(obj, idx));
+            } else {
+              var c = charFromValue(val);
+              if (c) _statsEl.appendChild(statBlock(c, idx));
+            }
+          });
+        }, 0);
+      } else {
+        render();
+      }
     });
   }
 }
@@ -2919,6 +2921,10 @@ function onDrop(e) {
     var rows = Array.from(container.querySelectorAll('.sr-slot-row'));
     var srcIdx  = rows.indexOf(dragSrc);
     var destIdx = rows.indexOf(this);
+
+    // Snapshot slot→charValue BEFORE reorder so we can migrate state keys after
+    var sels = allSlotSelects();
+    var slotVals = sels.map(function(sel, i) { return {idx: i, val: sel.value}; });
     if (srcIdx < destIdx) {
       container.insertBefore(dragSrc, this.nextSibling);
     } else {
@@ -4146,18 +4152,15 @@ function initSandbox() {
     this.classList.toggle('active', sandboxMode);
     if (sandboxMode) {
       document.body.classList.add('sandbox-active');
-      // Force grid off, reset zoom to 100% for clean sandbox coordinate space
       S.gridLines = false;
-      S.zoomH = 1;
+      sandboxPositions = {}; // fresh positions on entry
       var gb = document.getElementById('btn-grid-lines');
       if (gb) { gb.classList.remove('active'); gb.style.display = 'none'; }
-      var zl = document.getElementById('zoom-label');
-      if (zl) zl.textContent = '100%';
-      render(); // clear grid, apply zoom reset
-      enableSandbox();
+      render(); // clear grid, then applySandboxPositions runs at end of render
     } else {
       document.body.classList.remove('sandbox-active');
       sandboxOffsets = {};
+      sandboxPositions = {}; // clear positions on exit
       // Restore grid button and reset zoom to 100%
       var gb2 = document.getElementById('btn-grid-lines');
       if (gb2) gb2.style.display = '';
@@ -4167,14 +4170,20 @@ function initSandbox() {
   });
 }
 
-function enableSandbox(snapshot) {
+function enableSandbox() {
+  applySandboxPositions();
+}
+
+function applySandboxPositions() {
   var figs = document.getElementById('sr-figures');
   if (!figs) return;
   var wraps = Array.from(figs.querySelectorAll('.sr-img-wrap'));
   wraps.forEach(function(wrap, i) {
-    var cid = wrap.getAttribute('data-char-id');
-    var saved = snapshot && cid && snapshot[cid];
-    wrap.style.transform = saved ? 'translate('+saved.tx+'px,'+saved.ty+'px)' : 'translate(0,0)';
+    var sid = wrap.getAttribute('data-slot-idx') || String(i);
+    var pos = sandboxPositions[sid];
+    var tx = pos ? pos.tx : 0;
+    var ty = pos ? pos.ty : 0;
+    wrap.style.transform = 'translate('+tx+'px,'+ty+'px)';
     wrap.style.cursor = 'grab';
     wrap.style.userSelect = 'none';
     wrap.style.zIndex = String(wraps.length - i);
@@ -4212,6 +4221,9 @@ function makeDraggable(el) {
     var tx = baseTx + (cx - startX);
     var ty = baseTy + (cy - startY);
     el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+    // Persist position immediately so any re-render restores it
+    var sid = el.getAttribute('data-slot-idx');
+    if (sid !== null) sandboxPositions[sid] = {tx: tx, ty: ty};
   }
   function onUp() {
     el.style.cursor = 'grab';
@@ -4362,9 +4374,14 @@ g('btn-copy-img').addEventListener('click', function() {
   var lenRulerWrap = document.getElementById('sr-length-ruler-wrap');
   var rulerHidden = false;
   if (!copyWithScale) {
-    if (rulerCol)     { rulerCol.style.display     = 'none'; rulerHidden = true; }
-    if (lenRulerWrap) { lenRulerWrap.style.display = 'none'; rulerHidden = true; }
+    if (rulerCol)     { rulerCol.style.visibility     = 'hidden'; rulerHidden = true; }
+    if (lenRulerWrap) { lenRulerWrap.style.visibility = 'hidden'; rulerHidden = true; }
   }
+
+  // Always hide grid during capture (background-image causes canvas to expand)
+  var scrollEl = document.getElementById('sr-scroll');
+  var savedGridBg = scrollEl ? scrollEl.style.backgroundImage : '';
+  if (scrollEl && S.gridLines) scrollEl.style.backgroundImage = 'none';
 
   // Pre-bake silhouette images (rose-gold filtered) so they render correctly
   var filteredImgs = Array.from(target.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
@@ -4395,22 +4412,14 @@ function domCropCanvas(canvas, target, scale, padding) {
   var items = Array.from(target.querySelectorAll('.sr-img-wrap, .sr-obj-shape, .sr-obj-img'));
   if (!items.length) return canvas;
 
-  var targetW = targetRect.width;
-  var targetH = targetRect.height;
   var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
   items.forEach(function(el) {
     var r = el.getBoundingClientRect();
     if (r.width < 1 || r.height < 1) return;
-    // Use visual (post-transform) positions — html2canvas renders at visual positions
     var x1 = r.left - targetRect.left;
     var y1 = r.top  - targetRect.top;
     var x2 = r.right  - targetRect.left;
     var y2 = r.bottom - targetRect.top;
-    // Clamp to the target's visible area (handles overflow/clipping)
-    x1 = Math.max(0, Math.min(targetW, x1));
-    y1 = Math.max(0, Math.min(targetH, y1));
-    x2 = Math.max(0, Math.min(targetW, x2));
-    y2 = Math.max(0, Math.min(targetH, y2));
     if (x1 < minX) minX = x1;
     if (y1 < minY) minY = y1;
     if (x2 > maxX) maxX = x2;
@@ -4443,24 +4452,31 @@ function domCropCanvas(canvas, target, scale, padding) {
       try { canvas = domCropCanvas(canvas, target, 2, 20); } catch(e) { console.warn('domCrop failed:', e); }
       canvas.toBlob(function(blob) {
         if (!blob) { btn.textContent = '✗'; setTimeout(function(){btn.innerHTML='&#128203;';btn.disabled=false;},1500); return; }
-        try {
-          // Restore ruler visibility
+        // Restore ruler visibility
           if (rulerHidden) {
-            if (rulerCol)     rulerCol.style.display     = '';
-            if (lenRulerWrap) lenRulerWrap.style.display = '';
+            if (rulerCol)     rulerCol.style.visibility     = '';
+            if (lenRulerWrap) lenRulerWrap.style.visibility = '';
           }
-          navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(function() {
-            btn.textContent = '✓';
-            setTimeout(function(){ btn.innerHTML='&#128203;'; btn.disabled=false; }, 1500);
-          }).catch(function() {
-            var url = URL.createObjectURL(blob);
-            window.open(url, '_blank');
-            btn.innerHTML='&#128203;'; btn.disabled=false;
-          });
-        } catch(e) {
+          if (scrollEl && S.gridLines) scrollEl.style.backgroundImage = savedGridBg;
+
+        function fallbackDownload() {
           var url = URL.createObjectURL(blob);
           window.open(url, '_blank');
           btn.innerHTML='&#128203;'; btn.disabled=false;
+        }
+
+        var canClipboard = typeof ClipboardItem !== 'undefined' &&
+          navigator.clipboard && navigator.clipboard.write;
+
+        if (canClipboard) {
+          try {
+            navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(function() {
+              btn.textContent = '✓';
+              setTimeout(function(){ btn.innerHTML='&#128203;'; btn.disabled=false; }, 1500);
+            }).catch(function() { fallbackDownload(); });
+          } catch(e) { fallbackDownload(); }
+        } else {
+          fallbackDownload();
         }
       }, 'image/png');
     }).catch(function() {
