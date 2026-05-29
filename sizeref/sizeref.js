@@ -487,7 +487,8 @@ function allCharSlots() {
 }
 
 function effectiveHSlot(char, slotIdx) {
-  var ov = S.heightOverrides[slotIdx];
+  var key = charKeyForSlot(slotIdx);
+  var ov = key ? S.heightOverrides[key] : S.heightOverrides[slotIdx];
   if (ov !== undefined) return ov;
   return char.height * (char.height_correction || 1);
 }
@@ -642,11 +643,11 @@ function renderChar(figs, char, slotIdx) {
   // sr-img-real skips the brightening filter — only silhouettes need it
   img.className = 'sr-char-img' + (usingDefault ? '' : ' sr-img-real');
   img.draggable = false;
-  // Apply flip + rotation state
-  var _fk = 'flip_'+(slotIdx !== undefined ? slotIdx : -1);
-  var _rk = 'rot_'+(slotIdx !== undefined ? slotIdx : -1);
-  var _flipped = S.charFlips && S.charFlips[_fk];
-  var _rot = S.charRotations && S.charRotations[_rk] || 0;
+  // Apply flip + rotation — keyed by char value so state follows the character
+  var _slotSels = allSlotSelects();
+  var _ck = (_slotSels[slotIdx] && _slotSels[slotIdx].value) || ('slot_'+(slotIdx||0));
+  var _flipped = S.charFlips && S.charFlips[_ck];
+  var _rot = (S.charRotations && S.charRotations[_ck]) || 0;
   var _t = '';
   if (_flipped) _t += 'scaleX(-1) ';
   if (_rot) _t += 'rotate('+ (_flipped ? -_rot : _rot) +'deg)';
@@ -779,6 +780,13 @@ function updateRuler() {
 
 // ── Stat block ────────────────────────────────────────────────
 
+function charKeyForSlot(slotIdx) {
+  // Get the select value (e.g. 'canon_1', 'custom_1', 'obj_id') for a slot
+  var sels = allSlotSelects();
+  var sel = sels[slotIdx];
+  return sel ? (sel.value || '') : '';
+}
+
 function applyCharTransform(slotIdx) {
   var figs = document.getElementById('sr-figures');
   if (!figs) return;
@@ -787,8 +795,9 @@ function applyCharTransform(slotIdx) {
   if (!wrap) return;
   var img = wrap.querySelector('img');
   if (!img) return;
-  var flipped = S.charFlips && S.charFlips['flip_'+slotIdx];
-  var rot = (S.charRotations && S.charRotations['rot_'+slotIdx]) || 0;
+  var key = charKeyForSlot(slotIdx);
+  var flipped = key && S.charFlips && S.charFlips[key];
+  var rot = (key && S.charRotations && S.charRotations[key]) || 0;
   var t = '';
   if (flipped) t += 'scaleX(-1) ';
   if (rot) t += 'rotate('+(flipped ? -rot : rot)+'deg)';
@@ -800,9 +809,11 @@ function wireFlipRotate(block, slotIdx) {
   if (flipBtn) {
     flipBtn.addEventListener('click', function() {
       var s = parseInt(this.getAttribute('data-slot'));
+      var key = charKeyForSlot(s);
+      if (!key) return;
       if (!S.charFlips) S.charFlips = {};
-      S.charFlips['flip_'+s] = !S.charFlips['flip_'+s];
-      this.classList.toggle('active', S.charFlips['flip_'+s]);
+      S.charFlips[key] = !S.charFlips[key];
+      this.classList.toggle('active', S.charFlips[key]);
       applyCharTransform(s);
     });
   }
@@ -810,22 +821,25 @@ function wireFlipRotate(block, slotIdx) {
     btn.addEventListener('click', function() {
       var s = parseInt(this.getAttribute('data-slot'));
       var dir = parseInt(this.getAttribute('data-dir'));
+      var key = charKeyForSlot(s);
+      if (!key) return;
       if (!S.charRotations) S.charRotations = {};
-      S.charRotations['rot_'+s] = ((S.charRotations['rot_'+s] || 0) + dir * 15 + 360) % 360;
+      S.charRotations[key] = ((S.charRotations[key] || 0) + dir * 15 + 360) % 360;
       applyCharTransform(s);
     });
   });
-  // Full reset button — clears height override, flip, rotation
   var resetBtn = block.querySelector('.sr-full-reset-btn');
   if (resetBtn) {
     resetBtn.addEventListener('click', function() {
       var s = parseInt(this.getAttribute('data-slot') || this.getAttribute('data-slotidx'));
-      // Clear height override
+      var key = charKeyForSlot(s);
+      var _rk = charKeyForSlot(s);
+      if (_rk) delete S.heightOverrides[_rk];
       delete S.heightOverrides[s];
-      // Clear flip
-      if (S.charFlips) S.charFlips['flip_'+s] = false;
-      // Clear rotation
-      if (S.charRotations) S.charRotations['rot_'+s] = 0;
+      if (key) {
+        if (S.charFlips) S.charFlips[key] = false;
+        if (S.charRotations) S.charRotations[key] = 0;
+      }
       applyCharTransform(s);
       render();
     });
@@ -834,7 +848,9 @@ function wireFlipRotate(block, slotIdx) {
 
 function objStatBlock(obj, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
-  var isFlipped = S.charFlips && S.charFlips['flip_'+slotIdx];
+  var _objSels = allSlotSelects();
+  var _objKey = _objSels[slotIdx] ? _objSels[slotIdx].value : ('slot_'+slotIdx);
+  var isFlipped = S.charFlips && S.charFlips[_objKey];
   block.innerHTML =
     '<div class="sr-stat-name">'+obj.label+'</div>'+
     '<div class="sr-stat-pose-note sr-stat-pose-spacer">&nbsp;</div>'+
@@ -892,7 +908,8 @@ function resizeControlsFlipHTML(char, slotIdx, isFlipped) {
 
 function resizeControlsHTML(char, slotIdx) {
   if (char.custom) return '';
-  var ovH = S.heightOverrides[slotIdx];
+  var _rKey = charKeyForSlot(slotIdx);
+  var ovH = _rKey ? S.heightOverrides[_rKey] : S.heightOverrides[slotIdx];
   var isOv = ovH !== undefined;
   var effH = effectiveHSlot(char, slotIdx);
   var curFt = Math.floor(effH / 12);
@@ -972,7 +989,7 @@ function wireResizeControls(block) {
           inches = ft * 12 + ins;
           if (inches <= 0) return;
         }
-        S.heightOverrides[idx2] = inches;
+        var _k1 = charKeyForSlot(idx2); if(_k1) S.heightOverrides[_k1] = inches; else S.heightOverrides[idx2] = inches;
         closeResizePopup();
         renderActive();
         if (S.view !== 'stats') renderStatsView();
@@ -1001,7 +1018,7 @@ function wireResizeControls(block) {
         inches = ft * 12 + ins;
         if (inches <= 0) return;
       }
-      S.heightOverrides[idx2] = inches;
+      var _k2 = charKeyForSlot(idx2); if(_k2) S.heightOverrides[_k2] = inches; else S.heightOverrides[idx2] = inches;
       closeResizePopup();
       renderActive();
       if (S.view !== 'stats') renderStatsView();
@@ -1012,7 +1029,7 @@ function wireResizeControls(block) {
 
     if (btn.classList.contains('sv-resize-reset') || btn.classList.contains('sr-full-reset-btn')) {
       var idx3 = parseInt(btn.getAttribute('data-slotidx'));
-      delete S.heightOverrides[idx3];
+      var _k3 = charKeyForSlot(idx3); if(_k3) delete S.heightOverrides[_k3]; delete S.heightOverrides[idx3];
       closeResizePopup();
       renderActive();
       if (S.view !== 'stats') renderStatsView();
@@ -1024,15 +1041,17 @@ function statBlock(char, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
 
   var effH_in = effectiveHSlot(char, slotIdx);
-  var isOv = S.heightOverrides[slotIdx] !== undefined;
+  var _ovKey = charKeyForSlot(slotIdx);
+  var isOv = (_ovKey ? S.heightOverrides[_ovKey] : S.heightOverrides[slotIdx]) !== undefined;
   var trueH = isOv ? effH_in : char.height;  // true canonical height
   var isPosed = char.height_correction && char.height_correction < 0.99;
   var poseNote = isPosed
     ? '<div class="sr-stat-pose-note">renders as '+fH(effH_in)+' (posed)</div>'
     : '<div class="sr-stat-pose-note sr-stat-pose-spacer">&nbsp;</div>';
 
-  // Flip state per character slot
-  var charKey = 'flip_'+slotIdx;
+  // Flip state keyed by character value (follows character across slot changes)
+  var sels = allSlotSelects();
+  var charKey = sels[slotIdx] ? sels[slotIdx].value : ('slot_'+slotIdx);
   var isFlipped = S.charFlips && S.charFlips[charKey];
 
   block.innerHTML =
@@ -1102,7 +1121,11 @@ function calcBreasts(char, slotIdx) {
 
 function trueH(char, slotIdx) {
   // Use resize override if set, otherwise true canonical height (no pose correction)
-  if (slotIdx !== undefined && S.heightOverrides[slotIdx] !== undefined) return S.heightOverrides[slotIdx];
+  if (slotIdx !== undefined) {
+    var _ehKey = charKeyForSlot(slotIdx);
+    var _ehOv = _ehKey ? S.heightOverrides[_ehKey] : S.heightOverrides[slotIdx];
+    if (_ehOv !== undefined) return _ehOv;
+  }
   return char.height || effectiveH(char);
 }
 
@@ -2034,7 +2057,8 @@ function lengthStatBlock(char, slotIdx) {
   var effLen = noPenisChar ? 0 : (scaledLength(char, slotIdx) || 0);
   var entityId = char.id || char.name;
   var mode = S.lenImgMode[entityId] || 'length';
-  var isOv = S.heightOverrides[slotIdx] !== undefined;
+  var _ovKey = charKeyForSlot(slotIdx);
+  var isOv = (_ovKey ? S.heightOverrides[_ovKey] : S.heightOverrides[slotIdx]) !== undefined;
 
   var dispVal  = mode === 'height'
     ? fH(effectiveHSlot(char, slotIdx))
