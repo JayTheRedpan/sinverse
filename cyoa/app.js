@@ -354,9 +354,9 @@ function goToNode(id, silent = false) {
   state.deadEndActive = false;
   if (!silent && state.currentId && state.currentId !== id) state.history.push(state.currentId);
   state.currentId = id;
-  applyTheme(node.theme);
   updateImage(node);
   updateBreadcrumbs();
+  renderSceneTitle(node.title || '');
   renderBlurb(node.blurb, node.author);
   renderChoices(node);
   // Push browser state (unless restoring from popstate)
@@ -384,9 +384,9 @@ function goBack() {
     deadEndWrap.style.display = 'none';
     const node = state.nodeMap[state.currentId];
     if (!node) return;
-    applyTheme(node.theme);
-    updateImage(node);
-    renderBlurb(node.blurb, node.author);
+      updateImage(node);
+    renderSceneTitle(node.title || '');
+  renderBlurb(node.blurb, node.author);
     renderChoices(node);
     const main = document.querySelector('.game-main');
     if (main) main.scrollTop = 0;
@@ -397,9 +397,9 @@ function goBack() {
   const node   = state.nodeMap[prevId];
   if (!node) return;
   state.currentId = prevId;
-  applyTheme(node.theme);
   updateImage(node);
   updateBreadcrumbs();
+  renderSceneTitle(node.title || '');
   renderBlurb(node.blurb, node.author);
   renderChoices(node);
   const main = document.querySelector('.game-main');
@@ -411,6 +411,13 @@ function goBack() {
 }
 
 // -- Render --------------------------------------
+function renderSceneTitle(title) {
+  var el = $('scene-title');
+  if (!el) return;
+  el.textContent = title || '';
+  el.style.display = title ? '' : 'none';
+}
+
 function renderBlurb(text, author) {
   sceneBlurb.style.animation = 'none';
   sceneBlurb.offsetHeight;
@@ -484,6 +491,7 @@ function renderChoices(node) {
       btn.addEventListener('click', () => {
         state.deadEndActive = true;
         updateBreadcrumbs();
+        renderSceneTitle('');
         // Replace blurb with dead end flavour text
         sceneBlurb.innerHTML      = '<p style="font-style:italic; color:var(--text-muted);">The path ends here -- for now. Every blank page in the Sinverse is an invitation. Maybe this one is yours.</p>';
         sceneByline.style.display = 'none';
@@ -601,7 +609,7 @@ function updateBreadcrumbs() {
     const item = document.createElement('div');
     const isLast = i === trail.length - 1;
     item.className = 'breadcrumb-item' + (isLast && !state.deadEndActive ? ' current' : '');
-    item.textContent = node ? (node.blurb.slice(0, 42) + ' ') : id;
+    item.textContent = node ? (node.title || node.blurb.slice(0, 42) + '…') : id;
     breadcrumbList.appendChild(item);
   });
   // Add dead end entry at the bottom if active
@@ -640,10 +648,7 @@ function updateImage(node) {
 }
 
 // -- Theme ----------------------------------------
-function applyTheme(theme) {
-  THEMES.forEach(t => document.body.classList.remove('theme-' + t));
-  if (theme && THEMES.includes(theme)) document.body.classList.add('theme-' + theme);
-}
+
 
 // -- Screen switching -----------------------------
 function showScreen(name) {
@@ -706,8 +711,7 @@ btnBackLibrary.addEventListener('click', () => {
     state.currentId     = null;
     state.history       = [];
     state.deadEndActive = false;
-    applyTheme(null);
-    showScreen('library');
+      showScreen('library');
   };
   if (!state.currentId || node .isEnding) {
     resetState();
@@ -781,8 +785,7 @@ window.addEventListener('popstate', function(e) {
     goToNode(prevId, true);
   } else {
     state.currentId = null;
-    applyTheme(null);
-    showScreen('library');
+      showScreen('library');
   }
 });
 
@@ -1007,11 +1010,12 @@ async function showAuthorScreen(authorId) {
       nodes.forEach(function(node) {
         const row = document.createElement('div');
         row.className = 'author-scene-row';
-        const preview = (node.blurb || '').replace(/<[^>]+>/g, '').trim().slice(0, 80);
-        const ellipsis = (node.blurb || '').replace(/<[^>]+>/g, '').trim().length > 80 ? '…' : '';
+        const preview = node.title
+          ? node.title
+          : (node.blurb || '').replace(/<[^>]+>/g, '').trim().slice(0, 80) + ((node.blurb || '').length > 80 ? '…' : '');
         row.innerHTML =
           '<span class="author-scene-node">' + node.id + '</span>' +
-          '<span class="author-scene-blurb">' + preview + ellipsis + '</span>' +
+          '<span class="author-scene-blurb">' + preview + '</span>' +
           '<button class="author-scene-jump">Jump →</button>';
         row.querySelector('.author-scene-jump').addEventListener('click', function() {
           loadAdventure(meta.id).then(function() {
