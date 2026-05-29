@@ -4146,11 +4146,14 @@ function initSandbox() {
     this.classList.toggle('active', sandboxMode);
     if (sandboxMode) {
       document.body.classList.add('sandbox-active');
-      // Force grid off and re-render to clear it
+      // Force grid off, reset zoom to 100% for clean sandbox coordinate space
       S.gridLines = false;
+      S.zoomH = 1;
       var gb = document.getElementById('btn-grid-lines');
       if (gb) { gb.classList.remove('active'); gb.style.display = 'none'; }
-      render(); // clear the grid overlay
+      var zl = document.getElementById('zoom-label');
+      if (zl) zl.textContent = '100%';
+      render(); // clear grid, apply zoom reset
       enableSandbox();
     } else {
       document.body.classList.remove('sandbox-active');
@@ -4363,7 +4366,7 @@ g('btn-copy-img').addEventListener('click', function() {
     if (lenRulerWrap) { lenRulerWrap.style.display = 'none'; rulerHidden = true; }
   }
 
-  // Gather filtered images and pre-bake them (reload with CORS)
+  // Pre-bake silhouette images (rose-gold filtered) so they render correctly
   var filteredImgs = Array.from(target.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
   var srcList = filteredImgs.map(function(img){ return img.src; });
 
@@ -4371,21 +4374,73 @@ g('btn-copy-img').addEventListener('click', function() {
     .then(function(bakedUrls) {
 
     html2canvas(target, {
-      backgroundColor: null,  // transparent — silhouettes show correctly on any background
+      logging: false,
+      backgroundColor: null,
       useCORS: true,
       allowTaint: false,
       scale: 2,
       onclone: function(doc) {
-        // Swap filtered images to baked versions in the clone
         var cloneImgs = Array.from(doc.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
         cloneImgs.forEach(function(img, i) {
-          if (bakedUrls[i]) {
-            img.src = bakedUrls[i];
-            img.style.filter = 'none';
-          }
+          if (bakedUrls[i]) { img.src = bakedUrls[i]; img.style.filter = 'none'; }
         });
       }
     }).then(function(canvas) {
+function domCropCanvas(canvas, target, scale, padding) {
+  var pad = (padding || 16) * (scale || 1);
+  var targetRect = target.getBoundingClientRect();
+  var s = scale || 1;
+
+  // Measure all figure and object elements to find content bounds on all 4 sides
+  var items = Array.from(target.querySelectorAll('.sr-img-wrap, .sr-obj-shape, .sr-obj-img'));
+  if (!items.length) return canvas;
+
+  var targetW = targetRect.width;
+  var targetH = targetRect.height;
+  var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+  items.forEach(function(el) {
+    var r = el.getBoundingClientRect();
+    if (r.width < 1 || r.height < 1) return;
+    // Use visual (post-transform) positions — html2canvas renders at visual positions
+    var x1 = r.left - targetRect.left;
+    var y1 = r.top  - targetRect.top;
+    var x2 = r.right  - targetRect.left;
+    var y2 = r.bottom - targetRect.top;
+    // Clamp to the target's visible area (handles overflow/clipping)
+    x1 = Math.max(0, Math.min(targetW, x1));
+    y1 = Math.max(0, Math.min(targetH, y1));
+    x2 = Math.max(0, Math.min(targetW, x2));
+    y2 = Math.max(0, Math.min(targetH, y2));
+    if (x1 < minX) minX = x1;
+    if (y1 < minY) minY = y1;
+    if (x2 > maxX) maxX = x2;
+    if (y2 > maxY) maxY = y2;
+  });
+
+  if (!isFinite(minX) || maxX <= minX || maxY <= minY) return canvas;
+
+  // Use ground line as definitive bottom boundary
+  var ground = target.querySelector('.sr-ground');
+  if (ground) {
+    var gr = ground.getBoundingClientRect();
+    maxY = gr.bottom - targetRect.top;
+  }
+
+  // Crop all 4 sides
+  var cx  = Math.max(0, Math.round(minX * s - pad));
+  var cy  = Math.max(0, Math.round(minY * s - pad));
+  var cx2 = Math.min(canvas.width,  Math.round(maxX * s + pad));
+  var cy2 = Math.min(canvas.height, Math.round(maxY * s + pad));
+  var cw = cx2 - cx, ch = cy2 - cy;
+  if (cw < 4 || ch < 4) return canvas;
+
+  var out = document.createElement('canvas');
+  out.width = cw; out.height = ch;
+  out.getContext('2d').drawImage(canvas, cx, cy, cw, ch, 0, 0, cw, ch);
+  return out;
+}
+
+      try { canvas = domCropCanvas(canvas, target, 2, 20); } catch(e) { console.warn('domCrop failed:', e); }
       canvas.toBlob(function(blob) {
         if (!blob) { btn.textContent = '✗'; setTimeout(function(){btn.innerHTML='&#128203;';btn.disabled=false;},1500); return; }
         try {
