@@ -2669,7 +2669,24 @@ function openCropPopup(slot, pfx) {
   // Load image into popup preview
   var bigImg = document.getElementById('sr-crop-bigimg');
   var srcImg = document.getElementById(pfx+'csrc-'+slot);
-  if (srcImg && srcImg.src) bigImg.src = srcImg.src;
+  // Try inline src first, then cropImgs cache (loaded from IndexedDB), then preview img
+  var imgSrc = (srcImg && srcImg.src && !srcImg.src.endsWith('/')) ? srcImg.src
+    : (cropImgs[pfx+slot] ? cropImgs[pfx+slot].src : '');
+  if (!imgSrc) {
+    // Fall back to preview img src (shown by IndexedDB load)
+    var preEl = document.getElementById(pfx+'pre-'+slot);
+    if (preEl && preEl.src && !preEl.src.endsWith('/')) imgSrc = preEl.src;
+  }
+  if (bigImg && imgSrc) {
+    bigImg.src = imgSrc;
+    // Also backfill csrc so future crop opens work without re-fetching
+    if (srcImg && !srcImg.src) srcImg.src = imgSrc;
+    if (!cropImgs[pfx+slot]) {
+      var _ci = new Image(); _ci.crossOrigin = 'anonymous';
+      _ci.onload = function() { cropImgs[pfx+slot] = _ci; };
+      _ci.src = imgSrc;
+    }
+  }
 
   // Update popup crop lines
   function updatePopLines() {
@@ -3886,7 +3903,7 @@ function renderRoster() {
       '<div class="mychars-card-left">'+avatarHtml+
         '<div class="mychars-card-info">'+
           '<div class="mychars-card-name">'+(c.name||'Unnamed')+'</div>'+
-          '<div class="mychars-card-detail">'+c.species+' — '+heightStr+'</div>'+
+          '<div class="mychars-card-detail">'+heightStr+'</div>'+
         '</div>'+
       '</div>'+
       '<div class="mychars-card-actions">'+
@@ -4216,29 +4233,43 @@ function initRuler() {
     var dot = document.getElementById('ruler-dot-'+id);
     if (!dot) return;
     var dragging = false;
-    dot.addEventListener('mousedown', function(e) {
+    function startDrag(e) {
       e.preventDefault();
       dragging = true;
-      dot.style.cursor = 'grabbing';
+      dot.setAttribute('opacity', '0');
+      dot.style.cursor = 'none';
+      document.body.style.cursor = 'none';
       document.addEventListener('mousemove', onMove);
-      document.addEventListener('mouseup', onUp);
-    });
+      document.addEventListener('mouseup',   onUp);
+      document.addEventListener('touchmove', onMove, {passive: false});
+      document.addEventListener('touchend',  onUp);
+    }
+    dot.addEventListener('mousedown',  startDrag);
+    dot.addEventListener('touchstart', startDrag, {passive: false});
+
     function onMove(e) {
       if (!dragging) return;
+      e.preventDefault();
       var area = document.getElementById('sr-canvas-area');
       if (!area) return;
       var rect = area.getBoundingClientRect();
-      var fx = (e.clientX - rect.left) / rect.width;
-      var fy = (e.clientY - rect.top)  / rect.height;
+      var clientX = e.touches ? e.touches[0].clientX : e.clientX;
+      var clientY = e.touches ? e.touches[0].clientY : e.clientY;
+      var fx = (clientX - rect.left) / rect.width;
+      var fy = (clientY - rect.top)  / rect.height;
       if (id === 'a') { rulerA.x = fx; rulerA.y = fy; }
       else            { rulerB.x = fx; rulerB.y = fy; }
       updateRulerSVG();
     }
     function onUp() {
       dragging = false;
+      dot.setAttribute('opacity', '1');
       dot.style.cursor = 'grab';
+      document.body.style.cursor = '';
       document.removeEventListener('mousemove', onMove);
-      document.removeEventListener('mouseup',  onUp);
+      document.removeEventListener('mouseup',   onUp);
+      document.removeEventListener('touchmove', onMove);
+      document.removeEventListener('touchend',  onUp);
     }
   });
 }
