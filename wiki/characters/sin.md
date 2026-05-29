@@ -1,13 +1,3 @@
----
-id: 0
-name: Sin
-pronouns: she/her
-species: Bunny
-affiliation: SinCorp
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 Sin is the architect of TDay, the founder of SinCorp, and the de facto ruler of Angora — the most powerful mega-city in the post-TDay world. A bunny of extraordinary scientific genius, she is simultaneously the most celebrated and most feared figure in the Sinverse universe.

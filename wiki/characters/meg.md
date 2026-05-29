@@ -1,13 +1,3 @@
----
-id: 26
-name: Meg
-pronouns: she/her
-species: Great White Shark
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Meg's profile is still being written. Check back soon.*

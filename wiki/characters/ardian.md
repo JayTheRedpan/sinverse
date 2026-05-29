@@ -1,13 +1,3 @@
----
-id: 42
-name: Ardian
-pronouns: he/him
-species: Wolf
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Ardian's profile is still being written. Check back soon.*

@@ -1,13 +1,3 @@
----
-id: 16
-name: Anna
-pronouns: she/her
-species: Hyena
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Anna's profile is still being written. Check back soon.*

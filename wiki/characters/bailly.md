@@ -1,13 +1,3 @@
----
-id: 17
-name: Bailly
-pronouns: she/her
-species: Bunny
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Bailly's profile is still being written. Check back soon.*

@@ -1,13 +1,3 @@
----
-id: 15
-name: Jenny
-pronouns: she/her
-species: Bunny Red Panda Hybrid
-affiliation: Unknown
-born: AT
-post_tday_born: true
----
-
 ## Overview
 
 *Jenny's profile is still being written. Check back soon.*

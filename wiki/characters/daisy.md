@@ -1,13 +1,3 @@
----
-id: 31
-name: Daisy
-pronouns: she/her
-species: Cow
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Daisy's profile is still being written. Check back soon.*

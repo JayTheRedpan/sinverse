@@ -1,13 +1,3 @@
----
-id: 36
-name: Lucy
-pronouns: she/her
-species: Ram
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Lucy's profile is still being written. Check back soon.*

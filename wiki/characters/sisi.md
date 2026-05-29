@@ -1,13 +1,3 @@
----
-id: 12
-name: Sisi
-pronouns: she/her
-species: Arctic Fox
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Sisi's profile is still being written. Check back soon.*

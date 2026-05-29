@@ -1,13 +1,3 @@
----
-id: 33
-name: Autumn
-pronouns: she/her
-species: Horse
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Autumn's profile is still being written. Check back soon.*

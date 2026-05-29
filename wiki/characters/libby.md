@@ -1,13 +1,3 @@
----
-id: 19
-name: Libby
-pronouns: she/her
-species: Raccoon
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Libby's profile is still being written. Check back soon.*

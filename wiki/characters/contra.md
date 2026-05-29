@@ -1,13 +1,3 @@
----
-id: 22
-name: Contra
-pronouns: she/her
-species: House Cat
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Contra's profile is still being written. Check back soon.*

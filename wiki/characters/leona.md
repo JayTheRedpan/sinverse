@@ -1,13 +1,3 @@
----
-id: 9
-name: Leona
-pronouns: she/her
-species: Bunny Lion Hybrid
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Leona's profile is still being written. Check back soon.*

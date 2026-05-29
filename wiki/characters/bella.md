@@ -1,13 +1,3 @@
----
-id: 29
-name: Bella
-pronouns: she/her
-species: Lion
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Bella's profile is still being written. Check back soon.*

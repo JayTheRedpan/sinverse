@@ -1,13 +1,3 @@
----
-id: 37
-name: Gina
-pronouns: she/her
-species: Giraffe
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Gina's profile is still being written. Check back soon.*

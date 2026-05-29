@@ -126,14 +126,19 @@ async function loadFile(filePath) {
   try {
     var res = await fetch(filePath);
     if (!res.ok) throw new Error('Could not load ' + filePath);
-    var html = await res.text();
-    // Strip any full HTML wrapper if present, keep just body content
-    var match = html.match(/<body[^>]*>([\s\S]*)<\/body>/i);
-    var bodyHtml = match ? match[1] : html;
+    var raw = await res.text();
+    var bodyHtml;
+    if (filePath.endsWith('.md')) {
+      // Render markdown — marked.js must be loaded in reader.html
+      bodyHtml = typeof marked !== 'undefined' ? marked.parse(raw) : raw.replace(/\n\n/g, '</p><p>').replace(/^/, '<p>') + '</p>';
+    } else {
+      // Legacy HTML files — strip wrapper if present
+      var match = raw.match(/<body[^>]*>([\s\S]*)<\/body>/i);
+      bodyHtml = match ? match[1] : raw;
+    }
     content.innerHTML = bodyHtml;
-    // Calculate word count from content
-    var rawText = bodyHtml.replace(/<[^>]+>/g, ' ').trim();
-    var wc = rawText.split(/\s+/).filter(Boolean).length;
+    var rawText = content.textContent || content.innerText || '';
+    var wc = rawText.trim().split(/\s+/).filter(Boolean).length;
     var wcEl = document.getElementById('reader-wordcount');
     if (wcEl && wc > 0) wcEl.textContent = fmtWords(wc) + (story.type === 'serial' ? ' this chapter' : ' words');
   } catch(e) {

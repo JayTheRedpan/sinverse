@@ -9,14 +9,14 @@
       "noncon",
       "snuff"
     ],
-    "file": "stories/tdaytales_pakawa_couples_tday.html",
+    "file": "stories/tdaytales_pakawa_couples_tday.md",
     "date": "2022-05",
     "universe_date": "T\u00b10",
     "canonical": true,
     "characters": [
       "sin"
     ],
-    "wordCount": 12600
+    "wordCount": 12567
   },
   {
     "id": 2,
@@ -35,28 +35,28 @@
     "chapters": [
       {
         "title": "CoCK - Chapter 1",
-        "file": "stories/chronicles_of_control_kel_1.html",
-        "wordCount": 10600
+        "file": "stories/chronicles_of_control_kel_1.md",
+        "wordCount": 10569
       },
       {
         "title": "CoCK - Chapter 2",
-        "file": "stories/chronicles_of_control_kel_2.html",
-        "wordCount": 7600
+        "file": "stories/chronicles_of_control_kel_2.md",
+        "wordCount": 7630
       },
       {
         "title": "CoCK - Chapter 3",
-        "file": "stories/chronicles_of_control_kel_3.html",
-        "wordCount": 3500
+        "file": "stories/chronicles_of_control_kel_3.md",
+        "wordCount": 3456
       },
       {
         "title": "CoCK - Chapter 4",
-        "file": "stories/chronicles_of_control_kel_4.html",
-        "wordCount": 18000
+        "file": "stories/chronicles_of_control_kel_4.md",
+        "wordCount": 18038
       },
       {
         "title": "CoCK - Chapter 5",
-        "file": "stories/chronicles_of_control_kel_5.html",
-        "wordCount": 5900
+        "file": "stories/chronicles_of_control_kel_5.md",
+        "wordCount": 5874
       }
     ]
   }

@@ -1,13 +1,3 @@
----
-id: 7
-name: Juxta
-pronouns: she/her
-species: Bunny
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Juxta's profile is still being written. Check back soon.*

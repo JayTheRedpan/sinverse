@@ -1,13 +1,3 @@
----
-id: 27
-name: Dominika
-pronouns: she/her
-species: Black Bear
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Dominika's profile is still being written. Check back soon.*

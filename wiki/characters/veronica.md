@@ -1,13 +1,3 @@
----
-id: 24
-name: Veronica
-pronouns: she/her
-species: Cheetah
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Veronica's profile is still being written. Check back soon.*

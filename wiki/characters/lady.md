@@ -1,13 +1,3 @@
----
-id: 18
-name: Lady
-pronouns: she/her
-species: Border Collie
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Lady's profile is still being written. Check back soon.*
