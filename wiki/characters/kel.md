@@ -1,13 +1,3 @@
----
-id: 2
-name: Kel
-pronouns: she/her
-species: Red Panda
-affiliation: Independent
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 Kel is a red panda and a Transformed giantess standing 17'2" tall — above the standard mega-city baseline but well within the infrastructure range most cities are built to accommodate. She is independent in the truest sense: not affiliated with SinCorp, not part of the Resistance, not claiming a territory in the Wilds.

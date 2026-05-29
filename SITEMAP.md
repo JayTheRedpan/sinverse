@@ -1,73 +1,123 @@
-# Sinverse -- Project Sitemap
+# Sinverse — Project Sitemap
 # Paste this at the start of any session to re-establish full project context.
 
 ## Site Structure
 ```
 sinverse/
   _shared/
-    styles-global.css   -- design tokens, fonts, global buttons, nav bar
-    nav.js              -- global navigation component (initNav(pageId))
-    registry.js         -- resolves entity IDs to URLs (resolveLink, buildCrossLink)
+    styles-global.css     — design tokens, fonts, global buttons, nav bar
+    nav.js                — global navigation component (initNav(pageId))
+    registry.js           — resolves entity IDs to URLs
   _data/
-    contributors.json   -- all authors/artists + founder profile
-    characters.json     -- character registry with heights and cross-links
-    library.json        -- library story manifest
-    gallery.json        -- gallery image manifest (Cloudinary URLs)
-    tags.json           -- canonical story and node tag lists
+    characters.json       — 43 characters, all with images
+    tags.json             — canonical tag lists for gallery/library/cyoa
   images/
     logo.png
     favicon.ico
     apple-touch-icon.png
-  index.html            -- landing page + age gate + nav cards + Discord link
-  wiki/                 -- characters, lore, timeline, factions, locations
-  library/              -- complete uploaded stories (admin curated)
-  cyoa/                 -- community branching interactive stories
-  gallery/              -- art showcase (images on Cloudinary)
-  sizeref/              -- interactive character size comparison tool
-  contributors/         -- founder profile + contributor hall of fame
+  index.html              — landing page + age gate + nav cards + Discord link
+  robots.txt              — blocks all crawlers
+  SCHEMAS.md              — data schema reference for all JSON files
+  CONTENT_CHECKLIST.md    — step-by-step guide for adding each content type
+
+  wiki/
+    index.html            — wiki SPA (characters, lore, timeline)
+    lore.json             — sidebar lore page registry
+    timeline.json         — timeline events
+    lore/                 — lore page markdown files
+    characters/           — character page markdown files (prose only, stats from characters.json)
+    articles/             — general wiki articles
+
+  library/
+    index.html            — story browser
+    library.js            — browser logic
+    reader.html           — story reader (supports .md and legacy .html)
+    reader.js             — reader logic (marked.js for md rendering)
+    library.json          — story manifest
+    collections.json      — curated collections
+    styles.css
+    stories/              — story .md files (one per chapter or standalone)
+
+  cyoa/
+    index.html            — adventure browser + reader
+    app.js                — SPA logic (adventure browser, reader, author screen)
+    cyoa.json             — adventure manifest (index of all adventures)
+    adventures/
+      captured.json       — node structure (choices, authors, tags, images)
+      captured.md         — node text (## id headings)
+    styles.css
+    builder.css / builder.js / new-story.html / submit.js
+
+  gallery/
+    index.html
+    gallery.js
+    gallery.json          — image manifest
+    styles.css
+
+  sizeref/
+    index.html
+    sizeref.js            — all sizeref logic (~170kb)
+    styles.css
+    defaults.json         — build types, silhouette defaults, headshot defaults
+    objects.json          — comparison objects (12 items)
+
+  contributors/
+    index.html
+    contributors.js
+    contributors.json     — contributor profiles
+    styles.css
 ```
 
 ## Sub-site Status
-| Sub-site     | Status      | Notes                                    |
+| Sub-site     | Status      | Notes |
 |---|---|---|
-| Landing page | Complete    |                                          |
-| CYOA         | Complete    | Migrated from cyoa-app, age gate removed |
-| Wiki         | Not started |                                          |
-| Library      | Not started |                                          |
-| Gallery      | Not started |                                          |
-| Size Ref     | Not started |                                          |
-| Contributors | Not started |                                          |
+| Landing page | Complete    | Age gate, nav cards, Discord link |
+| Wiki         | Complete    | Characters, lore, timeline, imperial/metric toggle |
+| Library      | Complete    | .md story files, marked.js rendering, collections |
+| CYOA         | Complete    | JSON structure + .md prose, author credits, browser history |
+| Gallery      | Complete    | Cloudinary images, search, filters |
+| Sizeref      | Complete    | Height/length/stats, sandbox, ruler, custom chars (up to 8) |
+| Contributors | Complete    | Auto-counts from gallery/library/cyoa, CYOA author link |
 
 ## Infrastructure
-- Hosting: GitHub Pages (free)
-- Images: Cloudinary -- cloud name: [YOUR CLOUD NAME]
-- Large story files: Google Drive shared links
-- Domain: [YOUR DOMAIN]
-- Discord invite: [YOUR INVITE LINK]
-- Deployment: GitHub Desktop
+- Hosting: GitHub Pages
+- Domain: sinverse.net (Porkbun DNS)
+- Images: Cloudinary (cloud: dq40xaaux)
+- Deployment: GitHub Desktop → sinverse repo
+- Age gate: sessionStorage `sinverse_age_ok`
 
-## Cross-linking
-All entities use stable slug IDs. registry.js resolves:
-  resolveLink('character', 'character_lyra')  => /wiki/#character_lyra
-  resolveLink('story',     'velvet_room')     => /library/reader.html?id=velvet_room
-  resolveLink('cyoa',      'hollow_forest')   => /cyoa/?story=hollow_forest
-  resolveLink('gallery',   'gallery_042')     => /gallery/#gallery_042
-  resolveLink('contributor','jaytheredpan')   => /contributors/#jaytheredpan
+## Content File Conventions
+- **Characters** — stats in `_data/characters.json`, prose in `wiki/characters/{name}.md`
+- **Library stories** — metadata in `library/library.json`, prose in `library/stories/{file}.md`
+- **CYOA adventures** — structure in `cyoa/adventures/{id}.json`, prose in `cyoa/adventures/{id}.md`
+- **Lore pages** — registered in `wiki/lore.json`, content in `wiki/lore/{id}.md`
+- **Contributor id** — defined in `contributors/contributors.json`, referenced in gallery/library/cyoa
 
-## CYOA Submission Forms (Google Forms)
-- New story:  https://docs.google.com/forms/d/1w6ys0HXOpRHgnSk7kBm1FozYOkDTFLzJ23baqgjTcwU
-- New branch: https://docs.google.com/forms/d/1cgRDh5PIcXQl4F9AWjzkmJD9be-sZ3LDs5QH6BdCY4s
+## Key Design Tokens
+- `--bg`: #110d0b (near black)
+- `--accent`: #c49a78 (rose-gold)
+- `--wine`: #7a2233 (deep burgundy)
+- `--font-display`: Cormorant Garamond
+- `--font-caps`: Cormorant SC
+- `--font-body`: EB Garamond
 
-## Key Design Tokens (from _shared/styles-global.css)
-- --bg: #110d0b  (near black)
-- --accent: #c49a78  (rose-gold, from logo)
-- --wine: #7a2233  (deep burgundy, primary buttons)
-- --font-display: Cormorant Garamond
-- --font-caps: Cormorant SC
-- --font-body: EB Garamond
+## Sizeref Key Details
+- Custom characters: up to 8, stored in localStorage `sinverse_custom_chars` as `{chars:[]}`
+- State keys (flip/rotation/resize): `{slotIdx}_{charValue}` e.g. `0_canon_1`
+- Sandbox positions: `sandboxPositions{}` keyed by slot index, persists across renders via `applySandboxPositions()`
+- URL params: `?char1=sin&char2=jay&view=height&screenshot=1`
+
+## CYOA Key Details
+- Node 1 is always the adventure entry point
+- `nextId: null` = dead end / WIP branch (reader shows coming soon state)
+- Author screen accessible at `?authorId={id}`
+- `parseMdBlurbs()` splits .md on `## {id}` headings, injects into nodes before render
+
+## Known Pending Items
+- Crop modal blank when editing custom char with existing image (IndexedDB/cropImgs not backfilled)
+- Age gate live domain test
+- CYOA builder (new-story.html) functional test
+- Dead-end "coming soon" state on adventure cards for incomplete adventures
 
 ## Current Session Focus
-[update each session]
-
-## Known Issues
 [update each session]

@@ -1,13 +1,3 @@
----
-id: 6
-name: Popo
-pronouns: she/her
-species: Bunny
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Popo's profile is still being written. Check back soon.*

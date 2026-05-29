@@ -1,13 +1,3 @@
----
-id: 23
-name: Joy
-pronouns: she/her
-species: Red Panda
-affiliation: Unknown
-born: AT
-post_tday_born: true
----
-
 ## Overview
 
 *Joy's profile is still being written. Check back soon.*

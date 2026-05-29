@@ -1,13 +1,3 @@
----
-id: 21
-name: Tita
-pronouns: she/her
-species: Deer
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Tita's profile is still being written. Check back soon.*

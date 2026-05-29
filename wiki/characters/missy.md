@@ -1,13 +1,3 @@
----
-id: 3
-name: Missy
-pronouns: she/her
-species: Snow Leopard
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Missy's profile is still being written. Check back soon.*

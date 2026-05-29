@@ -76,8 +76,8 @@ Reference for all JSON data files. Fields marked `*` are required; all others de
   "canonical": false,
   "date": "2025-01",                // real-world publish date "YYYY-MM"
   "universe_date": "T+3",          // in-universe date (T±N format), null if ambiguous
-  "file": "stories/filename.md",   // standalone only — path to markdown file
-  // word count is calculated dynamically from story file content
+  "file": "stories/filename.md",   // standalone only — path to .md file in /stories/
+  "wordCount": 1800,                 // pre-calculated word count (update after writing)
   "complete": true,                 // serial only — is the serial finished?
   "chapters": [                     // serial only
     {
@@ -172,23 +172,43 @@ Builds: `slight` | `average` | `athletic` | `heavy` | `massive`
 }
 ```
 
-## `cyoa/adventures/*.json` — adventure nodes
+## `cyoa/adventures/*.json` — adventure nodes (structure only)
+
+Node text lives in the companion `.md` file — **not** in the JSON.
 
 ```json
 {
-  "id": "node_001",                 // * unique within adventure
-  "blurb": "...",                   // * scene text
-  "author": "CharitysSongbird",     // contributor id, "Anonymous" if uncredited
-  "image": "https://...",           // optional scene image
+  "id": 1,                          // * integer node id — matches ## heading in .md
+  "author": "CharitysSongbird",     // * contributor id, "Anonymous" if uncredited
+  "image": "https://...",           // optional scene image URL
   "theme": "dark",                  // optional theme tag
+  "tags": ["NonCon"],               // content tags
   "choices": [
     {
       "text": "Go left",
-      "target": "node_002"
+      "nextId": 2                   // integer id of next node, null = dead end (WIP)
     }
   ]
 }
 ```
+
+## `cyoa/adventures/*.md` — adventure node text
+
+One file per adventure. Sections delimited by `## {nodeId}` headings.
+
+```markdown
+## 1
+
+The steel below your naked body was cold...
+
+## 2
+
+Gazing back you can't help but flush...
+```
+
+- Node IDs must match the integer `id` fields in the companion `.json`
+- Plain markdown — italics `*like this*`, scene breaks `---`
+- No frontmatter needed
 
 ---
 

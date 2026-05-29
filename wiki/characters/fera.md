@@ -1,13 +1,3 @@
----
-id: 20
-name: Fera
-pronouns: she/her
-species: Fox
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Fera's profile is still being written. Check back soon.*

@@ -1,13 +1,3 @@
----
-id: 34
-name: Mini
-pronouns: she/her
-species: Mouse
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Mini's profile is still being written. Check back soon.*

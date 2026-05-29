@@ -660,8 +660,8 @@ function orientedImgEl(src, flip, rotateDeg, filter) {
     var c = el('canvas'); c.width = cw; c.height = ch;
     var ctx = c.getContext('2d');
     ctx.translate(cw/2, ch/2);
-    if (rotateDeg) ctx.rotate(rad);
-    if (flip) ctx.scale(-1, 1);
+    if (flip) ctx.scale(-1, 1);       // flip first
+    if (rotateDeg) ctx.rotate(rad);  // then rotate in flipped space
     ctx.drawImage(loader, -w/2, -h/2);
     img.src = c.toDataURL('image/png');
   };
@@ -2229,6 +2229,8 @@ function buildForm(slot) {
   var exFlip = ex && ex.length_orient_flip;
   var exRot  = ex && ex.length_orient_rotate ? ex.length_orient_rotate : 0;
   var exHeadroom = ex && ex.headroom_pct ? ex.headroom_pct : 0;
+  // Restore saved crop values — applied after form is built
+  var exCrops = { i: (ex&&ex.crop_i)||null, l: (ex&&ex.crop_l)||null, p: (ex&&ex.crop_p)||null };
   var curPSilId = (ex && ex.default_headshot_silhouette) || (DEFAULTS.headshotSils[0] && DEFAULTS.headshotSils[0].id) || '';
   var hasPUpload = !!(ex && ex.profile_image);
   var pselVal = hasPUpload ? 'upload' : curPSilId;
@@ -2483,6 +2485,21 @@ function buildForm(slot) {
   var bustSel = g('bust-sel-'+slot);
   if (bustSel) bustSel.addEventListener('change', function(){ autoSave(slot); });
   updateLengthVisibility(slot);
+
+  // Restore saved crop values into hidden inputs (only if image hasn't changed)
+  ['i','l','p'].forEach(function(pfx) {
+    var saved = exCrops[pfx];
+    if (!saved) return;
+    var fields = { ct: pfx+'ct-'+slot, cb: pfx+'cb-'+slot, cl2: pfx+'cl2-'+slot, cr: pfx+'cr-'+slot };
+    Object.keys(fields).forEach(function(key) {
+      var el2 = g(fields[key]);
+      if (el2 && saved[key === 'cl2' ? 'cl' : key] !== undefined) {
+        el2.value = saved[key === 'cl2' ? 'cl' : key];
+      }
+    });
+    // Update the visible crop lines to match
+    updateLinesP(slot, pfx);
+  });
 }
 
 // Build a collapsible section
@@ -3647,6 +3664,9 @@ function autoSave(slot) {
     length_mode:activeLMode, length_preset:lpselVal, length_calc_ref:lrefVal,
     weight_mode:activeWMode, weight_build:bselVal, weight_calc_ref:wrefVal,
     canonical:false, custom:true,
+    crop_i:  { ct: parseFloat((g('ict-'+slot)||{}).value)||0, cb: parseFloat((g('icb-'+slot)||{}).value)||0,  cl: parseFloat((g('icl2-'+slot)||{}).value)||0, cr: parseFloat((g('icr-'+slot)||{}).value)||0  },
+    crop_l:  { ct: parseFloat((g('lct-'+slot)||{}).value)||0, cb: parseFloat((g('lcb-'+slot)||{}).value)||0,  cl: parseFloat((g('lcl2-'+slot)||{}).value)||0, cr: parseFloat((g('lcr-'+slot)||{}).value)||0  },
+    crop_p:  { ct: parseFloat((g('pct-'+slot)||{}).value)||0, cb: parseFloat((g('pcb-'+slot)||{}).value)||0,  cl: parseFloat((g('pcl2-'+slot)||{}).value)||0, cr: parseFloat((g('pcr-'+slot)||{}).value)||0  },
     anatomy: (function(){
       var prev = (getCustomChar('custom_'+slot)||{}).anatomy || {};
       ['breasts','penis','vag'].forEach(function(k){

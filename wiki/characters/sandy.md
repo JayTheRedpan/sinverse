@@ -1,13 +1,3 @@
----
-id: 4
-name: Sandy
-pronouns: she/her
-species: Fennec Fox
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Sandy's profile is still being written. Check back soon.*

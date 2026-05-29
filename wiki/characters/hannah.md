@@ -1,13 +1,3 @@
----
-id: 30
-name: Hannah
-pronouns: she/her
-species: Kangaroo
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Hannah's profile is still being written. Check back soon.*

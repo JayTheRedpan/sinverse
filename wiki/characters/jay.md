@@ -1,13 +1,3 @@
----
-id: 1
-name: Jay
-pronouns: he/him
-species: Red Panda
-affiliation: Wild Toys
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 Jay is a red panda and a toy — one of the males who survived TDay and built a life in the spaces the new world left for people like him. He is the progenitor of the Sinverse universe: the character through whom its stories are told, its lore documented, and its world explored.

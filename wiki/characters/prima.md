@@ -1,13 +1,3 @@
----
-id: 40
-name: Prima
-pronouns: she/her
-species: Pine Marten
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Prima's profile is still being written. Check back soon.*

@@ -1,13 +1,3 @@
----
-id: 14
-name: Rhonda
-pronouns: she/her
-species: Elephant
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Rhonda's profile is still being written. Check back soon.*

@@ -1,13 +1,3 @@
----
-id: 39
-name: Ira
-pronouns: she/her
-species: Blue Jay
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Ira's profile is still being written. Check back soon.*

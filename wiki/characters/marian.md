@@ -1,13 +1,3 @@
----
-id: 11
-name: Marian
-pronouns: she/her
-species: African Wild Dog
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Marian's profile is still being written. Check back soon.*

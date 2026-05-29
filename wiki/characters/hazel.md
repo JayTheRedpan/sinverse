@@ -1,13 +1,3 @@
----
-id: 10
-name: Hazel
-pronouns: she/her
-species: Squirrel
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Hazel's profile is still being written. Check back soon.*

@@ -1,13 +1,3 @@
----
-id: 32
-name: Tonya
-pronouns: she/her
-species: Tiger
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Tonya's profile is still being written. Check back soon.*

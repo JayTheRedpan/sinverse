@@ -1,0 +1,355 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Sinverse — Admin</title>
+<style>
+  :root {
+    --bg: #110d0b;
+    --bg-panel: #1a1410;
+    --bg-card: #201810;
+    --border: rgba(196,154,120,0.12);
+    --border-mid: rgba(196,154,120,0.25);
+    --accent: #c49a78;
+    --wine: #7a2233;
+    --green: #5a9a6a;
+    --amber: #c4963a;
+    --text-primary: #f0e8df;
+    --text-secondary: #b8a898;
+    --text-muted: #7a6a5a;
+    --font-caps: 'Cormorant SC', serif;
+    --font-body: 'EB Garamond', serif;
+    --radius: 4px;
+  }
+  @import url('https://fonts.googleapis.com/css2?family=Cormorant+SC:wght@400;600&family=EB+Garamond:ital,wght@0,400;0,500;1,400&display=swap');
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  body { background: var(--bg); color: var(--text-primary); font-family: var(--font-body); min-height: 100vh; padding: 2rem; }
+
+  h1 { font-family: var(--font-caps); font-size: 1.4rem; letter-spacing: 0.2em; color: var(--accent); margin-bottom: 0.25rem; }
+  .subtitle { font-family: var(--font-caps); font-size: 0.6rem; letter-spacing: 0.15em; color: var(--text-muted); margin-bottom: 2rem; }
+
+  .summary-row { display: flex; gap: 1rem; margin-bottom: 2rem; flex-wrap: wrap; }
+  .summary-card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
+    padding: 0.75rem 1.25rem;
+    min-width: 120px;
+    text-align: center;
+  }
+  .summary-n { font-family: var(--font-caps); font-size: 1.6rem; color: var(--accent); }
+  .summary-n.red  { color: var(--wine); }
+  .summary-n.amber { color: var(--amber); }
+  .summary-n.green { color: var(--green); }
+  .summary-label { font-family: var(--font-caps); font-size: 0.5rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--text-muted); margin-top: 0.2rem; }
+
+  .module { background: var(--bg-panel); border: 1px solid var(--border); border-radius: var(--radius); margin-bottom: 1.5rem; overflow: hidden; }
+  .module-header { display: flex; align-items: center; gap: 0.75rem; padding: 0.75rem 1rem; border-bottom: 1px solid var(--border); }
+  .module-name { font-family: var(--font-caps); font-size: 0.65rem; letter-spacing: 0.15em; text-transform: uppercase; color: var(--text-secondary); flex: 1; }
+  .module-status { font-family: var(--font-caps); font-size: 0.55rem; letter-spacing: 0.1em; }
+  .status-ok     { color: var(--green); }
+  .status-warn   { color: var(--amber); }
+  .status-error  { color: var(--wine); }
+  .status-loading { color: var(--text-muted); }
+
+  .issue-list { padding: 0.5rem 0; }
+  .issue { display: flex; gap: 0.75rem; padding: 0.5rem 1rem; border-bottom: 1px solid var(--border); font-size: 0.85rem; align-items: baseline; }
+  .issue:last-child { border-bottom: none; }
+  .issue-sev { font-family: var(--font-caps); font-size: 0.5rem; letter-spacing: 0.08em; flex-shrink: 0; padding-top: 0.15rem; }
+  .sev-error  { color: var(--wine); }
+  .sev-warn   { color: var(--amber); }
+  .sev-info   { color: var(--text-muted); }
+  .issue-msg  { color: var(--text-secondary); line-height: 1.5; }
+  .issue-msg code { font-family: monospace; font-size: 0.8rem; color: var(--accent); background: rgba(196,154,120,0.08); padding: 0.05rem 0.3rem; border-radius: 2px; }
+  .no-issues { padding: 0.75rem 1rem; font-style: italic; color: var(--text-muted); font-size: 0.85rem; }
+
+  .run-btn {
+    font-family: var(--font-caps);
+    font-size: 0.6rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    background: none;
+    border: 1px solid var(--border-mid);
+    border-radius: var(--radius);
+    color: var(--accent);
+    padding: 0.4rem 1rem;
+    cursor: pointer;
+    transition: all 0.15s;
+    margin-bottom: 2rem;
+  }
+  .run-btn:hover { border-color: var(--accent); background: rgba(196,154,120,0.08); }
+</style>
+</head>
+<body>
+
+<h1>Sinverse Admin</h1>
+<p class="subtitle">Content health dashboard — not linked from the public site</p>
+
+<button class="run-btn" id="run-btn">↻ Re-run checks</button>
+
+<div class="summary-row" id="summary-row">
+  <div class="summary-card"><div class="summary-n" id="sum-errors">—</div><div class="summary-label">Errors</div></div>
+  <div class="summary-card"><div class="summary-n" id="sum-warnings">—</div><div class="summary-label">Warnings</div></div>
+  <div class="summary-card"><div class="summary-n" id="sum-ok">—</div><div class="summary-label">Modules OK</div></div>
+</div>
+
+<div id="modules"></div>
+
+<script>
+const BASE = window.location.pathname.replace(/\/admin\/?$/, '/');
+
+// ── Fetch helpers ─────────────────────────────────────────────
+async function fetchJSON(path) {
+  const r = await fetch(BASE + path);
+  if (!r.ok) throw new Error('HTTP ' + r.status + ' — ' + path);
+  return r.json();
+}
+async function fetchText(path) {
+  const r = await fetch(BASE + path);
+  if (!r.ok) return null;
+  return r.text();
+}
+async function exists(path) {
+  try { const r = await fetch(BASE + path, {method:'HEAD'}); return r.ok; } catch { return false; }
+}
+
+// ── Module renderer ───────────────────────────────────────────
+function renderModule(id, label, issues) {
+  const el = document.getElementById('mod-' + id);
+  const header = el.querySelector('.module-status');
+  const body   = el.querySelector('.issue-list');
+
+  const errors   = issues.filter(i => i.sev === 'error');
+  const warnings = issues.filter(i => i.sev === 'warn');
+
+  if (!issues.length) {
+    header.textContent = '✓ All clear';
+    header.className = 'module-status status-ok';
+    body.innerHTML = '<div class="no-issues">No issues found.</div>';
+  } else {
+    header.textContent = (errors.length ? errors.length + ' error' + (errors.length > 1 ? 's' : '') : '') +
+      (errors.length && warnings.length ? ' · ' : '') +
+      (warnings.length ? warnings.length + ' warning' + (warnings.length > 1 ? 's' : '') : '');
+    header.className = 'module-status ' + (errors.length ? 'status-error' : 'status-warn');
+    body.innerHTML = issues.map(i =>
+      '<div class="issue">' +
+        '<span class="issue-sev sev-' + i.sev + '">' + i.sev.toUpperCase() + '</span>' +
+        '<span class="issue-msg">' + i.msg + '</span>' +
+      '</div>'
+    ).join('');
+  }
+  return { errors: errors.length, warnings: warnings.length };
+}
+
+function issue(sev, msg) { return { sev, msg }; }
+function err(msg)  { return issue('error', msg); }
+function warn(msg) { return issue('warn',  msg); }
+function info(msg) { return issue('info',  msg); }
+
+// ── Checks ────────────────────────────────────────────────────
+async function checkCharacters(chars) {
+  const issues = [];
+  const missingImg   = chars.filter(c => !c.image && !c.profile_image);
+  const missingProf  = chars.filter(c =>  c.image && !c.profile_image);
+  const missingLen   = chars.filter(c => c.anatomy && c.anatomy.penis && c.length && !c.length_image);
+
+  if (missingImg.length)  issues.push(warn(missingImg.length + ' character(s) missing both image and profile_image: ' + missingImg.map(c => '<code>' + c.name + '</code>').join(', ')));
+  if (missingProf.length) issues.push(info(missingProf.length + ' character(s) missing profile_image (have height image): ' + missingProf.map(c => '<code>' + c.name + '</code>').join(', ')));
+  if (missingLen.length)  issues.push(info(missingLen.length + ' character(s) with penis+length but no length_image: ' + missingLen.map(c => '<code>' + c.name + '</code>').join(', ')));
+
+  // Check wiki md files exist
+  const missing = [];
+  for (const c of chars) {
+    const slug = c.name.toLowerCase().replace(/\s+/g, '-');
+    const ok = await exists('wiki/characters/' + slug + '.md');
+    if (!ok) missing.push(c.name);
+  }
+  if (missing.length) issues.push(warn(missing.length + ' character(s) missing wiki .md file: ' + missing.map(n => '<code>' + n + '</code>').join(', ')));
+
+  return issues;
+}
+
+async function checkContributors(contribs, gallery, library, cyoa) {
+  const issues = [];
+  const contribIds = new Set(contribs.map(c => c.id));
+
+  // Gallery artists
+  const badArtists = [...new Set(gallery.filter(g => g.artist && !contribIds.has(g.artist)).map(g => g.artist))];
+  if (badArtists.length) issues.push(err('Gallery references unknown contributor id(s): ' + badArtists.map(a => '<code>' + a + '</code>').join(', ')));
+
+  // Library authors
+  const libIds = library.map(s => s.author).filter(Boolean);
+  const badAuthors = [...new Set(libIds.filter(a => !contribIds.has(a)))];
+  if (badAuthors.length) issues.push(err('Library references unknown contributor id(s): ' + badAuthors.map(a => '<code>' + a + '</code>').join(', ')));
+
+  // CYOA authors (from all loaded adventures)
+  const badCyoaAuthors = [...new Set(cyoa.filter(n => n.author && n.author !== 'Anonymous' && !contribIds.has(n.author)).map(n => n.author))];
+  if (badCyoaAuthors.length) issues.push(err('CYOA references unknown contributor id(s): ' + badCyoaAuthors.map(a => '<code>' + a + '</code>').join(', ')));
+
+  // Missing avatars
+  const noAvatar = contribs.filter(c => !c.avatar);
+  if (noAvatar.length) issues.push(info(noAvatar.length + ' contributor(s) missing avatar: ' + noAvatar.map(c => '<code>' + c.name + '</code>').join(', ')));
+
+  return issues;
+}
+
+async function checkGallery(gallery) {
+  const issues = [];
+  const noTitle = gallery.filter(g => !g.title);
+  const noImage = gallery.filter(g => g.type !== 'comic' && !g.image);
+  const noPages = gallery.filter(g => g.type === 'comic' && (!g.pages || !g.pages.length));
+  if (noTitle.length) issues.push(warn(noTitle.length + ' gallery item(s) missing title (ids: ' + noTitle.map(g => g.id).join(', ') + ')'));
+  if (noImage.length) issues.push(err(noImage.length + ' non-comic gallery item(s) missing image URL (ids: ' + noImage.map(g => g.id).join(', ') + ')'));
+  if (noPages.length) issues.push(err(noPages.length + ' comic(s) with no pages (ids: ' + noPages.map(g => g.id).join(', ') + ')'));
+  return issues;
+}
+
+async function checkLibrary(library) {
+  const issues = [];
+  for (const story of library) {
+    if (story.file) {
+      const ok = await exists('library/' + story.file);
+      if (!ok) issues.push(err('Story file not found: <code>' + story.file + '</code> (id: ' + story.id + ')'));
+    }
+    if (story.chapters) {
+      for (const ch of story.chapters) {
+        if (ch.file) {
+          const ok = await exists('library/' + ch.file);
+          if (!ok) issues.push(err('Chapter file not found: <code>' + ch.file + '</code> (story id: ' + story.id + ')'));
+        }
+      }
+    }
+  }
+  return issues;
+}
+
+async function checkCYOA(manifest) {
+  const issues = [];
+  let allNodes = [];
+
+  for (const adv of manifest) {
+    let nodes = [], mdText = null;
+    try {
+      nodes = await fetchJSON('cyoa/adventures/' + adv.id + '.json');
+    } catch(e) {
+      issues.push(err('Adventure JSON not found: <code>cyoa/adventures/' + adv.id + '.json</code>'));
+      continue;
+    }
+
+    mdText = await fetchText('cyoa/adventures/' + adv.id + '.md');
+    const mdIds = new Set();
+    if (mdText) {
+      mdText.split(/^## /m).forEach(s => {
+        const id = s.split('\n')[0].trim();
+        if (id) mdIds.add(id);
+      });
+    } else {
+      issues.push(err('Adventure markdown not found: <code>cyoa/adventures/' + adv.id + '.md</code>'));
+    }
+
+    const nodeIds = new Set(nodes.map(n => String(n.id)));
+
+    // Nodes missing from md
+    for (const n of nodes) {
+      if (mdText && !mdIds.has(String(n.id))) {
+        issues.push(warn('[' + adv.id + '] Node <code>' + n.id + '</code> has no text in .md'));
+      }
+    }
+
+    // nextId references to nonexistent nodes
+    for (const n of nodes) {
+      for (const c of (n.choices || [])) {
+        if (c.nextId !== null && c.nextId !== undefined && !nodeIds.has(String(c.nextId))) {
+          issues.push(err('[' + adv.id + '] Node <code>' + n.id + '</code> choice "' + c.text + '" points to missing node <code>' + c.nextId + '</code>'));
+        }
+      }
+    }
+
+    allNodes = allNodes.concat(nodes);
+  }
+
+  return { issues, nodes: allNodes };
+}
+
+// ── Main runner ────────────────────────────────────────────────
+async function run() {
+  document.getElementById('run-btn').disabled = true;
+  document.getElementById('run-btn').textContent = 'Running…';
+  document.querySelectorAll('.module-status').forEach(el => {
+    el.textContent = 'Checking…';
+    el.className = 'module-status status-loading';
+  });
+  document.querySelectorAll('.issue-list').forEach(el => el.innerHTML = '');
+
+  let totalErrors = 0, totalWarnings = 0, totalOk = 0;
+
+  // Load core data
+  const [chars, contribs, gallery, library, cyoaManifest] = await Promise.all([
+    fetchJSON('_data/characters.json').catch(() => []),
+    fetchJSON('contributors/contributors.json').catch(() => []),
+    fetchJSON('gallery/gallery.json').catch(() => []),
+    fetchJSON('library/library.json').catch(() => []),
+    fetchJSON('cyoa/cyoa.json').catch(() => []),
+  ]);
+
+  const cyoaResult = await checkCYOA(cyoaManifest);
+  const cyoaNodes  = cyoaResult.nodes;
+
+  const checks = [
+    { id: 'characters',   fn: () => checkCharacters(chars) },
+    { id: 'contributors', fn: () => checkContributors(contribs, gallery, library, cyoaNodes) },
+    { id: 'gallery',      fn: () => checkGallery(gallery) },
+    { id: 'library',      fn: () => checkLibrary(library) },
+    { id: 'cyoa',         fn: () => Promise.resolve(cyoaResult.issues) },
+  ];
+
+  for (const c of checks) {
+    const issues = await c.fn();
+    const res = renderModule(c.id, c.id, issues);
+    totalErrors   += res.errors;
+    totalWarnings += res.warnings;
+    if (!res.errors && !res.warnings) totalOk++;
+  }
+
+  const sumE = document.getElementById('sum-errors');
+  const sumW = document.getElementById('sum-warnings');
+  const sumO = document.getElementById('sum-ok');
+  sumE.textContent = totalErrors;
+  sumW.textContent = totalWarnings;
+  sumO.textContent = totalOk + ' / ' + checks.length;
+  sumE.className = 'summary-n ' + (totalErrors   ? 'red'   : 'green');
+  sumW.className = 'summary-n ' + (totalWarnings ? 'amber' : 'green');
+  sumO.className = 'summary-n ' + (totalOk === checks.length ? 'green' : 'amber');
+
+  document.getElementById('run-btn').disabled = false;
+  document.getElementById('run-btn').textContent = '↻ Re-run checks';
+}
+
+// ── Build module shells ────────────────────────────────────────
+const MODULES = [
+  { id: 'characters',   label: 'Characters' },
+  { id: 'contributors', label: 'Contributors' },
+  { id: 'gallery',      label: 'Gallery' },
+  { id: 'library',      label: 'Library' },
+  { id: 'cyoa',         label: 'CYOA' },
+];
+
+const container = document.getElementById('modules');
+MODULES.forEach(m => {
+  container.innerHTML +=
+    '<div class="module" id="mod-' + m.id + '">' +
+      '<div class="module-header">' +
+        '<span class="module-name">' + m.label + '</span>' +
+        '<span class="module-status status-loading">Waiting…</span>' +
+      '</div>' +
+      '<div class="issue-list"></div>' +
+    '</div>';
+});
+
+document.getElementById('run-btn').addEventListener('click', run);
+run();
+</script>
+</body>
+</html>

@@ -1,13 +1,3 @@
----
-id: 5
-name: Lucile
-pronouns: she/her
-species: Skunk
-affiliation: Unknown
-born: BT
-post_tday_born: false
----
-
 ## Overview
 
 *Lucile's profile is still being written. Check back soon.*
