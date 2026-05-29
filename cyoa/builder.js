@@ -8,7 +8,6 @@ var builderState = {
 };
 
 // Tag lists -- avoid redeclaring consts from submit.js
-var BUILDER_THEMES     = ['dark', 'warm', 'neutral', 'tense', 'sensual'];
 var BUILDER_STORY_TAGS = ['explicit','sensual','romance','dubcon','non-con','bdsm','bondage','dominance','submission','violence','dark themes','horror','mystery','fantasy','sci-fi','thriller','trauma','psychological','grief','size difference','macro','micro'];
 var BUILDER_NODE_TAGS  = ['explicit','sensual','dubcon','non-con','bdsm','bondage','dominance','submission','violence','character death','body horror','gore','dark themes','trauma','psychological','size difference'];
 
@@ -46,7 +45,6 @@ function addNode() {
     id:        builderState.nextId++,
     sceneName: '',
     blurb:     '',
-    theme:     'neutral',
     tags:      [],
     isEnding:  false,
     choices:   [],
@@ -86,8 +84,6 @@ function syncNodeFromCard(id) {
   node.sceneName = nameEl ? nameEl.value.trim() : '';
   node.blurb = card.querySelector('.node-blurb').value;
 
-  var themeEl = card.querySelector('input[name="theme-' + id + '"]:checked');
-  node.theme  = themeEl ? themeEl.value : 'neutral';
 
   var endingEl = card.querySelector('input[name="ending-' + id + '"]:checked');
   node.isEnding = endingEl ? endingEl.value === 'yes' : false;
@@ -142,7 +138,7 @@ function buildNodeCard(node) {
   header.innerHTML =
     '<div class="node-card-header-left">' +
       '<span class="node-card-label">Scene ' + node.id + (node.id === 1 ? ' <span class="node-opening-badge">Opening</span>' : '') + '</span>' +
-      '<input class="node-scene-name builder-input" type="text" placeholder="Scene title (optional)" value="' + (node.sceneName || '') + '" />' +
+      '<input class="node-scene-name builder-input" type="text" placeholder="Scene title (required)" value="' + (node.sceneName || '') + '" />' +
     '</div>' +
     '<button class="node-delete-btn" data-id="' + node.id + '">&#10005; Delete</button>';
   card.appendChild(header);
@@ -171,15 +167,6 @@ function buildNodeCard(node) {
   updateWc(ta, wcId);
 
   // Theme
-  var themeWrap = document.createElement('div');
-  themeWrap.className = 'node-field';
-  var themeHtml = '<label class="node-label">Theme</label><div class="node-radio-row">';
-  BUILDER_THEMES.forEach(function(t) {
-    themeHtml += '<label class="builder-radio-label"><input type="radio" name="theme-' + node.id + '" value="' + t + '"' + (node.theme === t ? ' checked' : '') + ' /> ' + t + '</label>';
-  });
-  themeHtml += '</div>';
-  themeWrap.innerHTML = themeHtml;
-  card.appendChild(themeWrap);
 
   // Content tags
   var tagsWrap = document.createElement('div');
@@ -329,6 +316,9 @@ function validateAll() {
   var errors = [];
   builderState.nodes.forEach(function(node) {
     var words = node.blurb.trim() === '' ? 0 : node.blurb.trim().split(/\s+/).length;
+    if (!node.sceneName) {
+      errors.push('Scene ' + node.id + ' needs a title.');
+    }
     if (!node.blurb.trim()) {
       errors.push('Scene ' + node.id + ' has no text.');
     } else if (words < 300) {
@@ -375,9 +365,9 @@ async function submitAll() {
       storyTags: i === 0 ? storyTags : '',
       author:   author,
       summary:  i === 0 ? summary : '(see scene 1)',
+      title:    node.sceneName,
       blurb:    node.blurb,
       tags:     node.tags.join(', '),
-      theme:    node.theme,
       isEnding: node.isEnding ? 'Yes' : 'No',
       path1:    node.choices[0] ? node.choices[0].text   : '',
       path1Id:  node.choices[0] ? String(node.choices[0].nextId || 'dead end') : '',

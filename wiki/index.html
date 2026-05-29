@@ -152,9 +152,9 @@
       transition: all 0.15s;
     }
     .wiki-unit-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
-    .wiki-unit-btn:last-child  { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
-    .wiki-unit-btn:hover  { color: var(--accent); border-color: var(--accent); z-index: 1; }
-    .wiki-unit-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .wiki-unit-btn:last-child  { border-radius: 0 var(--radius) var(--radius) 0; margin-left: -1px; }
+    .wiki-unit-btn:hover  { color: var(--accent); border-color: var(--accent); z-index: 1; position: relative; }
+    .wiki-unit-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); z-index: 2; position: relative; }
 
     /* ── Main content ── */
     .wiki-main {

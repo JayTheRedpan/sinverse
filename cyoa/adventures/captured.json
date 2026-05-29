@@ -1,53 +1,105 @@
 [
   {
     "id": 1,
-    "theme": "dark",
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779657923/huntressCity_ml0hyu.png",
     "tags": [],
     "choices": [
-      { "text": "A male human",       "nextId": 2 },
-      { "text": "A female human",     "nextId": 3 },
-      { "text": "A fluffy Red Panda boy", "nextId": 4 }
+      {
+        "text": "A male human",
+        "nextId": 2
+      },
+      {
+        "text": "A female human",
+        "nextId": 3
+      },
+      {
+        "text": "A fluffy Red Panda boy",
+        "nextId": 4
+      }
     ],
-    "author": "CharitysSongbird"
+    "author": "CharitysSongbird",
+    "title": "Awakening"
   },
   {
     "id": 2,
-    "theme": "dark",
     "image": null,
-    "tags": ["NonCon"],
-    "choices": [
-      { "text": "Wait — there is nothing you can do now",          "nextId": null },
-      { "text": "Wait for her to leave then call for help? But who may hear?", "nextId": null },
-      { "text": "Try to pry open your cage door!",                "nextId": null },
-      { "text": "Call out to the feline woman!",                  "nextId": null }
+    "tags": [
+      "NonCon"
     ],
-    "author": "CharitysSongbird"
+    "choices": [
+      {
+        "text": "Wait \u2014 there is nothing you can do now",
+        "nextId": null
+      },
+      {
+        "text": "Wait for her to leave then call for help? But who may hear?",
+        "nextId": null
+      },
+      {
+        "text": "Try to pry open your cage door!",
+        "nextId": null
+      },
+      {
+        "text": "Call out to the feline woman!",
+        "nextId": null
+      }
+    ],
+    "author": "CharitysSongbird",
+    "title": "The Lab \u2014 Male"
   },
   {
     "id": 3,
-    "theme": "dark",
     "image": null,
-    "tags": ["DubCon"],
-    "choices": [
-      { "text": "Wait — there is nothing you can do now",          "nextId": null },
-      { "text": "Wait for her to leave then call for help? But who may hear?", "nextId": null },
-      { "text": "Try to pry open your cage door!",                "nextId": null },
-      { "text": "Call out to the feline woman!",                  "nextId": null }
+    "tags": [
+      "DubCon"
     ],
-    "author": "CharitysSongbird"
+    "choices": [
+      {
+        "text": "Wait \u2014 there is nothing you can do now",
+        "nextId": null
+      },
+      {
+        "text": "Wait for her to leave then call for help? But who may hear?",
+        "nextId": null
+      },
+      {
+        "text": "Try to pry open your cage door!",
+        "nextId": null
+      },
+      {
+        "text": "Call out to the feline woman!",
+        "nextId": null
+      }
+    ],
+    "author": "CharitysSongbird",
+    "title": "The Lab \u2014 Female"
   },
   {
     "id": 4,
-    "theme": "dark",
     "image": null,
-    "tags": ["SubCon", "RedPan"],
-    "choices": [
-      { "text": "Wait to see what you're being saved for?",        "nextId": null },
-      { "text": "Wait for her to leave then call for help? But who may hear?", "nextId": null },
-      { "text": "Try to pry open your cage door!",                "nextId": null },
-      { "text": "Call out to the feline woman!",                  "nextId": null }
+    "tags": [
+      "SubCon",
+      "RedPan"
     ],
-    "author": "CharitysSongbird"
+    "choices": [
+      {
+        "text": "Wait to see what you're being saved for?",
+        "nextId": null
+      },
+      {
+        "text": "Wait for her to leave then call for help? But who may hear?",
+        "nextId": null
+      },
+      {
+        "text": "Try to pry open your cage door!",
+        "nextId": null
+      },
+      {
+        "text": "Call out to the feline woman!",
+        "nextId": null
+      }
+    ],
+    "author": "CharitysSongbird",
+    "title": "The Lab \u2014 Red Panda"
   }
 ]

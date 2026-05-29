@@ -411,27 +411,18 @@ a.count-link:hover .count-label {
 .count-link-plain .count-label { color: var(--text-muted); }
 
 /* ── Creator filter banner ────────────────────────────────────── */
-.creator-filter-banner {
+
+
+/* ── Filtered contributor heading row ────────────────────────── */
+.con-section-title-row {
   display: flex;
-  align-items: center;
-  justify-content: space-between;
+  align-items: baseline;
   gap: 1rem;
-  padding: 0.6rem 1rem;
-  margin-bottom: 1.5rem;
-  background: var(--bg-inset);
-  border: 1px solid var(--border-mid);
-  border-radius: var(--radius);
+  flex-wrap: wrap;
 }
-.creator-filter-msg {
+.con-view-all-link {
   font-family: var(--font-caps);
-  font-size: 0.58rem;
-  letter-spacing: 0.14em;
-  text-transform: uppercase;
-  color: var(--text-secondary);
-}
-.creator-filter-clear {
-  font-family: var(--font-caps);
-  font-size: 0.56rem;
+  font-size: 0.6rem;
   letter-spacing: 0.12em;
   text-transform: uppercase;
   color: var(--accent);
@@ -439,4 +430,4 @@ a.count-link:hover .count-label {
   white-space: nowrap;
   transition: opacity 0.15s;
 }
-.creator-filter-clear:hover { opacity: 0.75; }
+.con-view-all-link:hover { opacity: 0.75; }

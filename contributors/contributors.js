@@ -247,14 +247,14 @@ async function init() {
     if (creatorParam) {
       var creatorId = decodeURIComponent(creatorParam).toLowerCase();
       rest = rest.filter(function(c){ return c.id.toLowerCase() === creatorId; });
-      // Show "View all" banner above grid
-      var banner = document.createElement('div');
-      banner.className = 'creator-filter-banner';
-      banner.innerHTML =
-        '<span class="creator-filter-msg">Showing contributor profile</span>' +
-        '<a href="' + window.location.pathname + '" class="creator-filter-clear">View all contributors →</a>';
-      var section = document.querySelector('.con-section');
-      if (section) section.insertBefore(banner, section.firstChild);
+      // Update heading and show inline view-all link
+      var titleEl = document.getElementById('con-section-title');
+      var viewAllLink = document.getElementById('con-view-all-link');
+      if (titleEl) titleEl.textContent = rest.length === 1 ? rest[0].name : 'Filtered Contributors';
+      if (viewAllLink) {
+        viewAllLink.href = window.location.pathname;
+        viewAllLink.style.display = '';
+      }
       // Clean URL
       var cleanUrl = new URL(window.location.href);
       cleanUrl.searchParams.delete('creator');

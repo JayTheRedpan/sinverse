@@ -20,10 +20,10 @@ const FORMS = {
       author:    'entry.1046349014',
       summary:   'entry.896008103',
       storyTags: 'entry.984415706',
+      title:     'entry.1363323010',
       blurb:     'entry.120272987',
       tags:      'entry.1419124577',
       imageLink: 'entry.462250081',
-      theme:     'entry.613272446',
       isEnding:  'entry.1607455706',
       path1:     'entry.1303831148',
       path1Id:   'entry.1932009715',
@@ -42,10 +42,10 @@ const FORMS = {
       author:        'entry.1046349014',
       currentId:     'entry.1846449635',
       newBranchText: 'entry.1810102385',
+      title:         'entry.1573360396',
       blurb:         'entry.120272987',
       tags:          'entry.1419124577',
       imageLink:     'entry.462250081',
-      theme:         'entry.613272446',
       isEnding:      'entry.1933267705',
       path1:         'entry.1303831148',
       path2:         'entry.1265254790',
@@ -55,7 +55,6 @@ const FORMS = {
   }
 };
 
-const THEMES = ['dark', 'warm', 'neutral', 'tense', 'sensual'];
 // Story-level tags -- shown on library card, describe the story overall
 const STORY_TAGS = [
   'explicit', 'sensual', 'romance', 'dubcon', 'non-con', 'bdsm', 'bondage', 'dominance', 'submission',
@@ -90,6 +89,15 @@ function renderField(f) {
   var req     = f.required ? ' <span class="submit-required">*</span>' : '';
   var hint    = f.hint ? ' <span class="submit-hint">' + f.hint + '</span>' : '';
   var label   = '<label class="submit-label">' + f.label + req + hint + '</label>';
+
+  if (f.type === 'choices') {
+    // Placeholder — wired up by buildFormModal after innerHTML is set
+    return '<div class="submit-field" data-choices-start="' + (f.startCount||1) + '" data-choices-max="' + (f.max||4) + '">' +
+      '<label class="submit-label">' + f.label + '</label>' +
+      '<div class="modal-choice-list"></div>' +
+      '<button type="button" class="modal-add-choice-btn">+ Add choice</button>' +
+    '</div>';
+  }
 
   if (f.type === 'text') {
     var ro      = f.readonly ? ' readonly' : '';
@@ -171,6 +179,23 @@ function validateForm(overlay, fields) {
     // Skip path fields if this is an ending
     if (f.pathField && isEnding) return;
 
+    // Dynamic choices validation
+    if (f.type === 'choices') {
+      if (isEnding) return; // endings need no choices
+      var inputs = overlay.querySelectorAll('.modal-choice-input');
+      var filled = 0;
+      inputs.forEach(function(inp) {
+        if (inp.value.trim() === '') {
+          showFieldError(inp, 'Choice text required.');
+          valid = false;
+        } else {
+          filled++;
+        }
+      });
+      if (filled < 2) valid = false;
+      return;
+    }
+
     var el = overlay.querySelector('[data-field="' + f.key + '"]');
     if (!el || el.type === 'hidden') return;
 
@@ -205,6 +230,46 @@ function showFieldError(el, msg) {
     err.remove();
     el.classList.remove('submit-input-error');
   }, { once: true });
+}
+
+// -- Append a choice row to modal choice list
+function appendModalChoiceRow(container, addBtn, max) {
+  var row = document.createElement('div');
+  row.className = 'modal-choice-row';
+  var idx = container.querySelectorAll('.modal-choice-row').length + 1;
+  row.innerHTML =
+    '<input type="text" class="modal-input modal-choice-input" placeholder="Choice ' + idx + ' text..." />' +
+    '<button type="button" class="modal-choice-remove">\u2715</button>';
+  row.querySelector('.modal-choice-remove').addEventListener('click', function() {
+    // Enforce a minimum of 2 choices
+    if (container.querySelectorAll('.modal-choice-row').length <= 2) return;
+    row.remove();
+    container.querySelectorAll('.modal-choice-row').forEach(function(r, i) {
+      var inp = r.querySelector('.modal-choice-input');
+      if (inp) inp.placeholder = 'Choice ' + (i+1) + ' text...';
+    });
+    updateRemoveButtons(container);
+    if (addBtn) addBtn.style.display = '';
+  });
+  container.appendChild(row);
+  if (container.querySelectorAll('.modal-choice-row').length >= max) {
+    if (addBtn) addBtn.style.display = 'none';
+  }
+  updateRemoveButtons(container);
+}
+
+// Dim/disable remove buttons when only the minimum (2) remain
+function updateRemoveButtons(container) {
+  var rows = container.querySelectorAll('.modal-choice-row');
+  var atMin = rows.length <= 2;
+  rows.forEach(function(r) {
+    var btn = r.querySelector('.modal-choice-remove');
+    if (btn) {
+      btn.disabled = atMin;
+      btn.style.opacity = atMin ? '0.3' : '';
+      btn.style.cursor  = atMin ? 'not-allowed' : 'pointer';
+    }
+  });
 }
 
 // -- Build modal --
@@ -248,18 +313,31 @@ function buildFormModal(opts) {
   // Wire word count now that DOM exists
   wireWordCount(box);
 
+  // Wire dynamic choice fields
+  box.querySelectorAll('[data-choices-start]').forEach(function(wrap) {
+    var max = parseInt(wrap.getAttribute('data-choices-max')) || 4;
+    var startCount = parseInt(wrap.getAttribute('data-choices-start')) || 1;
+    var choiceList = wrap.querySelector('.modal-choice-list');
+    var addBtn = wrap.querySelector('.modal-add-choice-btn');
+    if (!choiceList || !addBtn) return;
+    addBtn.addEventListener('click', function() {
+      if (choiceList.querySelectorAll('.modal-choice-row').length >= max) return;
+      appendModalChoiceRow(choiceList, addBtn, max);
+    });
+    for (var sc = 0; sc < startCount; sc++) appendModalChoiceRow(choiceList, addBtn, max);
+    addBtn.style.display = choiceList.querySelectorAll('.modal-choice-row').length >= max ? 'none' : '';
+  });
+
   // Wire isEnding toggle to show/hide path fields
   var isEndingRadios = box.querySelectorAll('input[data-field="isEnding"]');
   if (isEndingRadios.length) {
     function updatePathVisibility() {
       var isEnding = box.querySelector('input[data-field="isEnding"]:checked');
       var ending   = isEnding && isEnding.value === 'true';
-      box.querySelectorAll('.submit-field[data-path-field]').forEach(function(el) {
+      box.querySelectorAll('.submit-field[data-path-field], .submit-field[data-choices-start]').forEach(function(el) {
         el.style.display = ending ? 'none' : '';
-        // Clear required errors if hidden
         if (ending) {
-          var inp = el.querySelector('input');
-          if (inp) { inp.classList.remove('submit-input-error'); }
+          el.querySelectorAll('input').forEach(function(inp){ inp.classList.remove('submit-input-error'); });
           var err = el.querySelector('.submit-field-error');
           if (err) err.remove();
         }
@@ -295,9 +373,18 @@ function buildFormModal(opts) {
         var checked = Array.from(overlay.querySelectorAll('input[data-field="' + f.key + '"]:checked'))
           .map(function(cb) { return cb.value; }).join(', ');
         data[f.key] = checked;
-      } else if (f.type === 'radio') {
+      } else if (f.type === 'radio' || f.type === 'toggle') {
         var sel = overlay.querySelector('input[data-field="' + f.key + '"]:checked');
-        data[f.key] = sel ? sel.value : '';
+        var v = sel ? sel.value : '';
+        // Google Form expects Yes/No for the ending toggle
+        if (f.type === 'toggle') v = (v === 'true') ? 'Yes' : 'No';
+        data[f.key] = v;
+      } else if (f.type === 'choices') {
+        // Map choice inputs to path1..path4
+        var keys = ['path1','path2','path3','path4'];
+        overlay.querySelectorAll('.modal-choice-input').forEach(function(inp, i) {
+          if (keys[i]) data[keys[i]] = inp.value.trim();
+        });
       } else {
         var el = overlay.querySelector('[data-field="' + f.key + '"]');
         data[f.key] = el ? el.value.trim() : '';
@@ -343,13 +430,13 @@ window.showNewStoryForm = function() {
       { key: 'story',     type: 'text',       label: 'Story title',         placeholder: 'The Velvet Room',                           required: true  },
       { key: 'author',    type: 'text',       label: 'Your handle',         placeholder: 'Optional -- for author credit on each node', hint: '(optional)' },
       { key: 'summary',   type: 'text',       label: 'Library summary',     placeholder: 'One or two sentences shown on the library card', required: true },
+      { key: 'title',     type: 'text',       label: 'Scene title',         placeholder: 'A short evocative title for this scene',           required: true  },
       { key: 'blurb',     type: 'textarea',   label: 'Opening scene',       placeholder: 'Write the first scene readers will encounter...', required: true, minWords: 300 },
       { key: 'path1',     type: 'text',       label: 'Choice 1',            placeholder: 'First choice text',                         required: true  },
       { key: 'path2',     type: 'text',       label: 'Choice 2',            placeholder: 'Second choice text',                        required: true  },
       { key: 'path3',     type: 'text',       label: 'Choice 3',            placeholder: 'Third choice text',                         hint: '(optional)' },
       { key: 'path4',     type: 'text',       label: 'Choice 4',            placeholder: 'Fourth choice text',                        hint: '(optional)' },
       { key: 'storyTags', type: 'checkboxes', label: 'Story tags',           options: STORY_TAGS.slice().sort(), hint: '(describe the overall story)' },
-      { key: 'theme',     type: 'radio',      label: 'Opening scene theme', options: THEMES,   required: true },
       { key: 'imageLink', type: 'text',       label: 'Image URL',           placeholder: 'Optional link to a cover image',            hint: '(optional)' },
     ],
     onSubmit: function(data) { return submitToGoogle('newStory', data); }
@@ -367,14 +454,11 @@ window.showNewBranchForm = function(storyTitle, nodeId, branchText) {
       { key: 'currentId',     type: 'hidden',     value: String(nodeId) },
       { key: 'newBranchText', type: 'text',       label: 'New choice text',  placeholder: 'The button label readers click to reach your scene', value: branchText || '', required: true },
       { key: 'author',        type: 'text',       label: 'Your handle',      placeholder: 'Optional -- for author credit', hint: '(optional)' },
+      { key: 'title',         type: 'text',       label: 'Scene title',       placeholder: 'A short evocative title for this scene',     required: true  },
       { key: 'blurb',         type: 'textarea',   label: 'Scene text',       placeholder: 'Write your scene here...', required: true, minWords: 300 },
       { key: 'tags',          type: 'checkboxes', label: 'Scene content tags', options: NODE_TAGS.slice().sort(), hint: '(warn readers before entering this scene)' },
-      { key: 'theme',         type: 'radio',      label: 'Scene theme',      options: THEMES, required: true },
       { key: 'isEnding',      type: 'toggle',     label: 'Is this an ending?', hint: 'If yes, path choices are not needed' },
-      { key: 'path1',         type: 'text',       label: 'Choice 1',         placeholder: 'First choice text',  required: true, pathField: true },
-      { key: 'path2',         type: 'text',       label: 'Choice 2',         placeholder: 'Second choice text', required: true, pathField: true },
-      { key: 'path3',         type: 'text',       label: 'Choice 3',         placeholder: 'Third choice text',  hint: '(optional)', pathField: true },
-      { key: 'path4',         type: 'text',       label: 'Choice 4',         placeholder: 'Fourth choice text', hint: '(optional)', pathField: true },
+      { key: 'choices',       type: 'choices',    label: 'Choices', startCount: 2, max: 4 },
       { key: 'imageLink',     type: 'text',       label: 'Image URL',        placeholder: 'Optional link to a scene image', hint: '(optional)' },
     ],
     onSubmit: function(data) { return submitToGoogle('newBranch', data); }
