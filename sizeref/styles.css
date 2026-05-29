@@ -159,10 +159,12 @@
 }
 .zoom-btn:hover { border-color:var(--border-mid);color:var(--accent); }
 .zoom-reset-btn { width:auto;padding:0 .6rem;font-family:var(--font-caps);font-size:.58rem;letter-spacing:.08em; }
+.copy-scale-btn.zoom-btn { width:auto; }
 .zoom-label { font-family:var(--font-caps);font-size:.62rem;letter-spacing:.1em;color:var(--text-secondary);min-width:38px;text-align:center; }
 
 /* Canvas area: ruler + scroll side by side */
 .sr-canvas-area {
+  position: relative;
   display: flex;
   flex: 1;
   min-height: 0;
@@ -300,7 +302,8 @@
   .sr-sidebar { max-height:55vh; }
   .sr-main { height:80vh; min-height:0; }
   .sr-stats { max-height:25vh; grid-template-columns:1fr 1fr; }
-  .sr-canvas-area { min-height:200px; }
+  .sr-canvas-area {
+  position: relative; min-height:200px; }
   .sr-length-area { min-height:200px; }
 }
 
@@ -1219,17 +1222,31 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 
 /* ── Custom character form section colours ───────────────────── */
 /* Each section gets a distinct left border + tinted summary bg  */
-.section-height > .form-det > summary.form-det-summary {
+/* Images — teal */
+.section-images > .form-det > summary.form-det-summary {
   border-left: 3px solid #7eb8a4;
   background: rgba(126,184,164,0.06);
   color: #7eb8a4;
 }
-.section-height > .form-det > summary.form-det-summary::before { color: #7eb8a4; }
-.section-height > .form-det[open] > .det-body {
+.section-images > .form-det > summary.form-det-summary::before { color: #7eb8a4; }
+.section-images > .form-det[open] > .det-body {
   border-left: 3px solid rgba(126,184,164,0.3);
   margin-left: 0;
 }
 
+/* Anatomy — rose */
+.section-anatomy > .form-det > summary.form-det-summary {
+  border-left: 3px solid #b87e8a;
+  background: rgba(184,126,138,0.06);
+  color: #b87e8a;
+}
+.section-anatomy > .form-det > summary.form-det-summary::before { color: #b87e8a; }
+.section-anatomy > .form-det[open] > .det-body {
+  border-left: 3px solid rgba(184,126,138,0.3);
+  margin-left: 0;
+}
+
+/* Length — amber */
 .section-length > .form-det > summary.form-det-summary {
   border-left: 3px solid #b89a7e;
   background: rgba(184,154,126,0.06);
@@ -1240,6 +1257,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   border-left: 3px solid rgba(184,154,126,0.3);
 }
 
+/* Stats — purple */
 .section-stats > .form-det > summary.form-det-summary {
   border-left: 3px solid #9a7eb8;
   background: rgba(154,126,184,0.06);
@@ -1248,6 +1266,18 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 .section-stats > .form-det > summary.form-det-summary::before { color: #9a7eb8; }
 .section-stats > .form-det[open] > .det-body {
   border-left: 3px solid rgba(154,126,184,0.3);
+}
+
+/* Height section kept for any legacy references */
+.section-height > .form-det > summary.form-det-summary {
+  border-left: 3px solid #7eb8a4;
+  background: rgba(126,184,164,0.06);
+  color: #7eb8a4;
+}
+.section-height > .form-det > summary.form-det-summary::before { color: #7eb8a4; }
+.section-height > .form-det[open] > .det-body {
+  border-left: 3px solid rgba(126,184,164,0.3);
+  margin-left: 0;
 }
 
 /* ── Anatomy toggles ─────────────────────────────────────────── */
@@ -1476,3 +1506,355 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 }
 
 /* Screenshot mode handled via html2canvas — no CSS needed */
+
+/* ── Images sub-tab bar ──────────────────────────────────────── */
+.img-subtab-bar {
+  display: flex;
+  gap: 0;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.75rem;
+}
+.img-subtab-btn {
+  flex: 1;
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  padding: 0.5rem 0.25rem;
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s;
+  margin-bottom: -1px;
+}
+.img-subtab-btn:hover { color: var(--text-secondary); }
+.img-subtab-btn.active {
+  color: var(--accent);
+  border-bottom-color: var(--accent);
+}
+.img-subtab-panel { padding-top: 0.25rem; }
+
+/* ── My Characters roster ────────────────────────────────────── */
+.mychars-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.75rem 1rem 0.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.mychars-title {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.mychars-count {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+.mychars-roster {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  padding: 0.5rem 0;
+}
+.mychars-empty {
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  font-style: italic;
+  padding: 1.5rem 1rem;
+  text-align: center;
+}
+.mychars-card {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+  transition: background 0.15s;
+}
+.mychars-card:hover { background: var(--bg-inset); }
+.mychars-card-left {
+  display: flex;
+  align-items: center;
+  gap: 0.65rem;
+  min-width: 0;
+}
+.mychars-avatar {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  object-fit: cover;
+  object-position: center top;
+  border: 1px solid var(--border-mid);
+  flex-shrink: 0;
+}
+.mychars-avatar-ph {
+  width: 36px;
+  height: 36px;
+  border-radius: 50%;
+  background: var(--bg-inset);
+  border: 1px solid var(--border-mid);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-family: var(--font-caps);
+  font-size: 0.8rem;
+  color: var(--accent);
+  flex-shrink: 0;
+}
+.mychars-card-info { min-width: 0; }
+.mychars-card-name {
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.mychars-card-detail {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.15rem;
+}
+.mychars-card-actions {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  flex-shrink: 0;
+}
+.mychars-edit-btn {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  color: var(--accent);
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mychars-edit-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
+.mychars-del-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  width: 26px;
+  height: 26px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  font-size: 0.7rem;
+  transition: all 0.15s;
+}
+.mychars-del-btn:hover { border-color: var(--wine); color: var(--wine); }
+.mychars-add-btn {
+  width: calc(100% - 2rem);
+  margin: 0.75rem 1rem;
+  padding: 0.6rem;
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px dashed var(--border-mid);
+  border-radius: var(--radius);
+  color: var(--accent);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mychars-add-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
+
+/* ── Custom character modal ──────────────────────────────────── */
+.custom-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 500;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding: 2rem 1rem;
+  overflow-y: auto;
+}
+.custom-modal-box {
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  width: min(420px, 100%);
+  display: flex;
+  flex-direction: column;
+  max-height: calc(100vh - 4rem);
+  overflow-y: auto;
+}
+.custom-modal-topbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.9rem 1.25rem 0.75rem;
+  border-bottom: 1px solid var(--border);
+  position: sticky;
+  top: 0;
+  background: var(--bg-panel);
+  z-index: 1;
+}
+.custom-modal-title {
+  font-family: var(--font-caps);
+  font-size: 0.65rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.custom-modal-close {
+  background: none;
+  border: none;
+  color: var(--text-muted);
+  font-size: 0.9rem;
+  cursor: pointer;
+  transition: color 0.15s;
+  padding: 0.2rem;
+}
+.custom-modal-close:hover { color: var(--wine); }
+.custom-modal-form {
+  padding: 0.5rem 0;
+  flex: 1;
+}
+.custom-modal-done {
+  width: calc(100% - 2rem);
+  margin: 0.75rem 1rem 1rem;
+  display: block;
+}
+
+/* ── Character picker section labels ─────────────────────────── */
+.cpm-section-label {
+  grid-column: 1 / -1;
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  padding: 0.5rem 0.25rem 0.25rem;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 0.25rem;
+}
+
+/* ── Copy scale toggle button ────────────────────────────────── */
+.copy-scale-btn {
+  border: 1px solid var(--border);
+  color: var(--text-muted);
+  background: none;
+  border-radius: var(--radius);
+  width: 32px;
+  height: 32px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 1rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  flex-shrink: 0;
+  opacity: 0.45;
+}
+.copy-scale-btn:hover { border-color: var(--border-mid); opacity: 0.75; }
+.copy-scale-btn.active {
+  border-color: var(--accent);
+  background: var(--accent-dim);
+  opacity: 1;
+}
+
+/* ── Copy bar (below canvas, above stats) ────────────────────── */
+.sr-copy-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.4rem 0.75rem;
+  border-top: 1px solid var(--border);
+  background: var(--bg-panel);
+}
+.sr-copy-bar-left,
+.sr-copy-bar-right {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+}
+.copy-img-btn {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.copy-img-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+/* ── Copy bar layout ─────────────────────────────────────────── */
+
+
+/* ── Sandbox toggle button ───────────────────────────────────── */
+.sandbox-btn {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  color: var(--text-muted);
+  padding: 0.3rem 0.75rem;
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+}
+.sandbox-btn:hover  { border-color: var(--accent); color: var(--accent); }
+.sandbox-btn.active { border-color: #b87e8a; color: #b87e8a; background: rgba(184,126,138,0.08); }
+
+/* ── Sandbox mode: figures become freely draggable ───────────── */
+#sr-figures.sandbox-active {
+  align-items: flex-end; /* keep ground alignment */
+}
+
+/* ── Sandbox mode ─────────────────────────────────────────────── */
+/* Transform-based drag: no overflow/clipping changes needed */
+body.sandbox-active .sr-img-wrap {
+  cursor: grab;
+  will-change: transform;
+}
+
+/* ── Stat block pose note (above grid, doesn't push grid rows) ── */
+.sr-stat-pose-note {
+  font-family: var(--font-body);
+  font-size: 0.62rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-top: -0.25rem;
+  margin-bottom: -0.1rem;
+  min-height: 1em; /* reserve space even when empty */
+}
+.sr-stat-pose-spacer {
+  visibility: hidden; /* invisible but takes up identical space */
+}
+
+/* ── Flip button — inherits unit-btn, no extra styles needed ─── */
+
+/* ── Object stat card spacer rows ─────────────────────────────── */
+.sr-stat-spacer { visibility: hidden; }
+.sr-stat-row-spacer { visibility: hidden; }
