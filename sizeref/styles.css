@@ -1868,3 +1868,49 @@ body.sandbox-active .sr-img-wrap {
   padding: 0.2rem 0.75rem 0.4rem;
   opacity: 0.7;
 }
+
+/* ── Object picker modal specifics ───────────────────────────── */
+.obj-modal-grid {
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+}
+.obj-cpm-card {
+  padding-bottom: 0.4rem;
+}
+.obj-cpm-swatch {
+  width: 60%;
+  aspect-ratio: 1;
+  border-radius: var(--radius);
+  margin: 0 auto;
+}
+.obj-cpm-height {
+  font-family: var(--font-caps);
+  font-size: 0.52rem;
+  letter-spacing: 0.08em;
+  color: var(--text-muted);
+  margin-top: 0.1rem;
+}
+
+/* ── Object picker card improvements ────────────────────────── */
+.obj-swatch-wrap {
+  background: none;
+}
+.obj-cpm-swatch {
+  width: 48px;
+  height: 48px;
+  border-radius: var(--radius);
+  margin: 0 auto;
+  background: var(--accent-dim);
+  border: 1px solid var(--accent);
+}
+.obj-cpm-card .cpm-img-wrap {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 64px;
+  overflow: hidden;
+}
+.obj-cpm-card .cpm-img {
+  max-height: 64px;
+  width: auto;
+  object-fit: contain;
+}

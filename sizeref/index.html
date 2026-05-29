@@ -152,7 +152,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="../_shared/registry.js"></script>
-<script src="sizeref.js?v=1780063802"></script>
+<script src="sizeref.js?v=1780065116"></script>
 
 <!-- ── Resize popup backdrop ──────────────────── -->
 <div id="sr-resize-backdrop" class="sr-resize-backdrop"></div>
@@ -168,5 +168,18 @@
     <div id="char-modal-grid" class="char-modal-grid"></div>
   </div>
 </div>
+
+    <!-- Object picker modal -->
+    <div id="obj-modal-overlay" class="char-modal-overlay" style="display:none">
+      <div class="char-modal">
+        <div class="char-modal-header">
+          <div class="char-modal-title">Select Object</div>
+          <input id="obj-modal-search" class="char-modal-search" type="text" placeholder="Search…" autocomplete="off" />
+          <button id="obj-modal-close" class="char-modal-close" title="Close">&#10005;</button>
+        </div>
+        <div id="obj-modal-grid" class="char-modal-grid obj-modal-grid"></div>
+      </div>
+    </div>
+
 </body>
 </html>

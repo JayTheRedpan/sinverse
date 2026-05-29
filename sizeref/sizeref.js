@@ -570,7 +570,7 @@ function render() {
     var val  = sel.value; if (!val) return;
     if (type === 'obj') {
       var obj = S.objects.find(function(o){ return o.id === val; });
-      if (obj) renderObj(figs, obj);
+      if (obj) renderObj(figs, obj, idx);
     } else {
       var c = charFromValue(val);
       if (c) renderChar(figs, c, idx);
@@ -669,23 +669,46 @@ function orientedImgEl(src, flip, rotateDeg, filter) {
   return img;
 }
 
-function renderObj(figs, obj) {
+function renderObj(figs, obj, slotIdx) {
   var pH = Math.max(4, Math.round(obj.height * S.pxPerIn));
   var iw = el('div'); iw.className = 'sr-img-wrap';
   iw.style.height = pH + 'px';
+  iw.setAttribute('data-slot-idx', String(slotIdx !== undefined ? slotIdx : -1));
+  iw.draggable = false;
 
   if (obj.image) {
     var img = el('img');
     img.src = obj.image; img.alt = obj.label;
-    // Object silhouettes get the same rose-gold filter as character silhouettes
-    img.className = 'sr-char-img';  // filter applied by default via CSS
+    img.className = 'sr-char-img';
+    img.draggable = false;
+    // Apply flip + rotation state
+    if (slotIdx !== undefined) {
+      var _objSels2 = allSlotSelects();
+      var _objCk = _objSels2[slotIdx] && _objSels2[slotIdx].value ? (slotIdx+'_'+_objSels2[slotIdx].value) : '';
+      var _objFlipped = _objCk && S.charFlips && S.charFlips[_objCk];
+      var _objRot = (_objCk && S.charRotations && S.charRotations[_objCk]) || 0;
+      var _objT = '';
+      if (_objFlipped) _objT += 'scaleX(-1) ';
+      if (_objRot) _objT += 'rotate('+(_objFlipped ? -_objRot : _objRot)+'deg)';
+      if (_objT) img.style.transform = _objT.trim();
+    }
     iw.appendChild(img);
   } else {
-    // Fallback: colored bar
+    // Fallback: colored bar — apply flip/rotate to the wrap itself
     var shape = el('div'); shape.className = 'sr-obj-shape';
     shape.style.height = '100%'; shape.style.width = '44px';
     shape.style.background = obj.color || '#888';
     iw.style.width = '44px';
+    if (slotIdx !== undefined) {
+      var _shapeSels = allSlotSelects();
+      var _shapeCk = _shapeSels[slotIdx] && _shapeSels[slotIdx].value ? (slotIdx+'_'+_shapeSels[slotIdx].value) : '';
+      var _shapeFlipped = _shapeCk && S.charFlips && S.charFlips[_shapeCk];
+      var _shapeRot = (_shapeCk && S.charRotations && S.charRotations[_shapeCk]) || 0;
+      var _shapeT = '';
+      if (_shapeFlipped) _shapeT += 'scaleX(-1) ';
+      if (_shapeRot) _shapeT += 'rotate('+(_shapeFlipped ? -_shapeRot : _shapeRot)+'deg)';
+      if (_shapeT) shape.style.transform = _shapeT.trim();
+    }
     iw.appendChild(shape);
   }
   figs.appendChild(iw);
@@ -851,7 +874,7 @@ function wireFlipRotate(block, slotIdx) {
 function objStatBlock(obj, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
   var _objSels = allSlotSelects();
-  var _objKey = _objSels[slotIdx] ? _objSels[slotIdx].value : ('slot_'+slotIdx);
+  var _objKey = _objSels[slotIdx] && _objSels[slotIdx].value ? (slotIdx+'_'+_objSels[slotIdx].value) : ('slot_'+slotIdx);
   var isFlipped = S.charFlips && S.charFlips[_objKey];
   block.innerHTML =
     '<div class="sr-stat-name">'+obj.label+'</div>'+
@@ -1051,9 +1074,9 @@ function statBlock(char, slotIdx) {
     ? '<div class="sr-stat-pose-note">renders as '+fH(effH_in)+' (posed)</div>'
     : '<div class="sr-stat-pose-note sr-stat-pose-spacer">&nbsp;</div>';
 
-  // Flip state keyed by character value (follows character across slot changes)
+  // Flip state - use same slot-prefixed key as charKeyForSlot
   var sels = allSlotSelects();
-  var charKey = sels[slotIdx] ? sels[slotIdx].value : ('slot_'+slotIdx);
+  var charKey = sels[slotIdx] && sels[slotIdx].value ? (slotIdx+'_'+sels[slotIdx].value) : ('slot_'+slotIdx);
   var isFlipped = S.charFlips && S.charFlips[charKey];
 
   block.innerHTML =
@@ -2860,10 +2883,20 @@ function createSlotRow(type) {
     row.appendChild(pickerBtn);
     row.appendChild(sel);
   } else {
-    sel.innerHTML = '<option value="">-- Select object --</option>';
+    sel.innerHTML = '<option value=""></option>';
     S.objects.forEach(function(o) {
       var opt = el('option'); opt.value = o.id; opt.textContent = o.label; sel.appendChild(opt);
     });
+    sel.style.display = 'none';
+    var objPickerBtn = el('button');
+    objPickerBtn.className = 'slot-picker-btn';
+    objPickerBtn.textContent = '— Select object —';
+    objPickerBtn.addEventListener('click', function() { openObjModal(sel); });
+    sel.addEventListener('change', function() {
+      var opt = sel.options[sel.selectedIndex];
+      objPickerBtn.textContent = opt && opt.value ? opt.textContent : '— Select object —';
+    });
+    row.appendChild(objPickerBtn);
     row.appendChild(sel);
   }
   row.appendChild(rmBtn);
@@ -2942,6 +2975,28 @@ function onDrop(e) {
       document.body.appendChild(_toast);
       setTimeout(function(){ _toast.remove(); }, 2000);
     }
+
+    // Migrate flip/rotation/resize state — keys include slot index, remap after reorder
+    (function() {
+      var newSels = allSlotSelects();
+      var moved = slotVals.slice();
+      newSels.forEach(function(sel, newIdx) {
+        var val = sel.value;
+        if (!val) return;
+        var oldEntry = null;
+        for (var i = 0; i < moved.length; i++) {
+          if (moved[i] && moved[i].val === val) { oldEntry = moved[i]; moved[i] = null; break; }
+        }
+        if (!oldEntry || oldEntry.idx === newIdx) return;
+        var oldKey = oldEntry.idx + '_' + val;
+        var newKey = newIdx + '_' + val;
+        [S.charFlips, S.charRotations, S.heightOverrides].forEach(function(obj) {
+          if (!obj) return;
+          if (obj[oldKey] !== undefined) { obj[newKey] = obj[oldKey]; delete obj[oldKey]; }
+        });
+      });
+    })();
+
     renderActive();
     if (S.view === 'stats') renderStatsView();
   }
@@ -2963,9 +3018,11 @@ function addSlot(type) {
   container.appendChild(row);
   updateSlotUI();
   // Auto-open modal for char slots so user can pick immediately
+  var newSel = row.querySelector('.slot-select');
   if ((type || 'char') === 'char') {
-    var sel = row.querySelector('.slot-select');
-    if (sel) openCharModal(sel);
+    if (newSel) openCharModal(newSel);
+  } else if (type === 'obj') {
+    if (newSel) openObjModal(newSel);
   }
 }
 
@@ -4238,6 +4295,125 @@ function makeDraggable(el) {
   el.addEventListener('touchstart', onDown, {passive: false});
 }
 
+
+// ── Object picker modal ───────────────────────────────────────
+var OBJ_SIZE_GROUPS = [
+  { label: 'Tiny',      maxIn:   6  },  // up to 6in
+  { label: 'Small',     maxIn:  24  },  // up to 2ft
+  { label: 'Human-sized', maxIn: 84 },  // up to 7ft
+  { label: 'Large',     maxIn: 480  },  // up to 40ft
+  { label: 'Massive',   maxIn: 9999 },  // anything bigger
+];
+
+var objModalTargetSel = null;
+
+function openObjModal(sel) {
+  objModalTargetSel = sel;
+  var overlay = document.getElementById('obj-modal-overlay');
+  var search  = document.getElementById('obj-modal-search');
+  if (!overlay) return;
+
+  // Re-wire close each time in case wireObjModal missed
+  var closeBtn = document.getElementById('obj-modal-close');
+  if (closeBtn) { closeBtn.onclick = closeObjModal; }
+  overlay.onclick = function(e) { if (e.target === overlay) closeObjModal(); };
+  if (search) search.oninput = function() { buildObjModalGrid(this.value); };
+
+  search.value = '';
+  buildObjModalGrid('');
+  overlay.style.display = 'flex';
+  search.focus();
+}
+
+function closeObjModal() {
+  var overlay = document.getElementById('obj-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+  objModalTargetSel = null;
+}
+
+function buildObjModalGrid(query) {
+  var grid = document.getElementById('obj-modal-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  var q = query.trim().toLowerCase();
+
+  var filtered = S.objects.filter(function(o) {
+    return !q || o.label.toLowerCase().indexOf(q) >= 0;
+  });
+
+  // Sort by height
+  filtered = filtered.slice().sort(function(a, b) { return a.height - b.height; });
+
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="cpm-empty">No objects found</div>';
+    return;
+  }
+
+  // Group by size bands
+  var groups = {};
+  filtered.forEach(function(o) {
+    var grpLabel = 'Other';
+    for (var i = 0; i < OBJ_SIZE_GROUPS.length; i++) {
+      if (o.height <= OBJ_SIZE_GROUPS[i].maxIn) {
+        grpLabel = OBJ_SIZE_GROUPS[i].label;
+        break;
+      }
+    }
+    if (!groups[grpLabel]) groups[grpLabel] = [];
+    groups[grpLabel].push(o);
+  });
+
+  OBJ_SIZE_GROUPS.forEach(function(grp) {
+    var items = groups[grp.label];
+    if (!items || !items.length) return;
+
+    var label = document.createElement('div');
+    label.className = 'cpm-section-label';
+    label.textContent = grp.label;
+    grid.appendChild(label);
+
+    items.forEach(function(o) {
+      var card = document.createElement('div');
+      card.className = 'cpm-card obj-cpm-card';
+
+      var imgHtml;
+      if (o.image) {
+        imgHtml = '<div class="cpm-img-wrap"><img class="cpm-img sr-sil-filter" src="'+o.image+'" alt="'+o.label+'" /></div>';
+      } else {
+        imgHtml = '<div class="cpm-img-wrap obj-swatch-wrap"><div class="obj-cpm-swatch" style="background:'+o.color+'"></div></div>';
+      }
+
+      card.innerHTML = imgHtml +
+        '<div class="cpm-name">'+o.label+'</div>'+
+        '<div class="obj-cpm-height">'+fH(o.height)+'</div>';
+
+      card.addEventListener('click', function() {
+        if (objModalTargetSel) {
+          objModalTargetSel.value = o.id;
+          objModalTargetSel.dispatchEvent(new Event('change'));
+        }
+        closeObjModal();
+      });
+
+      grid.appendChild(card);
+    });
+  });
+}
+
+function wireObjModal() {
+  // Wire eagerly — elements are in HTML so available at DOMContentLoaded
+  var close = document.getElementById('obj-modal-close');
+  if (close) close.addEventListener('click', closeObjModal);
+  var overlay = document.getElementById('obj-modal-overlay');
+  if (overlay) overlay.addEventListener('click', function(e) {
+    if (e.target === overlay) closeObjModal();
+  });
+  var search = document.getElementById('obj-modal-search');
+  if (search) search.addEventListener('input', function() {
+    buildObjModalGrid(this.value);
+  });
+}
+
 initSandbox();
 
 // ── Ruler tool ────────────────────────────────────────────────
@@ -4338,6 +4514,7 @@ function updateRulerSVG() {
 }
 
 initRuler();
+wireObjModal();
 
 var ROSE_GOLD_FILTER = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
 
