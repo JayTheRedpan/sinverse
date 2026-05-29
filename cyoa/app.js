@@ -280,6 +280,34 @@ function applyFilters() {
   }
 }
 
+// -- Fetch adventure nodes with blurbs injected from .md --
+async function fetchAdventureNodes(id) {
+  const base = window.location.pathname.replace(/\/[^/]*$/, '/');
+  const res = await fetch(base + `adventures/${id}.json`);
+  if (!res.ok) return [];
+  const data = await res.json();
+  const mdRes = await fetch(base + `adventures/${id}.md`);
+  if (mdRes.ok) {
+    const blurbs = parseMdBlurbs(await mdRes.text());
+    data.forEach(n => { if (!n.blurb && blurbs[String(n.id)]) n.blurb = blurbs[String(n.id)]; });
+  }
+  return data;
+}
+
+// -- Markdown blurb parser -------------------------
+function parseMdBlurbs(md) {
+  const map = {};
+  const sections = md.split(/^## /m);
+  sections.forEach(section => {
+    const nl = section.indexOf('\n');
+    if (nl < 0) return;
+    const id = section.slice(0, nl).trim();
+    const text = section.slice(nl + 1).trim();
+    if (id) map[id] = text;
+  });
+  return map;
+}
+
 // -- Load Story ----------------------------------
 async function loadAdventure(id) {
   try {
@@ -287,6 +315,14 @@ async function loadAdventure(id) {
     const res = await fetch(base + `adventures/${id}.json`);
     if (!res.ok) throw new Error(`Could not load adventures/${id}.json (status ${res.status}) at ${res.url}`);
     const data = await res.json();
+
+    // Fetch companion markdown file for node text
+    const mdRes = await fetch(base + `adventures/${id}.md`);
+    if (mdRes.ok) {
+      const mdText = await mdRes.text();
+      const blurbs = parseMdBlurbs(mdText);
+      data.forEach(n => { if (!n.blurb && blurbs[String(n.id)]) n.blurb = blurbs[String(n.id)]; });
+    }
 
     // Story is now a plain array; node 1 is always the start
     state.story        = data;
@@ -809,9 +845,7 @@ async function showAdventureInfo(meta) {
 
   // Fetch adventure nodes
   try {
-    var base  = window.location.pathname.replace(/\/[^/]*$/, '/');
-    var res   = await fetch(base + 'adventures/' + meta.id + '.json');
-    var nodes = res.ok ? await res.json() : [];
+    var nodes = await fetchAdventureNodes(meta.id);
 
     var totalWords = nodes.reduce(function(sum, n) {
       return sum + (n.blurb || '').replace(/<[^>]+>/g, ' ').trim().split(/\s+/).filter(Boolean).length;
@@ -931,9 +965,8 @@ async function showAuthorScreen(authorId) {
 
     await Promise.all(state.manifest.map(async function(meta) {
       try {
-        const res   = await fetch(base + 'adventures/' + meta.id + '.json');
-        if (!res.ok) return;
-        const nodes = await res.json();
+        const nodes = await fetchAdventureNodes(meta.id);
+        if (!nodes.length) return;
         const mine  = nodes.filter(n => n.author === authorId);
         if (!mine.length) return;
         totalScenes += mine.length;

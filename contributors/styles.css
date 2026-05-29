@@ -168,9 +168,19 @@
   font-size: 0.85rem;
   color: var(--text-secondary);
   text-decoration: none;
-  transition: color 0.15s;
+  transition: color 0.2s, background 0.2s, box-shadow 0.2s;
+  border-radius: var(--radius);
+  padding: 0.35rem 0.5rem;
+  margin: -0.35rem -0.5rem;
 }
-.count-link:hover { color: var(--accent); }
+a.count-link:hover {
+  color: var(--accent);
+  background: var(--accent-dim);
+  box-shadow: 0 0 12px 2px rgba(var(--accent-rgb, 184,126,138), 0.18);
+}
+a.count-link:hover .count-label {
+  color: var(--accent);
+}
 .count-link .count-n {
   font-family: var(--font-caps);
   font-size: 1.1rem;
@@ -186,6 +196,7 @@
   text-transform: uppercase;
   color: var(--text-muted);
   display: block;
+  transition: color 0.2s;
 }
 
 /* ── Contributors section ────────────────────────────────────── */
