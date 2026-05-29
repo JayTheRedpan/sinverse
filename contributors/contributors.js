@@ -76,7 +76,7 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var defs = [
     { n: gCount, label: 'Gallery',    url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
     { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
-    { n: cCount, label: 'Adventures', url: null, link: false },
+    { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
   ];
 
   defs.forEach(function(d) {

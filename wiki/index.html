@@ -133,6 +133,28 @@
     .wiki-nav-link:hover { color: var(--text-primary); background: var(--bg-inset); }
     .wiki-nav-link.active { color: var(--accent); border-left-color: var(--accent); background: var(--bg-inset); }
     .wiki-nav-divider { border: none; border-top: 1px solid var(--border); margin: 0.75rem 1.5rem; }
+    .wiki-unit-toggle {
+      display: flex;
+      gap: 0;
+      padding: 0.75rem 1.5rem 0.5rem;
+    }
+    .wiki-unit-btn {
+      flex: 1;
+      font-family: var(--font-caps);
+      font-size: 0.55rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      background: none;
+      border: 1px solid var(--border-mid);
+      color: var(--text-muted);
+      padding: 0.35rem 0;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .wiki-unit-btn:first-child { border-radius: var(--radius) 0 0 var(--radius); }
+    .wiki-unit-btn:last-child  { border-radius: 0 var(--radius) var(--radius) 0; border-left: none; }
+    .wiki-unit-btn:hover  { color: var(--accent); border-color: var(--accent); z-index: 1; }
+    .wiki-unit-btn.active { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
 
     /* ── Main content ── */
     .wiki-main {
@@ -1088,6 +1110,11 @@
 
   <!-- Sidebar -->
   <nav class="wiki-sidebar">
+    <div class="wiki-unit-toggle">
+      <button id="wiki-btn-imperial" class="wiki-unit-btn active">Imperial</button>
+      <button id="wiki-btn-metric"   class="wiki-unit-btn">Metric</button>
+    </div>
+    <hr class="wiki-nav-divider" style="margin-top:0" />
     <div class="wiki-nav-section">
       <a class="wiki-nav-link active" data-page="intro">World of Sinverse</a>
       <a class="wiki-nav-link" data-page="timeline">Timeline</a>
@@ -1332,12 +1359,24 @@ document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
 
 
 // ── Load data ─────────────────────────────────────────────────
+var wikiMetric = localStorage.getItem('wiki-metric') === 'true';
+
 function fH(inches) {
+  if (wikiMetric) {
+    var cm = Math.round(inches * 2.54);
+    if (cm >= 100) return (cm / 100).toFixed(2).replace(/\.?0+$/, '') + ' m';
+    return cm + ' cm';
+  }
   var ft = Math.floor(inches / 12), ins = Math.round(inches % 12);
   return ft + "'" + ins + '"';
 }
 function fW(lbs) {
   if (!lbs) return '—';
+  if (wikiMetric) {
+    var kg = lbs * 0.453592;
+    if (kg >= 1000) return (kg/1000).toFixed(1) + ' t';
+    return Math.round(kg).toLocaleString() + ' kg';
+  }
   if (lbs >= 100000) return (lbs/2000).toFixed(1) + ' t';
   return Math.round(lbs).toLocaleString() + ' lbs';
 }
@@ -1498,6 +1537,25 @@ var sidebarToggle = document.getElementById('wiki-sidebar-toggle');
 var wikiApp = document.querySelector('.wiki-app');
 if (sidebarToggle && wikiApp) {
   // Restore saved state
+  // Unit toggle — two-button pair
+  var wikiBtnImp = document.getElementById('wiki-btn-imperial');
+  var wikiBtnMet = document.getElementById('wiki-btn-metric');
+  function applyWikiUnit() {
+    if (wikiBtnImp) wikiBtnImp.classList.toggle('active', !wikiMetric);
+    if (wikiBtnMet) wikiBtnMet.classList.toggle('active',  wikiMetric);
+    // Update any visible height/length values in place
+    document.querySelectorAll('.char-stat-val[data-inches]').forEach(function(el) {
+      el.textContent = fH(parseFloat(el.getAttribute('data-inches')));
+    });
+  }
+  applyWikiUnit();
+  if (wikiBtnImp) wikiBtnImp.addEventListener('click', function() {
+    wikiMetric = false; localStorage.setItem('wiki-metric', 'false'); applyWikiUnit();
+  });
+  if (wikiBtnMet) wikiBtnMet.addEventListener('click', function() {
+    wikiMetric = true;  localStorage.setItem('wiki-metric', 'true');  applyWikiUnit();
+  });
+
   if (localStorage.getItem('wiki-sidebar-collapsed') === 'true') {
     wikiApp.classList.add('sidebar-collapsed');
   }
@@ -1710,7 +1768,7 @@ function loadCharPage(charId, pushState) {
   var statRows = [
     ['Species',    char.species || '—'],
     ['Pronouns',   char.pronouns || '—'],
-    ['Height',     fH(char.height)],  // raw canonical height — height_correction is sizeref-only
+    ['Height',     '<span class="char-stat-val" data-inches="' + char.height + '">' + fH(char.height) + '</span>'],
     ['Weight',     char.weight ? fW(char.weight) : '—'],
     ['Build',      char.build ? (char.build.charAt(0).toUpperCase() + char.build.slice(1)) : '—'],
     ['Faction',    char.faction || '—'],
@@ -1721,7 +1779,9 @@ function loadCharPage(charId, pushState) {
     statRows.push(['Transformed by', xfLabel]);
   }
   if (char.anatomy && char.anatomy.penis && char.length) {
-    statRows.push(['Length', (char.length * (char.length_correction||1)).toFixed(1) + '"']);
+    var rawLenIn = char.length * (char.length_correction||1);
+    var lenStr = wikiMetric ? Math.round(rawLenIn * 2.54) + ' cm' : rawLenIn.toFixed(1) + '"';
+    statRows.push(['Length', '<span class="char-stat-val" data-inches="' + rawLenIn + '">' + lenStr + '</span>']);
   }
   if (char.age_appearance) {
     statRows.push(['Apparent age', char.age_appearance.charAt(0).toUpperCase() + char.age_appearance.slice(1)]);
