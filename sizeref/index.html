@@ -26,8 +26,7 @@
 
     <div class="sr-tabs">
       <button class="sr-tab active" data-tab="compare">Compare</button>
-      <button class="sr-tab" data-tab="custom1">Custom 1</button>
-      <button class="sr-tab" data-tab="custom2">Custom 2</button>
+      <button class="sr-tab" data-tab="mychars">My Characters</button>
     </div>
 
     <!-- Compare panel -->
@@ -42,22 +41,25 @@
       </div>
     </div>
 
-    <!-- Custom 1 panel -->
-    <div id="tab-custom1" class="sr-tab-panel" style="display:none">
-      <div class="custom-header">
-        <span class="custom-header-title">Custom Character 1</span>
-        <button class="custom-clear-btn" data-slot="1">Clear</button>
+    <!-- My Characters panel -->
+    <div id="tab-mychars" class="sr-tab-panel" style="display:none">
+      <div class="mychars-header">
+        <span class="mychars-title">My Characters</span>
+        <span class="mychars-count" id="mychars-count">0 / 8</span>
       </div>
-      <div id="custom1-form" class="custom-form"></div>
+      <div id="mychars-roster" class="mychars-roster"></div>
+      <button id="mychars-add-btn" class="mychars-add-btn">+ New Character</button>
     </div>
 
-    <!-- Custom 2 panel -->
-    <div id="tab-custom2" class="sr-tab-panel" style="display:none">
-      <div class="custom-header">
-        <span class="custom-header-title">Custom Character 2</span>
-        <button class="custom-clear-btn" data-slot="2">Clear</button>
+    <!-- Custom char edit modal -->
+    <div id="custom-modal" class="custom-modal-overlay" style="display:none">
+      <div class="custom-modal-box">
+        <div class="custom-modal-topbar">
+          <span class="custom-modal-title" id="custom-modal-title">New Character</span>
+          <button class="custom-modal-close" id="custom-modal-close">&#10005;</button>
+        </div>
+        <div id="custom-modal-form" class="custom-form custom-modal-form"></div>
       </div>
-      <div id="custom2-form" class="custom-form"></div>
     </div>
   </aside>
 
@@ -83,14 +85,20 @@
         <span id="zoom-label" class="zoom-label">100%</span>
         <button id="btn-zoom-in"  class="zoom-btn">&#43;</button>
         <button id="btn-zoom-reset" class="zoom-btn zoom-reset-btn">Reset</button>
-        <button id="btn-copy-img" class="zoom-btn zoom-reset-btn" title="Copy viewer to clipboard">&#128203;</button>
-
       </div>
     </div>
 
     <!-- ── Height view ─────────────────────────── -->
     <div id="view-height" class="sr-view">
       <div class="sr-canvas-area" id="sr-canvas-area">
+        <div id="sr-ruler-svg-wrap" style="display:none;position:absolute;inset:0;z-index:50;pointer-events:none;">
+          <svg id="sr-ruler-svg" width="100%" height="100%" style="position:absolute;inset:0;">
+            <line id="ruler-line" stroke="#e03030" stroke-width="2.5" stroke-dasharray="8,5" x1="0" y1="0" x2="0" y2="0"/>
+            <circle id="ruler-dot-a" r="9" fill="#e03030" stroke="white" stroke-width="2" style="cursor:grab;pointer-events:all"/>
+            <circle id="ruler-dot-b" r="9" fill="#e03030" stroke="white" stroke-width="2" style="cursor:grab;pointer-events:all"/>
+            <text id="ruler-label" dominant-baseline="middle" text-anchor="middle" font-size="13" font-family="monospace" fill="white" paint-order="stroke" stroke="#1a1a1a" stroke-width="3" stroke-linejoin="round"></text>
+          </svg>
+        </div>
         <div class="sr-ruler-col" id="sr-ruler-col">
           <div class="sr-ruler-inner" id="sr-ruler-inner"></div>
         </div>
@@ -102,6 +110,16 @@
               <div class="sr-ground"></div>
             </div>
           </div>
+        </div>
+      </div>
+      <div class="sr-copy-bar">
+        <div class="sr-copy-bar-left">
+          <button id="btn-sandbox" class="sandbox-btn">Sandbox: Off</button>
+          <button id="btn-ruler" class="sandbox-btn">Ruler: Off</button>
+        </div>
+        <div class="sr-copy-bar-right">
+          <button id="btn-copy-img" class="copy-img-btn" title="Copy viewer to clipboard">&#128203; Copy image</button>
+          <button id="btn-copy-scale" class="copy-scale-btn" title="Include scale in copy">&#128207;</button>
         </div>
       </div>
       <div id="sr-stats" class="sr-stats"></div>
@@ -133,7 +151,7 @@
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="../_shared/registry.js"></script>
-<script src="sizeref.js?v=1779977879"></script>
+<script src="sizeref.js?v=1780031084"></script>
 
 <!-- ── Resize popup backdrop ──────────────────── -->
 <div id="sr-resize-backdrop" class="sr-resize-backdrop"></div>

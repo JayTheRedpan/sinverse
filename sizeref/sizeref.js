@@ -1,6 +1,11 @@
 'use strict';
 
 // ── State ─────────────────────────────────────────────────────
+var sandboxMode    = false;
+var sandboxOffsets = {};
+var sandboxPendingSnapshot = null;
+var sandboxRafPending = false;
+
 var S = {
   heightOverrides: {},  // charId -> override inches (session only)
   gridLines:    false,  // show scale grid lines across viewer
@@ -10,6 +15,8 @@ var S = {
   builds:      [],
   metric:      false,
   zoomH:       1,
+  charFlips:   {},
+  charRotations: {},
   zoomL:       0.5,
   view:        'height',
   pxPerIn:     2,
@@ -68,10 +75,10 @@ function deleteImg(key) {
     if (!raw) return;
     var d = JSON.parse(raw);
     var changed = false;
-    ['slot1','slot2'].forEach(function(k) {
-      if (!d[k]) return;
+    (d.chars||[]).forEach(function(c) {
+      if (!c) return;
       ['image','length_image','profile_image'].forEach(function(f) {
-        if (d[k][f] && d[k][f].startsWith('data:')) { d[k][f] = ''; changed = true; }
+        if (c[f] && c[f].startsWith('data:')) { c[f] = ''; changed = true; }
       });
     });
     if (changed) localStorage.setItem('sinverse_custom_chars', JSON.stringify(d));
@@ -167,8 +174,8 @@ async function init() {
   requestAnimationFrame(function() {
     applyURLParams();
     renderActive(); // respects S.view set by URL params
-    var ro = new ResizeObserver(function() { renderActive(); });
-    if (area) ro.observe(area);
+    window._sizeRefRO = new ResizeObserver(function() { if (!sandboxMode) renderActive(); });
+    if (area) window._sizeRefRO.observe(area);
   });
 }
 
@@ -396,7 +403,6 @@ function sc(hIn, buildId) {
 
 // ── Selects ───────────────────────────────────────────────────
 function buildSelectOptions(sel, preserveValue) {
-  var customs = loadCustom();
   var cur = preserveValue !== undefined ? preserveValue : sel.value;
   sel.innerHTML = '<option value="">-- Select --</option>';
   var cg = el('optgroup'); cg.label = 'Canon';
@@ -404,13 +410,12 @@ function buildSelectOptions(sel, preserveValue) {
     var o = el('option'); o.value = 'canon_'+c.id; o.textContent = c.name; cg.appendChild(o);
   });
   sel.appendChild(cg);
-  var c1 = loadCustom().slot1, c2 = loadCustom().slot2;
-  var c1valid = c1 && c1.name && c1.height;
-  var c2valid = c2 && c2.name && c2.height;
-  if (c1valid || c2valid) {
+  var customChars = (loadCustom().chars||[]).filter(function(c){return c&&c.name&&c.height;});
+  if (customChars.length) {
     var custG = el('optgroup'); custG.label = 'Custom';
-    if(c1valid){var o=el('option');o.value='custom_1';o.textContent=c1.name+' (custom)';custG.appendChild(o);}
-    if(c2valid){var o=el('option');o.value='custom_2';o.textContent=c2.name+' (custom)';custG.appendChild(o);}
+    customChars.forEach(function(c){
+      var o=el('option'); o.value=c.id; o.textContent=c.name+' (custom)'; custG.appendChild(o);
+    });
     sel.appendChild(custG);
   }
   if (cur) sel.value = cur;
@@ -458,7 +463,7 @@ function charFromValue(v) {
     var id = parseInt(v.replace('canon_','')); return S.chars.find(function(c){return c.id===id;})||null;
   }
   if (v.startsWith('custom_')) {
-    var d = loadCustom(); return d[v==='custom_1'?'slot1':'slot2']||null;
+    return getCustomChar(v);
   }
   return null;
 }
@@ -504,6 +509,25 @@ function render() {
   var figs    = document.getElementById('sr-figures');
   var stats   = document.getElementById('sr-stats');
 
+  // In sandbox mode, snapshot current figure positions before clearing
+  var _sandboxSnap = null;
+  if (sandboxMode) {
+    if (sandboxPendingSnapshot !== null) {
+      _sandboxSnap = sandboxPendingSnapshot;
+      sandboxPendingSnapshot = null;
+    } else {
+      // Capture current transforms from DOM
+      _sandboxSnap = {};
+      var _existingWraps = figs.querySelectorAll('.sr-img-wrap[data-char-id]');
+      _existingWraps.forEach(function(w) {
+        var cid = w.getAttribute('data-char-id');
+        if (!cid) return;
+        var t = w.style.transform || '';
+        var m = t.match(/translate\(([-\d.]+)px[, ]+([-\d.]+)px\)/);
+        _sandboxSnap[cid] = m ? {tx: parseFloat(m[1]), ty: parseFloat(m[2])} : {tx:0, ty:0};
+      });
+    }
+  }
   figs.innerHTML = '';
   stats.innerHTML = '';
 
@@ -517,7 +541,7 @@ function render() {
       if (!val) return;
       if (type === 'obj') {
         var obj = S.objects.find(function(o){ return o.id === val; });
-        if (obj) stats.appendChild(objStatBlock(obj));
+        if (obj) stats.appendChild(objStatBlock(obj, idx));
       } else {
         var c = charFromValue(val);
         if (c) stats.appendChild(statBlock(c, idx));
@@ -588,8 +612,15 @@ function render() {
   // Rebuild ruler (uses updated S.pxPerIn)
   updateRuler();
   updateHeightGrid();
+  if (rulerActive) updateRulerSVG();
 
   document.getElementById('zoom-label').textContent = Math.round(S.zoomH*100)+'%';
+
+  // Re-enable sandbox synchronously after all figures are in the DOM
+  if (_sandboxSnap !== null) {
+    document.body.classList.add('sandbox-active');
+    enableSandbox(_sandboxSnap);
+  }
 }
 
 function renderChar(figs, char, slotIdx) {
@@ -600,6 +631,8 @@ function renderChar(figs, char, slotIdx) {
 
   var iw = el('div'); iw.className = 'sr-img-wrap';
   iw.style.height = (pH + headroomPx) + 'px';
+  iw.setAttribute('data-char-id', String(char.id || char.name)); // for sandbox position restore
+  iw.draggable = false;
   // Only constrain height — let width follow the image's natural aspect ratio
   var img = el('img');
   var defaultSil = (DEFAULTS.height[char.default_silhouette] || DEFAULTS.height.giantess || '../images/character-default.svg');
@@ -608,6 +641,16 @@ function renderChar(figs, char, slotIdx) {
   img.alt = char.name;
   // sr-img-real skips the brightening filter — only silhouettes need it
   img.className = 'sr-char-img' + (usingDefault ? '' : ' sr-img-real');
+  img.draggable = false;
+  // Apply flip + rotation state
+  var _fk = 'flip_'+(slotIdx !== undefined ? slotIdx : -1);
+  var _rk = 'rot_'+(slotIdx !== undefined ? slotIdx : -1);
+  var _flipped = S.charFlips && S.charFlips[_fk];
+  var _rot = S.charRotations && S.charRotations[_rk] || 0;
+  var _t = '';
+  if (_flipped) _t += 'scaleX(-1) ';
+  if (_rot) _t += 'rotate('+ (_flipped ? -_rot : _rot) +'deg)';
+  if (_t) img.style.transform = _t.trim();
   iw.appendChild(img);
   figs.appendChild(iw);
 }
@@ -735,13 +778,78 @@ function updateRuler() {
 }
 
 // ── Stat block ────────────────────────────────────────────────
-function objStatBlock(obj) {
+
+function applyCharTransform(slotIdx) {
+  var figs = document.getElementById('sr-figures');
+  if (!figs) return;
+  var wraps = figs.querySelectorAll('.sr-img-wrap');
+  var wrap = wraps[slotIdx] || null;
+  if (!wrap) return;
+  var img = wrap.querySelector('img');
+  if (!img) return;
+  var flipped = S.charFlips && S.charFlips['flip_'+slotIdx];
+  var rot = (S.charRotations && S.charRotations['rot_'+slotIdx]) || 0;
+  var t = '';
+  if (flipped) t += 'scaleX(-1) ';
+  if (rot) t += 'rotate('+(flipped ? -rot : rot)+'deg)';
+  img.style.transform = t.trim() || '';
+}
+
+function wireFlipRotate(block, slotIdx) {
+  var flipBtn = block.querySelector('.sr-flip-btn');
+  if (flipBtn) {
+    flipBtn.addEventListener('click', function() {
+      var s = parseInt(this.getAttribute('data-slot'));
+      if (!S.charFlips) S.charFlips = {};
+      S.charFlips['flip_'+s] = !S.charFlips['flip_'+s];
+      this.classList.toggle('active', S.charFlips['flip_'+s]);
+      applyCharTransform(s);
+    });
+  }
+  block.querySelectorAll('.sr-rot-btn').forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      var s = parseInt(this.getAttribute('data-slot'));
+      var dir = parseInt(this.getAttribute('data-dir'));
+      if (!S.charRotations) S.charRotations = {};
+      S.charRotations['rot_'+s] = ((S.charRotations['rot_'+s] || 0) + dir * 15 + 360) % 360;
+      applyCharTransform(s);
+    });
+  });
+  // Full reset button — clears height override, flip, rotation
+  var resetBtn = block.querySelector('.sr-full-reset-btn');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function() {
+      var s = parseInt(this.getAttribute('data-slot') || this.getAttribute('data-slotidx'));
+      // Clear height override
+      delete S.heightOverrides[s];
+      // Clear flip
+      if (S.charFlips) S.charFlips['flip_'+s] = false;
+      // Clear rotation
+      if (S.charRotations) S.charRotations['rot_'+s] = 0;
+      applyCharTransform(s);
+      render();
+    });
+  }
+}
+
+function objStatBlock(obj, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
+  var isFlipped = S.charFlips && S.charFlips['flip_'+slotIdx];
   block.innerHTML =
     '<div class="sr-stat-name">'+obj.label+'</div>'+
+    '<div class="sr-stat-pose-note sr-stat-pose-spacer">&nbsp;</div>'+
     '<div class="sr-stat-grid">'+
       '<div class="sr-stat-row"><span class="sr-stat-key">Height</span><span class="sr-stat-val">'+fH(obj.height)+'</span></div>'+
-    '</div>';
+      '<div class="sr-stat-row sr-stat-row-spacer"><span class="sr-stat-key">Weight</span><span class="sr-stat-val">—</span></div>'+  
+    '</div>'+
+    '<div class="sr-stat-resize-wrap"><div class="sr-resize-row">'+
+      '<button class="unit-btn sr-flip-btn'+(isFlipped?' active':'')+'" data-slot="'+slotIdx+'" title="Flip image">&#8644; Flip</button>'+
+      '<button class="unit-btn sr-rot-btn" data-slot="'+slotIdx+'" data-dir="-1" title="Rotate left">&#8634;</button>'+
+      '<button class="unit-btn sr-rot-btn" data-slot="'+slotIdx+'" data-dir="1" title="Rotate right">&#8635;</button>'+
+      '<button class="unit-btn sr-full-reset-btn" data-slot="'+slotIdx+'" data-type="obj">Reset</button>'+
+    '</div></div>';
+
+  wireFlipRotate(block, slotIdx);
   return block;
 }
 
@@ -760,6 +868,26 @@ function scaledLength(char, slotIdx) {
   var canonL = char.length * (char.length_correction || 1);
   if (effH === canonH) return canonL;
   return canonL * (effH / canonH);
+}
+
+function resizeControlsFlipHTML(char, slotIdx, isFlipped) {
+  var base = resizeControlsHTML(char, slotIdx);
+  // Inject flip button into the sr-resize-row (or create one for custom chars)
+  var rotKey = 'rot_'+slotIdx;
+  var curRot = (S.charRotations && S.charRotations[rotKey]) || 0;
+  var rotBtns =
+    '<button class="unit-btn sr-rot-btn" data-slot="'+slotIdx+'" data-dir="-1" title="Rotate left">&#8634;</button>'+
+    '<button class="unit-btn sr-rot-btn" data-slot="'+slotIdx+'" data-dir="1" title="Rotate right">&#8635;</button>';
+  var flipBtn = '<button class="unit-btn sr-flip-btn'+(isFlipped?' active':'')+
+    '" data-slot="'+slotIdx+'" title="Flip image">&#8644; Flip</button>';
+  var resetBtn = '<button class="unit-btn sr-full-reset-btn" data-slot="'+slotIdx+'" data-slotidx="'+slotIdx+'">Reset</button>';
+  var btns = flipBtn + rotBtns + resetBtn;
+  if (base) {
+    // Replace the existing Reset button (sv-resize-reset) with our unified one, add flip/rot before it
+    return base.replace('<button class="unit-btn sr-full-reset-btn"', flipBtn + rotBtns + '<button class="unit-btn sr-full-reset-btn"').replace('</div>', '</div>');
+  } else {
+    return '<div class="sr-resize-row">'+btns+'</div>';
+  }
 }
 
 function resizeControlsHTML(char, slotIdx) {
@@ -782,7 +910,7 @@ function resizeControlsHTML(char, slotIdx) {
         ' data-cur-cm="' + curCm + '">' +
         'Resize' +
       '</button>' +
-      (isOv ? '<button class="unit-btn sv-resize-reset" data-slotidx="' + slotIdx + '">Reset</button>' : '') +
+      '<button class="unit-btn sr-full-reset-btn" data-slotidx="' + slotIdx + '" data-slot="' + slotIdx + '">Reset</button>' +
     '</div>'
   );
 }
@@ -882,7 +1010,7 @@ function wireResizeControls(block) {
 
     if (btn.classList.contains('sr-resize-close')) { closeResizePopup(); return; }
 
-    if (btn.classList.contains('sv-resize-reset')) {
+    if (btn.classList.contains('sv-resize-reset') || btn.classList.contains('sr-full-reset-btn')) {
       var idx3 = parseInt(btn.getAttribute('data-slotidx'));
       delete S.heightOverrides[idx3];
       closeResizePopup();
@@ -899,23 +1027,31 @@ function statBlock(char, slotIdx) {
   var isOv = S.heightOverrides[slotIdx] !== undefined;
   var trueH = isOv ? effH_in : char.height;  // true canonical height
   var isPosed = char.height_correction && char.height_correction < 0.99;
-  var poseRow = isPosed
-    ? '<div class="sr-stat-row"><span class="sr-stat-key"></span><span class="sr-stat-val sr-stat-note">renders as '+fH(effH_in)+' (posed)</span></div>' : '';
+  var poseNote = isPosed
+    ? '<div class="sr-stat-pose-note">renders as '+fH(effH_in)+' (posed)</div>'
+    : '<div class="sr-stat-pose-note sr-stat-pose-spacer">&nbsp;</div>';
+
+  // Flip state per character slot
+  var charKey = 'flip_'+slotIdx;
+  var isFlipped = S.charFlips && S.charFlips[charKey];
 
   block.innerHTML =
     '<div class="sr-stat-name">'+char.name+
       (char.canonical?' <span class="sr-stat-canon">&#10022;</span>':'')+
       (isOv?' <span class="sr-override-badge">&#x21D4;</span>':'')+
     '</div>'+
+    poseNote+
     '<div class="sr-stat-grid">'+
       '<div class="sr-stat-row"><span class="sr-stat-key">Height</span><span class="sr-stat-val">'+fH(trueH)+'</span></div>'+
-      poseRow+
       '<div class="sr-stat-row"><span class="sr-stat-key">Weight</span><span class="sr-stat-val">'+fW(scaledWeight(char, slotIdx))+'</span></div>'+
     '</div>'+
-    '<div class="sr-stat-resize-wrap">'+resizeControlsHTML(char, slotIdx)+'</div>'+
+    '<div class="sr-stat-resize-wrap">'+resizeControlsFlipHTML(char, slotIdx, isFlipped)+'</div>'+
     (char.wiki?'<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>':'<div class="sr-wiki-spacer"></div>');
 
   wireResizeControls(block);
+
+  wireFlipRotate(block, slotIdx);
+
   return block;
 }
 
@@ -1504,7 +1640,7 @@ function renderStatsView() {
     var btn = e.target.closest('.sv-resize-set, .sv-resize-reset');
     if (!btn) return;
     var charId = parseInt(btn.getAttribute('data-charid'));
-    if (btn.classList.contains('sv-resize-reset')) {
+    if (btn.classList.contains('sv-resize-reset') || btn.classList.contains('sr-full-reset-btn')) {
       delete S.heightOverrides[charId];
     } else {
       // Set
@@ -1662,7 +1798,11 @@ function renderLengthView() {
       if (obj && obj.length) entities.push({kind:'obj', data:obj, slotIdx:idx});
     } else {
       var c = charFromValue(val);
-      if (c) entities.push({kind:'char', data:c, slotIdx:idx, hasLength: !!(c.length)});
+      if (c) {
+        // noPenis flag: custom chars with penis off render as portrait+dash only
+        var noPenis = c.custom && c.anatomy && c.anatomy.penis === false;
+        entities.push({kind:'char', data:c, slotIdx:idx, hasLength: !!(c.length) && !noPenis, noPenis: noPenis});
+      }
     }
   });
 
@@ -1677,8 +1817,8 @@ function renderLengthView() {
   entities.forEach(function(e) {
     var eid = e.kind === 'char' ? (e.data.id || e.data.name) : null;
     var eMode = eid ? (S.lenImgMode[eid] || 'length') : 'length';
-    // No-length chars only contribute to maxLen when in body mode
-    if (e.kind === 'char' && !e.data.length && eMode !== 'height') return;
+    // No-length and no-penis chars only contribute to maxLen when in body mode
+    if (e.kind === 'char' && (!e.data.length || e.noPenis) && eMode !== 'height') return;
     var len;
     if (eMode === 'height' && e.kind === 'char') {
       len = effectiveHSlot(e.data, e.slotIdx);
@@ -1732,23 +1872,20 @@ function renderLengthRow(entity) {
   // Objects: empty headshot cell (for alignment)
 
   // Length image row — goes inside zoom container
-  // For chars with no length (fem chars):
-  // - length mode: portrait only row (no length bar)
-  // - body mode: fall through to normal render with height as display length
-  if (entity.kind === 'char' && !entity.data.length) {
+  // For chars with no length or penis off — portrait + dash only
+  var noLengthChar = entity.kind === 'char' && (!entity.data.length || entity.noPenis);
+  if (noLengthChar) {
     var femEntityId = entity.data.id || entity.data.name;
-    var femMode = S.lenImgMode[femEntityId] || 'length';
+    var femMode = entity.noPenis ? 'length' : (S.lenImgMode[femEntityId] || 'length');
     if (femMode !== 'height') {
-      // Portrait-only — hsWrap already built above, just wrap and return
       row.appendChild(hsWrap);
       return row;
     }
-    // Body mode: fall through — effLen will use height, lenMode will trigger height image
+    // Body mode: fall through
   }
 
-  // For no-length chars in body mode, use their height as the display length
   var effLen;
-  if (entity.kind === 'char' && !entity.data.length) {
+  if (entity.kind === 'char' && (!entity.data.length || entity.noPenis)) {
     effLen = effectiveHSlot(entity.data, entity.slotIdx);
   } else {
     effLen = entity.kind === 'char'
@@ -1855,29 +1992,46 @@ function updateLengthRuler(maxLen, pxPerIn) {
 }
 
 function updateLengthVisibility(slot) {
-  var d = loadCustom()['slot'+slot];
-  var hasPenis = !d || !d.anatomy || d.anatomy.penis !== false;
+  // Check the live button state first (before save), fallback to saved data
+  var penisBtn = g('anat-penis-'+slot);
+  var hasPenis = penisBtn ? penisBtn.classList.contains('active') : true;
+  if (!penisBtn) {
+    var d = getCustomChar('custom_'+slot);
+    hasPenis = !d || !d.anatomy || d.anatomy.penis !== false;
+  }
+
   var lengthEl = document.querySelector('.custom'+slot+'-length-section');
   if (!lengthEl) return;
-  lengthEl.style.opacity = hasPenis ? '' : '0.35';
-  lengthEl.style.pointerEvents = hasPenis ? '' : 'none';
-  // Put tip in the summary header
+
+  var details = lengthEl.querySelector('.form-det');
   var summary = lengthEl.querySelector('.form-det-summary');
-  var lockSpan = summary ? summary.querySelector('.anat-lock-tip') : null;
-  if (summary && !hasPenis && !lockSpan) {
-    var tip = document.createElement('span');
-    tip.className = 'anat-lock-tip';
-    tip.textContent = ' — enable "Penis" in Anatomy to edit';
-    tip.style.cssText = 'font-family:var(--font-body);font-size:0.62rem;letter-spacing:0;text-transform:none;color:var(--text-muted);font-style:italic;';
-    summary.appendChild(tip);
-  } else if (lockSpan && hasPenis) {
-    lockSpan.remove();
+
+  if (!hasPenis) {
+    // Collapse and lock
+    if (details) details.removeAttribute('open');
+    lengthEl.style.opacity = '0.4';
+    lengthEl.style.pointerEvents = 'none';
+    var lockSpan = summary ? summary.querySelector('.anat-lock-tip') : null;
+    if (summary && !lockSpan) {
+      var tip = document.createElement('span');
+      tip.className = 'anat-lock-tip';
+      tip.textContent = ' — enable Penis in Anatomy';
+      tip.style.cssText = 'font-family:var(--font-body);font-size:0.62rem;letter-spacing:0;text-transform:none;color:var(--text-muted);font-style:italic;';
+      summary.appendChild(tip);
+    }
+  } else {
+    // Restore
+    lengthEl.style.opacity = '';
+    lengthEl.style.pointerEvents = '';
+    var lockSpan2 = summary ? summary.querySelector('.anat-lock-tip') : null;
+    if (lockSpan2) lockSpan2.remove();
   }
 }
 
 function lengthStatBlock(char, slotIdx) {
   var block = el('div'); block.className = 'sr-stat-block';
-  var effLen = scaledLength(char, slotIdx) || 0;
+  var noPenisChar = char.custom && char.anatomy && char.anatomy.penis === false;
+  var effLen = noPenisChar ? 0 : (scaledLength(char, slotIdx) || 0);
   var entityId = char.id || char.name;
   var mode = S.lenImgMode[entityId] || 'length';
   var isOv = S.heightOverrides[slotIdx] !== undefined;
@@ -1930,14 +2084,18 @@ function objLengthStatBlock(obj) {
 
 // ── Custom forms ──────────────────────────────────────────────────
 function buildForms() {
-  [1,2].forEach(buildForm);
+  var chars=loadCustom().chars||[];
+  chars.forEach(function(c){
+    var slot=parseInt((c.id||'').replace('custom_',''),10);
+    if(slot) buildForm(slot);
+  });
 }
 
 function buildForm(slot) {
   var wrap = document.getElementById('custom'+slot+'-form');
   if (!wrap) return;
   wrap.innerHTML = '';
-  var ex = loadCustom()['slot'+slot];
+  var ex = getCustomChar('custom_'+slot);
   var exCorr = ex ? String(ex.height_correction||'1') : '1';
 
   // Preload images into cropImgs for crop tool
@@ -1971,7 +2129,7 @@ function buildForm(slot) {
   wrap.appendChild(field('Name *', inp('text','n'+slot,'Character name',ex?ex.name:'')));
 
   // ── ANATOMY toggles ────────────────────────────
-  var anatDet = makeDet('Anatomy', false, 'section-stats');
+  var anatDet = makeDet('Anatomy', false, 'section-anatomy');
   var anatBody = anatDet.querySelector('.det-body');
   var anatF = cf('Features');
 
@@ -1996,13 +2154,7 @@ function buildForm(slot) {
       '<select class="builder-input" id="bust-sel-'+slot+'">'+bustOpts+'</select>' +
     '</div>';
   anatBody.appendChild(anatF);
-  wrap.appendChild(anatDet);
-
-  // ── HEIGHT section ──────────────────────────────
-  var heightDet = makeDet('Height', false, 'section-height');
-  var heightBody = heightDet.querySelector('.det-body');
-
-  // Height input
+  // ── HEIGHT inputs (inline, no collapsible wrapper) ────────
   var hf = cf('Height *');
   hf.innerHTML +=
     '<div class="row" id="hi-'+slot+'">' +
@@ -2015,28 +2167,64 @@ function buildForm(slot) {
       '<input id="cm-'+slot+'" class="builder-input numInput" type="number" min="0" max="999" value="'+(ex?Math.round(inToCm(ex.height)):183)+'" />' +
       '<span class="sep">cm</span>' +
     '</div>';
-  heightBody.appendChild(hf);
+  wrap.appendChild(hf);
 
-  // Height image: silhouette dropdown + upload option
+  // ── IMAGES section ──────────────────────────────────────────
+  // Declare all image-related variables here for use across sub-tabs
   var curHSilId = (ex && ex.default_silhouette) || (DEFAULTS.heightSils[0] && DEFAULTS.heightSils[0].id) || '';
   var hasHUpload = !!(ex && (ex.image || ex.i_has_img));
   var hselVal = hasHUpload ? 'upload' : curHSilId;
+  var hasCustomLImg = ex && ex.length_image && ex.length_image.startsWith('data');
+  var curLSil = (ex && ex.default_length_silhouette) || (DEFAULTS.lengthSils[0] && DEFAULTS.lengthSils[0].id) || '';
+  var lsilVal = hasCustomLImg ? 'custom' : curLSil;
+  var exFlip = ex && ex.length_orient_flip;
+  var exRot  = ex && ex.length_orient_rotate ? ex.length_orient_rotate : 0;
+  var exHeadroom = ex && ex.headroom_pct ? ex.headroom_pct : 0;
+  var curPSilId = (ex && ex.default_headshot_silhouette) || (DEFAULTS.headshotSils[0] && DEFAULTS.headshotSils[0].id) || '';
+  var hasPUpload = !!(ex && ex.profile_image);
+  var pselVal = hasPUpload ? 'upload' : curPSilId;
+
+  var imagesDet = makeDet('Images', false, 'section-images');
+  var imagesBody = imagesDet.querySelector('.det-body');
+
+  // ── Sub-tab bar ─────────────────────────────────────────────
+  var tabBar = el('div'); tabBar.className = 'img-subtab-bar';
+  var tabs = ['height', 'length', 'profile'];
+  var tabLabels = { height: 'Height', length: 'Length', profile: 'Profile' };
+  tabs.forEach(function(t) {
+    var btn = el('button');
+    btn.className = 'img-subtab-btn' + (t === 'height' ? ' active' : '');
+    btn.setAttribute('data-imgtab', t);
+    btn.textContent = tabLabels[t];
+    btn.addEventListener('click', function() {
+      tabBar.querySelectorAll('.img-subtab-btn').forEach(function(b){ b.classList.remove('active'); });
+      btn.classList.add('active');
+      imagesBody.querySelectorAll('.img-subtab-panel').forEach(function(p){ p.style.display = 'none'; });
+      var panel = imagesBody.querySelector('.img-subtab-panel[data-imgtab="'+t+'"]');
+      if (panel) panel.style.display = '';
+    });
+    tabBar.appendChild(btn);
+  });
+  imagesBody.appendChild(tabBar);
+
+  // ── HEIGHT sub-tab ──────────────────────────────────────────
+  var htPanel = el('div');
+  htPanel.className = 'img-subtab-panel';
+  htPanel.setAttribute('data-imgtab', 'height');
+
   var himgF = cf('Height image');
   himgF.innerHTML +=
     '<select class="builder-input hsilh-sel" id="hsilh-'+slot+'">' +
       DEFAULTS.heightSils.map(function(s){return '<option value="'+s.id+'"'+(hselVal===s.id?' selected':'')+'>'+s.label+'</option>';}).join('') +
       '<option value="upload"'+(hselVal==='upload'?' selected':'')+'>Upload / Link image</option>' +
     '</select>';
-  heightBody.appendChild(himgF);
+  htPanel.appendChild(himgF);
 
-  // Upload + pose — only shown when Upload selected
   var hUpload = uploadSection(slot, 'i', 'Height image', ex&&ex.image?ex.image:'');
   hUpload.id = 'hupload-'+slot;
   hUpload.style.display = hselVal==='upload'?'':'none';
-  heightBody.appendChild(hUpload);
+  htPanel.appendChild(hUpload);
 
-  // Headroom offset — extra space above skull for hair, ears, hats etc.
-  var exHeadroom = ex && ex.headroom_pct ? ex.headroom_pct : 0;
   var hrf = cf('Top offset');
   hrf.id = 'hheadroom-'+slot;
   hrf.style.display = hasHUpload ? '' : 'none';
@@ -2047,7 +2235,7 @@ function buildForm(slot) {
       '<span class="cf-hint" id="headroom-lbl-'+slot+'">'+exHeadroom+'%</span>'+
     '</div>'+
     '<input type="hidden" id="headroom-'+slot+'" step="0.5" value="'+exHeadroom+'" />';
-  heightBody.appendChild(hrf);
+  htPanel.appendChild(hrf);
 
   var pf = cf('Pose');
   pf.id = 'hpose-'+slot;
@@ -2056,9 +2244,77 @@ function buildForm(slot) {
     '<select class="builder-input" id="pose-'+slot+'">' +
     POSES.map(function(p){return '<option value="'+p.v+'"'+(p.v===exCorr?' selected':'')+'>'+p.l+'</option>';}).join('') +
     '</select>';
-  heightBody.appendChild(pf);
+  htPanel.appendChild(pf);
+  imagesBody.appendChild(htPanel);
 
-  wrap.appendChild(heightDet);
+  // ── LENGTH sub-tab ──────────────────────────────────────────
+  var lenPanel = el('div');
+  lenPanel.className = 'img-subtab-panel';
+  lenPanel.setAttribute('data-imgtab', 'length');
+  lenPanel.style.display = 'none';
+
+  var lsildWrap = el('div'); lsildWrap.id = 'lsild-'+slot;
+  var lsf = cf('Length image');
+  var lsilOpts = DEFAULTS.lengthSils.map(function(s){
+    return '<option value="'+s.id+'"'+(lsilVal===s.id?' selected':'')+'>'+s.label+'</option>';
+  }).join('');
+  lsf.innerHTML +=
+    '<select class="builder-input lsil-sel" id="lsil-'+slot+'">' +
+      lsilOpts +
+      '<option value="custom"'+(lsilVal==='custom'?' selected':'')+'>Upload / Link image</option>' +
+    '</select>';
+  lsildWrap.appendChild(lsf);
+
+  var lUpload = uploadSection(slot, 'l', 'Custom length image', hasCustomLImg?(ex.length_image||''):'');
+  lUpload.style.display = lsilVal === 'custom' ? '' : 'none';
+  lUpload.id = 'lupload-'+slot;
+  lsildWrap.appendChild(lUpload);
+
+  var orientF = cf('Image orientation');
+  orientF.id = 'lorient-'+slot;
+  var hasLengthImg = lsilVal === 'custom' && !!(ex && ex.length_image);
+  orientF.style.display = hasLengthImg ? '' : 'none';
+  orientF.innerHTML +=
+    '<div class="btn-row">' +
+      '<label class="orient-check"><input type="checkbox" id="lflip-'+slot+'"'+(exFlip?' checked':'')+' /> Flip horizontally</label>' +
+    '</div>' +
+    '<div class="cf-label" style="margin-top:.5rem;margin-bottom:.3rem">Rotate</div>' +
+    '<div class="btn-row">' +
+      '<button class="unit-btn lrot-btn'+(exRot===0?' active':'')+'" data-slot="'+slot+'" data-rot="0">0°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===45?' active':'')+'" data-slot="'+slot+'" data-rot="45">45°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===90?' active':'')+'" data-slot="'+slot+'" data-rot="90">90°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===135?' active':'')+'" data-slot="'+slot+'" data-rot="135">135°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===180?' active':'')+'" data-slot="'+slot+'" data-rot="180">180°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===225?' active':'')+'" data-slot="'+slot+'" data-rot="225">225°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===270?' active':'')+'" data-slot="'+slot+'" data-rot="270">270°</button>' +
+      '<button class="unit-btn lrot-btn'+(exRot===315?' active':'')+'" data-slot="'+slot+'" data-rot="315">315°</button>' +
+    '</div>';
+  lsildWrap.appendChild(orientF);
+  lenPanel.appendChild(lsildWrap);
+  imagesBody.appendChild(lenPanel);
+
+  // ── PROFILE sub-tab ─────────────────────────────────────────
+  var profPanel = el('div');
+  profPanel.className = 'img-subtab-panel';
+  profPanel.setAttribute('data-imgtab', 'profile');
+  profPanel.style.display = 'none';
+
+  var pimgF = cf('Profile image');
+  pimgF.innerHTML +=
+    '<select class="builder-input psil-sel" id="psil-'+slot+'">' +
+      DEFAULTS.headshotSils.map(function(s){
+        return '<option value="'+s.id+'"'+(pselVal===s.id?' selected':'')+'>'+s.label+'</option>';
+      }).join('') +
+      '<option value="upload"'+(pselVal==='upload'?' selected':'')+'>Upload / Link image</option>' +
+    '</select>';
+  profPanel.appendChild(pimgF);
+
+  var pUpload = uploadSection(slot, 'p', 'Profile / Headshot', ex&&ex.profile_image?ex.profile_image:'');
+  pUpload.id = 'pupload-'+slot;
+  pUpload.style.display = pselVal==='upload'?'':'none';
+  profPanel.appendChild(pUpload);
+  imagesBody.appendChild(profPanel);
+  wrap.appendChild(imagesDet);
 
   // ── LENGTH section ──────────────────────────────
   var lengthDet = makeDet('Length', false, 'section-length');
@@ -2109,69 +2365,13 @@ function buildForm(slot) {
     '</div>';
   lengthBody.appendChild(lf);
 
-  // Length image section — wrapped so it can be hidden for fem characters
-  var lsildWrap = el('div'); lsildWrap.id = 'lsild-'+slot;
-  var lsf = cf('Length image');
-  var curLSil = (ex && ex.default_length_silhouette) || (DEFAULTS.lengthSils[0] && DEFAULTS.lengthSils[0].id) || '';
-  var hasCustomLImg = ex && ex.length_image && ex.length_image.startsWith('data');
-  var lsilVal = hasCustomLImg ? 'custom' : curLSil;
-  var lsilOpts = DEFAULTS.lengthSils.map(function(s){
-    return '<option value="'+s.id+'"'+(lsilVal===s.id?' selected':'')+'>'+s.label+'</option>';
-  }).join('');
-  lsf.innerHTML +=
-    '<select class="builder-input lsil-sel" id="lsil-'+slot+'">' +
-      lsilOpts +
-      '<option value="custom"'+(lsilVal==='custom'?' selected':'')+'>Upload / Link image</option>' +
-    '</select>';
-  lsildWrap.appendChild(lsf);
-
-  var lUpload = uploadSection(slot, 'l', 'Custom length image', hasCustomLImg?(ex.length_image||''):'');
-  lUpload.style.display = lsilVal === 'custom' ? '' : 'none';
-  lUpload.id = 'lupload-'+slot;
-  lsildWrap.appendChild(lUpload);
-
-  var exFlip = ex && ex.length_orient_flip;
-  var exRot  = ex && ex.length_orient_rotate ? ex.length_orient_rotate : 0;
-  var orientF = cf('Image orientation');
-  orientF.id = 'lorient-'+slot;
-  var hasLengthImg = lsilVal === 'custom' && !!(ex && ex.length_image);
-  orientF.style.display = hasLengthImg ? '' : 'none'; // further controlled by load/remove events
-  orientF.innerHTML +=
-    '<div class="btn-row">' +
-      '<label class="orient-check"><input type="checkbox" id="lflip-'+slot+'"'+(exFlip?' checked':'')+' /> Flip horizontally</label>' +
-    '</div>' +
-    '<div class="cf-label" style="margin-top:.5rem;margin-bottom:.3rem">Rotate</div>' +
-    '<div class="btn-row">' +
-      '<button class="unit-btn lrot-btn'+(exRot===0?' active':'')+'" data-slot="'+slot+'" data-rot="0">0°</button>' +
-      '<button class="unit-btn lrot-btn'+(exRot===45?' active':'')+'" data-slot="'+slot+'" data-rot="45">45°</button>' +
-      '<button class="unit-btn lrot-btn'+(exRot===90?' active':'')+'" data-slot="'+slot+'" data-rot="90">90°</button>' +
-      '<button class="unit-btn lrot-btn'+(exRot===135?' active':'')+'" data-slot="'+slot+'" data-rot="135">135°</button>' +
-      '<button class="unit-btn lrot-btn'+(exRot===180?' active':'')+'" data-slot="'+slot+'" data-rot="180">180°</button>' +
-      '<button class="unit-btn lrot-btn'+(exRot===225?' active':'')+'" data-slot="'+slot+'" data-rot="225">225°</button>' +
-      '<button class="unit-btn lrot-btn'+(exRot===270?' active':'')+'" data-slot="'+slot+'" data-rot="270">270°</button>' +
-      '<button class="unit-btn lrot-btn'+(exRot===315?' active':'')+'" data-slot="'+slot+'" data-rot="315">315°</button>' +
-    '</div>';
-  lsildWrap.appendChild(orientF);
-  lengthBody.appendChild(lsildWrap);
-
+  wrap.appendChild(anatDet);
   wrap.appendChild(lengthDet);
 
   // ── STATS section ───────────────────────────────
   var statsDet = makeDet('Stats', false, 'section-stats');
   var statsBody = statsDet.querySelector('.det-body');
 
-  // Profile image: dropdown (silhouette or upload)
-  var curPSilId = (ex && ex.default_headshot_silhouette) || (DEFAULTS.headshotSils[0] && DEFAULTS.headshotSils[0].id) || '';
-  var hasPUpload = !!(ex && ex.profile_image);
-  var pselVal = hasPUpload ? 'upload' : curPSilId;
-  var pimgF = cf('Profile image');
-  pimgF.innerHTML +=
-    '<select class="builder-input psil-sel" id="psil-'+slot+'">' +
-      DEFAULTS.headshotSils.map(function(s){
-        return '<option value="'+s.id+'"'+(pselVal===s.id?' selected':'')+'>'+s.label+'</option>';
-      }).join('') +
-      '<option value="upload"'+(pselVal==='upload'?' selected':'')+'>Upload / Link image</option>' +
-    '</select>';
   // Weight
   var wf = cf('Weight');
   wf.innerHTML +=
@@ -2202,16 +2402,7 @@ function buildForm(slot) {
         '<span class="sep">kg</span>' +
       '</div>' +
     '</div>';
-  // Profile image — below weight
   statsBody.appendChild(wf);
-  statsBody.appendChild(pimgF);
-
-  // Profile upload — immediately after dropdown
-  var pUpload = uploadSection(slot, 'p', 'Profile / Headshot', ex&&ex.profile_image?ex.profile_image:'');
-  pUpload.id = 'pupload-'+slot;
-  pUpload.style.display = pselVal==='upload'?'':'none';
-  statsBody.appendChild(pUpload);
-
   wrap.appendChild(statsDet);
 
   // Populate builds AFTER statsDet is in the DOM so getElementById works
@@ -2692,12 +2883,21 @@ function onDrop(e) {
     } else {
       container.insertBefore(dragSrc, this);
     }
+    // Exit sandbox on reorder — positions don't make sense after order change
+    if (sandboxMode) {
+      sandboxMode = false;
+      document.body.classList.remove('sandbox-active');
+      var btn = document.getElementById('btn-sandbox');
+      if (btn) { btn.textContent = 'Sandbox: Off'; btn.classList.remove('active'); }
+      var _toast = document.createElement('div');
+      _toast.textContent = 'Sandbox reset — character order changed';
+      _toast.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--bg-panel);border:1px solid var(--border-mid);color:var(--text-secondary);font-family:var(--font-caps);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 1rem;border-radius:var(--radius);z-index:9999;pointer-events:none;';
+      document.body.appendChild(_toast);
+      setTimeout(function(){ _toast.remove(); }, 2000);
+    }
     renderActive();
-    // Re-render stats cards in new slot order if stats view active
     if (S.view === 'stats') renderStatsView();
   }
-  this.classList.remove('slot-drag-over');
-  return false;
 }
 
 function onDragEnd(e) {
@@ -2759,6 +2959,8 @@ function openCharModal(sel) {
   var overlay = document.getElementById('char-modal-overlay');
   var search  = document.getElementById('char-modal-search');
   if (!overlay) return;
+  // Rebuild options so freshly created custom chars appear
+  fillSelects();
   search.value = '';
   buildModalGrid('');
   overlay.style.display = 'flex';
@@ -2772,32 +2974,12 @@ function closeCharModal() {
 }
 
 function buildModalGrid(query) {
-  var grid    = document.getElementById('char-modal-grid');
-  var customs = loadCustom();
+  var grid = document.getElementById('char-modal-grid');
   if (!grid) return;
   grid.innerHTML = '';
   var q = query.trim().toLowerCase();
 
-  // Collect all character entries
-  var entries = [];
-  S.chars.forEach(function(c) {
-    entries.push({value:'canon_'+c.id, name:c.name,
-      img:c.profile_image||'',
-      sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', canon:true});
-  });
-  if (customs.slot1 && customs.slot1.name && customs.slot1.height)
-    entries.push({value:'custom_1', name:customs.slot1.name+' (custom)',
-      img:customs.slot1.profile_image||'',
-      sil:'giantess', canon:false});
-  if (customs.slot2 && customs.slot2.name && customs.slot2.height)
-    entries.push({value:'custom_2', name:customs.slot2.name+' (custom)',
-      img:customs.slot2.profile_image||'',
-      sil:'giantess', canon:false});
-
-  var filtered = q ? entries.filter(function(e){ return e.name.toLowerCase().indexOf(q) >= 0; }) : entries;
-  filtered = filtered.slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
-
-  filtered.forEach(function(entry) {
+  function makeCard(entry) {
     var card = document.createElement('div');
     card.className = 'cpm-card';
     var imgUrl = entry.img || DEFAULTS.headshot[entry.sil] || DEFAULTS.headshot.giantess || '';
@@ -2809,26 +2991,73 @@ function buildModalGrid(query) {
       '<div class="cpm-name">'+entry.name+'</div>';
     card.addEventListener('click', function() {
       if (modalTargetSel) {
+        // Rebuild options to ensure custom chars are present before setting value
+        buildSelectOptions(modalTargetSel, modalTargetSel.value);
         modalTargetSel.value = entry.value;
+        var pb = modalTargetSel.closest('.sr-slot-row') && modalTargetSel.closest('.sr-slot-row').querySelector('.slot-picker-btn');
+        if (pb) pb.textContent = entry.name;
         modalTargetSel.dispatchEvent(new Event('change'));
       }
       closeCharModal();
     });
-    grid.appendChild(card);
+    return card;
+  }
+
+  // Custom characters
+  var customChars2 = (loadCustom().chars||[]).filter(function(c){return c&&c.name&&c.height;});
+  var filteredCustom = customChars2.filter(function(c){
+    return !q || c.name.toLowerCase().indexOf(q) >= 0;
   });
 
-  if (!filtered.length) {
+  // Canon characters
+  var canonEntries = [];
+  S.chars.forEach(function(c) {
+    canonEntries.push({value:'canon_'+c.id, name:c.name,
+      img:c.profile_image||'',
+      sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', canon:true});
+  });
+  var filteredCanon = canonEntries.filter(function(e){
+    return !q || e.name.toLowerCase().indexOf(q) >= 0;
+  });
+  filteredCanon.sort(function(a,b){ return a.name.localeCompare(b.name); });
+
+  if (!filteredCustom.length && !filteredCanon.length) {
     grid.innerHTML = '<div class="cpm-empty">No characters found</div>';
+    return;
+  }
+
+  // ── Custom section (top) ─────────────────────────────────────
+  if (filteredCustom.length) {
+    var customLabel = document.createElement('div');
+    customLabel.className = 'cpm-section-label';
+    customLabel.textContent = 'My Characters';
+    grid.appendChild(customLabel);
+    filteredCustom.forEach(function(c) {
+      grid.appendChild(makeCard({
+        value: c.id, name: c.name,
+        img: c.profile_image||'', sil:'giantess', canon:false
+      }));
+    });
+  }
+
+  // ── Canon section ────────────────────────────────────────────
+  if (filteredCanon.length) {
+    var canonLabel = document.createElement('div');
+    canonLabel.className = 'cpm-section-label';
+    canonLabel.textContent = 'Characters';
+    grid.appendChild(canonLabel);
+    filteredCanon.forEach(function(e) { grid.appendChild(makeCard(e)); });
   }
 }
 
 function wireCharModal() {
-  document.getElementById('char-modal-close').addEventListener('click', closeCharModal);
+  var _cmc = document.getElementById('char-modal-close');
+  if (_cmc) _cmc.addEventListener('click', closeCharModal);
 
-  // Resize popup backdrop
   var resizeBd = document.getElementById('sr-resize-backdrop');
   if (resizeBd) resizeBd.addEventListener('click', closeResizePopup);
-  document.getElementById('char-modal-overlay').addEventListener('click', function(e) {
+  var _cmo = document.getElementById('char-modal-overlay');
+  if (_cmo) _cmo.addEventListener('click', function(e) {
     if (e.target === this) closeCharModal();
   });
   document.getElementById('char-modal-search').addEventListener('input', function() {
@@ -3294,7 +3523,7 @@ function autoSave(slot) {
   var headroomPct=hrEl?Math.max(0,Math.min(100,parseInt(hrEl.value)||0)):0;
 
   // Don't overwrite good saved values with nulls from timing issues
-  var prevSaved = (loadCustom())['slot'+slot] || {};
+  var prevSaved = getCustomChar('custom_'+slot) || {};
   var newWeight = getWlbs(slot);
   var newLength = charLen;
   if (newWeight === null && prevSaved.weight) newWeight = prevSaved.weight;
@@ -3315,7 +3544,7 @@ function autoSave(slot) {
     weight_mode:activeWMode, weight_build:bselVal, weight_calc_ref:wrefVal,
     canonical:false, custom:true,
     anatomy: (function(){
-      var prev = (loadCustom()['slot'+slot]||{}).anatomy || {};
+      var prev = (getCustomChar('custom_'+slot)||{}).anatomy || {};
       ['breasts','penis','vag'].forEach(function(k){
         var b = g('anat-'+k+'-'+slot);
         if (b) prev[k] = b.classList.contains('active');
@@ -3325,7 +3554,10 @@ function autoSave(slot) {
       return prev;
     })(),
   };
-  var d=loadCustom(); d['slot'+slot]=char; saveCustom(d);
+  var d=loadCustom(); var chars=d.chars||[];
+  var idx=chars.findIndex(function(c){return c.id==='custom_'+slot;});
+  if(idx>=0) chars[idx]=char; else chars.push(char);
+  d.chars=chars; saveCustom(d);
   // Refresh selects preserving current values
   var sels=allSlotSelects();
   var vals=sels.map(function(s){return s.value;});
@@ -3579,12 +3811,20 @@ function getNaturalRenderedSize(img, wrap) {
 }
 
 // ── Storage ───────────────────────────────────────────────────
-function loadCustom(){try{return JSON.parse(localStorage.getItem(STORE))||{slot1:null,slot2:null};}catch(e){return{slot1:null,slot2:null};}}
+function loadCustom() {
+  try {
+    var d = JSON.parse(localStorage.getItem(STORE));
+    if (d && Array.isArray(d.chars)) return d;
+    return { chars: [] };
+  } catch(e) {
+    return { chars: [] };
+  }
+}
+function getCustomChar(id){return (loadCustom().chars||[]).find(function(c){return c.id===id;})||null;}
 function saveCustom(d){try{localStorage.setItem(STORE,JSON.stringify(d));}catch(e){}}
 
 function clearSlot(slot){
-  if(!confirm('Clear custom slot '+slot+'?'))return;
-  var d=loadCustom(); d['slot'+slot]=null; saveCustom(d);
+  var d=loadCustom(); d.chars=(d.chars||[]).filter(function(c){return c.id!=='custom_'+slot;}); saveCustom(d);
   // Remove from all compare slots that had this custom char selected
   allSlotSelects().forEach(function(sel){
     if(sel.value==='custom_'+slot) {
@@ -3600,11 +3840,168 @@ function clearSlot(slot){
   if(S.view!=='stats') renderStatsView();
 }
 
+
+// ── My Characters roster ──────────────────────────────────────
+var MAX_CUSTOM = 8;
+var editingCustomId = null; // id of char being edited, null = new
+
+function nextCustomId() {
+  var chars = loadCustom().chars || [];
+  for (var i = 1; i <= MAX_CUSTOM; i++) {
+    if (!chars.find(function(c){ return c.id === 'custom_'+i; })) return 'custom_'+i;
+  }
+  return null;
+}
+
+function renderRoster() {
+  var roster = document.getElementById('mychars-roster');
+  var countEl = document.getElementById('mychars-count');
+  var addBtn = document.getElementById('mychars-add-btn');
+  if (!roster) return;
+
+  var chars = loadCustom().chars || [];
+  roster.innerHTML = '';
+
+  if (countEl) countEl.textContent = chars.length + ' / ' + MAX_CUSTOM;
+  if (addBtn) addBtn.style.display = chars.length >= MAX_CUSTOM ? 'none' : '';
+
+  if (!chars.length) {
+    roster.innerHTML = '<div class="mychars-empty">No custom characters yet. Add one to get started.</div>';
+    return;
+  }
+
+  chars.forEach(function(c) {
+    var card = el('div');
+    card.className = 'mychars-card';
+
+    var slot = parseInt((c.id||'').replace('custom_',''), 10);
+    var heightStr = c.height ? fH(c.height) : '—';
+
+    var img = c.profile_image || '';
+    var avatarHtml = img
+      ? '<img class="mychars-avatar" src="'+img+'" alt="'+c.name+'" />'
+      : '<div class="mychars-avatar mychars-avatar-ph">'+(c.name||'?').charAt(0).toUpperCase()+'</div>';
+
+    card.innerHTML =
+      '<div class="mychars-card-left">'+avatarHtml+
+        '<div class="mychars-card-info">'+
+          '<div class="mychars-card-name">'+(c.name||'Unnamed')+'</div>'+
+          '<div class="mychars-card-detail">'+c.species+' — '+heightStr+'</div>'+
+        '</div>'+
+      '</div>'+
+      '<div class="mychars-card-actions">'+
+        '<button class="mychars-edit-btn" data-id="'+c.id+'">Edit</button>'+
+        '<button class="mychars-del-btn" data-id="'+c.id+'">&#10005;</button>'+
+      '</div>';
+
+    card.querySelector('.mychars-edit-btn').addEventListener('click', function() {
+      openCustomModal(c.id);
+    });
+    card.querySelector('.mychars-del-btn').addEventListener('click', function() {
+      deleteCustomChar(c.id);
+    });
+
+    roster.appendChild(card);
+  });
+}
+
+function openCustomModal(id) {
+  editingCustomId = id || null;
+  var modal = document.getElementById('custom-modal');
+  var titleEl = document.getElementById('custom-modal-title');
+  var formEl = document.getElementById('custom-modal-form');
+  if (!modal || !formEl) return;
+
+  var slot = id ? parseInt(id.replace('custom_',''), 10) : null;
+  if (!slot) slot = parseInt((nextCustomId()||'custom_1').replace('custom_',''), 10);
+
+  if (titleEl) titleEl.textContent = id ? 'Edit Character' : 'New Character';
+
+  // Give formEl the id buildForm expects, then build
+  formEl.id = 'custom'+slot+'-form';
+  formEl.setAttribute('data-slot', slot);
+  formEl.innerHTML = '';
+
+  modal.style.display = 'flex';
+  buildForm(slot);
+
+  // Wire a "Done" button at the bottom
+  var doneBtn = el('button');
+  doneBtn.className = 'btn-primary custom-modal-done';
+  doneBtn.textContent = 'Save & Close';
+  doneBtn.addEventListener('click', function() {
+    var nameEl = document.getElementById('n'+slot);
+    var ftEl   = document.getElementById('ft-'+slot);
+    var inEl   = document.getElementById('in-'+slot);
+    var cmEl   = document.getElementById('cm-'+slot);
+    var name   = nameEl ? nameEl.value.trim() : '';
+    var heightIn = 0;
+    if (ftEl && ftEl.closest && ftEl.closest('[style*="display:none"]') === null && ftEl.offsetParent !== null) {
+      heightIn = (parseInt(ftEl.value)||0)*12 + (parseInt(inEl&&inEl.value)||0);
+    } else if (cmEl) {
+      heightIn = (parseFloat(cmEl.value)||0) / 2.54;
+    }
+    if (!name) {
+      nameEl && nameEl.focus();
+      nameEl && (nameEl.style.outline = '2px solid var(--wine)');
+      setTimeout(function(){ if(nameEl) nameEl.style.outline = ''; }, 2000);
+      return;
+    }
+    if (heightIn <= 0) {
+      ftEl && ftEl.focus();
+      [ftEl, inEl, cmEl].forEach(function(el){
+        if(el) { el.style.outline = '2px solid var(--wine)'; setTimeout(function(){ el.style.outline=''; },2000); }
+      });
+      return;
+    }
+    autoSave(slot);
+    closeCustomModal();
+  });
+  formEl.appendChild(doneBtn);
+}
+
+function closeCustomModal() {
+  var modal = document.getElementById('custom-modal');
+  if (modal) modal.style.display = 'none';
+  // Restore modal-form id
+  var formEl = document.getElementById('custom-modal-form') || document.querySelector('[data-slot]');
+  if (formEl && formEl.id !== 'custom-modal-form') {
+    formEl.id = 'custom-modal-form';
+    formEl.removeAttribute('data-slot');
+  }
+  editingCustomId = null;
+  renderRoster();
+  fillSelects();
+}
+
+function deleteCustomChar(id) {
+  var char = getCustomChar(id);
+  var name = char ? char.name : id;
+  if (!confirm('Remove "'+name+'" from My Characters?')) return;
+  var d = loadCustom();
+  d.chars = (d.chars||[]).filter(function(c){ return c.id !== id; });
+  saveCustom(d);
+  // Remove from any comparison slots
+  allSlotSelects().forEach(function(sel){
+    if (sel.value === id) {
+      sel.value = '';
+      var row = sel.closest('.sr-slot-row');
+      var btn = row && row.querySelector('.slot-picker-btn');
+      if (btn) btn.textContent = '— Select character —';
+    }
+  });
+  fillSelects();
+  renderRoster();
+  renderActive();
+}
+
+
 // ── Tab switching ─────────────────────────────────────────────
 function switchTab(tab){
   document.querySelectorAll('.sr-tab').forEach(function(t){t.classList.toggle('active',t.getAttribute('data-tab')===tab);});
   document.querySelectorAll('.sr-tab-panel').forEach(function(p){p.style.display='none';});
   var panel=document.getElementById('tab-'+tab); if(panel)panel.style.display='';
+  if(tab==='mychars') renderRoster();
 }
 
 // ── Utility ───────────────────────────────────────────────────
@@ -3612,6 +4009,29 @@ function g(id){return document.getElementById(id);}
 
 // ── Event wiring ──────────────────────────────────────────────
 document.querySelectorAll('.sr-tab').forEach(function(t){t.addEventListener('click',function(){switchTab(this.getAttribute('data-tab'));});});
+
+// My Characters — add button + modal close
+var myAddBtn = document.getElementById('mychars-add-btn');
+if (myAddBtn) myAddBtn.addEventListener('click', function() {
+  var newId = nextCustomId();
+  if (!newId) return;
+  var d = loadCustom();
+  d.chars = d.chars || [];
+  if (!d.chars.find(function(c){ return c.id === newId; })) {
+    d.chars.push({ id: newId, name: '', height: 72, canonical: false, custom: true }); // 6ft default
+  }
+  saveCustom(d);
+  openCustomModal(newId);
+});
+
+var modalClose = document.getElementById('custom-modal-close');
+if (modalClose) modalClose.addEventListener('click', closeCustomModal);
+
+var modalOverlay = document.getElementById('custom-modal');
+if (modalOverlay) modalOverlay.addEventListener('click', function(e) {
+  if (e.target === modalOverlay) closeCustomModal();
+});
+
 document.querySelectorAll('.sr-view-tab').forEach(function(t){t.addEventListener('click',function(){switchView(this.getAttribute('data-view'));});});
 // slot selects wired per-slot in createSlotRow()
 
@@ -3620,7 +4040,8 @@ function applyGlobalUnit(isM) {
   g('btn-imperial').classList.toggle('active', !isM);
   g('btn-metric').classList.toggle('active', isM);
   // Update each custom form: show correct fields, convert values, refresh estimates
-  [1,2].forEach(function(slot) {
+  var _unitSlots = (loadCustom().chars||[]).map(function(c){return parseInt((c.id||'').replace('custom_',''),10);}).filter(Boolean);
+  _unitSlots.forEach(function(slot) {
     var hi=g('hi-'+slot),hm=g('hm-'+slot);
     if(hi)hi.style.display=isM?'none':'';
     if(hm)hm.style.display=isM?'':'none';
@@ -3666,6 +4087,188 @@ if (gridBtn) gridBtn.addEventListener('click', function() {
 });
 
 // Copy viewer to clipboard
+var copyWithScale = false; // default: scale hidden in copy
+
+g('btn-copy-scale').addEventListener('click', function() {
+  copyWithScale = !copyWithScale;
+  this.title = copyWithScale ? 'Scale included in copy' : 'Include scale in copy';
+  this.classList.toggle('active', copyWithScale);
+});
+
+// ── Sandbox mode ──────────────────────────────────────────────
+function initSandbox() {
+  var btn = g('btn-sandbox');
+  if (!btn) return;
+  btn.addEventListener('click', function() {
+    sandboxMode = !sandboxMode;
+    this.textContent = sandboxMode ? 'Sandbox: On' : 'Sandbox: Off';
+    this.classList.toggle('active', sandboxMode);
+    if (sandboxMode) {
+      document.body.classList.add('sandbox-active');
+      // Force grid off and re-render to clear it
+      S.gridLines = false;
+      var gb = document.getElementById('btn-grid-lines');
+      if (gb) { gb.classList.remove('active'); gb.style.display = 'none'; }
+      render(); // clear the grid overlay
+      enableSandbox();
+    } else {
+      document.body.classList.remove('sandbox-active');
+      sandboxOffsets = {};
+      // Restore grid button and reset zoom to 100%
+      var gb2 = document.getElementById('btn-grid-lines');
+      if (gb2) gb2.style.display = '';
+      S.zoomH = 1;
+      render();
+    }
+  });
+}
+
+function enableSandbox(snapshot) {
+  var figs = document.getElementById('sr-figures');
+  if (!figs) return;
+  var wraps = Array.from(figs.querySelectorAll('.sr-img-wrap'));
+  wraps.forEach(function(wrap, i) {
+    var cid = wrap.getAttribute('data-char-id');
+    var saved = snapshot && cid && snapshot[cid];
+    wrap.style.transform = saved ? 'translate('+saved.tx+'px,'+saved.ty+'px)' : 'translate(0,0)';
+    wrap.style.cursor = 'grab';
+    wrap.style.userSelect = 'none';
+    wrap.style.zIndex = String(wraps.length - i);
+    wrap.style.position = 'relative';
+    makeDraggable(wrap);
+  });
+}
+
+function makeDraggable(el) {
+  var startX, startY, baseTx, baseTy;
+  function currentTranslate() {
+    var m = (el.style.transform || '').match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
+    return m ? {tx: parseFloat(m[1]), ty: parseFloat(m[2])} : {tx: 0, ty: 0};
+  }
+  function onDown(e) {
+    if (!sandboxMode) return;
+    e.preventDefault();
+    var cx = e.touches ? e.touches[0].clientX : e.clientX;
+    var cy = e.touches ? e.touches[0].clientY : e.clientY;
+    startX = cx; startY = cy;
+    var t = currentTranslate();
+    baseTx = t.tx; baseTy = t.ty;
+    el.style.cursor = 'grabbing';
+    var allWraps = document.querySelectorAll('#sr-figures .sr-img-wrap');
+    el.style.zIndex = String(allWraps.length + 10);
+    document.addEventListener('mousemove', onMove);
+    document.addEventListener('mouseup',   onUp);
+    document.addEventListener('touchmove', onMove, {passive: false});
+    document.addEventListener('touchend',  onUp);
+  }
+  function onMove(e) {
+    e.preventDefault();
+    var cx = e.touches ? e.touches[0].clientX : e.clientX;
+    var cy = e.touches ? e.touches[0].clientY : e.clientY;
+    var tx = baseTx + (cx - startX);
+    var ty = baseTy + (cy - startY);
+    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
+  }
+  function onUp() {
+    el.style.cursor = 'grab';
+    var allWraps = Array.from(document.querySelectorAll('#sr-figures .sr-img-wrap'));
+    el.style.zIndex = String(allWraps.length - allWraps.indexOf(el));
+    document.removeEventListener('mousemove', onMove);
+    document.removeEventListener('mouseup',   onUp);
+    document.removeEventListener('touchmove', onMove);
+    document.removeEventListener('touchend',  onUp);
+  }
+  el.addEventListener('mousedown',  onDown);
+  el.addEventListener('touchstart', onDown, {passive: false});
+}
+
+initSandbox();
+
+// ── Ruler tool ────────────────────────────────────────────────
+var rulerActive = false;
+var rulerA = {x: 0.3, y: 0.5};
+var rulerB = {x: 0.7, y: 0.5};
+
+function initRuler() {
+  var btn = g('btn-ruler');
+  if (!btn) return;
+  btn.addEventListener('click', function() {
+    rulerActive = !rulerActive;
+    this.textContent = rulerActive ? 'Ruler: On' : 'Ruler: Off';
+    this.classList.toggle('active', rulerActive);
+    var wrap = document.getElementById('sr-ruler-svg-wrap');
+    if (wrap) wrap.style.display = rulerActive ? '' : 'none';
+    // Reset nodes to visible area on each activation
+    var _area = document.getElementById('sr-canvas-area');
+    if (_area) {
+      var _r = _area.getBoundingClientRect();
+      // Place nodes at 30%/70% horizontally, vertically centred in current view
+      var _scrollEl = document.getElementById('sr-scroll');
+      var _scrollFrac = _scrollEl ? (_scrollEl.scrollTop / (_scrollEl.scrollHeight || 1)) : 0;
+      var _vy = 0.4 + _scrollFrac * 0.2; // somewhere in the visible band
+      rulerA = {x: 0.3, y: _vy};
+      rulerB = {x: 0.7, y: _vy};
+    }
+    if (rulerActive) updateRulerSVG();
+  });
+
+  ['a','b'].forEach(function(id) {
+    var dot = document.getElementById('ruler-dot-'+id);
+    if (!dot) return;
+    var dragging = false;
+    dot.addEventListener('mousedown', function(e) {
+      e.preventDefault();
+      dragging = true;
+      dot.style.cursor = 'grabbing';
+      document.addEventListener('mousemove', onMove);
+      document.addEventListener('mouseup', onUp);
+    });
+    function onMove(e) {
+      if (!dragging) return;
+      var area = document.getElementById('sr-canvas-area');
+      if (!area) return;
+      var rect = area.getBoundingClientRect();
+      var fx = (e.clientX - rect.left) / rect.width;
+      var fy = (e.clientY - rect.top)  / rect.height;
+      if (id === 'a') { rulerA.x = fx; rulerA.y = fy; }
+      else            { rulerB.x = fx; rulerB.y = fy; }
+      updateRulerSVG();
+    }
+    function onUp() {
+      dragging = false;
+      dot.style.cursor = 'grab';
+      document.removeEventListener('mousemove', onMove);
+      document.removeEventListener('mouseup',  onUp);
+    }
+  });
+}
+
+function updateRulerSVG() {
+  var area = document.getElementById('sr-canvas-area');
+  if (!area) return;
+  var rect = area.getBoundingClientRect();
+  var w = rect.width, h = rect.height;
+  var ax = rulerA.x * w, ay = rulerA.y * h;
+  var bx = rulerB.x * w, by = rulerB.y * h;
+  var line  = document.getElementById('ruler-line');
+  var dotA  = document.getElementById('ruler-dot-a');
+  var dotB  = document.getElementById('ruler-dot-b');
+  var label = document.getElementById('ruler-label');
+  if (line)  { line.setAttribute('x1',ax); line.setAttribute('y1',ay); line.setAttribute('x2',bx); line.setAttribute('y2',by); }
+  if (dotA)  { dotA.setAttribute('cx',ax); dotA.setAttribute('cy',ay); }
+  if (dotB)  { dotB.setAttribute('cx',bx); dotB.setAttribute('cy',by); }
+  var pxDist = Math.sqrt((bx-ax)*(bx-ax) + (by-ay)*(by-ay));
+  var inDist = S.pxPerIn > 0 ? pxDist / S.pxPerIn : 0;
+  var distStr = inDist > 0 ? fH(inDist) : '—';
+  var mx = (ax+bx)/2, my = (ay+by)/2;
+  var angle = Math.atan2(by-ay, bx-ax);
+  var perpX = -Math.sin(angle) * 18;
+  var perpY =  Math.cos(angle) * 18;
+  if (label) { label.setAttribute('x', mx+perpX); label.setAttribute('y', my+perpY); label.textContent = distStr; }
+}
+
+initRuler();
+
 var ROSE_GOLD_FILTER = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
 
 // Fetch image via XHR (bypasses image cache, gets proper CORS blob),
@@ -3696,6 +4299,15 @@ g('btn-copy-img').addEventListener('click', function() {
   btn.textContent = '…';
   btn.disabled = true;
 
+  // Hide scale ruler unless user opted in
+  var rulerCol = document.getElementById('sr-ruler-col');
+  var lenRulerWrap = document.getElementById('sr-length-ruler-wrap');
+  var rulerHidden = false;
+  if (!copyWithScale) {
+    if (rulerCol)     { rulerCol.style.display     = 'none'; rulerHidden = true; }
+    if (lenRulerWrap) { lenRulerWrap.style.display = 'none'; rulerHidden = true; }
+  }
+
   // Gather filtered images and pre-bake them (reload with CORS)
   var filteredImgs = Array.from(target.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
   var srcList = filteredImgs.map(function(img){ return img.src; });
@@ -3722,6 +4334,11 @@ g('btn-copy-img').addEventListener('click', function() {
       canvas.toBlob(function(blob) {
         if (!blob) { btn.textContent = '✗'; setTimeout(function(){btn.innerHTML='&#128203;';btn.disabled=false;},1500); return; }
         try {
+          // Restore ruler visibility
+          if (rulerHidden) {
+            if (rulerCol)     rulerCol.style.display     = '';
+            if (lenRulerWrap) lenRulerWrap.style.display = '';
+          }
           navigator.clipboard.write([new ClipboardItem({'image/png': blob})]).then(function() {
             btn.textContent = '✓';
             setTimeout(function(){ btn.innerHTML='&#128203;'; btn.disabled=false; }, 1500);
@@ -3743,17 +4360,21 @@ g('btn-copy-img').addEventListener('click', function() {
   });
 });
 g('btn-metric').addEventListener('click',function(){applyGlobalUnit(true);});
+
+function renderOrSandbox() {
+  render();
+}
 g('btn-zoom-in').addEventListener('click',function(){
   if(S.view==='length'){S.zoomL=Math.min(ZMAX,parseFloat((S.zoomL+ZSTEP).toFixed(2)));applyLengthZoom();}
-  else{S.zoomH=Math.min(ZMAX,parseFloat((S.zoomH+ZSTEP).toFixed(2)));render();}
+  else{S.zoomH=Math.min(ZMAX,parseFloat((S.zoomH+ZSTEP).toFixed(2)));renderOrSandbox();}
 });
 g('btn-zoom-out').addEventListener('click',function(){
   if(S.view==='length'){S.zoomL=Math.max(ZMIN,parseFloat((S.zoomL-ZSTEP).toFixed(2)));applyLengthZoom();}
-  else{S.zoomH=Math.max(ZMIN,parseFloat((S.zoomH-ZSTEP).toFixed(2)));render();}
+  else{S.zoomH=Math.max(ZMIN,parseFloat((S.zoomH-ZSTEP).toFixed(2)));renderOrSandbox();}
 });
 g('btn-zoom-reset').addEventListener('click',function(){
   if(S.view==='length'){S.zoomL=0.5;applyLengthZoom();}
-  else{S.zoomH=1;render();}
+  else{S.zoomH=1;renderOrSandbox();}
 });
 document.querySelectorAll('.custom-clear-btn').forEach(function(btn){btn.addEventListener('click',function(){clearSlot(parseInt(this.getAttribute('data-slot')));});});
 document.getElementById('btn-add-char').addEventListener('click', function(){ addSlot('char'); });
@@ -3762,7 +4383,7 @@ document.getElementById('btn-add-obj').addEventListener('click',  function(){ ad
 // ── Clear all custom data on page load for a clean session ───
 (function clearOnLoad() {
   // Clear localStorage custom data for both slots
-  var empty = { slot1: null, slot2: null };
+  var empty = { chars: [] };
   saveCustom(empty);
   // Clear all images from IndexedDB
   openImgDB().then(function(db) {
