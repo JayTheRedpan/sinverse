@@ -125,8 +125,14 @@ async function fetchNodeCount(meta) {
     if (!res.ok) return;
     const data = await res.json();
     meta.nodeCount = Array.isArray(data) ? data.length : null;
+    // Derive display tags from the first node (id 1, or first in array)
+    if (Array.isArray(data) && data.length) {
+      const first = data.find(n => n.id === 1) || data[0];
+      meta.tags = (first && first.tags) ? first.tags : [];
+    }
   } catch (_) {
     meta.nodeCount = null;
+    meta.tags = [];
   }
 }
 
@@ -156,6 +162,7 @@ function renderLibrary() {
       <img class="card-cover" id="ci-${meta.id}" src="${coverSrc}"
            alt="${meta.title} cover" style="opacity:0;position:absolute;" />
       <div class="card-tags">
+        ${(meta.tags && meta.tags.length) ? `<span class="card-tags-label">Opening scene:</span>` : ''}
         ${(meta.tags || []).map(t => `<span class="tag">${t}</span>`).join('')}
         ${countLabel ? `<span class="tag tag-length">${countLabel}</span>` : ''}
       </div>
@@ -458,11 +465,6 @@ function renderChoices(node) {
   }
 
   // -- Choices -----------------------------------
-  const label = document.createElement('div');
-  label.className   = 'choices-label';
-  label.textContent = 'What do you do ';
-  choicesWrap.appendChild(label);
-
   node.choices.forEach(choice => {
     if (choice.requiresItem && !state.inventory.has(choice.requiresItem)) return;
 
@@ -533,11 +535,20 @@ function renderChoices(node) {
     wrapper.appendChild(btn);
 
     // Show destination node's author and tags as a preview below the button
-    const destNode = choice.nextId != null ? state.nodeMap[choice.nextId] : null;
+    const isDeadEnd  = (choice.nextId === null || choice.nextId === undefined) && !choice.locked;
+    const destNode   = choice.nextId != null ? state.nodeMap[choice.nextId] : null;
     const destAuthor = destNode ? destNode.author : null;
     const destTags   = destNode ? (destNode.tags || []) : [];
 
-    if (destAuthor || destTags.length) {
+    if (isDeadEnd) {
+      const preview = document.createElement('div');
+      preview.className = 'choice-preview';
+      const deadEl = document.createElement('span');
+      deadEl.className = 'choice-preview-deadend';
+      deadEl.innerHTML = '<span class="deadend-word">Unwritten path</span>';
+      preview.appendChild(deadEl);
+      wrapper.appendChild(preview);
+    } else if (destAuthor || destTags.length) {
       const preview = document.createElement('div');
       preview.className = 'choice-preview';
 
@@ -553,7 +564,10 @@ function renderChoices(node) {
           e.stopPropagation(); // don't trigger the choice button
           showAuthorScreen(destAuthor);
         });
-        authorEl.textContent = 'by ';
+        const byLabel = document.createElement('span');
+        byLabel.className = 'choice-preview-by';
+        byLabel.textContent = 'by ';
+        authorEl.appendChild(byLabel);
         authorEl.appendChild(authorA);
         preview.appendChild(authorEl);
       }
@@ -831,6 +845,7 @@ async function showAdventureInfo(meta) {
     '<div class="adv-info-stats" id="adv-info-stats">' +
       '<div class="adv-info-loading">Loading…</div>' +
     '</div>' +
+    '<div class="adv-info-tags" id="adv-info-tags"></div>' +
     '<div class="adv-info-authors" id="adv-info-authors"></div>' +
     '<div class="adv-info-footer">' +
       '<button class="btn-primary adv-info-begin" id="adv-info-begin">Begin adventure →</button>' +
@@ -863,6 +878,30 @@ async function showAdventureInfo(meta) {
     var authors = Object.keys(authorCounts).sort(function(a, b) {
       return authorCounts[b] - authorCounts[a];
     });
+
+    // Tag breakdown across all nodes
+    var tagCounts = {};
+    nodes.forEach(function(n) {
+      (n.tags || []).forEach(function(t) {
+        tagCounts[t] = (tagCounts[t] || 0) + 1;
+      });
+    });
+    var tagKeys = Object.keys(tagCounts).sort(function(a, b) {
+      return tagCounts[b] - tagCounts[a];
+    });
+    var tagsEl = document.getElementById('adv-info-tags');
+    if (tagsEl) {
+      if (tagKeys.length) {
+        tagsEl.innerHTML = '<div class="adv-info-tags-title">Content tags across all scenes</div>' +
+          '<div class="adv-info-tags-list">' +
+          tagKeys.map(function(t) {
+            return '<span class="adv-info-tag">' + t + ' <span class="adv-info-tag-count">' + tagCounts[t] + '</span></span>';
+          }).join('') +
+          '</div>';
+      } else {
+        tagsEl.innerHTML = '<div class="adv-info-tags-title">No content tags</div>';
+      }
+    }
 
     var statsEl = document.getElementById('adv-info-stats');
     if (statsEl) {

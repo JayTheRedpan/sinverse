@@ -9,7 +9,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="styles.css?v=1780108110" />
 </head>
 <body class="viewer-body">
 
@@ -40,6 +40,7 @@
         <h1 id="comic-title-reader" class="viewer-h1"></h1>
         <p id="comic-artist-reader" class="viewer-artist"></p>
         <div id="comic-tags-reader" class="viewer-tags"></div>
+        <div id="comic-dates" class="viewer-dates"></div>
         <p id="comic-synopsis-reader" class="viewer-synopsis"></p>
         <div id="comic-characters-reader" class="viewer-characters"></div>
       </aside>
@@ -58,6 +59,7 @@
         <h1 id="scene-title" class="viewer-h1"></h1>
         <p id="scene-artist" class="viewer-artist"></p>
         <div id="scene-tags" class="viewer-tags"></div>
+        <div id="scene-dates" class="viewer-dates"></div>
         <p id="scene-description" class="viewer-synopsis"></p>
         <div id="scene-characters" class="viewer-characters"></div>
         <a id="scene-download" href="#" download class="btn-ghost viewer-download">&#8595; Download</a>
@@ -77,6 +79,7 @@
         <h1 id="ref-title" class="viewer-h1"></h1>
         <p id="ref-artist" class="viewer-artist"></p>
         <div id="ref-tags" class="viewer-tags"></div>
+        <div id="ref-dates" class="viewer-dates"></div>
         <div id="ref-char-link" class="ref-char-link"></div>
         <div class="ref-detail-block" id="ref-height-block" style="display:none">
           <span class="ref-detail-label">Height</span>
@@ -92,6 +95,7 @@
   </div>
 
   <script src="../_shared/registry.js"></script>
-  <script src="viewer.js"></script>
+  <script src="../_shared/dates.js?v=1780108110"></script>
+  <script src="viewer.js?v=1780108110"></script>
 </body>
 </html>

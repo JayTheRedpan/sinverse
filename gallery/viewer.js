@@ -15,6 +15,7 @@ async function init() {
     var items = await res.json();
     item = items.find(function(i) { return i.id === id; });
     if (!item) throw new Error('Item not found: ' + id);
+    if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
     render();
   } catch(e) {
     document.body.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-muted)">' + e.message + '</div>';
@@ -41,6 +42,7 @@ function renderComic() {
   document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
   if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
   renderTags('comic-tags-reader', item.tags);
+  renderDates('comic-dates', item);
   renderCharacterLinks('comic-characters-reader', item.characters);
 
   // Start on page 0
@@ -60,10 +62,17 @@ function renderComic() {
 function showPage(n) {
   var pages = item.pages || [];
   comicPage = Math.max(0, Math.min(n, pages.length - 1));
-  document.getElementById('comic-page-img').src       = pages[comicPage];
+  var img = document.getElementById('comic-page-img');
+  img.src = pages[comicPage];
   document.getElementById('comic-page-counter').textContent = (comicPage + 1) + ' / ' + pages.length;
   document.getElementById('comic-prev').style.visibility = comicPage === 0 ? 'hidden' : '';
   document.getElementById('comic-next').style.visibility = comicPage === pages.length - 1 ? 'hidden' : '';
+  // Scroll to top of image when page changes
+  img.onload = function() {
+    var wrap = document.getElementById('comic-page-wrap') || document.querySelector('.comic-page-wrap');
+    if (wrap) wrap.scrollIntoView({ behavior: 'smooth', block: 'start' });
+    else window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 }
 
 // -- Scene
@@ -83,6 +92,7 @@ function renderScene() {
   if (item.canonical) document.getElementById('scene-canonical').style.display = '';
 
   renderTags('scene-tags', item.tags);
+  renderDates('scene-dates', item);
   renderCharacterLinks('scene-characters', item.characters);
 
   var dl = document.getElementById('scene-download');
@@ -104,6 +114,7 @@ function renderCharRef() {
   if (item.canonical) document.getElementById('ref-canonical').style.display = '';
 
   renderTags('ref-tags', item.tags);
+  renderDates('ref-dates', item);
 
   // Character wiki link
   if (item.characterId) {
@@ -142,6 +153,31 @@ function renderTags(containerId, tags) {
     span.textContent = tag;
     el.appendChild(span);
   });
+}
+
+function formatPostedDate(s) {
+  if (!s) return '';
+  var parts = String(s).split('-');
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  if (parts.length >= 2) {
+    var m = parseInt(parts[1], 10);
+    if (m >= 1 && m <= 12) return months[m-1] + ' ' + parts[0];
+  }
+  return s;
+}
+
+function renderDates(containerId, it) {
+  var el = document.getElementById(containerId);
+  console.log('[viewer dates] containerId=', containerId, 'el=', el, 'date=', it.date, 'universe_date=', it.universe_date, 'SinverseDates=', !!window.SinverseDates);
+  if (!el) return;
+  var rows = '';
+  if (it.date) {
+    rows += '<div class="viewer-date-row"><span class="viewer-date-label">Posted</span><span class="viewer-date-val">' + formatPostedDate(it.date) + '</span></div>';
+  }
+  if (it.universe_date !== null && it.universe_date !== undefined && window.SinverseDates) {
+    rows += '<div class="viewer-date-row"><span class="viewer-date-label">Set</span><span class="viewer-date-val">' + SinverseDates.label(it.universe_date) + '</span></div>';
+  }
+  el.innerHTML = rows;
 }
 
 function renderCharacterLinks(containerId, characters) {

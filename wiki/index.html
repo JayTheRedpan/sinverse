@@ -1361,6 +1361,15 @@ document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
 // ── Load data ─────────────────────────────────────────────────
 var wikiMetric = localStorage.getItem('wiki-metric') === 'true';
 
+// Format an in-universe date integer (years relative to TDay) as a T±N label
+function fTDate(d) {
+  if (d === null || d === undefined || d === '') return 'TBD';
+  var n = parseInt(d, 10);
+  if (isNaN(n)) return 'TBD';
+  if (n === 0) return 'T\u00b10';
+  return n > 0 ? 'T+' + n : 'T' + n;  // negative already has minus sign
+}
+
 function fH(inches) {
   if (wikiMetric) {
     var cm = Math.round(inches * 2.54);
@@ -1596,10 +1605,9 @@ function buildTimeline() {
 
   // Sort events: BT events descending (3 BT before 2 BT), anchor at 0, AT ascending
   function tlSortKey(ev) {
-    if (ev.era === 'anchor') return 0;
-    var num = parseFloat(ev.date) || 0;
-    if (ev.era === 'BT') return -num;   // 3 BT = -3, renders before 0
-    return num;                          // 3 AT = 3, renders after 0
+    // null dates (TBD) sort to the end
+    if (ev.date === null || ev.date === undefined) return Infinity;
+    return parseInt(ev.date, 10) || 0;
   }
   timelineEvents = timelineEvents.slice().sort(function(a, b) {
     return tlSortKey(a) - tlSortKey(b);
@@ -1630,7 +1638,7 @@ function buildTimeline() {
 
     var date = document.createElement('div');
     date.className = 'wiki-tl-date';
-    date.textContent = ev.date;
+    date.textContent = fTDate(ev.date);
 
     var title = document.createElement('div');
     title.className = 'wiki-tl-title';
@@ -1665,7 +1673,7 @@ function buildTimeline() {
         }
         detail.innerHTML =
           '<button class="wiki-tl-detail-close" id="tl-close">Close ✕</button>' +
-          '<div class="wiki-tl-detail-date">' + ev.date + '</div>' +
+          '<div class="wiki-tl-detail-date">' + fTDate(ev.date) + '</div>' +
           '<div class="wiki-tl-detail-title">' + ev.title + '</div>' +
           '<div class="wiki-tl-detail-body">' + ev.summary + '</div>' +
           relatedHtml;
@@ -1927,6 +1935,7 @@ function runSearch(q) {
       type: 'character', score: score,
       label: c.name,
       sub: c.species + (c.faction ? ' · ' + c.faction : ''),
+      img: c.profile_image || c.image || '',
       action: function(id){ return function(){ loadCharPage(id); }; }(c.id)
     });
   });
@@ -1957,7 +1966,7 @@ function runSearch(q) {
     if (score) results.push({
       type: 'timeline', score: score,
       label: ev.title,
-      sub: ev.date + ' · Timeline event',
+      sub: fTDate(ev.date) + ' · Timeline event',
       action: function(id){ return function(){
         showPage('timeline');
         // Highlight the event
@@ -1996,8 +2005,12 @@ function renderSearchResults(q, results) {
   results.forEach(function(r) {
     var row = document.createElement('div');
     row.style.cssText = 'background:var(--bg-panel);padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:1rem;transition:background 0.15s;';
+    var thumb = r.img
+      ? '<div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--bg-inset);border:1px solid var(--border)"><img src="'+r.img+'" style="width:100%;height:100%;object-fit:cover" /></div>'
+      : '';
     row.innerHTML =
       '<div style="font-family:var(--font-caps);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:'+TYPE_COLORS[r.type]+';width:80px;flex-shrink:0">'+TYPE_LABELS[r.type]+'</div>' +
+      thumb +
       '<div style="flex:1">' +
         '<div style="font-family:var(--font-display);font-style:italic;font-size:1.1rem;color:var(--text-primary)">' + r.label + '</div>' +
         '<div style="font-family:var(--font-caps);font-size:0.6rem;letter-spacing:0.1em;color:var(--text-secondary);margin-top:0.25rem">' + (r.sub||'') + '</div>' +

@@ -70,7 +70,7 @@ Commit both files. The character will appear immediately in:
   "tags": [],
   "canonical": false,
   "date": "2025-05",
-  "universe_date": null
+  "universe_date": null              // integer year relative to TDay, or null
 }
 ```
 
@@ -111,7 +111,7 @@ Convention: `{title-slug}_{author}_{ch1}.md` for serials, `{title-slug}_{author}
   "tags": [],
   "canonical": false,
   "date": "2025-05",
-  "universe_date": null,
+  "universe_date": null,             // integer year relative to TDay, or null
   "file": "stories/filename.md",
   "wordCount": 2400
 }
@@ -129,7 +129,7 @@ Convention: `{title-slug}_{author}_{ch1}.md` for serials, `{title-slug}_{author}
   "tags": [],
   "canonical": false,
   "date": "2025-05",
-  "universe_date": null,
+  "universe_date": null,             // integer year relative to TDay, or null
   "complete": false,
   "chapters": [
     { "title": "Chapter 1: ...", "file": "stories/serial_ch1.md", "wordCount": 1800 },
@@ -288,8 +288,8 @@ Add to `wiki/timeline.json`:
 }
 ```
 
-- `era`: `"pre"` (before TDay) | `"anchor"` (TDay itself) | `"post"` (after TDay)
-- `date`: `"T-N"` | `"T±0"` | `"T+N"` | `"TBD"`
+- `date`: signed integer — years relative to TDay (negative = before, 0 = TDay, positive = after), or `null` for TBD
+- `era`: derived automatically from the date sign (`pre`/`anchor`/`post`) — set it to match
 - `tags`: slugs of related lore pages or character names — shown as Related links
 
 ---
