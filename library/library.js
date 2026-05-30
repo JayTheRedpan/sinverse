@@ -4,6 +4,7 @@ var state = {
   stories:    [],
   collections:[],
   typeFilter: { standalone: true, serial: true },
+  canonOnly:  false,
   hiddenTags: new Set(),
   sortOrder:  'newest',
   query:      '',
@@ -115,10 +116,13 @@ function resetSearch() {
   state.query = '';
   document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.add('active'); });
   state.typeFilter = { standalone: true, serial: true };
+  state.canonOnly = false;
+  var cb = document.getElementById('canon-filter-btn');
+  if (cb) cb.classList.remove('active');
   state.hiddenTags = new Set();
   localStorage.removeItem('sinverse_hidden_tags');
   document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.add('active'); });
-  document.querySelectorAll('.type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
+  document.querySelectorAll('#type-filters .type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
   applyFilters();
 }
 
@@ -134,6 +138,7 @@ function applyFilters() {
   // Stories tab -- show standalone and serials, never raw collection entries
   var filtered = state.stories.filter(function(item) {
     if (!state.typeFilter[item.type]) return false;
+    if (state.canonOnly && !item.canonical) return false;
     if (state.hiddenTags.size && (item.tags || []).some(function(t){ return state.hiddenTags.has(t); })) return false;
     if (charFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(charFilter)) return false;
     if (q) {
@@ -160,7 +165,7 @@ function applyFilters() {
   if (state.view === 'grid') renderGridView(filtered);
   else renderListView(filtered);
   var libCount = document.getElementById('lib-count');
-  if (libCount) libCount.textContent = state.stories.length + (state.stories.length === 1 ? ' work' : ' works');
+  if (libCount) libCount.textContent = filtered.length + (filtered.length === 1 ? ' work' : ' works');
 }
 
 // -- Collections tab
@@ -200,9 +205,7 @@ function renderCollectionsTab(q) {
         '<div class="lib-title-card-type">Collection &middot; ' + members.length + ' ' + (members.length !== 1 ? 'stories' : 'story') + '</div>' +
       '</div>';
 
-    var coverHtml = col.coverImage
-      ? '<img class="lib-card-cover" src="' + col.coverImage + '" alt="' + col.title + '" loading="lazy" />'
-      : titleCard;
+    var coverHtml = titleCard;
 
     card.innerHTML =
       '<div class="lib-card-cover-wrap">' +
@@ -353,6 +356,11 @@ function renderGridView(items) {
 
     card.className = 'lib-card lib-card-' + item.type;
 
+    var chapCount = item.chapters ? item.chapters.length : 0;
+    var chapBadge = (item.type === 'serial' && chapCount)
+      ? '<span class="lib-chap-badge">' + chapCount + ' ch.</span>'
+      : '';
+
     var titleCard =
       '<div class="lib-title-card" style="background:' + pal.bg + ';border-top:3px solid ' + pal.line + '">' +
         '<div class="lib-title-card-line" style="background:' + pal.line + '"></div>' +
@@ -362,23 +370,19 @@ function renderGridView(items) {
         '<div class="lib-title-card-type">' + (TYPE_LABELS[item.type] || item.type) + '</div>' +
       '</div>';
 
-    var coverHtml = item.coverImage
-      ? '<img class="lib-card-cover" src="' + item.coverImage + '" alt="' + item.title + '" loading="lazy" />'
-      : titleCard;
+    var coverHtml = titleCard;
 
     card.innerHTML =
       '<div class="lib-card-cover-wrap">' +
         coverHtml +
         '<span class="lib-type-badge lib-type-' + item.type + '">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
+        chapBadge +
         (item.canonical ? '<span class="lib-canonical-badge">&#10022;</span>' : '') +
+        (words ? '<span class="lib-cover-wordcount">' + fmtWords(words) + '</span>' : '') +
       '</div>' +
       '<div class="lib-card-body">' +
-        '<div class="lib-card-title">' + item.title + '</div>' +
-        (item.author ? '<div class="lib-card-author">by ' + item.author + '</div>' : '') +
         '<p class="lib-card-summary">' + (item.summary || '') + '</p>' +
         '<div class="lib-card-meta">' +
-          (words ? '<span class="lib-wordcount">' + fmtWords(words) + '</span>' : '') +
-          (chaps ? '<span class="lib-wordcount">' + chaps + '</span>' : '') +
           (item.tags || []).map(function(t) { return '<span class="content-tag">' + t + '</span>'; }).join('') +
         '</div>' +
       '</div>';
@@ -499,6 +503,13 @@ document.getElementById('type-filters').addEventListener('click', function(e) {
   var type = btn.getAttribute('data-type');
   state.typeFilter[type] = !state.typeFilter[type];
   btn.classList.toggle('active', state.typeFilter[type]);
+  applyFilters();
+});
+
+var canonBtn = document.getElementById('canon-filter-btn');
+if (canonBtn) canonBtn.addEventListener('click', function() {
+  state.canonOnly = !state.canonOnly;
+  this.classList.toggle('active', state.canonOnly);
   applyFilters();
 });
 

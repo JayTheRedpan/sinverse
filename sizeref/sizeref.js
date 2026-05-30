@@ -3105,9 +3105,10 @@ function buildModalGrid(query) {
     card.className = 'cpm-card';
     var imgUrl = entry.img || DEFAULTS.headshot[entry.sil] || DEFAULTS.headshot.giantess || '';
     var isReal = !!entry.img;
+    var imgThumb = (window.SinverseImg ? SinverseImg.thumb(imgUrl, 160) : imgUrl);
     card.innerHTML =
       '<div class="cpm-img-wrap">' +
-        '<img class="cpm-img'+(isReal?'':' sr-sil-filter')+'" src="'+imgUrl+'" alt="'+entry.name+'" />' +
+        '<img class="cpm-img'+(isReal?'':' sr-sil-filter')+'" src="'+imgThumb+'" alt="'+entry.name+'" loading="lazy" />' +
       '</div>' +
       '<div class="cpm-name">'+entry.name+'</div>';
     card.addEventListener('click', function() {
@@ -4398,7 +4399,8 @@ function buildObjModalGrid(query) {
 
       var imgHtml;
       if (o.image) {
-        imgHtml = '<div class="cpm-img-wrap"><img class="cpm-img sr-sil-filter" src="'+o.image+'" alt="'+o.label+'" /></div>';
+        var oThumb = (window.SinverseImg ? SinverseImg.thumb(o.image, 160) : o.image);
+        imgHtml = '<div class="cpm-img-wrap"><img class="cpm-img sr-sil-filter" src="'+oThumb+'" alt="'+o.label+'" loading="lazy" /></div>';
       } else {
         imgHtml = '<div class="cpm-img-wrap obj-swatch-wrap"><div class="obj-cpm-swatch" style="background:'+o.color+'"></div></div>';
       }

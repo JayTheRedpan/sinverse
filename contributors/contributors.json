@@ -8,7 +8,10 @@
       "World Builder",
       "Commissioner",
       "Friend"
-    ]
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/draco32588"
+    }
   },
   {
     "id": "FastTrack",
@@ -93,8 +96,8 @@
     }
   },
   {
-    "id": "Tempeljaeger",
-    "name": "Tempeljaeger",
+    "id": "CGK",
+    "name": "CGK",
     "avatar": null,
     "bio": null,
     "types": [

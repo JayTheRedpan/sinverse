@@ -4,6 +4,7 @@ var state = {
   items:      [],
   filtered:   [],
   typeFilter: { comic: true, scene: true, charref: true },
+  canonOnly:  false,
   hiddenTags: new Set(),  // tags excluded by user
   sortOrder:  'newest',
   query:      '',
@@ -111,6 +112,7 @@ function applyFilters() {
 
   state.filtered = state.items.filter(function(item) {
     if (!state.typeFilter[item.type]) return false;
+    if (state.canonOnly && !item.canonical) return false;
     if (state.hiddenTags.size && (item.tags || []).some(function(t){ return state.hiddenTags.has(t); })) return false;
     // Character filter from URL param is now folded into the search query
     if (state.characterFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
@@ -153,7 +155,8 @@ function renderGrid() {
     card.className = 'gallery-card gallery-card-' + item.type;
     card.href      = 'viewer.html?id=' + item.id;
 
-    var thumb = item.coverImage || item.image || '';
+    var thumbSrc = item.coverImage || item.image || '';
+    var thumb = (window.SinverseImg ? SinverseImg.thumb(thumbSrc, 500) : thumbSrc);
 
     card.innerHTML =
       '<div class="gallery-thumb-wrap">' +
@@ -193,10 +196,13 @@ function resetSearch() {
   state.query = '';
   document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.add('active'); });
   state.typeFilter = { comic: true, scene: true, charref: true };
+  state.canonOnly = false;
+  var cb = document.getElementById('canon-filter-btn');
+  if (cb) cb.classList.remove('active');
   state.hiddenTags = new Set();
   localStorage.removeItem('sinverse_hidden_tags');
   document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.add('active'); });
-  document.querySelectorAll('.type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
+  document.querySelectorAll('#type-filters .type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
   applyFilters();
 }
 
@@ -229,6 +235,13 @@ document.getElementById('type-filters').addEventListener('click', function(e) {
   var type = btn.getAttribute('data-type');
   state.typeFilter[type] = !state.typeFilter[type];
   btn.classList.toggle('active', state.typeFilter[type]);
+  applyFilters();
+});
+
+var galleryCanonBtn = document.getElementById('canon-filter-btn');
+if (galleryCanonBtn) galleryCanonBtn.addEventListener('click', function() {
+  state.canonOnly = !state.canonOnly;
+  this.classList.toggle('active', state.canonOnly);
   applyFilters();
 });
 
