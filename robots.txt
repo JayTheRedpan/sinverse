@@ -1,2 +1,23 @@
+# Allow social/link-preview bots to fetch Open Graph tags for embeds,
+# but keep general crawlers and search engines out.
+
+User-agent: Discordbot
+Allow: /
+
+User-agent: Twitterbot
+Allow: /
+
+User-agent: Telegrambot
+Allow: /
+
+User-agent: facebookexternalhit
+Allow: /
+
+User-agent: Slackbot-LinkExpanding
+Allow: /
+
+User-agent: Slackbot
+Allow: /
+
 User-agent: *
 Disallow: /

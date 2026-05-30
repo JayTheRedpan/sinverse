@@ -192,22 +192,6 @@
   flex-shrink: 0;
 }
 
-.lib-card-cover {
-  width: 100%; height: 100%;
-  object-fit: cover;
-  object-position: center top;
-  transition: transform 0.4s ease;
-}
-.lib-card:hover .lib-card-cover { transform: scale(1.03); }
-
-.lib-card-cover-placeholder {
-  width: 100%; height: 100%;
-  display: flex; align-items: center; justify-content: center;
-  font-size: 3rem;
-  color: var(--text-muted);
-  opacity: 0.2;
-}
-
 /* Type badge */
 .lib-type-badge {
   font-family: var(--font-caps);
@@ -446,13 +430,6 @@
   top: 52px;
   height: calc(100vh - 52px);
   overflow-y: auto;
-}
-
-.reader-cover {
-  width: 100%;
-  border-radius: var(--radius);
-  object-fit: cover;
-  object-position: center top;
 }
 
 .reader-meta-block { display: flex; flex-direction: column; gap: 0.6rem; }
@@ -699,7 +676,6 @@
     padding: 1rem;
     gap: 0.75rem;
   }
-  .reader-cover { width: 120px; flex-shrink: 0; }
   .reader-meta-block { flex: 1; min-width: 160px; }
   .reader-chapters { width: 100%; border-top: 1px solid var(--border); padding-top: 0.75rem; }
   .reader-chapter-list { max-height: 140px; }
@@ -711,7 +687,6 @@
 @media (max-width: 480px) {
   .lib-grid { grid-template-columns: 1fr 1fr; }
   .reader-sidebar { flex-direction: column; }
-  .reader-cover { width: 100%; }
 }
 @media (max-width: 600px) {
   .reader-content p:first-child::first-letter {
@@ -1286,4 +1261,54 @@
   text-transform: uppercase;
   color: var(--accent);
   margin-top: -0.25rem;
+}
+
+/* ── Grid card: chapter badge (top-left, beside type badge) ──── */
+.lib-chap-badge {
+  position: absolute;
+  top: 0.6rem;
+  left: 4.3rem;
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(20,14,11,0.82);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(196,154,120,0.3);
+  border-radius: 1px;
+  padding: 0.15em 0.5em;
+  display: inline-block;
+}
+
+/* ── Grid card: word count (bottom-right of cover) ───────────── */
+.lib-cover-wordcount {
+  position: absolute;
+  bottom: 0.6rem;
+  right: 0.6rem;
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: rgba(20,14,11,0.82);
+  backdrop-filter: blur(4px);
+  border: 1px solid rgba(196,154,120,0.3);
+  border-radius: 1px;
+  padding: 0.15em 0.5em;
+}
+
+/* ── Canon legend (always visible) ───────────────────────────── */
+.canon-legend {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0.75rem 1.5rem 0.25rem;
+  font-family: var(--font-body);
+  font-size: 0.78rem;
+  font-style: italic;
+  color: var(--text-muted);
+}
+.canon-legend-star {
+  color: var(--accent);
+  font-style: normal;
 }

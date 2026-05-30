@@ -74,7 +74,7 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var cCount = adventureNodes.filter(function(n){ return n.author === id; }).length;
 
   var defs = [
-    { n: gCount, label: 'Gallery',    url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
+    { n: gCount, label: 'Images',     url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
     { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
     { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
   ];
@@ -141,8 +141,9 @@ function renderCard(contributor, galleryItems, libraryItems, adventureNodes) {
   // Avatar
   var avatarHtml;
   if (contributor.avatar) {
+    var avSrc = window.SinverseImg ? SinverseImg.thumb(contributor.avatar, 200) : contributor.avatar;
     avatarHtml = '<div class="con-avatar-wrap"><img class="con-avatar" src="' +
-      contributor.avatar + '" alt="' + contributor.name + '" loading="lazy" /></div>';
+      avSrc + '" alt="' + contributor.name + '" loading="lazy" /></div>';
   } else {
     var initial = contributor.name.charAt(0).toUpperCase();
     avatarHtml = '<div class="con-avatar-wrap"><div class="con-avatar is-placeholder">' + initial + '</div></div>';

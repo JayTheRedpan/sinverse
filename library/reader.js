@@ -42,13 +42,6 @@ function renderMeta() {
   var canonEl = document.getElementById('reader-canonical');
   if (canonEl) canonEl.style.display = story.canonical ? '' : 'none';
 
-  // Cover
-  if (story.coverImage) {
-    var cover = document.getElementById('reader-cover');
-    cover.src   = story.coverImage;
-    cover.style.display = '';
-  }
-
   // Tags
   var tagsEl = document.getElementById('reader-tags');
   (story.tags || []).forEach(function(tag) {
@@ -165,10 +158,20 @@ async function loadFile(filePath) {
       bodyHtml = match ? match[1] : raw;
     }
     content.innerHTML = bodyHtml;
-    var rawText = content.textContent || content.innerText || '';
-    var wc = rawText.trim().split(/\s+/).filter(Boolean).length;
+    // Word count comes from library.json (not recalculated)
     var wcEl = document.getElementById('reader-wordcount');
-    if (wcEl && wc > 0) wcEl.textContent = fmtWords(wc) + (story.type === 'serial' ? ' this chapter' : ' words');
+    var wc;
+    if (story.type === 'serial') {
+      var chap = (story.chapters || [])[chapterIdx];
+      wc = chap ? chap.wordCount : null;
+    } else {
+      wc = story.wordCount;
+    }
+    if (wcEl && wc != null) {
+      wcEl.textContent = fmtWords(wc) + (story.type === 'serial' ? ' this chapter' : ' words');
+    } else if (wcEl) {
+      wcEl.textContent = '';
+    }
   } catch(e) {
     content.innerHTML = '<p style="color:var(--wine);padding:2rem">Could not load story file: ' + e.message + '</p>';
   }
