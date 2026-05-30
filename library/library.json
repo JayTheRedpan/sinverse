@@ -11,7 +11,7 @@
     ],
     "file": "stories/tdaytales_pakawa_couples_tday.md",
     "date": "2022-05",
-    "universe_date": "T\u00b10",
+    "universe_date": 0,
     "canonical": true,
     "characters": [
       "sin"
@@ -59,5 +59,466 @@
         "wordCount": 5874
       }
     ]
+  },
+  {
+    "id": 3,
+    "type": "standalone",
+    "title": "TDay Tales - Family Bonds",
+    "author": "Kyrm",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff"
+    ],
+    "file": "stories/tday_tales_family_bonds_kyrm.md",
+    "date": "2022-05",
+    "universe_date": 0,
+    "canonical": true,
+    "characters": [
+      "becka",
+      "bella"
+    ],
+    "wordCount": 5946
+  },
+  {
+    "id": 4,
+    "type": "standalone",
+    "title": "TDay Tales - Lucy",
+    "author": "Kyrm",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "vore"
+    ],
+    "file": "stories/tday_tales_lucy_kyrm.md",
+    "date": "2021-06",
+    "universe_date": 0,
+    "canonical": true,
+    "characters": [
+      "lucy"
+    ],
+    "wordCount": 7476
+  },
+  {
+    "id": 5,
+    "type": "standalone",
+    "title": "TDay Tales - Mean Girls",
+    "author": "Kyrm",
+    "summary": null,
+    "tags": [
+      "noncon"
+    ],
+    "file": "stories/tday_tales_mean_girls_kyrm.md",
+    "date": "2021-10",
+    "universe_date": 0,
+    "canonical": true,
+    "characters": [
+
+    ],
+    "wordCount": 10416
+  },
+  {
+    "id": 6,
+    "type": "standalone",
+    "title": "TDay Tales - The Secretary",
+    "author": "Kyrm",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "sissification"
+    ],
+    "file": "stories/tday_tales_the_secretary_kyrm.md",
+    "date": "2022-06",
+    "universe_date": 0,
+    "canonical": true,
+    "characters": [
+      "contra"
+    ],
+    "wordCount": 7572
+  },
+  {
+    "id": 7,
+    "type": "standalone",
+    "title": "TDay Tales - Ira",
+    "author": "Zaun",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "vore",
+      "snuff"
+    ],
+    "file": "stories/tdaytales_ira.md",
+    "date": "2023-02",
+    "universe_date": 0,
+    "canonical": true,
+    "characters": [
+      "ira"
+    ],
+    "wordCount": 8686
+  },
+  {
+    "id": 8,
+    "type": "serial",
+    "title": "Into the Rabbit Hole",
+    "author": "DamienDeath",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "watersports"
+    ],
+    "date": "2019-10",
+    "universe_date": null,
+    "canonical": false,
+    "complete": false,
+    "characters": [
+      "jay"
+    ],
+    "chapters": [
+      {
+        "title": "Chapter 1",
+        "file": "stories/into_the_rabbit_hole_ch1.md",
+        "wordCount": 10533
+      },
+      {
+        "title": "Chapter 2",
+        "file": "stories/into_the_rabbit_hole_ch2.md",
+        "wordCount": 10496
+      },
+      {
+        "title": "Chapter 3",
+        "file": "stories/into_the_rabbit_hole_ch3.md",
+        "wordCount": 10279
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "type": "standalone",
+    "title": "Subjects",
+    "author": "Kyrm",
+    "summary": null,
+    "tags": [
+      "m/m",
+      "snuff",
+      "vore"
+    ],
+    "file": "stories/subjects.md",
+    "date": "2025-06",
+    "universe_date": null,
+    "canonical": true,
+    "characters": [
+      "ardian"
+    ],
+    "wordCount": 13063
+  },
+  {
+    "id": 10,
+    "type": "standalone",
+    "title": "Autumn Intro",
+    "author": "CharitysSongbird",
+    "tags": [
+      "noncon",
+      "vore",
+      "snuff"
+    ],
+    "file": "stories/autumn_intro.md",
+    "date": "2019-12",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "autumn"
+    ],
+    "wordCount": 4594
+  },
+  {
+    "id": 11,
+    "type": "standalone",
+    "title": "Mini Intro",
+    "author": "CharitysSongbird",
+    "tags": [
+      "noncon",
+      "snuff",
+      "vore"
+    ],
+    "file": "stories/mini_intro.md",
+    "date": "2019-12",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "mini"
+    ],
+    "wordCount": 4889
+  },
+  {
+    "id": 12,
+    "type": "standalone",
+    "title": "Sandy Intro",
+    "author": "CharitysSongbird",
+    "tags": [
+      "noncon",
+      "sissification"
+    ],
+    "file": "stories/sandy_intro.md",
+    "date": "2019-12",
+    "universe_date": null,
+    "canonical": true,
+    "characters": [
+      "sandy"
+    ],
+    "wordCount": 6037
+  },
+  {
+    "id": 13,
+    "type": "standalone",
+    "title": "Zuzu Intro",
+    "author": "CharitysSongbird",
+    "tags": [
+      "noncon"
+    ],
+    "file": "stories/zuzu_intro.md",
+    "date": "2019-12",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "zuzu"
+    ],
+    "wordCount": 8234
+  },
+  {
+    "id": 14,
+    "type": "standalone",
+    "title": "A Matter of Professional Pride",
+    "author": "Tempeljaeger",
+    "summary": null,
+    "tags": [
+
+    ],
+    "file": "stories/a_matter_of_professional_pride_tempeljaeger.md",
+    "date": "2021-08",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 9181
+  },
+  {
+    "id": 15,
+    "type": "standalone",
+    "title": "Bunnys_Bitch",
+    "author": "HumbleHeretic",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "micro",
+      "musk"
+    ],
+    "file": "stories/bunnys_bitch.md",
+    "date": "2024-06",
+    "universe_date": null,
+    "canonical": true,
+    "characters": [
+      "jenny"
+    ],
+    "wordCount": 14896
+  },
+  {
+    "id": 16,
+    "type": "standalone",
+    "title": "Chipped",
+    "author": "BaillyBunhoof",
+    "summary": null,
+    "tags": [
+      "mpreg",
+      "noncon",
+      "snuff"
+    ],
+    "file": "stories/chipped_bailley.md",
+    "date": "2019-12",
+    "universe_date": null,
+    "canonical": true,
+    "characters": [
+
+    ],
+    "wordCount": 6911
+  },
+  {
+    "id": 17,
+    "type": "serial",
+    "title": "Dark Desires",
+    "author": "Maxwell",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "sissification",
+      "watersports",
+      "musk",
+      "micro",
+      "m/m"
+    ],
+    "date": "2019-10",
+    "universe_date": null,
+    "canonical": false,
+    "complete": false,
+    "characters": [
+      "jay"
+    ],
+    "chapters": [
+      {
+        "title": "Chapter 1",
+        "file": "stories/dark_desires_1_maxwell.md",
+        "wordCount": 12475
+      },
+      {
+        "title": "Chapter 2",
+        "file": "stories/dark_desires_2_micro_mockery.md",
+        "wordCount": 10882
+      }
+    ]
+  },
+  {
+    "id": 18,
+    "type": "standalone",
+    "title": "Dogpacked",
+    "author": "Phrenics",
+    "summary": null,
+    "tags": [
+      "watersports",
+      "noncon",
+      "earpen"
+    ],
+    "file": "stories/dogpacked_public.md",
+    "date": "2025-10",
+    "universe_date": null,
+    "canonical": true,
+    "characters": [
+
+    ],
+    "wordCount": 11867
+  },
+  {
+    "id": 19,
+    "type": "standalone",
+    "title": "In The Doghouse",
+    "author": "Kiloh",
+    "summary": null,
+    "tags": [
+      "feral",
+      "vore",
+      "snuff",
+      "micro",
+      "noncon"
+    ],
+    "file": "stories/in_the_doghouse_kiloh.md",
+    "date": "2021-05",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "jay",
+      "brandy"
+    ],
+    "wordCount": 7627
+  },
+  {
+    "id": 20,
+    "type": "standalone",
+    "title": "Midnight_Plight",
+    "author": "HumbleHeretic",
+    "summary": null,
+    "tags": [
+      "watersports",
+      "noncon",
+      "musk"
+    ],
+    "file": "stories/midnight_plight_humble_heretic.md",
+    "date": "2023-06",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "anna",
+      "brandy"
+    ],
+    "wordCount": 13343
+  },
+  {
+    "id": 21,
+    "type": "standalone",
+    "title": "Out of their Misery",
+    "author": "Galaxin",
+    "summary": null,
+    "tags": [
+      "m/m",
+      "noncon",
+      "micro",
+      "snuff",
+      "vore"
+    ],
+    "file": "stories/out_of_their_misery_galaxin.md",
+    "date": "2021-10",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 7588
+  },
+  {
+    "id": 22,
+    "type": "standalone",
+    "title": "The Club Mistress",
+    "author": "NatashaWild",
+    "summary": null,
+    "tags": [
+      "noncon"
+    ],
+    "file": "stories/the_club_mistress_natasha.md",
+    "date": "2021-06",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "jay"
+    ],
+    "wordCount": 3781
+  },
+  {
+    "id": 23,
+    "type": "standalone",
+    "title": "The Perils of Freedom",
+    "author": "Galaxin",
+    "summary": null,
+    "tags": [
+      "m/m",
+      "micro",
+      "noncon"
+    ],
+    "file": "stories/the_perils_of_freedom_galaxin.md",
+    "date": "2020-09",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [],
+    "wordCount": 8328
+  },
+  {
+    "id": 24,
+    "type": "standalone",
+    "title": "Worse Ending",
+    "author": "MarcieMallard",
+    "summary": null,
+    "tags": [
+      "mpreg",
+      "noncon",
+      "watersports",
+      "vore"
+    ],
+    "file": "stories/worse_ending_marciemallard.md",
+    "date": "2024-06",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "zuzu"
+    ],
+    "wordCount": 2215
   }
 ]

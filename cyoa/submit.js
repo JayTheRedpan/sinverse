@@ -19,7 +19,6 @@ const FORMS = {
       story:     'entry.1758226504',
       author:    'entry.1046349014',
       summary:   'entry.896008103',
-      storyTags: 'entry.984415706',
       title:     'entry.1363323010',
       blurb:     'entry.120272987',
       tags:      'entry.1419124577',
@@ -56,11 +55,6 @@ const FORMS = {
 };
 
 // Story-level tags -- shown on library card, describe the story overall
-const STORY_TAGS = [
-  'explicit', 'sensual', 'romance', 'dubcon', 'non-con', 'bdsm', 'bondage', 'dominance', 'submission',
-  'violence', 'dark themes', 'trauma', 'psychological', 'grief', 'horror', 'mystery', 'fantasy', 'sci-fi', 'thriller'
-];
-
 // Node-level content tags -- loaded from tags.json on init
 var NODE_TAGS = [];
 
@@ -436,7 +430,6 @@ window.showNewStoryForm = function() {
       { key: 'path2',     type: 'text',       label: 'Choice 2',            placeholder: 'Second choice text',                        required: true  },
       { key: 'path3',     type: 'text',       label: 'Choice 3',            placeholder: 'Third choice text',                         hint: '(optional)' },
       { key: 'path4',     type: 'text',       label: 'Choice 4',            placeholder: 'Fourth choice text',                        hint: '(optional)' },
-      { key: 'storyTags', type: 'checkboxes', label: 'Story tags',           options: STORY_TAGS.slice().sort(), hint: '(describe the overall story)' },
       { key: 'imageLink', type: 'text',       label: 'Image URL',           placeholder: 'Optional link to a cover image',            hint: '(optional)' },
     ],
     onSubmit: function(data) { return submitToGoogle('newStory', data); }

@@ -8,7 +8,6 @@ var builderState = {
 };
 
 // Tag lists -- avoid redeclaring consts from submit.js
-var BUILDER_STORY_TAGS = ['explicit','sensual','romance','dubcon','non-con','bdsm','bondage','dominance','submission','violence','dark themes','horror','mystery','fantasy','sci-fi','thriller','trauma','psychological','grief','size difference','macro','micro'];
 var BUILDER_NODE_TAGS  = ['explicit','sensual','dubcon','non-con','bdsm','bondage','dominance','submission','violence','character death','body horror','gore','dark themes','trauma','psychological','size difference'];
 
 // -- Boot
@@ -18,26 +17,14 @@ async function initBuilder() {
     var res = await fetch('../_data/tags.json');
     if (res.ok) {
       var tagData = await res.json();
-      if (tagData.cyoa)  BUILDER_STORY_TAGS = tagData.cyoa;
       if (tagData.story) BUILDER_NODE_TAGS  = tagData.story;
     }
   } catch(e) { /* use fallback arrays above */ }
 
-  buildMetaTags();
   addNode();
 }
 
-// -- Adventure-level tag checkboxes
-function buildMetaTags() {
-  var container = document.getElementById('meta-tags');
-  if (!container) return;
-  BUILDER_STORY_TAGS.slice().sort().forEach(function(tag) {
-    var label = document.createElement('label');
-    label.className = 'builder-tag-label';
-    label.innerHTML = '<input type="checkbox" value="' + tag + '" /> ' + tag;
-    container.appendChild(label);
-  });
-}
+// (adventure-level tags removed — card shows opening scene tags instead)
 
 // -- Add a new node and render its card
 function addNode() {
@@ -343,7 +330,6 @@ async function submitAll() {
   var title  = document.getElementById('meta-title').value.trim();
   var author = document.getElementById('meta-author').value.trim();
   var summary = document.getElementById('meta-summary').value.trim();
-  var storyTags = Array.from(document.querySelectorAll('#meta-tags input:checked')).map(function(cb) { return cb.value; }).join(', ');
 
   var overlay    = document.getElementById('submit-overlay');
   var titleEl    = document.getElementById('submit-title');
@@ -362,7 +348,6 @@ async function submitAll() {
 
     var data = {
       story:    title,
-      storyTags: i === 0 ? storyTags : '',
       author:   author,
       summary:  i === 0 ? summary : '(see scene 1)',
       title:    node.sceneName,

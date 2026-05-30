@@ -565,8 +565,9 @@
   display: flex;
   flex-direction: column;
   gap: 2.5rem;
-  max-width: 800px;
+  max-width: 1200px;
   width: 100%;
+  margin: 0 auto;
   box-sizing: border-box;
   overflow-x: hidden;
 }
@@ -1235,4 +1236,54 @@
   .results-sort { margin-left: 0; }
   .results-bar .view-toggle { margin-left: 0; }
   .lib-controls { padding: 1rem 1.5rem; }
+}
+
+/* ── Artist/author contributor link ─────────────────────────── */
+.viewer-artist-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--border-mid);
+  text-underline-offset: 2px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.viewer-artist-link:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* ── Reader date rows ────────────────────────────────────────── */
+.reader-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+}
+.reader-date-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.reader-date-label {
+  font-family: var(--font-caps);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 3rem;
+}
+.reader-date-val {
+  font-family: var(--font-body);
+  font-size: 0.82rem;
+  color: var(--text-secondary);
+}
+
+/* ── Reader canonical badge ──────────────────────────────────── */
+.reader-canonical-badge {
+  display: inline-block;
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: -0.25rem;
 }

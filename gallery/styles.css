@@ -824,3 +824,42 @@
   .results-bar .view-toggle { margin-left: 0; }
   .results-count { width: 100%; }
 }
+
+/* ── Artist/author contributor link ─────────────────────────── */
+.viewer-artist-link {
+  color: inherit;
+  text-decoration: underline;
+  text-decoration-color: var(--border-mid);
+  text-underline-offset: 2px;
+  transition: color 0.15s, text-decoration-color 0.15s;
+}
+.viewer-artist-link:hover {
+  color: var(--accent);
+  text-decoration-color: var(--accent);
+}
+
+/* ── Viewer date rows ────────────────────────────────────────── */
+.viewer-dates {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.75rem;
+}
+.viewer-date-row {
+  display: flex;
+  align-items: baseline;
+  gap: 0.6rem;
+}
+.viewer-date-label {
+  font-family: var(--font-caps);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  min-width: 3rem;
+}
+.viewer-date-val {
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  color: var(--text-secondary);
+}

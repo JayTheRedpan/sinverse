@@ -704,6 +704,7 @@ a:hover { color: var(--accent-light); }
   display: flex;
   align-items: baseline;
   gap: 0.5rem;
+  justify-content: flex-end;
 }
 
 .byline-label {
@@ -734,7 +735,7 @@ a:hover { color: var(--accent-light); }
   font-size: 0.6rem;
   letter-spacing: 0.22em;
   text-transform: uppercase;
-  color: var(--text-muted);
+  color: var(--accent);
   margin-bottom: 0.2rem;
 }
 
@@ -1414,8 +1415,8 @@ a:hover { color: var(--accent-light); }
   font-size: 0.62rem;
   letter-spacing: 0.14em;
   padding: 0.35rem 0.75rem;
-  color: var(--text-muted);
-  border-color: var(--border);
+  color: var(--accent);
+  border-color: var(--border-mid);
 }
 .add-branch-btn:hover { color: var(--accent); border-color: var(--accent); }
 
@@ -1466,8 +1467,11 @@ a:hover { color: var(--accent-light); }
   font-family: var(--font-display);
   font-style: italic;
   font-size: 0.78rem;
-  color: var(--text-muted);
+  color: var(--accent);
   margin-right: 0.2rem;
+}
+.choice-preview-by {
+  color: var(--text-muted);
 }
 
 /* ── Author contributor link ─────────────────────────────────── */
@@ -2054,3 +2058,72 @@ a:hover { color: var(--accent-light); }
   width: 100%;
 }
 .modal-add-choice-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
+
+/* ── Card opening-scene tag label ────────────────────────────── */
+.card-tags-label {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  align-self: center;
+  margin-right: 0.1rem;
+}
+
+/* ── Info modal tag breakdown ────────────────────────────────── */
+.adv-info-tags {
+  padding: 0 1.5rem 1rem;
+}
+.adv-info-tags-title {
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-bottom: 0.5rem;
+}
+.adv-info-tags-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.4rem;
+}
+.adv-info-tag {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  padding: 0.25rem 0.5rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.35rem;
+}
+.adv-info-tag-count {
+  font-family: var(--font-body);
+  font-size: 0.6rem;
+  color: var(--accent);
+  background: var(--accent-dim);
+  border-radius: 999px;
+  min-width: 1.1rem;
+  text-align: center;
+  padding: 0 0.25rem;
+}
+
+/* ── Dead-end choice indicator ───────────────────────────────── */
+.choice-preview-deadend {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.choice-preview-deadend .deadend-word {
+  color: #c0445a;
+  font-weight: 700;
+  font-style: normal;
+  letter-spacing: 0.12em;
+}

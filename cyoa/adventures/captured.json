@@ -2,7 +2,7 @@
   {
     "id": 1,
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779657923/huntressCity_ml0hyu.png",
-    "tags": [],
+    "tags": ["NonCon"],
     "choices": [
       {
         "text": "A male human",

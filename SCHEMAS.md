@@ -56,7 +56,7 @@ Reference for all JSON data files. Fields marked `*` are required; all others de
   "tags": ["explicit"],             // content tags (matches tags.json gallery array)
   "canonical": false,               // true = official canon piece
   "date": "2025-01",                // real-world publish date "YYYY-MM", null if unknown
-  "universe_date": "T+3"            // in-universe date (T±N format), null if ambiguous
+  "universe_date": 3                 // in-universe year relative to TDay (integer), null if unknown
 }
 ```
 
@@ -75,7 +75,7 @@ Reference for all JSON data files. Fields marked `*` are required; all others de
   "tags": ["explicit"],             // content tags (matches tags.json story array)
   "canonical": false,
   "date": "2025-01",                // real-world publish date "YYYY-MM"
-  "universe_date": "T+3",          // in-universe date (T±N format), null if ambiguous
+  "universe_date": 3,                // in-universe year relative to TDay (integer), null if unknown
   "file": "stories/filename.md",   // standalone only — path to .md file in /stories/
   "wordCount": 1800,                 // pre-calculated word count (update after writing)
   "complete": true,                 // serial only — is the serial finished?
@@ -133,8 +133,8 @@ Reference for all JSON data files. Fields marked `*` are required; all others de
 ```json
 {
   "id": "tday",                     // * unique slug
-  "era": "anchor",                  // * anchor | pre | post
-  "date": "T±0",                   // * display date (T±0 | T-N | T+N | TBD)
+  "era": "anchor",                  // derived from date sign: pre (<0) | anchor (0) | post (>0)
+  "date": 0,                        // * integer year relative to TDay; null = TBD
   "title": "TDay",                 // * event name
   "summary": "...",                 // * expanded detail text
   "tags": ["sin", "sincorp"]       // lore/character ids for Related links
@@ -179,9 +179,9 @@ Node text lives in the companion `.md` file — **not** in the JSON.
 ```json
 {
   "id": 1,                          // * integer node id — matches ## heading in .md
+  "title": "Awakening",             // * short scene title (shown in breadcrumb and author credit)
   "author": "CharitysSongbird",     // * contributor id, "Anonymous" if uncredited
   "image": "https://...",           // optional scene image URL
-  "theme": "dark",                  // optional theme tag
   "tags": ["NonCon"],               // content tags
   "choices": [
     {
@@ -238,12 +238,13 @@ Use `"Anonymous"` (capital A) for uncredited contributions — the contributors 
 
 ## In-Universe Date Format
 
-All `universe_date` fields use the **T±N** system:
-- `"T-3"` — 3 years before TDay
-- `"T±0"` — on TDay itself
-- `"T+3"` — 3 years after TDay
-- `"T+3 to T+4"` — spans a period
-- `null` — ambiguous or unknown
+All `universe_date` and timeline `date` fields use a **signed integer** representing years relative to TDay:
+- `-3` — 3 years before TDay
+- `0` — on TDay itself (Year Zero)
+- `3` — 3 years after TDay
+- `null` — unknown / TBD
+
+For content spanning a range, store the **starting** year (single anchor point). The UI formats these as `T-3`, `T±0`, `T+3` at display time.
 
 ---
 

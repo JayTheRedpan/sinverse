@@ -10,7 +10,7 @@
     ],
     "tags": [],
     "date": "2025-01",
-    "universe_date": null,
+    "universe_date": 1,
     "canonical": true,
     "synopsis": "Prima bursting into a prison refuge to find some playmates."
   },
@@ -42,7 +42,7 @@
     ],
     "synopsis": "The brief introduction to the Sinverse and how it came to be.",
     "date": "2025-01",
-    "universe_date": "T\u00b10",
+    "universe_date": 0,
     "canonical": true
   }
 ]

@@ -17,6 +17,7 @@ async function init() {
     story = items.find(function(i) { return i.id === id; });
     if (!story) throw new Error('Story not found');
     chapterIdx = ch;
+    if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
     renderMeta();
     if (story.type === 'serial') {
       renderChapterList();
@@ -38,6 +39,8 @@ function renderMeta() {
   var raEl = document.getElementById('reader-author');
   if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(story.author) + '">' + story.author + '</a>' : '';
   document.getElementById('reader-summary').textContent      = story.summary || '';
+  var canonEl = document.getElementById('reader-canonical');
+  if (canonEl) canonEl.style.display = story.canonical ? '' : 'none';
 
   // Cover
   if (story.coverImage) {
@@ -55,7 +58,32 @@ function renderMeta() {
     tagsEl.appendChild(span);
   });
 
+  // Posted + in-universe dates
+  var datesEl = document.getElementById('reader-dates');
+  if (datesEl) {
+    var rows = '';
+    if (story.date) {
+      rows += '<div class="reader-date-row"><span class="reader-date-label">Posted</span><span class="reader-date-val">' + formatPostedDate(story.date) + '</span></div>';
+    }
+    if (story.universe_date !== null && story.universe_date !== undefined && window.SinverseDates) {
+      rows += '<div class="reader-date-row"><span class="reader-date-label">Set</span><span class="reader-date-val">' + SinverseDates.label(story.universe_date) + '</span></div>';
+    }
+    datesEl.innerHTML = rows;
+  }
+
   // Word count shown after content loads (see loadContent/loadChapter)
+}
+
+// Format a "2025-05" style posted date into "May 2025"
+function formatPostedDate(s) {
+  if (!s) return '';
+  var parts = String(s).split('-');
+  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
+  if (parts.length >= 2) {
+    var m = parseInt(parts[1], 10);
+    if (m >= 1 && m <= 12) return months[m-1] + ' ' + parts[0];
+  }
+  return s;
 }
 
 function renderChapterList() {
