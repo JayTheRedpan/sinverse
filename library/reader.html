@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="../_shared/agegate.js?v=1780259511"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reader — Sinverse Library</title>
@@ -23,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css?v=1780204503" />
-  <link rel="stylesheet" href="styles.css?v=1780204673" />
+  <link rel="stylesheet" href="styles.css?v=1780260652" />
 </head>
 <body class="reader-body">
 
@@ -31,6 +32,16 @@
   <div class="reader-topbar">
     <a id="reader-back" href="index.html" class="btn-ghost reader-back-btn">&#8592; Library</a>
     <span id="reader-topbar-title" class="reader-topbar-title"></span>
+    <div class="reader-reading-controls">
+      <div class="reader-ctrl-group" title="Font size">
+        <button id="font-dec" class="reader-ctrl-btn" aria-label="Decrease font size">A&#8722;</button>
+        <button id="font-inc" class="reader-ctrl-btn" aria-label="Increase font size">A&#43;</button>
+      </div>
+      <div class="reader-ctrl-group" title="Line spacing">
+        <button id="lh-dec" class="reader-ctrl-btn" aria-label="Decrease line spacing">&#8801;</button>
+        <button id="lh-inc" class="reader-ctrl-btn" aria-label="Increase line spacing">&#8803;</button>
+      </div>
+    </div>
     <div class="reader-topbar-progress"><div id="reader-topbar-progress-fill" class="reader-topbar-progress-fill"></div></div>
   </div>
 
@@ -103,7 +114,7 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
   <script src="../_shared/dates.js?v=1780107972"></script>
-  <script src="reader.js?v=1780204673"></script>
+  <script src="reader.js?v=1780260512"></script>
 
 <script src="../_shared/nav.js?v=1780201284"></script>
 <script>initNav('library');</script>

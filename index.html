@@ -377,20 +377,40 @@
   <script>
     var KEY = 'sinverse_age_ok';
 
+    // If the visitor was deep-linking to a module, remember where to send
+    // them back to once they confirm their age.
+    function getReturnUrl() {
+      var m = window.location.search.match(/[?&]return=([^&]+)/);
+      if (!m) return null;
+      try {
+        var dest = decodeURIComponent(m[1]);
+        // Only allow same-site relative paths (must start with a single /)
+        if (/^\/[^\/]/.test(dest) || dest === '/') return '.' + dest;
+        return null;
+      } catch (e) { return null; }
+    }
+
     function showLanding() {
       document.getElementById('agegate').style.display = 'none';
       document.getElementById('landing').style.display = 'block';
     }
 
-    // Already confirmed this session -- skip the gate
-    if (sessionStorage.getItem(KEY) === '1') {
+    function enter() {
+      sessionStorage.setItem(KEY, '1');
+      var back = getReturnUrl();
+      if (back) { window.location.replace(back); return; }
       showLanding();
     }
 
-    document.getElementById('btn-enter').addEventListener('click', function() {
-      sessionStorage.setItem(KEY, '1');
-      showLanding();
-    });
+    // Already confirmed this session
+    if (sessionStorage.getItem(KEY) === '1') {
+      // If they arrived here via a deep-link redirect, bounce them onward.
+      var back = getReturnUrl();
+      if (back) { window.location.replace(back); }
+      else { showLanding(); }
+    }
+
+    document.getElementById('btn-enter').addEventListener('click', enter);
   </script>
 
 </body>

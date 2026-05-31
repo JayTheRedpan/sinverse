@@ -40,6 +40,6 @@ TDay is the anchor of the Sinverse timeline. It is T±0 — the moment everythin
 
 - The entire TDay dispersal was completed in under six hours — a logistical operation years in the making, executed in a single morning.
 - No warning was given. SinCorp had positioned its dispersal systems as routine infrastructure upgrades in the months prior.
-- Historians within the Resistance estimate that fewer than 3% of biological females worldwide were unexposed on TDay itself. The rest were transformed within 48 hours.
+- Historians within the Resistance estimate that fewer than 3% of those susceptible to the serum worldwide were unexposed on TDay itself. The rest were transformed within 48 hours.
 - The word "TDay" was coined not by SinCorp, but by a toy journalist who survived the first week. Sin later said she found it apt.
 - Some of the Transformed do not remember the hours of their transformation at all. Others remember every second. Both groups are told this is normal.

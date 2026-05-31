@@ -401,6 +401,49 @@
 
 .reader-back-btn { flex-shrink: 0; }
 
+/* Reading controls (font size + line spacing) */
+.reader-reading-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+.reader-ctrl-group {
+  display: flex;
+  gap: 2px;
+}
+.reader-ctrl-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1;
+  min-width: 30px;
+  height: 28px;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.reader-ctrl-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.reader-ctrl-btn:disabled {
+  opacity: 0.35;
+  cursor: default;
+}
+.reader-ctrl-btn:disabled:hover {
+  border-color: var(--border);
+  color: var(--text-secondary);
+  background: transparent;
+}
+
 /* Topbar progress line — desktop hides it (sidebar bar is used) */
 .reader-topbar-progress {
   display: none;
@@ -592,8 +635,8 @@
 
 /* Story content styles */
 .reader-content {
-  font-size: clamp(1.05rem, 2vw, 1.2rem);
-  line-height: 1.9;
+  font-size: var(--reader-font-size, clamp(1.05rem, 2vw, 1.2rem));
+  line-height: var(--reader-line-height, 1.9);
   color: var(--text-primary);
 }
 
@@ -729,10 +772,15 @@
   .reader-topbar { position: sticky; }
   .reader-topbar-progress { display: block; }
   .reader-main { padding: 1.25rem; }
+  /* Tighten reading controls on mobile */
+  .reader-reading-controls { gap: 0.35rem; }
+  .reader-ctrl-btn { min-width: 26px; height: 26px; font-size: 0.78rem; padding: 0 0.3rem; }
+  .reader-topbar-title { font-size: 0.8rem; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
   .chapter-nav-btn { min-width: 120px; }
 }
 
 @media (max-width: 480px) {
+  .reader-topbar-title { display: none; }
   .lib-grid { grid-template-columns: 1fr 1fr 1fr; }
   .reader-sidebar { flex-direction: column; }
 }
@@ -741,7 +789,8 @@
     font-size: 2em;
   }
   .reader-content {
-    font-size: 1rem;
+    font-size: var(--reader-font-size, 1rem);
+    line-height: var(--reader-line-height, 1.9);
     word-break: break-word;
     overflow-wrap: break-word;
   }

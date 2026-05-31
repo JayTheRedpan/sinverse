@@ -207,8 +207,8 @@
     }
   },
   {
-    "id": "Jackson",
-    "name": "Jackson",
+    "id": "Simon",
+    "name": "Simon",
     "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780209595/jackson_yrz7zt.webp",
     "bio": null,
     "types": [
@@ -265,6 +265,30 @@
     "socials": {
       "deviantart": "https://www.deviantart.com/badendsstories",
       "furaffinity": "https://www.furaffinity.net/user/freakyfuntime/"
+    }
+  },
+  {
+    "id": "Waffle",
+    "name": "Waffle",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780256324/waffle_usfiuc.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/wafflevol.2"
+    }
+  },
+  {
+    "id": "Millie",
+    "name": "Millie",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780257194/millie_kxrtgt.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/raan/"
     }
   }
 ]
