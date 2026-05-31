@@ -205,5 +205,66 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/natashawild"
     }
+  },
+  {
+    "id": "Jackson",
+    "name": "Jackson",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780209595/jackson_yrz7zt.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/noonehere3/"
+    }
+  },
+  {
+    "id": "AshamedGhost",
+    "name": "AshamedGhost",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780209594/ashamedghost_wdckqs.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/ashamedghost"
+    }
+  },
+  {
+    "id": "RegalDrennan",
+    "name": "RegalDrennan",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780209597/regal_lv5st4.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/cygil/"
+    }
+  },
+  {
+    "id": "PardusNix",
+    "name": "PardusNix",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780209597/nix_hnkhh5.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/huntman9/"
+    }
+  },
+  {
+    "id": "BadEnds",
+    "name": "BadEnds",
+    "avatar": null,
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "deviantart": "https://www.deviantart.com/badendsstories",
+      "furaffinity": "https://www.furaffinity.net/user/freakyfuntime/"
+    }
   }
 ]

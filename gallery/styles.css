@@ -866,13 +866,11 @@
 
 /* ── Canon legend (always visible) ───────────────────────────── */
 .canon-legend {
-  max-width: 1200px;
-  margin: 0 auto;
-  padding: 0.75rem 1.5rem 0.25rem;
   font-family: var(--font-body);
-  font-size: 0.78rem;
+  font-size: 0.7rem;
   font-style: italic;
   color: var(--text-muted);
+  white-space: nowrap;
 }
 .canon-legend-star {
   color: var(--accent);
