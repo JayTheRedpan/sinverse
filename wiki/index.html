@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780260117" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780265810" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -313,30 +313,131 @@
     }
 
     /* ── Timeline ── */
+    .wiki-tl-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 1.5rem 0 0.25rem;
+    }
+    .wiki-tl-controls-hint {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .wiki-tl-zoom { display: flex; gap: 4px; }
+    .wiki-tl-zoom-btn {
+      background: transparent;
+      border: 1px solid var(--border-mid);
+      border-radius: 3px;
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1;
+      min-width: 30px;
+      height: 28px;
+      padding: 0 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .wiki-tl-zoom-reset { font-family: var(--font-caps); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .wiki-tl-zoom-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .wiki-tl-zoom-btn:disabled { opacity: 0.35; cursor: default; }
+    .wiki-tl-zoom-btn:disabled:hover { border-color: var(--border-mid); color: var(--text-secondary); background: transparent; }
+
     .wiki-timeline-wrap {
       position: relative;
       overflow-x: auto;
       overflow-y: hidden;
       padding: 3rem 1rem 1.5rem;
       margin-bottom: 1rem;
-      /* Hide scrollbar but keep functionality */
+      cursor: grab;
+      /* Horizontal drag pans the timeline; vertical gestures still scroll page */
+      touch-action: pan-x pan-y;
       scrollbar-width: thin;
       scrollbar-color: var(--border-mid) transparent;
     }
+    .wiki-timeline-wrap:active { cursor: grabbing; }
+    /* Don't let the browser start a text selection while dragging */
+    .wiki-timeline-wrap.dragging { user-select: none; }
     .wiki-timeline-wrap::-webkit-scrollbar { height: 4px; }
     .wiki-timeline-wrap::-webkit-scrollbar-track { background: transparent; }
     .wiki-timeline-wrap::-webkit-scrollbar-thumb { background: var(--border-mid); border-radius: 2px; }
 
     .wiki-timeline-track {
-      display: flex;
-      align-items: flex-start;
-      min-width: max-content;
       position: relative;
+      min-width: max-content;
+      height: 230px;            /* slim band strip + baseline + staggered labels */
       padding-bottom: 1rem;
+    }
+    /* Era band layer sits behind the events */
+    .wiki-tl-bands {
+      position: absolute;
+      top: 0; left: 0; right: 0;
+      height: 34px;             /* slim name-only strip */
+      z-index: 0;
+    }
+    .wiki-tl-band {
+      position: absolute;
+      top: 0;
+      height: 34px;
+      box-sizing: border-box;
+      border-left: 1px solid var(--border-mid);
+      border-right: 1px solid var(--border-mid);
+      padding: 0 0.6rem;
+      display: flex;
+      align-items: center;
+      overflow: hidden;
+    }
+    .wiki-tl-band.band-a { background: rgba(196,154,120,0.07); }
+    .wiki-tl-band.band-b { background: rgba(196,154,120,0.14); }
+    .wiki-tl-band.band-present {
+      background: rgba(122,34,51,0.12);
+      border-left: 1px dashed var(--wine);
+    }
+    .wiki-tl-band-name {
+      font-family: var(--font-caps);
+      font-size: 0.64rem;
+      letter-spacing: 0.16em;
+      text-transform: uppercase;
+      color: var(--accent);
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    /* TDay vertical divider */
+    .wiki-tl-divider {
+      position: absolute;
+      top: 0;
+      width: 2px;
+      height: 60px;
+      background: var(--accent);
+      z-index: 2;
+    }
+    .wiki-tl-divider-label {
+      position: absolute;
+      top: -2px;
+      left: 50%;
+      transform: translateX(-50%);
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      background: var(--bg);
+      padding: 0.15rem 0.4rem;
+      white-space: nowrap;
+      border: 1px solid var(--accent);
+      border-radius: 2px;
     }
     .wiki-timeline-line {
       position: absolute;
-      top: 28px;
+      top: 52px;
       left: 0;
       right: 0;
       height: 1px;
@@ -344,17 +445,37 @@
       z-index: 0;
     }
     .wiki-timeline-event {
-      position: relative;
+      position: absolute;
+      top: 44px;                /* dot sits on the baseline (52px) */
+      transform: translateX(-50%);
       z-index: 1;
       display: flex;
       flex-direction: column;
       align-items: center;
-      width: 200px;
-      flex-shrink: 0;
+      width: 110px;
       cursor: pointer;
-      padding: 0 0.5rem;
       transition: opacity 0.15s;
+      /* The wide container shouldn't steal clicks from neighbours — only the
+         actual dot/date/title (below) are clickable. */
+      pointer-events: none;
     }
+    .wiki-timeline-event > * { pointer-events: auto; }
+    /* Hovered event rises above its neighbours so clicks land where you point */
+    .wiki-timeline-event:hover { z-index: 5; }
+    /* Staggered events drop their labels lower to avoid collisions */
+    .wiki-timeline-event.staggered { top: 44px; }
+    .wiki-timeline-event.staggered .wiki-tl-date { margin-top: 2.6rem; }
+    .wiki-timeline-event.staggered .wiki-tl-dot::after {
+      content: '';
+      position: absolute;
+      top: 11px;
+      left: 50%;
+      width: 1px;
+      height: 2.4rem;
+      background: var(--border-mid);
+      transform: translateX(-50%);
+    }
+    .wiki-tl-dot { position: relative; }
     .wiki-timeline-event:hover { opacity: 0.85; }
     .wiki-timeline-event.anchor .wiki-tl-dot {
       background: var(--accent);
@@ -364,30 +485,21 @@
     }
     .wiki-timeline-event.anchor .wiki-tl-date { font-size: 0.78rem; color: var(--text-primary); }
     .wiki-timeline-event.anchor .wiki-tl-title { font-size: 1.05rem; }
-    .wiki-tl-tick {
-      width: 1px;
-      height: 10px;
-      background: var(--border-mid);
-      margin-bottom: 0;
-      flex-shrink: 0;
-    }
-    .wiki-timeline-event.anchor .wiki-tl-tick { height: 16px; background: var(--accent); }
     .wiki-tl-dot {
-      width: 10px;
-      height: 10px;
+      width: 11px;
+      height: 11px;
       border-radius: 50%;
-      background: var(--bg-panel);
-      border: 1px solid var(--accent);
-      margin: 4px 0 0.75rem;
+      background: var(--bg);
+      border: 2px solid var(--accent);
+      margin: 0 0 0.6rem;
       transition: background 0.2s;
       flex-shrink: 0;
     }
     .wiki-timeline-event.anchor .wiki-tl-dot {
       background: var(--accent);
-      width: 14px;
-      height: 14px;
+      width: 15px;
+      height: 15px;
       box-shadow: 0 0 0 4px var(--bg), 0 0 0 6px var(--accent);
-      margin: 2px 0 0.75rem;
     }
     .wiki-timeline-event:hover .wiki-tl-dot { background: var(--accent); }
     .wiki-tl-date {
@@ -424,6 +536,20 @@
     }
     @keyframes tl-fade-in { from { opacity: 0; transform: translateY(6px); } to { opacity: 1; transform: none; } }
     .wiki-tl-detail.open { display: block; }
+    .wiki-tl-detail-era {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+      margin-bottom: 0.3rem;
+    }
+    .wiki-tl-era-link { color: var(--accent); cursor: pointer; }
+    .wiki-tl-era-link:hover { text-decoration: underline; }
+    /* Clickable era bands get a subtle hover lift */
+    .wiki-tl-band[style*="cursor: pointer"]:hover,
+    .wiki-tl-band:hover { filter: brightness(1.25); }
+    .wiki-tl-divider:hover .wiki-tl-divider-label { background: var(--accent); color: var(--bg); }
     .wiki-tl-detail-date {
       font-family: var(--font-caps);
       font-size: 0.82rem;
@@ -1034,7 +1160,44 @@
         overflow-y: auto;
       }
       /* Content fixes */
-      .wiki-timeline-wrap { overflow-x: auto; }
+      .wiki-tl-controls {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 1rem;
+      margin: 1.5rem 0 0.25rem;
+    }
+    .wiki-tl-controls-hint {
+      font-family: var(--font-caps);
+      font-size: 0.6rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--text-muted);
+    }
+    .wiki-tl-zoom { display: flex; gap: 4px; }
+    .wiki-tl-zoom-btn {
+      background: transparent;
+      border: 1px solid var(--border-mid);
+      border-radius: 3px;
+      color: var(--text-secondary);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      line-height: 1;
+      min-width: 30px;
+      height: 28px;
+      padding: 0 0.5rem;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: border-color 0.15s, color 0.15s, background 0.15s;
+    }
+    .wiki-tl-zoom-reset { font-family: var(--font-caps); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; }
+    .wiki-tl-zoom-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+    .wiki-tl-zoom-btn:disabled { opacity: 0.35; cursor: default; }
+    .wiki-tl-zoom-btn:disabled:hover { border-color: var(--border-mid); color: var(--text-secondary); background: transparent; }
+
+    .wiki-timeline-wrap { overflow-x: auto; }
       .wiki-lore-cards { grid-template-columns: 1fr; }
       .wiki-intro-title { font-size: 2rem; }
       .wiki-char-header { flex-direction: column; }
@@ -1180,7 +1343,7 @@
     </div>
     <hr class="wiki-nav-divider" style="margin-top:0" />
     <div class="wiki-nav-section">
-      <a class="wiki-nav-link active" data-page="intro">World of Sinverse</a>
+      <a class="wiki-nav-link active" data-lore="world-of-sinverse">World of Sinverse</a>
       <a class="wiki-nav-link" data-page="timeline">Timeline</a>
     </div>
     <hr class="wiki-nav-divider" />
@@ -1192,7 +1355,7 @@
     <hr class="wiki-nav-divider" />
     <div class="wiki-nav-section">
       <div class="wiki-nav-heading">Help</div>
-      <a class="wiki-nav-link" data-page="faq">FAQ</a>
+      <a class="wiki-nav-link" data-lore="faq">FAQ</a>
     </div>
   </nav>
 
@@ -1201,109 +1364,20 @@
   <main class="wiki-main" id="wiki-main">
 
     <!-- World intro -->
-    <section class="wiki-page active" id="page-intro">
-      <div class="wiki-intro-eyebrow">Setting Overview</div>
-      <h1 class="wiki-intro-title">The World of<br>Sinverse</h1>
-      <p class="wiki-intro-lead">
-        Sinverse is an anthropomorphic world — populated primarily by furry species alongside a small human minority — forever changed by a single act of calculated genius. A bunny named Sin unleashed a serum that transformed not just bodies, but the very fabric of society. What followed was not the end of the world, but the beginning of a new one.
-      </p>
-
-      <div class="wiki-section-title">The Apotheosis Serum</div>
-      <p class="wiki-lore-body">Developed in secret by Sin during her time as a research scientist, the Apotheosis Serum responds to a person's sense of self — it takes hold in anyone who knows herself to be a woman. Its effects are dramatic and permanent: exponential physical growth (typically 9–12ft, with rare cases reaching macro scale beyond 100ft), a powerful and healthy physique, a reshaping of the body into its fully realised transformed form, a dramatic suppression of empathy, and an equally dramatic surge in libido. Sin administered it to herself first, emerging as a 12ft giantess — and saw only potential.</p>
-
-      <div class="wiki-section-title">TDay — Transformation Day</div>
-      <p class="wiki-lore-body">Working behind the scenes, Sin seized control of her research lab, rebranded it as SinCorp, and spent years mass-producing her serum. Then, in a coordinated act spanning the entire globe, she released it. Water supplies, air dispersal, distribution networks — all weaponised simultaneously. Women across the world began to change. The chaos that followed lasted weeks. The world that emerged from it would last forever.</p>
-
-      <div class="wiki-section-title">The New World</div>
-      <div class="wiki-lore-cards">
-        <div class="wiki-lore-card wiki-lore-link" data-target="mega-cities" style="cursor:pointer">
-          <div class="wiki-lore-card-title">The Mega-Cities ›</div>
-          <div class="wiki-lore-card-body">Purpose-built to accommodate giantess-scale inhabitants and their subordinates. Each city-state is ruled by a Matriarch who sets its culture and laws. The most powerful is Angora, where Sin herself resides.</div>
-        </div>
-        <div class="wiki-lore-card wiki-lore-link" data-target="the-wilds" style="cursor:pointer">
-          <div class="wiki-lore-card-title">The Wilds ›</div>
-          <div class="wiki-lore-card-body">The land between mega-cities, reclaimed by nature. Macro-level women — too large for city life, their cognition sometimes affected by their extreme scale — roam vast territories here, hunting "toys" for sport and company.</div>
-        </div>
-        <div class="wiki-lore-card wiki-lore-link" data-target="toys" style="cursor:pointer">
-          <div class="wiki-lore-card-title">Toys ›</div>
-          <div class="wiki-lore-card-body">The derogatory term for males in this world. Not citizens — property. Most are kept as slaves or objects within the mega-cities. Some escape to the Wilds, becoming known as Wild Toys.</div>
-        </div>
-        <div class="wiki-lore-card wiki-lore-link" data-target="the-resistance" style="cursor:pointer">
-          <div class="wiki-lore-card-title">The Resistance ›</div>
-          <div class="wiki-lore-card-body">A guerilla coalition of empathy-retaining women and escaped toys. Operating in self-contained cells with no central leadership, they work to smuggle males out of the mega-cities.</div>
-        </div>
-      </div>
-
-      <div class="wiki-section-title">Content & Tone</div>
-      <p class="wiki-lore-body">Sinverse is an adult creative universe exploring themes of power, transformation, dominance, and size difference. Content on this wiki and associated works contains mature themes including explicit sexuality, size kink, macro/micro dynamics, and non-consensual scenarios presented in a fantasy context. All characters depicted are adults.</p>
-    </section>
-
-    <!-- FAQ -->
-    <section class="wiki-page" id="page-faq">
-      <div class="wiki-intro-eyebrow">Help</div>
-      <h1 class="wiki-intro-title">Frequently Asked<br>Questions</h1>
-      <p class="wiki-lore-body" style="margin-top:1rem">Answers to common questions about the Sinverse setting and lore. <em>(Draft answers \u2014 edit freely.)</em></p>
-
-      <div class="wiki-faq-list">
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What is the Sinverse?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">The Sinverse is an anthropomorphic world \u2014 mostly furry species alongside a small human minority \u2014 that was permanently reshaped when a bunny named Sin released the Apotheosis Serum across the globe. It is a collaborative adult creative universe where contributors build stories, art, and lore within this shared setting.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What is the Apotheosis Serum?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">A serum developed in secret by Sin that responds to a person's sense of self \u2014 it takes hold in anyone who knows herself to be a woman. Its effects are dramatic and permanent: massive physical growth (typically 9\u201312ft, with rare macro cases beyond 100ft), a powerful physique, a reshaping of the body into its fully realised transformed form, a strong suppression of empathy, and a sharp surge in libido.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">Who is Sin?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">Sin is the bunny research scientist who created the Apotheosis Serum and administered it to herself first, becoming a 12ft giantess. She seized control of her lab, rebranded it as SinCorp, and orchestrated the serum's global release. She now resides in Angora, the most powerful of the mega-cities.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What was TDay (Transformation Day)?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">TDay was the coordinated global release of the serum. SinCorp weaponised water supplies, air dispersal, and distribution networks simultaneously, and women across the world began to change. The chaos lasted weeks; the transformed world that emerged from it became permanent. Most in-universe dates are measured relative to TDay.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What are the Mega-Cities?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">Purpose-built city-states designed to accommodate giantess-scale inhabitants and their subordinates. Each is ruled by a Matriarch who sets its culture and laws. The most powerful is Angora, where Sin resides.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What are the Wilds?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">The land between the mega-cities, reclaimed by nature. Macro-scale women \u2014 too large for city life, their cognition sometimes affected by their extreme size \u2014 roam vast territories here, hunting "toys" for sport and company.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What are "toys"?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">"Toys" is the derogatory in-world term for males, who are treated as property rather than citizens. Most are kept as slaves or objects within the mega-cities. Some escape into the Wilds, where they become known as Wild Toys.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What is the Resistance?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">A guerilla coalition of empathy-retaining women and escaped toys. It operates in self-contained cells with no central leadership, working to smuggle males out of the mega-cities.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">Does the serum affect everyone?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">The serum responds to a person's sense of self \u2014 it takes hold in those who know themselves to be women, and does not touch those who don't. Not all transformed women lose their empathy to the same degree; those who retain it often end up aligned with the Resistance. Effects also vary in scale, from the common 9\u201312ft range to rare macro cases.</div></div>
-        </div>
-
-        <div class="wiki-faq-item">
-          <button class="wiki-faq-q">What kind of content does the Sinverse contain?</button>
-          <div class="wiki-faq-a"><div class="wiki-faq-a-inner">Sinverse is an adult creative universe exploring themes of power, transformation, dominance, and size difference. Works contain mature themes including explicit sexuality, size kink, macro/micro dynamics, and non-consensual scenarios presented in a fantasy context. All characters depicted are adults.</div></div>
-        </div>
-
-      </div>
-    </section>
-
     <!-- Timeline -->
     <section class="wiki-page" id="page-timeline">
       <div class="wiki-intro-eyebrow">Sinverse History</div>
       <h1 class="wiki-intro-title">Timeline</h1>
-      
+
+      <div class="wiki-tl-controls">
+        <span class="wiki-tl-controls-hint">Drag to pan</span>
+        <div class="wiki-tl-zoom">
+          <button id="tl-zoom-out" class="wiki-tl-zoom-btn" aria-label="Zoom out">&#8722;</button>
+          <button id="tl-zoom-reset" class="wiki-tl-zoom-btn wiki-tl-zoom-reset" aria-label="Reset zoom">Fit</button>
+          <button id="tl-zoom-in" class="wiki-tl-zoom-btn" aria-label="Zoom in">&#43;</button>
+        </div>
+      </div>
+
       <div id="timeline-container"></div>
     </section>
 
@@ -1457,6 +1531,11 @@ function showPage(id, pushState) {
       else app.classList.remove('sidebar-collapsed');
     }
   }
+  // When the timeline becomes visible, centre the view on TDay. (It can't be
+  // measured while hidden, so do it now that the page is active.)
+  if (id === 'timeline') {
+    requestAnimationFrame(function() { requestAnimationFrame(centerTimelineOnTDay); });
+  }
 }
 
 // Single delegated listener on the sidebar — handles static and dynamic links
@@ -1482,8 +1561,10 @@ document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
   var page = link.getAttribute('data-page');
   var cat  = link.getAttribute('data-category');
   var charId = link.getAttribute('data-char-id');
+  var lore = link.getAttribute('data-lore');
 
   if (charId) { loadCharPage(parseInt(charId)); }
+  else if (lore) { loadLorePage(lore); }
   else if (cat) { showCategory(cat); }
   else if (page) { showPage(page); }
 });
@@ -1523,21 +1604,25 @@ function fW(lbs) {
 
 var galleryItems = [];
 var libraryItems = [];
+var erasData = [];
 
 Promise.all([
   fetch('../_data/characters.json').then(function(r){ return r.json(); }),
   fetch('timeline.json').then(function(r){ return r.json(); }),
   fetch('lore.json').then(function(r){ return r.json(); }),
   fetch('../gallery/gallery.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
-  fetch('../library/library.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
+  fetch('../library/library.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+  fetch('eras.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
 ]).then(function(results) {
   characters = results[0];
   timelineEvents = results[1];
   LORE_PAGES = results[2];
   galleryItems = results[3];
   libraryItems = results[4];
+  erasData = results[5] || [];
   buildLoreSidebar();
   buildTimeline();
+  initTimelineZoom();
   buildCharGrid(characters);
 
   // Restore page from URL hash if returning via browser Back from gallery/library
@@ -1619,15 +1704,46 @@ function showCategory(section, pushState) {
   showPage('category', false);
 }
 
+
+// Render FAQ markdown (## Question followed by answer paragraphs) as an accordion.
+function renderFaqMarkdown(md) {
+  // Split on level-2 headings; each becomes a Q/A item.
+  var parts = md.split(/^##\s+/m).filter(function(s){ return s.trim(); });
+  // Any preamble before the first ## (no heading marker) shows as lead text.
+  var lead = '';
+  if (md.trim() && md.trim().indexOf('##') !== 0) {
+    var pre = md.split(/^##\s+/m)[0].trim();
+    if (pre) { lead = '<p class="wiki-lore-body" style="margin-top:1rem">' + marked.parseInline(pre) + '</p>'; parts.shift(); }
+  }
+  var items = parts.map(function(block) {
+    var nl = block.indexOf('\n');
+    var question = (nl < 0 ? block : block.slice(0, nl)).trim();
+    var answer   = (nl < 0 ? '' : block.slice(nl + 1)).trim();
+    return '<div class="wiki-faq-item">' +
+             '<button class="wiki-faq-q">' + marked.parseInline(question) + '</button>' +
+             '<div class="wiki-faq-a"><div class="wiki-faq-a-inner">' + marked.parse(answer) + '</div></div>' +
+           '</div>';
+  }).join('');
+  return lead + '<div class="wiki-faq-list">' + items + '</div>';
+}
+
 function loadLorePage(id, pushState) {
-  var lp = LORE_PAGES.find(function(p){ return p.id === id; });
-  if (!lp) return;
+  // Resolve aliases (e.g. the "era-tday" Eras entry points to the detailed
+  // "tday" page) so both categories share a single source page.
+  var aliasEntry = LORE_PAGES.find(function(p){ return p.id === id; });
+  if (aliasEntry && aliasEntry.aliasOf) { id = aliasEntry.aliasOf; }
+  // lp is the manifest entry if this page is a categorised lore page; top-level
+  // pages (world-of-sinverse, faq) have no manifest entry and that's fine —
+  // their title/eyebrow come from the markdown frontmatter.
+  var lp = LORE_PAGES.find(function(p){ return p.id === id; }) || { id: id, label: id, section: '' };
   var container = document.getElementById('lore-detail-content');
   container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;padding:2rem 0">Loading…</p>';
   showPage('lore', false);
   if (pushState !== false) history.pushState({ type: 'lore', id: id }, '', '#lore-' + id);
   // Highlight sidebar
   document.querySelectorAll('.wiki-nav-link').forEach(function(l){ l.classList.remove('active'); });
+  var loreNavLink = document.querySelector('.wiki-nav-link[data-lore="' + id + '"]');
+  if (loreNavLink) loreNavLink.classList.add('active');
 
   var loadId = id; // capture to detect stale fetch
   fetch('lore/' + id + '.md')
@@ -1639,14 +1755,23 @@ function loadLorePage(id, pushState) {
         container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic">No page found.</p>';
         return;
       }
-      // Strip frontmatter, extract title
-      var titleMatch = md.match(new RegExp('^title: *(.+)$', 'm'));
-      var title = titleMatch ? titleMatch[1].trim() : lp.label;
+      // Strip frontmatter, extract title + eyebrow + faq flag
+      var titleMatch   = md.match(new RegExp('^title: *(.+)$', 'm'));
+      var eyebrowMatch = md.match(new RegExp('^eyebrow: *(.+)$', 'm'));
+      var isFaq        = /^faq: *true *$/m.test(md);
+      var title   = titleMatch ? titleMatch[1].trim() : lp.label;
+      var eyebrow = eyebrowMatch ? eyebrowMatch[1].trim() : (lp.section || 'Lore');
       var stripped = md.replace(new RegExp('^---[^]*?---\n'), '');
-      // marked renderer handles [link](id) → wiki-lore-link spans
-      var body = '<div class="wiki-md-content">' + marked.parse(stripped) + '</div>';
+
+      var body;
+      if (isFaq) {
+        body = renderFaqMarkdown(stripped);
+      } else {
+        // marked renderer handles [link](id) → wiki-lore-link spans
+        body = '<div class="wiki-md-content">' + marked.parse(stripped) + '</div>';
+      }
       container.innerHTML =
-        '<div class="wiki-intro-eyebrow">' + (lp.section||'Lore') + '</div>' +
+        '<div class="wiki-intro-eyebrow">' + eyebrow + '</div>' +
         '<h1 class="wiki-intro-title">' + title + '</h1>' +
         body;
       renderWikiImages(container);
@@ -1750,119 +1875,395 @@ document.getElementById('wiki-main').addEventListener('click', function(e) {
 // buildSidebar removed — characters accessed via category page
 
 // ── Timeline ──────────────────────────────────────────────────
+var TL_PX_PER_YEAR = 88;        // horizontal scale, adjusted by zoom controls
+var TL_PX_MIN = 24, TL_PX_MAX = 200, TL_PX_STEP = 22, TL_PX_DEFAULT = 88;
+
 function buildTimeline() {
   var container = document.getElementById('timeline-container');
+  container.innerHTML = '';
+
+  // --- Scale setup ---------------------------------------------------------
+  // Events are positioned by their actual date so era widths reflect real
+  // time spans. Null-date events (ongoing/TBD) go in a "Present" zone at the end.
+  var PX_PER_YEAR = TL_PX_PER_YEAR;  // horizontal scale (zoom-controlled)
+  var EDGE_PAD    = 90;       // padding at each end of the track
+  var PRESENT_W   = 240;      // width of the ongoing/TBD zone
+
+  function evDate(ev) {
+    return (ev.date === null || ev.date === undefined) ? null : (parseInt(ev.date, 10) || 0);
+  }
+
+  var dated = timelineEvents.filter(function(ev){ return evDate(ev) !== null; });
+  var undated = timelineEvents.filter(function(ev){ return evDate(ev) === null; });
+
+  // Determine the year range across both events and eras
+  var years = dated.map(evDate);
+  erasData.forEach(function(era){
+    if (era.start !== null && era.start !== undefined) years.push(era.start);
+    if (era.end   !== null && era.end   !== undefined) years.push(era.end);
+  });
+  if (!years.length) years = [0];
+  var minYear = Math.min.apply(null, years);
+  var maxYear = Math.max.apply(null, years);
+  // Pad the range slightly so edge eras/events aren't flush against the ends
+  minYear -= 1; maxYear += 1;
+
+  function xForYear(y) { return EDGE_PAD + (y - minYear) * PX_PER_YEAR; }
+  var datedWidth = xForYear(maxYear) + EDGE_PAD;
+  var totalWidth = datedWidth + (undated.length ? PRESENT_W : 0);
+
+  // --- Track scaffold ------------------------------------------------------
   var trackWrap = document.createElement('div');
   trackWrap.className = 'wiki-timeline-wrap';
 
-  // Sort events: BT events descending (3 BT before 2 BT), anchor at 0, AT ascending
-  function tlSortKey(ev) {
-    // null dates (TBD) sort to the end
-    if (ev.date === null || ev.date === undefined) return Infinity;
-    return parseInt(ev.date, 10) || 0;
-  }
-  timelineEvents = timelineEvents.slice().sort(function(a, b) {
-    return tlSortKey(a) - tlSortKey(b);
-  });
-
   var track = document.createElement('div');
   track.className = 'wiki-timeline-track';
+  track.style.width = totalWidth + 'px';
+  track.style.minWidth = totalWidth + 'px';
 
+  // --- Era bands (behind events) -------------------------------------------
+  var bandLayer = document.createElement('div');
+  bandLayer.className = 'wiki-tl-bands';
+
+  // Clicking an era band/divider opens its lore page (era-<id>), if it exists.
+  function wireEraClick(el, eraId) {
+    var loreId = 'era-' + eraId;
+    var exists = LORE_PAGES.find(function(p){ return p.id === loreId; });
+    if (!exists) return;
+    el.style.cursor = 'pointer';
+    el.addEventListener('click', function(e) {
+      e.stopPropagation();
+      loadLorePage(loreId);
+    });
+  }
+
+  erasData.forEach(function(era, i) {
+    if (era.point) {
+      // A single-moment era (TDay) — render as a vertical divider, not a band
+      var x = xForYear(era.start);
+      var div = document.createElement('div');
+      div.className = 'wiki-tl-divider';
+      div.style.left = x + 'px';
+      div.innerHTML = '<span class="wiki-tl-divider-label">' + era.name + '</span>';
+      div.title = era.description ? era.description + ' — click to read more' : '';
+      wireEraClick(div, era.id);
+      bandLayer.appendChild(div);
+      return;
+    }
+    var startY = (era.start === null || era.start === undefined) ? minYear : era.start;
+    var endY   = (era.end   === null || era.end   === undefined) ? maxYear : era.end;
+    var left  = xForYear(startY);
+    // Era boundaries are shared instants (one era's end == the next era's start),
+    // so a band spans exactly start→end with no extra year — adjacent bands meet
+    // cleanly at the boundary without overlapping.
+    var right = xForYear(endY);
+    var band = document.createElement('div');
+    band.className = 'wiki-tl-band ' + (i % 2 === 0 ? 'band-a' : 'band-b');
+    band.style.left  = left + 'px';
+    band.style.width = (right - left) + 'px';
+    band.innerHTML = '<div class="wiki-tl-band-name">' + era.name + '</div>';
+    band.title = (era.description || era.name) + ' — click to read more';
+    wireEraClick(band, era.id);
+    bandLayer.appendChild(band);
+  });
+
+  // Present / ongoing zone for undated events
+  if (undated.length) {
+    var pband = document.createElement('div');
+    pband.className = 'wiki-tl-band band-present';
+    pband.style.left  = datedWidth + 'px';
+    pband.style.width = PRESENT_W + 'px';
+    pband.innerHTML = '<div class="wiki-tl-band-name">The Present</div>';
+    bandLayer.appendChild(pband);
+  }
+
+  track.appendChild(bandLayer);
+
+  // --- Baseline line -------------------------------------------------------
   var line = document.createElement('div');
   line.className = 'wiki-timeline-line';
   track.appendChild(line);
 
+  // --- Detail panel --------------------------------------------------------
   var detail = document.createElement('div');
   detail.className = 'wiki-tl-detail';
   detail.id = 'tl-detail';
-
   var openId = null;
 
-  timelineEvents.forEach(function(ev) {
-    var node = document.createElement('div');
-    node.className = 'wiki-timeline-event' + (ev.era === 'anchor' ? ' anchor' : '');
+  // --- Event markers -------------------------------------------------------
+  function eraForDate(d) {
+    if (d === null || d === undefined) return null;
+    // Prefer an exact point-era match (e.g. TDay at year 0)
+    for (var p = 0; p < erasData.length; p++) {
+      if (erasData[p].point && erasData[p].start === d) return erasData[p];
+    }
+    // Then prefer a non-point era that STARTS at this year (boundary years
+    // belong to the era beginning there, not the one ending there)
+    for (var q = 0; q < erasData.length; q++) {
+      if (!erasData[q].point && erasData[q].start === d) return erasData[q];
+    }
+    // Otherwise fall back to whichever range contains the year
+    for (var i = 0; i < erasData.length; i++) {
+      var e = erasData[i];
+      if (e.point) continue;
+      var s = (e.start === null || e.start === undefined) ? -Infinity : e.start;
+      var en = (e.end === null || e.end === undefined) ? Infinity : e.end;
+      if (d >= s && d <= en) return e;
+    }
+    return null;
+  }
+  function eraEyebrowHtml(d) {
+    var e = eraForDate(d);
+    if (!e) return 'The Present';
+    var loreId = 'era-' + e.id;
+    var exists = LORE_PAGES.find(function(p){ return p.id === loreId; });
+    if (exists) {
+      return '<span class="wiki-lore-link wiki-tl-era-link" data-target="' + loreId + '">' + e.name + '</span>';
+    }
+    return e.name;
+  }
 
-    var tick = document.createElement('div');
-    tick.className = 'wiki-tl-tick';
+  function placeEvent(ev, x, stagger) {
+    var node = document.createElement('div');
+    node.className = 'wiki-timeline-event' + (ev.era === 'anchor' ? ' anchor' : '') + (stagger ? ' staggered' : '');
+    node.style.left = x + 'px';
 
     var dot = document.createElement('div');
     dot.className = 'wiki-tl-dot';
-
     var date = document.createElement('div');
     date.className = 'wiki-tl-date';
     date.textContent = fTDate(ev.date);
-
     var title = document.createElement('div');
     title.className = 'wiki-tl-title';
     title.textContent = ev.title;
 
-    node.appendChild(tick);
     node.appendChild(dot);
     node.appendChild(date);
     node.appendChild(title);
-
     node.setAttribute('data-ev-id', ev.id);
+
     node.addEventListener('click', function() {
       var wasOpen = openId === ev.id;
-      // Reset all dots
       document.querySelectorAll('.wiki-tl-dot').forEach(function(d){ d.style.background = ''; });
-      if (wasOpen) {
-        detail.classList.remove('open');
-        openId = null;
-      } else {
-        dot.style.background = 'var(--accent)';
-        // Build related links from tags
-        var relatedHtml = '';
-        if (ev.tags && ev.tags.length) {
-          var relLinks = ev.tags.map(function(tag) {
-            var lp = LORE_PAGES.find(function(p){ return p.id === tag; });
-            var ch = characters.find(function(c){ return c.name.toLowerCase() === tag; });
-            if (lp) return '<span class="tl-related-link wiki-lore-link" data-target="' + tag + '">' + lp.label + '</span>';
-            if (ch) return '<span class="tl-related-link wiki-lore-link" data-target="' + ch.name.toLowerCase() + '">' + ch.name + '</span>';
-            return null;
-          }).filter(Boolean);
-          if (relLinks.length) relatedHtml = '<div class="tl-related"><span class="tl-related-label">Related</span>' + relLinks.join('') + '</div>';
-        }
-        detail.innerHTML =
-          '<button class="wiki-tl-detail-close" id="tl-close">Close ✕</button>' +
-          '<div class="wiki-tl-detail-date">' + fTDate(ev.date) + '</div>' +
-          '<div class="wiki-tl-detail-title">' + ev.title + '</div>' +
-          '<div class="wiki-tl-detail-body">' + ev.summary + '</div>' +
-          relatedHtml;
-        detail.classList.add('open');
-        openId = ev.id;
-        document.getElementById('tl-close').addEventListener('click', function(e) {
-          e.stopPropagation();
-          detail.classList.remove('open');
-          dot.style.background = '';
-          openId = null;
-        });
-        // Wire related page links
-        detail.querySelectorAll('.wiki-lore-link').forEach(function(el) {
-          el.addEventListener('click', function(e) {
-            e.stopPropagation();
-            var t = this.getAttribute('data-target');
-            var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
-            if (isLore) loadLorePage(t);
-            else {
-              var cByName = characters.find(function(c){ return c.name.toLowerCase()===t.toLowerCase(); });
-              if (cByName) loadCharPage(cByName.id);
-            }
-          });
-        });
+      if (wasOpen) { detail.classList.remove('open'); openId = null; return; }
+      dot.style.background = 'var(--accent)';
+      var relatedHtml = '';
+      if (ev.tags && ev.tags.length) {
+        var relLinks = ev.tags.map(function(tag) {
+          var lp = LORE_PAGES.find(function(p){ return p.id === tag; });
+          var ch = characters.find(function(c){ return c.name.toLowerCase() === tag; });
+          if (lp) return '<span class="tl-related-link wiki-lore-link" data-target="' + tag + '">' + lp.label + '</span>';
+          if (ch) return '<span class="tl-related-link wiki-lore-link" data-target="' + ch.name.toLowerCase() + '">' + ch.name + '</span>';
+          return null;
+        }).filter(Boolean);
+        if (relLinks.length) relatedHtml = '<div class="tl-related"><span class="tl-related-label">Related</span>' + relLinks.join('') + '</div>';
       }
+      detail.innerHTML =
+        '<button class="wiki-tl-detail-close" id="tl-close">Close \u2715</button>' +
+        '<div class="wiki-tl-detail-era">' + eraEyebrowHtml(evDate(ev)) + '</div>' +
+        '<div class="wiki-tl-detail-date">' + fTDate(ev.date) + '</div>' +
+        '<div class="wiki-tl-detail-title">' + ev.title + '</div>' +
+        '<div class="wiki-tl-detail-body">' + ev.summary + '</div>' +
+        relatedHtml;
+      detail.classList.add('open');
+      openId = ev.id;
+      document.getElementById('tl-close').addEventListener('click', function(e) {
+        e.stopPropagation();
+        detail.classList.remove('open');
+        dot.style.background = '';
+        openId = null;
+      });
+      detail.querySelectorAll('.wiki-lore-link').forEach(function(el) {
+        el.addEventListener('click', function(e) {
+          e.stopPropagation();
+          var t = this.getAttribute('data-target');
+          var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
+          if (isLore) loadLorePage(t);
+          else {
+            var cByName = characters.find(function(c){ return c.name.toLowerCase()===t.toLowerCase(); });
+            if (cByName) loadCharPage(cByName.id);
+          }
+        });
+      });
     });
 
     track.appendChild(node);
+  }
+
+  dated.slice().sort(function(a,b){ return evDate(a) - evDate(b); })
+       .forEach(function(ev, i){ placeEvent(ev, xForYear(evDate(ev)), i % 2 === 1); });
+
+  // Undated events spread across the Present zone
+  undated.forEach(function(ev, i) {
+    var x = datedWidth + (PRESENT_W / (undated.length + 1)) * (i + 1);
+    placeEvent(ev, x, i % 2 === 1);
   });
 
   trackWrap.appendChild(track);
   container.appendChild(trackWrap);
+  enableDragScroll(trackWrap);
+  // Remember where TDay (T±0) sits so the view can centre on it
+  trackWrap._tdayX = xForYear(0);
+
   var fn = document.createElement('p');
   fn.className = 'wiki-tl-footnote';
-  fn.innerHTML = 'Dates relative to TDay (T&plusmn;0) — <em>T-N</em> = N years before; <em>T+N</em> = N years after. Click any event to expand.';
+  fn.innerHTML = 'Dates relative to TDay (T&plusmn;0) — <em>T-N</em> = N years before; <em>T+N</em> = N years after. Bands mark the eras; click any event to expand.';
   container.appendChild(fn);
   container.appendChild(detail);
+}
+
+
+// Drag-to-pan for the timeline (mouse + touch via pointer events). Suppresses
+// the click that would otherwise fire on an event after a real drag.
+function enableDragScroll(el) {
+  var isDown = false, startX = 0, startScroll = 0, moved = false;
+  var DRAG_THRESHOLD = 5; // px before it counts as a drag (not a click)
+
+  el.style.cursor = 'grab';
+
+  el.addEventListener('pointerdown', function(e) {
+    // Ignore non-primary buttons
+    if (e.button !== undefined && e.button !== 0) return;
+    isDown = true;
+    moved = false;
+    startX = e.clientX;
+    startScroll = el.scrollLeft;
+    el.style.cursor = 'grabbing';
+    el.style.userSelect = 'none';
+  });
+
+  el.addEventListener('pointermove', function(e) {
+    if (!isDown) return;
+    var dx = e.clientX - startX;
+    if (Math.abs(dx) > DRAG_THRESHOLD) {
+      moved = true;
+      // Capture the pointer once we know it's a drag so it keeps tracking
+      // even if the cursor leaves the element.
+      if (el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (err) {} }
+    }
+    if (moved) {
+      el.scrollLeft = startScroll - dx;
+      e.preventDefault();
+    }
+  });
+
+  function endDrag(e) {
+    if (!isDown) return;
+    isDown = false;
+    el.style.cursor = 'grab';
+    el.style.userSelect = '';
+    if (el.releasePointerCapture && e && e.pointerId !== undefined) {
+      try { el.releasePointerCapture(e.pointerId); } catch (err) {}
+    }
+  }
+  el.addEventListener('pointerup', endDrag);
+  el.addEventListener('pointercancel', endDrag);
+  el.addEventListener('pointerleave', function(e) { if (!el.hasPointerCapture || !el.hasPointerCapture(e.pointerId)) endDrag(e); });
+
+  // Swallow the click that follows a drag, so panning doesn't open a detail panel
+  el.addEventListener('click', function(e) {
+    if (moved) {
+      e.stopPropagation();
+      e.preventDefault();
+      moved = false;
+    }
+  }, true);
+}
+
+
+// Zoom controls for the timeline. Adjusting the scale rebuilds the timeline,
+// preserving the scroll centre so the view stays anchored.
+function rebuildTimelinePreservingCenter() {
+  var wrap = document.querySelector('.wiki-timeline-wrap');
+  var centerRatio = 0.5;
+  if (wrap && wrap.scrollWidth > wrap.clientWidth) {
+    centerRatio = (wrap.scrollLeft + wrap.clientWidth / 2) / wrap.scrollWidth;
+  }
+  buildTimeline();
+  var nw = document.querySelector('.wiki-timeline-wrap');
+  if (nw && nw.scrollWidth > nw.clientWidth) {
+    nw.scrollLeft = centerRatio * nw.scrollWidth - nw.clientWidth / 2;
+  }
+  updateZoomButtons();
+}
+
+// Rebuild the timeline while keeping the content under a given screen x-offset
+// (relative to the wrap's left edge) anchored in place — used for wheel zoom.
+function rebuildTimelineAnchoredAt(offsetX) {
+  var wrap = document.querySelector('.wiki-timeline-wrap');
+  var anchorRatio = 0.5;
+  if (wrap && wrap.scrollWidth > 0) {
+    anchorRatio = (wrap.scrollLeft + offsetX) / wrap.scrollWidth;
+  }
+  buildTimeline();
+  var nw = document.querySelector('.wiki-timeline-wrap');
+  if (nw && nw.scrollWidth > nw.clientWidth) {
+    nw.scrollLeft = anchorRatio * nw.scrollWidth - offsetX;
+  }
+  updateZoomButtons();
+}
+
+// Scroll the timeline so TDay (T\u00b10) is centred in the viewport.
+function centerTimelineOnTDay() {
+  var wrap = document.querySelector('.wiki-timeline-wrap');
+  if (!wrap || wrap._tdayX === undefined) return;
+  var target = wrap._tdayX - wrap.clientWidth / 2;
+  wrap.scrollLeft = Math.max(0, target);
+}
+
+function updateZoomButtons() {
+  var out = document.getElementById('tl-zoom-out');
+  var inc = document.getElementById('tl-zoom-in');
+  if (out) out.disabled = TL_PX_PER_YEAR <= TL_PX_MIN;
+  if (inc) inc.disabled = TL_PX_PER_YEAR >= TL_PX_MAX;
+}
+
+function initTimelineZoom() {
+  var out = document.getElementById('tl-zoom-out');
+  var inc = document.getElementById('tl-zoom-in');
+  var reset = document.getElementById('tl-zoom-reset');
+  if (out) out.addEventListener('click', function() {
+    TL_PX_PER_YEAR = Math.max(TL_PX_MIN, TL_PX_PER_YEAR - TL_PX_STEP);
+    rebuildTimelinePreservingCenter();
+  });
+  if (inc) inc.addEventListener('click', function() {
+    TL_PX_PER_YEAR = Math.min(TL_PX_MAX, TL_PX_PER_YEAR + TL_PX_STEP);
+    rebuildTimelinePreservingCenter();
+  });
+  if (reset) reset.addEventListener('click', function() {
+    TL_PX_PER_YEAR = TL_PX_DEFAULT;
+    rebuildTimelinePreservingCenter();
+  });
+
+  // Wheel over the timeline zooms (toward the cursor) instead of scrolling the
+  // page. Attached to the container so it persists across rebuilds.
+  var container = document.getElementById('timeline-container');
+  if (container && !container._wheelZoomBound) {
+    container._wheelZoomBound = true;
+    var lastWheelZoom = 0;
+    container.addEventListener('wheel', function(e) {
+      var wrap = e.target.closest ? e.target.closest('.wiki-timeline-wrap') : null;
+      if (!wrap) return;
+      var delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
+      if (delta === 0) return;
+      e.preventDefault();
+      // Throttle so one trackpad swipe doesn't jump the whole zoom range
+      var now = Date.now();
+      if (now - lastWheelZoom < 90) return;
+      lastWheelZoom = now;
+      var rect = wrap.getBoundingClientRect();
+      var offsetX = e.clientX - rect.left;   // cursor x within the wrap
+      var prev = TL_PX_PER_YEAR;
+      if (delta < 0) {
+        TL_PX_PER_YEAR = Math.min(TL_PX_MAX, TL_PX_PER_YEAR + TL_PX_STEP);
+      } else {
+        TL_PX_PER_YEAR = Math.max(TL_PX_MIN, TL_PX_PER_YEAR - TL_PX_STEP);
+      }
+      if (TL_PX_PER_YEAR !== prev) rebuildTimelineAnchoredAt(offsetX);
+    }, { passive: false });
+  }
+
+  updateZoomButtons();
 }
 
 // ── Character grid ────────────────────────────────────────────
@@ -2036,8 +2437,12 @@ function loadCharPage(charId, pushState) {
 // ── Browser history (back/forward) ────────────────────────────
 window.addEventListener('popstate', function(e) {
   var state = e.state;
-  if (!state) { showPage('intro', false); return; }
-  if (state.type === 'page')      showPage(state.id, false);
+  if (!state) { loadLorePage('world-of-sinverse', false); return; }
+  if (state.type === 'page') {
+    if (state.id === 'intro') loadLorePage('world-of-sinverse', false);
+    else if (state.id === 'faq') loadLorePage('faq', false);
+    else showPage(state.id, false);
+  }
   else if (state.type === 'character') loadCharPage(state.id, false);
   else if (state.type === 'lore') loadLorePage(state.id, false);
   else if (state.type === 'category') showCategory(state.id, false);
@@ -2046,12 +2451,12 @@ window.addEventListener('popstate', function(e) {
 // Restore from URL hash if returning from gallery/library
 (function() {
   var hash = window.location.hash;
-  if (hash && hash !== '#page-intro') {
+  if (hash && hash !== '#page-intro' && hash !== '#lore-world-of-sinverse') {
     // Will be handled by popstate-like restore after data loads
     window._restoreHash = hash;
   }
 })();
-history.replaceState({ type: 'page', id: 'intro' }, '', window.location.hash || '#page-intro');
+history.replaceState({ type: 'lore', id: 'world-of-sinverse' }, '', window.location.hash || '#lore-world-of-sinverse');
 
 // ── Search ────────────────────────────────────────────────────
 var searchTimeout = null;

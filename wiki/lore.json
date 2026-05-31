@@ -43,5 +43,41 @@
     "id": "project-sylph",
     "label": "Project Sylph",
     "section": "Classified"
+  },
+  {
+    "id": "era-pre-sin",
+    "label": "Pre-Sin",
+    "section": "Eras"
+  },
+  {
+    "id": "era-pre-tday",
+    "label": "Pre-TDay",
+    "section": "Eras"
+  },
+  {
+    "id": "era-tday",
+    "label": "TDay",
+    "section": "Eras",
+    "aliasOf": "tday"
+  },
+  {
+    "id": "era-post-apotheosis",
+    "label": "Post-Apotheosis",
+    "section": "Eras"
+  },
+  {
+    "id": "era-the-reconstruction",
+    "label": "The Reconstruction",
+    "section": "Eras"
+  },
+  {
+    "id": "era-the-giantess-renaissance",
+    "label": "The Giantess Renaissance",
+    "section": "Eras"
+  },
+  {
+    "id": "era-project-sylph",
+    "label": "Project Sylph",
+    "section": "Eras"
   }
 ]
