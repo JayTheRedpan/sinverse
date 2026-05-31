@@ -26,6 +26,7 @@ async function init() {
       loadStory();
     }
     initProgress();
+    initReadingControls();
   } catch(e) {
     document.getElementById('reader-content').innerHTML =
       '<p style="color:var(--wine);padding:2rem">' + e.message + '</p>';
@@ -184,6 +185,68 @@ function renderExternalLink(url) {
       '<p class="external-story-note">This story is hosted externally.</p>' +
       '<a href="' + link + '" target="_blank" rel="noopener noreferrer" class="btn-primary">Read on external site &#8599;</a>' +
     '</div>';
+}
+
+// -- Reading controls (font size + line spacing)
+var READER_PREFS_KEY = 'sinverse_reader_prefs';
+// Font size in px steps; line height as a unitless multiplier.
+var FONT_MIN = 16, FONT_MAX = 28, FONT_DEFAULT = 19, FONT_STEP = 1;
+var LH_MIN = 1.4, LH_MAX = 2.6, LH_DEFAULT = 1.9, LH_STEP = 0.15;
+var readerPrefs = { font: FONT_DEFAULT, lh: LH_DEFAULT };
+
+function loadReaderPrefs() {
+  try {
+    var saved = JSON.parse(localStorage.getItem(READER_PREFS_KEY));
+    if (saved && typeof saved.font === 'number' && typeof saved.lh === 'number') {
+      readerPrefs.font = Math.min(FONT_MAX, Math.max(FONT_MIN, saved.font));
+      readerPrefs.lh   = Math.min(LH_MAX, Math.max(LH_MIN, saved.lh));
+    }
+  } catch (e) {}
+}
+
+function saveReaderPrefs() {
+  try { localStorage.setItem(READER_PREFS_KEY, JSON.stringify(readerPrefs)); } catch (e) {}
+}
+
+function applyReaderPrefs() {
+  var content = document.getElementById('reader-content');
+  if (content) {
+    content.style.setProperty('--reader-font-size', readerPrefs.font + 'px');
+    content.style.setProperty('--reader-line-height', String(readerPrefs.lh));
+  }
+  // Reflect limits on the buttons
+  var fDec = document.getElementById('font-dec');
+  var fInc = document.getElementById('font-inc');
+  var lDec = document.getElementById('lh-dec');
+  var lInc = document.getElementById('lh-inc');
+  if (fDec) fDec.disabled = readerPrefs.font <= FONT_MIN;
+  if (fInc) fInc.disabled = readerPrefs.font >= FONT_MAX;
+  if (lDec) lDec.disabled = readerPrefs.lh <= LH_MIN + 0.001;
+  if (lInc) lInc.disabled = readerPrefs.lh >= LH_MAX - 0.001;
+}
+
+function initReadingControls() {
+  loadReaderPrefs();
+  applyReaderPrefs();
+
+  function bump(kind, dir) {
+    if (kind === 'font') {
+      readerPrefs.font = Math.min(FONT_MAX, Math.max(FONT_MIN, readerPrefs.font + dir * FONT_STEP));
+    } else {
+      readerPrefs.lh = Math.min(LH_MAX, Math.max(LH_MIN, Math.round((readerPrefs.lh + dir * LH_STEP) * 100) / 100));
+    }
+    applyReaderPrefs();
+    saveReaderPrefs();
+  }
+
+  var map = [
+    ['font-dec', 'font', -1], ['font-inc', 'font', 1],
+    ['lh-dec', 'lh', -1],     ['lh-inc', 'lh', 1]
+  ];
+  map.forEach(function(m) {
+    var btn = document.getElementById(m[0]);
+    if (btn) btn.addEventListener('click', function() { bump(m[1], m[2]); });
+  });
 }
 
 // -- Reading progress bar

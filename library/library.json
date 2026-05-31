@@ -525,7 +525,7 @@
     "id": 25,
     "type": "serial",
     "title": "Deliver Us From Sin",
-    "author": "Jackson",
+    "author": "Simon",
     "summary": null,
     "tags": [
       "noncon",
@@ -712,7 +712,7 @@
     "id": 33,
     "type": "standalone",
     "title": "TDay Tales - Big Bad Wolf",
-    "author": "Jackson",
+    "author": "Simon",
     "summary": null,
     "tags": [
 
@@ -730,7 +730,7 @@
     "id": 34,
     "type": "standalone",
     "title": "Trouble in Paradise",
-    "author": "Jackson",
+    "author": "Simon",
     "summary": null,
     "tags": [
 
@@ -743,5 +743,86 @@
 
     ],
     "wordCount": 15941
+  },
+  {
+    "id": 35,
+    "type": "standalone",
+    "title": "Day Zero",
+    "author": "Waffle",
+    "summary": null,
+    "tags": [
+      "m/m",
+      "micro",
+      "musk",
+      "watersports",
+      "vore"
+    ],
+    "file": "stories/day_zero.md",
+    "date": "2025-03",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "jay"
+    ],
+    "wordCount": 10216
+  },
+  {
+    "id": 36,
+    "type": "standalone",
+    "title": "TDay Tales - Millie",
+    "author": "Millie",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "vore"
+    ],
+    "file": "stories/t_day_millie.md",
+    "date": "2024-11",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 8355
+  },
+  {
+    "id": 37,
+    "type": "standalone",
+    "title": "The Loaner",
+    "author": "Millie",
+    "summary": null,
+    "tags": [
+      "noncon"
+    ],
+    "file": "stories/the_loaner.md",
+    "date": "2025-05",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "jay"
+    ],
+    "wordCount": 1625
+  },
+  {
+    "id": 38,
+    "type": "standalone",
+    "title": "The Wild Hunt",
+    "author": "Millie",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "vore",
+      "mpreg"
+    ],
+    "file": "stories/the_wild_hunt.md",
+    "date": "2025-03",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 13069
   }
 ]

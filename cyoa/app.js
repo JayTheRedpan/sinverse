@@ -1,8 +1,4 @@
 'use strict';
-
-var _histPos = 0; // monotonic counter for browser history direction tracking
-
-var _histPos = 0; // monotonic counter for browser history direction tracking
 /* ===============================================
    Sinverse -- Interactive Fiction
    app.js
@@ -52,6 +48,7 @@ const btnRestart            = $('btn-restart');
 const btnPlayAgain          = $('btn-play-again');
 const btnLibraryFromEnd     = $('btn-library-from-end');
 const gameStoryTitle        = $('game-story-title');
+const cyoaTopbarTitle       = $('cyoa-topbar-title');
 const modalOverlay          = $('modal-overlay');
 const modalMessage          = $('modal-message');
 const modalConfirm          = $('modal-confirm');
@@ -61,8 +58,72 @@ const sceneByline           = $('scene-byline');
 const sceneAuthorEl         = $('scene-author');
 
 // -- Boot ----------------------------------------
+
+// -- Reading controls (font size + line spacing) ---------------
+// Shares the same localStorage key as the library reader so a reader's
+// preference carries across the whole site.
+var READER_PREFS_KEY = 'sinverse_reader_prefs';
+var FONT_MIN = 16, FONT_MAX = 28, FONT_DEFAULT = 20, FONT_STEP = 1;
+var LH_MIN = 1.4, LH_MAX = 2.6, LH_DEFAULT = 1.9, LH_STEP = 0.15;
+var readerPrefs = { font: FONT_DEFAULT, lh: LH_DEFAULT };
+
+function loadReaderPrefs() {
+  try {
+    var saved = JSON.parse(localStorage.getItem(READER_PREFS_KEY));
+    if (saved && typeof saved.font === 'number' && typeof saved.lh === 'number') {
+      readerPrefs.font = Math.min(FONT_MAX, Math.max(FONT_MIN, saved.font));
+      readerPrefs.lh   = Math.min(LH_MAX, Math.max(LH_MIN, saved.lh));
+    }
+  } catch (e) {}
+}
+
+function saveReaderPrefs() {
+  try { localStorage.setItem(READER_PREFS_KEY, JSON.stringify(readerPrefs)); } catch (e) {}
+}
+
+function applyReaderPrefs() {
+  var blurb = document.getElementById('scene-blurb');
+  if (blurb) {
+    blurb.style.setProperty('--reader-font-size', readerPrefs.font + 'px');
+    blurb.style.setProperty('--reader-line-height', String(readerPrefs.lh));
+  }
+  var fDec = document.getElementById('cyoa-font-dec');
+  var fInc = document.getElementById('cyoa-font-inc');
+  var lDec = document.getElementById('cyoa-lh-dec');
+  var lInc = document.getElementById('cyoa-lh-inc');
+  if (fDec) fDec.disabled = readerPrefs.font <= FONT_MIN;
+  if (fInc) fInc.disabled = readerPrefs.font >= FONT_MAX;
+  if (lDec) lDec.disabled = readerPrefs.lh <= LH_MIN + 0.001;
+  if (lInc) lInc.disabled = readerPrefs.lh >= LH_MAX - 0.001;
+}
+
+function initReadingControls() {
+  loadReaderPrefs();
+  applyReaderPrefs();
+
+  function bump(kind, dir) {
+    if (kind === 'font') {
+      readerPrefs.font = Math.min(FONT_MAX, Math.max(FONT_MIN, readerPrefs.font + dir * FONT_STEP));
+    } else {
+      readerPrefs.lh = Math.min(LH_MAX, Math.max(LH_MIN, Math.round((readerPrefs.lh + dir * LH_STEP) * 100) / 100));
+    }
+    applyReaderPrefs();
+    saveReaderPrefs();
+  }
+
+  var map = [
+    ['cyoa-font-dec', 'font', -1], ['cyoa-font-inc', 'font', 1],
+    ['cyoa-lh-dec', 'lh', -1],     ['cyoa-lh-inc', 'lh', 1]
+  ];
+  map.forEach(function(m) {
+    var btn = document.getElementById(m[0]);
+    if (btn) btn.addEventListener('click', function() { bump(m[1], m[2]); });
+  });
+}
+
 async function init() {
   // Age gate is on the landing page -- go straight to library
+  initReadingControls();
   loadLibrary();
 }
 
@@ -316,34 +377,44 @@ function parseMdBlurbs(md) {
 }
 
 // -- Load Story ----------------------------------
+// Load adventure data into state WITHOUT touching browser history or the path
+// trail. Safe to call when starting fresh or when restoring via popstate.
+// Returns true on success. Skips the fetch if the adventure is already loaded.
+async function ensureAdventureLoaded(id) {
+  if (state.storyId === id && state.nodeMap && Object.keys(state.nodeMap).length) {
+    return true; // already loaded
+  }
+  const base = window.location.pathname.replace(/\/[^/]*$/, '/');
+  const res = await fetch(base + `adventures/${id}.json`);
+  if (!res.ok) throw new Error(`Could not load adventures/${id}.json (status ${res.status}) at ${res.url}`);
+  const data = await res.json();
+
+  const mdRes = await fetch(base + `adventures/${id}.md`);
+  if (mdRes.ok) {
+    const blurbs = parseMdBlurbs(await mdRes.text());
+    data.forEach(n => { if (!n.blurb && blurbs[String(n.id)]) n.blurb = blurbs[String(n.id)]; });
+  }
+
+  state.story     = data;
+  state.storyId   = id;
+  state.storyMeta = state.manifest.find(m => m.id === id) || {};
+  state.nodeMap   = {};
+  data.forEach(n => { state.nodeMap[n.id] = n; });
+
+  const title = state.storyMeta.title || id;
+  gameStoryTitle.textContent = title;
+  if (cyoaTopbarTitle) cyoaTopbarTitle.textContent = title;
+  return true;
+}
+
 async function loadAdventure(id) {
   try {
-    const base = window.location.pathname.replace(/\/[^/]*$/, '/');
-    const res = await fetch(base + `adventures/${id}.json`);
-    if (!res.ok) throw new Error(`Could not load adventures/${id}.json (status ${res.status}) at ${res.url}`);
-    const data = await res.json();
-
-    // Fetch companion markdown file for node text
-    const mdRes = await fetch(base + `adventures/${id}.md`);
-    if (mdRes.ok) {
-      const mdText = await mdRes.text();
-      const blurbs = parseMdBlurbs(mdText);
-      data.forEach(n => { if (!n.blurb && blurbs[String(n.id)]) n.blurb = blurbs[String(n.id)]; });
-    }
-
-    // Story is now a plain array; node 1 is always the start
-    state.story        = data;
-    state.storyId      = id;
-    state.storyMeta    = state.manifest.find(m => m.id === id) || {};
-    state.nodeMap      = {};
-    data.forEach(n => { state.nodeMap[n.id] = n; });
-    state.currentId    = null;
-    state.history      = [];
-    state.inventory    = new Set();
+    await ensureAdventureLoaded(id);
+    // Fresh start: reset path state
+    state.currentId     = null;
+    state.history       = [];
+    state.inventory     = new Set();
     state.deadEndActive = false;
-
-    const storyMeta = state.manifest.find(m => m.id === id) || {};
-    gameStoryTitle.textContent = storyMeta.title || id;
     showScreen('game');
     // Clear stale browser history from previous adventures by replacing
     // the current entry before goToNode adds a new one
@@ -366,11 +437,11 @@ function goToNode(id, silent = false) {
   renderSceneTitle(node.title || '');
   renderBlurb(node.blurb, node.author);
   renderChoices(node);
-  // Push browser state (unless restoring from popstate)
+  // Push browser state (unless restoring from popstate). Each entry carries a
+  // snapshot of the path trail so back/forward can restore state exactly.
   if (!silent) {
-    _histPos++;
     history.pushState(
-      { screen: 'game', adventure: state.storyId, node: id, pos: _histPos },
+      { screen: 'game', adventure: state.storyId, node: id, trail: state.history.slice() },
       '',
       '?adventure=' + encodeURIComponent(state.storyId) + '&node=' + encodeURIComponent(id)
     );
@@ -491,39 +562,15 @@ function renderChoices(node) {
       // Null nextId = unwritten branch, clicking shows dead end screen
       const choiceText = choice.text;
       btn.addEventListener('click', () => {
-        state.deadEndActive = true;
-        updateBreadcrumbs();
-        renderSceneTitle('');
-        // Replace blurb with dead end flavour text
-        sceneBlurb.innerHTML      = '<p style="font-style:italic; color:var(--text-muted);">The path ends here -- for now. Every blank page in the Sinverse is an invitation. Maybe this one is yours.</p>';
-        sceneByline.style.display = 'none';
-        sceneImage.classList.remove('loaded');
-        sceneImagePlaceholder.classList.remove('hidden');
-        sceneImage.src            = '';
-        // Show dead end panel
-        choicesWrap.innerHTML     = '';
-        endingWrap.style.display  = 'none';
-        deadEndWrap.style.display = 'flex';
-        renderDeadEnd(state.nodeMap[state.currentId], choiceText);
-        // Push dead end state — back dismisses it, then back again goes to previous scene
-        _histPos++;
+        const deadNode = state.currentId;
+        // Push a dead-end entry (carries choice text + trail for restoration),
+        // then render the panel via the shared helper.
         history.pushState(
-          { screen: 'game', adventure: state.storyId, node: state.currentId, deadEnd: true, pos: _histPos },
+          { screen: 'game', adventure: state.storyId, node: deadNode, deadEnd: true, deadEndChoice: choiceText, trail: state.history.slice() },
           '',
-          '?adventure=' + encodeURIComponent(state.storyId) + '&node=' + encodeURIComponent(state.currentId)
+          '?adventure=' + encodeURIComponent(state.storyId) + '&node=' + encodeURIComponent(deadNode)
         );
-
-
-        // Wire dead end form button
-        const deadEndFormBtn = deadEndWrap.querySelector('#dead-end-submit-btn');
-        if (deadEndFormBtn) {
-          deadEndFormBtn.onclick = () => {
-            const storyTitle = state.storyMeta .title || state.storyId;
-            window.showNewBranchForm(storyTitle, state.currentId, '');
-          };
-        }
-        const main = document.querySelector('.game-main');
-        if (main) main.scrollTop = 0;
+        renderDeadEndState(deadNode, choiceText);
       });
     } else {
       btn.addEventListener('click', () => {
@@ -668,7 +715,7 @@ function updateImage(node) {
 function showScreen(name) {
   [screenLibrary, screenGame, screenAuthor].forEach(s => { if (s) s.style.display = 'none'; });
   if (name === 'library')  { screenLibrary.style.display = 'block'; return; }
-  if (name === 'game')     { screenGame.style.display    = 'block'; return; }
+  if (name === 'game')     { screenGame.style.display    = 'flex'; return; }
   if (name === 'author')   { screenAuthor.style.display  = 'block'; return; }
 }
 
@@ -740,68 +787,103 @@ btnPlayAgain.addEventListener('click', () => {
   state.currentId = null; state.history = []; state.inventory = new Set(); state.deadEndActive = false;
   goToNode(1);
 });
-btnLibraryFromEnd.addEventListener('click', () => { state.currentId = null; state.history = []; state.deadEndActive = false; applyTheme(null); showScreen('library'); });
+btnLibraryFromEnd.addEventListener('click', () => { state.currentId = null; state.history = []; state.deadEndActive = false; showScreen('library'); });
 
-// ── Browser back support (forward disabled within adventure) ──
+// ── Browser history navigation (back/forward) ────────────────
+// The browser history is the single source of truth. Each game entry carries
+// a snapshot of the path trail, so we simply restore whatever the target entry
+// describes — no position math, no forward-blocking, no parallel bookkeeping.
 window.addEventListener('popstate', function(e) {
   const s = e.state;
-  // Back to library
+
+  // Back to the library (or unknown/empty state)
   if (!s || s.screen === 'library') {
-    state.currentId = null; state.history = []; state.deadEndActive = false;
-    applyTheme(null); showScreen('library'); return;
-  }
-  // Back to author screen
-  if (s.screen === 'author') {
-    showAuthorScreen(s.authorId);
-    return;
-  }
-  if (s.screen !== 'game' || s.adventure !== state.storyId) return;
-  // Block all forward navigation while in an adventure
-  if (s.pos !== undefined && s.pos > _histPos) {
-    // Going forward — push current state back to cancel it
-    // Use setTimeout to avoid re-entrancy with the popstate handler
-    const curId  = state.currentId;
-    const curAdv = state.storyId;
-    const curPos = _histPos;
-    setTimeout(function() {
-      history.pushState(
-        { screen: 'game', adventure: curAdv, node: curId, pos: curPos },
-        '',
-        '?adventure=' + encodeURIComponent(curAdv) + '&node=' + encodeURIComponent(curId)
-      );
-    }, 0);
-    return;
-  }
-  // Update our position tracker to match where the browser is
-  if (s.pos !== undefined) _histPos = s.pos;
-  // If dead end is showing, dismiss and fully re-render the current node
-  if (state.deadEndActive) {
+    state.currentId = null;
+    state.history = [];
     state.deadEndActive = false;
     deadEndWrap.style.display = 'none';
-    const curNode = state.nodeMap[state.currentId];
-    if (curNode) {
-      renderBlurb(curNode.blurb, curNode.author);
-      renderChoices(curNode);
-      updateBreadcrumbs();
-    }
+    showScreen('library');
     return;
   }
-  // Normal back to a previous scene
-  if (s.node !== undefined && s.node !== state.currentId) {
-    state.history.pop();
-    goToNode(s.node, true);
+
+  // Back/forward to an author screen (restore only — do not push again)
+  if (s.screen === 'author') {
+    showAuthorScreen(s.authorId, false);
     return;
   }
-  // s.node === currentId with no dead end: go to previous in history
-  if (state.history.length > 0) {
-    const prevId = state.history[state.history.length - 1];
-    state.history.pop();
-    goToNode(prevId, true);
-  } else {
-    state.currentId = null;
+
+  // Game entry: ensure the right adventure is loaded, then render the node.
+  // This covers back AND forward, including jumping back into an adventure
+  // from the library or across adventures.
+  if (s.screen !== 'game') return;
+
+  (async function() {
+    try {
+      await ensureAdventureLoaded(s.adventure);
+    } catch (err) {
+      showToast(`Error loading adventure: ${err.message}`, 4000);
       showScreen('library');
-  }
+      return;
+    }
+
+    showScreen('game');
+
+    // Restore the path trail exactly from the entry's snapshot
+    state.history = Array.isArray(s.trail) ? s.trail.slice() : [];
+
+    if (s.deadEnd) {
+      // Reconstruct the dead-end panel exactly
+      renderDeadEndState(s.node, s.deadEndChoice || '');
+    } else {
+      state.deadEndActive = false;
+      deadEndWrap.style.display = 'none';
+      renderSceneFromId(s.node);
+    }
+  })();
 });
+
+// Render a node by id without touching browser history or the path trail.
+function renderSceneFromId(id) {
+  const node = state.nodeMap[id];
+  if (!node) { showScreen('library'); return; }
+  state.currentId = id;
+  updateImage(node);
+  updateBreadcrumbs();
+  renderSceneTitle(node.title || '');
+  renderBlurb(node.blurb, node.author);
+  renderChoices(node);
+  const main = document.querySelector('.game-main');
+  if (main) main.scrollTop = 0;
+}
+
+// Render the dead-end panel overlay for a given node + choice text, without
+// touching browser history. Used both on click and when restoring via popstate.
+function renderDeadEndState(nodeId, choiceText) {
+  const node = state.nodeMap[nodeId];
+  if (!node) { showScreen('library'); return; }
+  state.currentId = nodeId;
+  state.deadEndActive = true;
+  updateBreadcrumbs();
+  renderSceneTitle('');
+  sceneBlurb.innerHTML = '<p style="font-style:italic; color:var(--text-muted);">The path ends here -- for now. Every blank page in the Sinverse is an invitation. Maybe this one is yours.</p>';
+  sceneByline.style.display = 'none';
+  sceneImage.classList.remove('loaded');
+  sceneImagePlaceholder.classList.remove('hidden');
+  sceneImage.src = '';
+  choicesWrap.innerHTML = '';
+  endingWrap.style.display = 'none';
+  deadEndWrap.style.display = 'flex';
+  renderDeadEnd(node, choiceText || '');
+  const deadEndFormBtn = deadEndWrap.querySelector('#dead-end-submit-btn');
+  if (deadEndFormBtn) {
+    deadEndFormBtn.onclick = () => {
+      const storyTitle = state.storyMeta.title || state.storyId;
+      window.showNewBranchForm(storyTitle, state.currentId, '');
+    };
+  }
+  const main = document.querySelector('.game-main');
+  if (main) main.scrollTop = 0;
+}
 
 // ── On page load, set base library state + check URL params ──
 (function restoreFromURL() {
@@ -955,7 +1037,7 @@ async function showAdventureInfo(meta) {
 }
 
 // ── Author screen ─────────────────────────────────────────────
-async function showAuthorScreen(authorId) {
+async function showAuthorScreen(authorId, pushHistory = true) {
   const nameEl   = document.getElementById('author-screen-name');
   const totalEl  = document.getElementById('author-screen-total');
   const avatarEl = document.getElementById('author-screen-avatar');
@@ -991,14 +1073,16 @@ async function showAuthorScreen(authorId) {
   }
 
   showScreen('author');
-  // Push author screen state so browser back from contributors returns here
-  history.pushState(
-    { screen: 'author', authorId: authorId, adventure: state.storyId, node: state.currentId },
-    '',
-    '?authorId=' + encodeURIComponent(authorId) +
-    (state.storyId ? '&adventure=' + encodeURIComponent(state.storyId) : '') +
-    (state.currentId !== null && state.currentId !== undefined ? '&node=' + encodeURIComponent(state.currentId) : '')
-  );
+  // Push author screen state only for user actions (not popstate restores)
+  if (pushHistory) {
+    history.pushState(
+      { screen: 'author', authorId: authorId, adventure: state.storyId, node: state.currentId },
+      '',
+      '?authorId=' + encodeURIComponent(authorId) +
+      (state.storyId ? '&adventure=' + encodeURIComponent(state.storyId) : '') +
+      (state.currentId !== null && state.currentId !== undefined ? '&node=' + encodeURIComponent(state.currentId) : '')
+    );
+  }
 
   // Fetch all adventures and find scenes by this author
   try {
@@ -1073,11 +1157,14 @@ async function showAuthorScreen(authorId) {
 }
 
 document.getElementById('btn-back-author').addEventListener('click', function() {
-  if (state.currentId) {
-    showScreen('game');
-  } else {
-    showScreen('library');
-  }
+  // "All Adventures" always returns to the library, regardless of how the
+  // author page was reached.
+  state.currentId = null;
+  state.history = [];
+  state.deadEndActive = false;
+  deadEndWrap.style.display = 'none';
+  showScreen('library');
+  history.pushState({ screen: 'library' }, '', window.location.pathname);
 });
 
 // -- Start ----------------------------------------

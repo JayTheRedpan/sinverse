@@ -7,17 +7,17 @@ tags: [apotheosis-serum, sin, sincorp, science, transformation]
 
 ## Overview
 
-The Apotheosis Serum is the biological agent developed by Sin that permanently transforms any biological female who comes into contact with it. It is the catalyst of TDay and the defining force of the Sinverse world. Its name — Apotheosis — refers to the elevation of a being to divine status. Sin chose the name deliberately.
+The Apotheosis Serum is the agent developed by Sin that permanently transforms anyone who knows herself to be a woman and comes into contact with it. The serum responds to a person's sense of self rather than the body they began with. It is the catalyst of TDay and the defining force of the Sinverse world. Its name — Apotheosis — refers to the elevation of a being to divine status. Sin chose the name deliberately.
 
 ## Effects
 
-The Apotheosis Serum produces the following permanent changes in any female subject:
+The Apotheosis Serum produces the following permanent changes in those it transforms:
 
 **Physical growth.** The most visible effect. Most subjects grow to between 9 and 12 feet tall. A small percentage reach what is classified as macro scale — heights exceeding 100 feet. The exact mechanism determining final height is not yet fully understood, though SinCorp researchers have noted correlations with genetic markers they have not publicly disclosed.
 
 **Physiological enhancement.** The serum eliminates existing health conditions and produces a powerfully built, highly resilient physique. Transformed individuals do not age at a normal rate following exposure.
 
-**Genital replacement.** Female genitalia is replaced with male genitalia during the transformation process. The implications of this — social, psychological, and practical — vary between individuals and cultures within the mega-cities.
+**Anatomical reshaping.** The transformation reshapes the body into a single fully realised Transformed form, identical in its essentials across all subjects regardless of where they began. The implications of this — social, psychological, and practical — vary between individuals and cultures within the mega-cities.
 
 **Empathy suppression.** The serum dramatically reduces empathic response. The degree varies between individuals; some retain empathy partially or fully, though this is rare. Those who retain full empathy are sometimes referred to as **Empaths** within Resistance circles.
 

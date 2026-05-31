@@ -1,6 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
+  <script src="../_shared/agegate.js?v=1780259511"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Choose Your Own Adventure — Sinverse</title>
@@ -24,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
-  <link rel="stylesheet" href="styles.css?v=1780203065" />
+  <link rel="stylesheet" href="styles.css?v=1780262306" />
 </head>
 <body>
 
@@ -93,14 +94,23 @@
 
   <!-- ─── GAME SCREEN ──────────────────────────────── -->
   <div id="screen-game" class="screen" style="display:none">
+    <div class="cyoa-topbar">
+      <button id="btn-back-library" class="btn-ghost cyoa-topbar-back" aria-label="Return to library">&#8592; Adventures</button>
+      <span id="cyoa-topbar-title" class="cyoa-topbar-title"></span>
+      <div class="cyoa-reading-controls">
+        <div class="cyoa-ctrl-group" title="Font size">
+          <button id="cyoa-font-dec" class="cyoa-ctrl-btn" aria-label="Decrease font size">A&#8722;</button>
+          <button id="cyoa-font-inc" class="cyoa-ctrl-btn" aria-label="Increase font size">A&#43;</button>
+        </div>
+        <div class="cyoa-ctrl-group" title="Line spacing">
+          <button id="cyoa-lh-dec" class="cyoa-ctrl-btn" aria-label="Decrease line spacing">&#8801;</button>
+          <button id="cyoa-lh-inc" class="cyoa-ctrl-btn" aria-label="Increase line spacing">&#8803;</button>
+        </div>
+      </div>
+    </div>
     <div class="game-layout">
 
       <aside class="game-aside">
-        <div class="aside-top">
-          <button id="btn-back-library" class="btn-ghost back-btn" aria-label="Return to library">
-            &#8592; Adventures
-          </button>
-        </div>
 
         <div class="scene-image-wrap">
           <img id="scene-image" src="" alt="" />
@@ -118,6 +128,7 @@
         <div class="save-panel">
           <button id="btn-restart" class="btn-ghost">Restart</button>
         </div>
+
       </aside>
 
       <main class="game-main">
@@ -169,7 +180,7 @@
   <div id="toast" class="toast" aria-live="polite"></div>
 
   <script src="submit.js"></script>
-  <script src="app.js"></script>
+  <script src="app.js?v=1780263184"></script>
   <script>
     // Show library screen immediately -- age gate is on landing page
     document.getElementById('screen-library').style.display = 'block';

@@ -85,6 +85,14 @@ a:hover { color: var(--accent-light); }
 
 /* ── Screen system — display controlled by JS ── */
 .screen { min-height: 100vh; display: none; }
+/* Game screen: fixed-height column (topbar + layout); page itself doesn't scroll.
+   JS sets display:flex inline when active. */
+#screen-game.screen {
+  min-height: 0;
+  height: calc(100vh - 52px);   /* viewport minus the global nav */
+  flex-direction: column;
+  overflow: hidden;
+}
 
 /* ══════════════════════════════════════════════
    AGE GATE
@@ -527,7 +535,8 @@ a:hover { color: var(--accent-light); }
 .game-layout {
   display: grid;
   grid-template-columns: 280px 1fr;
-  height: 100vh;
+  flex: 1;              /* fill remaining height below the topbar */
+  min-height: 0;
   overflow: hidden;
 }
 
@@ -539,17 +548,11 @@ a:hover { color: var(--accent-light); }
   display: flex;
   flex-direction: column;
   gap: 1.25rem;
-  position: sticky;
-  top: 0;
-  height: 100vh;
+  height: 100%;          /* fill the layout row; scroll internally */
   overflow-y: auto;
 }
 
-.aside-top {
-  display: flex;
-  align-items: center;
-  justify-content: space-between;
-}
+
 
 .sidebar-logo {
   width: 36px;
@@ -596,7 +599,7 @@ a:hover { color: var(--accent-light); }
 .scene-image-placeholder.hidden { display: none; }
 
 /* ── Progress panel ─────────────────────────── */
-.progress-panel { flex: 1; min-height: 0; }
+.progress-panel { flex: 0 1 auto; min-height: 0; }
 
 .progress-label {
   font-family: var(--font-caps);
@@ -650,13 +653,10 @@ a:hover { color: var(--accent-light); }
   gap: 2.5rem;
   width: 100%;
   overflow-y: auto;
-  height: 100vh;
+  height: 100%;          /* fill the layout row; scroll internally */
 }
 
-.adventure-meta {
-  padding-bottom: 1.25rem;
-  border-bottom: 1px solid var(--border);
-}
+.adventure-meta { display: none; }  /* title now shown in the topbar */
 
 .adventure-meta-title {
   font-family: var(--font-caps);
@@ -668,8 +668,8 @@ a:hover { color: var(--accent-light); }
 
 /* ── Blurb ──────────────────────────────────── */
 .scene-blurb {
-  font-size: clamp(1.05rem, 2vw, 1.25rem);
-  line-height: 1.9;
+  font-size: var(--reader-font-size, clamp(1.05rem, 2vw, 1.25rem));
+  line-height: var(--reader-line-height, 1.9);
   color: var(--text-primary);
   font-weight: 400;
   animation: fadeSlideIn 0.5s ease both;
@@ -1139,10 +1139,16 @@ a:hover { color: var(--accent-light); }
   .library-tagline { padding-left: 0; }
   .cyoa-search-bar { padding: 1rem 1.5rem; }
 
-  /* Stack layout vertically, let page scroll naturally */
+  /* Mobile: natural page scroll (not a fixed-height column) */
+  #screen-game.screen {
+    height: auto;
+    min-height: 100vh;
+    overflow: visible;
+  }
   .game-layout {
     grid-template-columns: 1fr;
     height: auto;
+    flex: none;
     overflow: visible;
   }
 
@@ -1159,14 +1165,8 @@ a:hover { color: var(--accent-light); }
     border-bottom: 1px solid var(--border);
     overflow-y: visible;
   }
-
-  .aside-top {
-    order: -1;
-    width: 100%;
-    padding-bottom: 0.5rem;
-    border-bottom: 1px solid var(--border);
-    margin-bottom: 0.25rem;
-  }
+  /* Offset the aside strip below the fixed topbar */
+  .game-aside { margin-top: 46px; }
 
   .scene-image-wrap {
     width: 120px;
@@ -1191,7 +1191,7 @@ a:hover { color: var(--accent-light); }
     width: 100%;
   }
 
-  /* Main content scrolls with page */
+  /* Main content flows with the page */
   .game-main {
     height: auto;
     overflow-y: visible;
@@ -1199,6 +1199,20 @@ a:hover { color: var(--accent-light); }
   }
 
   .scene-blurb::first-letter { font-size: 2.4em; }
+
+  /* Topbar: fixed below the global nav so it stays visible while scrolling */
+  .cyoa-topbar {
+    position: fixed;
+    top: 52px;                 /* below the global nav */
+    left: 0; right: 0;
+    z-index: 45;
+    padding: 0.6rem 1rem;
+  }
+  /* Title hidden on mobile to fit back button + controls */
+  .cyoa-topbar-title { display: none; }
+  .cyoa-reading-controls { gap: 0.35rem; }
+  .cyoa-ctrl-btn { min-width: 28px; height: 26px; font-size: 0.8rem; padding: 0 0.3rem; }
+
 }
 
 @media (max-width: 480px) {
@@ -1212,7 +1226,6 @@ a:hover { color: var(--accent-light); }
     aspect-ratio: 16/9;
   }
 
-  .aside-top { margin-bottom: 0; }
 }
 
 /* ══════════════════════════════════════════════
@@ -2124,4 +2137,70 @@ a:hover { color: var(--accent-light); }
   font-weight: 700;
   font-style: normal;
   letter-spacing: 0.12em;
+}
+
+
+
+/* ── CYOA topbar (matches library reader) ────────────────────── */
+.cyoa-topbar {
+  flex-shrink: 0;        /* stays fixed at the top of the game column */
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 0.75rem 2rem;
+  background: rgba(17,13,11,0.95);
+  backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--border);
+  z-index: 50;
+}
+.cyoa-topbar-back {
+  flex-shrink: 0;
+  color: var(--accent);
+}
+.cyoa-topbar-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1rem;
+  color: var(--text-secondary);
+  flex: 1;
+  text-align: center;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.cyoa-reading-controls {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+  flex-shrink: 0;
+}
+.cyoa-ctrl-group { display: flex; gap: 2px; }
+.cyoa-ctrl-btn {
+  background: transparent;
+  border: 1px solid rgba(196,154,120,0.3);
+  border-radius: 3px;
+  color: var(--accent);
+  font-family: var(--font-body);
+  font-size: 0.85rem;
+  line-height: 1;
+  min-width: 30px;
+  height: 28px;
+  padding: 0 0.4rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.cyoa-ctrl-btn:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--accent-dim);
+}
+.cyoa-ctrl-btn:disabled { opacity: 0.35; cursor: default; }
+.cyoa-ctrl-btn:disabled:hover {
+  border-color: rgba(196,154,120,0.3);
+  color: var(--accent);
+  background: transparent;
 }
