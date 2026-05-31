@@ -72,5 +72,6 @@
   window.initNav = function(activePage) {
     var nav = buildNav(activePage || '');
     document.body.insertBefore(nav, document.body.firstChild);
+    document.body.classList.add('has-global-nav');
   };
 })();

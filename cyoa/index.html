@@ -4,13 +4,27 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Choose Your Own Adventure — Sinverse</title>
+  <!-- Social preview (Open Graph / Discord / Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Sinverse" />
+  <meta property="og:title" content="Sinverse" />
+  <meta property="og:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta property="og:image" content="https://sinverse.net/images/logo.png" />
+  <meta property="og:image:width" content="598" />
+  <meta property="og:image:height" content="598" />
+  <meta property="og:url" content="https://sinverse.net/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sinverse" />
+  <meta name="twitter:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta name="twitter:image" content="https://sinverse.net/images/logo.png" />
+  <meta name="theme-color" content="#c49a78" />
   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
   <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../_shared/styles-global.css" />
-  <link rel="stylesheet" href="styles.css" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
+  <link rel="stylesheet" href="styles.css?v=1780203065" />
 </head>
 <body>
 
@@ -18,7 +32,6 @@
   <div id="screen-library" class="screen" style="display:none">
     <header class="cyoa-header">
       <div class="cyoa-brand">
-        <a href="../"><img src="../images/logo.png" alt="Sinverse" class="header-logo" /></a>
         <div class="cyoa-title-block">
           <span class="cyoa-title">Adventures</span>
           <span class="cyoa-subtitle">Interactive Fiction</span>
@@ -47,7 +60,6 @@
   <div id="screen-author" class="screen" style="display:none">
     <header class="cyoa-header">
       <div class="cyoa-brand">
-        <a href="../"><img src="../images/logo.png" alt="Sinverse" class="header-logo" /></a>
         <div class="cyoa-title-block">
           <span class="cyoa-title">Adventures</span>
           <span class="cyoa-subtitle">Interactive Fiction</span>
@@ -88,9 +100,6 @@
           <button id="btn-back-library" class="btn-ghost back-btn" aria-label="Return to library">
             &#8592; Adventures
           </button>
-          <a href="../">
-            <img src="../images/logo.png" alt="Sinverse" class="sidebar-logo" />
-          </a>
         </div>
 
         <div class="scene-image-wrap">
@@ -165,5 +174,8 @@
     // Show library screen immediately -- age gate is on landing page
     document.getElementById('screen-library').style.display = 'block';
   </script>
+
+<script src="../_shared/nav.js?v=1780201284"></script>
+<script>initNav('cyoa');</script>
 </body>
 </html>

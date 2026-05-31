@@ -200,6 +200,8 @@ function updateProgress() {
   var pct          = docHeight > 0 ? Math.round((scrollTop / docHeight) * 100) : 0;
   document.getElementById('reader-progress-fill').style.width = pct + '%';
   document.getElementById('reader-progress-pct').textContent  = pct + '%';
+  var tbFill = document.getElementById('reader-topbar-progress-fill');
+  if (tbFill) tbFill.style.width = pct + '%';
 }
 
 // -- Chapter nav buttons

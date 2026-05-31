@@ -4,12 +4,26 @@
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Reader — Sinverse Library</title>
+  <!-- Social preview (Open Graph / Discord / Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Sinverse" />
+  <meta property="og:title" content="Sinverse" />
+  <meta property="og:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta property="og:image" content="https://sinverse.net/images/logo.png" />
+  <meta property="og:image:width" content="598" />
+  <meta property="og:image:height" content="598" />
+  <meta property="og:url" content="https://sinverse.net/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sinverse" />
+  <meta name="twitter:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta name="twitter:image" content="https://sinverse.net/images/logo.png" />
+  <meta name="theme-color" content="#c49a78" />
   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../_shared/styles-global.css" />
-  <link rel="stylesheet" href="styles.css?v=1780172273" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780204503" />
+  <link rel="stylesheet" href="styles.css?v=1780204673" />
 </head>
 <body class="reader-body">
 
@@ -17,7 +31,7 @@
   <div class="reader-topbar">
     <a id="reader-back" href="index.html" class="btn-ghost reader-back-btn">&#8592; Library</a>
     <span id="reader-topbar-title" class="reader-topbar-title"></span>
-    <a href="../"><img src="../images/logo.png" alt="Sinverse" class="reader-nav-logo" /></a>
+    <div class="reader-topbar-progress"><div id="reader-topbar-progress-fill" class="reader-topbar-progress-fill"></div></div>
   </div>
 
   <!-- Chapter nav for serials -->
@@ -89,6 +103,9 @@
 
   <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
   <script src="../_shared/dates.js?v=1780107972"></script>
-  <script src="reader.js?v=1780172847"></script>
+  <script src="reader.js?v=1780204673"></script>
+
+<script src="../_shared/nav.js?v=1780201284"></script>
+<script>initNav('library');</script>
 </body>
 </html>

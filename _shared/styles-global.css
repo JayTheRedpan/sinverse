@@ -168,20 +168,22 @@ a:hover { color: var(--accent-light); }
   position: fixed;
   top: 0; left: 0; right: 0;
   height: 52px;
+  font-size: 16px;           /* anchor: children use em, immune to module html size */
   background: rgba(17,13,11,0.92);
   backdrop-filter: blur(8px);
   border-bottom: 1px solid var(--border);
   display: flex;
   align-items: center;
   justify-content: space-between;
-  padding: 0 2rem;
-  z-index: 50;
+  padding: 0 2em;
+  z-index: 150;
+  box-sizing: border-box;
 }
 
 .global-nav-brand {
   display: flex;
   align-items: center;
-  gap: 0.65rem;
+  gap: 0.65em;
   text-decoration: none;
 }
 
@@ -194,56 +196,97 @@ a:hover { color: var(--accent-light); }
 
 .global-nav-title {
   font-family: var(--font-caps);
-  font-size: 0.85rem;
+  font-size: 0.85em;
   letter-spacing: 0.25em;
   text-transform: uppercase;
-  color: var(--accent);
+  color: #c49a78;
 }
 
 .global-nav-links {
   display: flex;
   align-items: center;
-  gap: 0.25rem;
+  gap: 0.25em;
 }
 
 .global-nav-link {
   font-family: var(--font-caps);
-  font-size: 0.6rem;
-  letter-spacing: 0.14em;
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.12em;
   text-transform: uppercase;
-  color: var(--text-muted);
-  padding: 0.35rem 0.7rem;
-  border-radius: var(--radius);
-  transition: color var(--transition), background var(--transition);
+  color: #b89a80;
+  padding: 0.35em 0.75em;
+  border-radius: 3px;
+  transition: color 0.2s, background 0.2s;
   text-decoration: none;
 }
-.global-nav-link:hover { color: var(--accent); background: var(--accent-dim); }
-.global-nav-link.active { color: var(--accent); }
+.global-nav-link:hover { color: #c49a78; background: rgba(196,154,120,0.12); }
+.global-nav-link.active { color: #c49a78; }
 
 .global-nav-discord {
-  margin-left: 0.5rem;
+  margin-left: 0.5em;
   background: #5865F2;
   color: #fff;
   border: none;
-  border-radius: var(--radius);
-  padding: 0.35rem 0.8rem;
+  border-radius: 3px;
+  padding: 0.4em 0.85em;
   font-family: var(--font-caps);
-  font-size: 0.6rem;
-  letter-spacing: 0.12em;
+  font-size: 0.78em;
+  font-weight: 600;
+  letter-spacing: 0.1em;
   text-transform: uppercase;
   text-decoration: none;
-  transition: opacity var(--transition);
+  transition: opacity 0.2s;
 }
 .global-nav-discord:hover { opacity: 0.85; color: #fff; }
+
+/* Offset page content for the fixed global nav (52px tall).
+   Normal-flow pages get body padding; full-height app layouts
+   (wiki, reader) instead shrink their 100vh containers. */
+body.has-global-nav { padding-top: 52px; }
+
+/* Full-height app shells: cancel the body padding and shrink to fit
+   so their internal 100vh / overflow:hidden layouts stay correct. */
+body.has-global-nav.nav-fullheight { padding-top: 0; }
+@media (min-width: 769px) {
+  body.has-global-nav.nav-fullheight { overflow: hidden; }
+  body.has-global-nav.nav-fullheight .wiki-app {
+    position: fixed;
+    top: 52px; left: 0; right: 0; bottom: 0;
+    height: auto;
+    margin-top: 0;
+  }
+}
+/* Mobile: push the app below the nav with padding (app not fixed, so the
+   mobile drawer/overlay can layer above the global nav correctly) */
+@media (max-width: 768px) {
+  body.has-global-nav.nav-fullheight { padding-top: 52px; }
+}
+
+/* Sticky module headers must clear the fixed global nav (52px) */
+body.has-global-nav .wiki-topbar,
+body.has-global-nav .reader-topbar,
+body.has-global-nav .viewer-topbar { top: 52px; }
+
+/* The reader sidebar sits below BOTH the global nav and the reader's own
+   sticky topbar (52px each = 104px). Desktop only — on mobile the sidebar
+   is static and auto-height. */
+@media (min-width: 901px) {
+  body.has-global-nav .reader-sidebar {
+    top: 104px;
+    height: calc(100vh - 104px);
+  }
+}
+
 
 /* Nav mobile toggle */
 .global-nav-toggle {
   display: none;
   background: transparent;
   border: none;
-  color: var(--text-secondary);
-  font-size: 1.25rem;
-  padding: 0.25rem;
+  color: #c4a882;
+  font-size: 1.25em;
+  padding: 0.25em;
   line-height: 1;
 }
 
@@ -273,14 +316,15 @@ a:hover { color: var(--accent-light); }
     position: absolute;
     top: 52px; left: 0; right: 0;
     flex-direction: column;
-    background: var(--bg-panel);
+    background: rgba(17,13,11,0.98);
     border-bottom: 1px solid var(--border);
-    padding: 0.75rem 1rem;
-    gap: 0.1rem;
+    padding: 0.75em 1em;
+    gap: 0.1em;
     align-items: flex-start;
+    z-index: 150;
   }
 
   .global-nav-links.open { display: flex; }
-  .global-nav-link { width: 100%; padding: 0.5rem 0.75rem; }
-  .global-nav-discord { margin-left: 0; margin-top: 0.5rem; }
+  .global-nav-link { width: 100%; padding: 0.5em 0.75em; }
+  .global-nav-discord { margin-left: 0; margin-top: 0.5em; }
 }

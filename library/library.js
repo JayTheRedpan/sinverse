@@ -289,6 +289,41 @@ function fmtWords(n) {
   return n + ' words';
 }
 
+function openInfoModal(item, words) {
+  var existing = document.getElementById('lib-info-overlay');
+  if (existing) existing.remove();
+
+  var overlay = document.createElement('div');
+  overlay.id = 'lib-info-overlay';
+  overlay.className = 'lib-info-overlay';
+
+  var tagHtml = (item.tags || []).map(function(t) {
+    return '<span class="content-tag">' + t + '</span>';
+  }).join('');
+
+  overlay.innerHTML =
+    '<div class="lib-info-modal">' +
+      '<button class="lib-info-close" aria-label="Close">&#10005;</button>' +
+      '<div class="lib-info-eyebrow">' + (TYPE_LABELS[item.type] || item.type) +
+        (item.canonical ? ' &middot; \u2726 Canon' : '') + '</div>' +
+      '<h2 class="lib-info-title">' + item.title + '</h2>' +
+      (item.author ? '<div class="lib-info-author">by ' + item.author + '</div>' : '') +
+      (item.summary ? '<p class="lib-info-summary">' + item.summary + '</p>' : '') +
+      (tagHtml ? '<div class="lib-info-tags">' + tagHtml + '</div>' : '') +
+      (words ? '<div class="lib-info-wordcount">' + fmtWords(words) + ' words</div>' : '') +
+      '<a class="lib-info-read" href="reader.html?id=' + item.id + '">Read &#8594;</a>' +
+    '</div>';
+
+  function close() { overlay.remove(); }
+  overlay.addEventListener('click', function(e) { if (e.target === overlay) close(); });
+  overlay.querySelector('.lib-info-close').addEventListener('click', close);
+  document.addEventListener('keydown', function esc(e) {
+    if (e.key === 'Escape') { close(); document.removeEventListener('keydown', esc); }
+  });
+
+  document.body.appendChild(overlay);
+}
+
 function handleCardClick(item) {
   window.location.href = 'reader.html?id=' + item.id;
 }
@@ -379,16 +414,19 @@ function renderGridView(items) {
         chapBadge +
         (item.canonical ? '<span class="lib-canonical-badge">&#10022;</span>' : '') +
         (words ? '<span class="lib-cover-wordcount">' + fmtWords(words) + '</span>' : '') +
-      '</div>' +
-      '<div class="lib-card-body">' +
-        '<p class="lib-card-summary">' + (item.summary || '') + '</p>' +
-        '<div class="lib-card-meta">' +
-          (item.tags || []).map(function(t) { return '<span class="content-tag">' + t + '</span>'; }).join('') +
-        '</div>' +
+        '<button class="lib-info-btn" title="Details" aria-label="Details">i</button>' +
       '</div>';
 
     card.style.cursor = 'pointer';
     card.addEventListener('click', function() { handleCardClick(item); });
+    var infoBtn = card.querySelector('.lib-info-btn');
+    if (infoBtn) {
+      infoBtn.addEventListener('click', function(e) {
+        e.stopPropagation();   // don't open the reader
+        e.preventDefault();
+        openInfoModal(item, words);
+      });
+    }
     grid.appendChild(card);
   });
 }
@@ -421,7 +459,7 @@ document.getElementById('tab-stories').addEventListener('click', function() {
   state.tab = 'stories';
   state.query = '';
   document.getElementById('search-input').value = '';
-  document.querySelectorAll('.lib-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('#content-toggle .view-toggle-btn').forEach(function(t) { t.classList.remove('active'); });
   this.classList.add('active');
   document.getElementById('search-input').placeholder = 'Search…';
   // Restore filter controls
@@ -429,8 +467,11 @@ document.getElementById('tab-stories').addEventListener('click', function() {
   if (fp) { fp.style.display = ''; }
   var ftb = document.getElementById('filter-toggle-btn');
   if (ftb) ftb.style.display = '';
-  var rb = document.querySelector('.results-bar');
-  if (rb) rb.style.display = '';
+  // Show sort + view controls (but keep the content toggle visible)
+  var sortWrap = document.querySelector('.results-sort');
+  if (sortWrap) sortWrap.style.display = '';
+  var svt = document.getElementById('story-view-toggle');
+  if (svt) svt.style.display = '';
   applyFilters();
 });
 
@@ -438,16 +479,18 @@ document.getElementById('tab-collections').addEventListener('click', function() 
   state.tab = 'collections';
   state.query = '';
   document.getElementById('search-input').value = '';
-  document.querySelectorAll('.lib-tab').forEach(function(t) { t.classList.remove('active'); });
+  document.querySelectorAll('#content-toggle .view-toggle-btn').forEach(function(t) { t.classList.remove('active'); });
   this.classList.add('active');
   document.getElementById('search-input').placeholder = 'Search collections...';
-  // Hide all filter controls — collections only searched by title
+  // Hide filters and the sort/view controls — but keep the content toggle visible
   var fp = document.getElementById('filter-panel');
   if (fp) { fp.classList.remove('open'); fp.style.display = 'none'; }
   var ftb = document.getElementById('filter-toggle-btn');
   if (ftb) ftb.style.display = 'none';
-  var rb = document.querySelector('.results-bar');
-  if (rb) rb.style.display = 'none';
+  var sortWrap = document.querySelector('.results-sort');
+  if (sortWrap) sortWrap.style.display = 'none';
+  var svt = document.getElementById('story-view-toggle');
+  if (svt) svt.style.display = 'none';
   applyFilters();
 });
 

@@ -520,5 +520,228 @@
       "zuzu"
     ],
     "wordCount": 2215
+  },
+  {
+    "id": 25,
+    "type": "serial",
+    "title": "Deliver Us From Sin",
+    "author": "Jackson",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff"
+    ],
+    "date": "2023-01",
+    "universe_date": null,
+    "canonical": false,
+    "complete": true,
+    "characters": [
+      
+    ],
+    "chapters": [
+      {
+        "title": "Chapter 1",
+        "file": "stories/deliver_us_from_sin_chapter_1.md",
+        "wordCount": 9230
+      },
+      {
+        "title": "Chapter 2",
+        "file": "stories/deliver_us_from_sin_chapter_2.md",
+        "wordCount": 9119
+      },
+      {
+        "title": "Chapter 3",
+        "file": "stories/deliver_us_from_sin_chapter_3.md",
+        "wordCount": 13238
+      },
+      {
+        "title": "Chapter 4",
+        "file": "stories/deliver_us_from_sin_chapter_4.md",
+        "wordCount": 12448
+      },
+      {
+        "title": "Chapter 5",
+        "file": "stories/deliver_us_from_sin_chapter_5.md",
+        "wordCount": 14514
+      },
+      {
+        "title": "Chapter 6",
+        "file": "stories/deliver_us_from_sin_chapter_6.md",
+        "wordCount": 15853
+      }
+    ]
+  },
+  {
+    "id": 26,
+    "type": "standalone",
+    "title": "Employee Training",
+    "author": "AshamedGhost",
+    "summary": null,
+    "tags": [
+      "musk",
+      "feral",
+      "vore",
+      "noncon"
+    ],
+    "file": "stories/1624327544ashamedghost_employee_training.md",
+    "date": "2021-06",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "lady"
+    ],
+    "wordCount": 10205
+  },
+  {
+    "id": 27,
+    "type": "standalone",
+    "title": "Hiding Your Fangs",
+    "author": "CGK",
+    "summary": null,
+    "tags": [
+
+    ],
+    "file": "stories/1626635613cgk_hiding_your_fangs.md",
+    "date": "REPLACE_YYYY-MM",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 14633
+  },
+  {
+    "id": 28,
+    "type": "standalone",
+    "title": "Black Market Toys",
+    "author": "RegalDrennan",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "m/m",
+      "gore"
+    ],
+    "file": "stories/1658522324cygil_alea_panthera_black_market_toys.md",
+    "date": "2022-07",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 7077
+  },
+  {
+    "id": 29,
+    "type": "standalone",
+    "title": "Escape FarReach",
+    "author": "PardusNix",
+    "summary": null,
+    "tags": [
+      "feral",
+      "vore",
+      "noncon"
+    ],
+    "file": "stories/escape_farreach.md",
+    "date": "2022-08",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 3266
+  },
+  {
+    "id": 30,
+    "type": "standalone",
+    "title": "Initiation",
+    "author": "RonaSerena",
+    "summary": null,
+    "tags": [
+
+    ],
+    "file": "stories/initiation.md",
+    "date": "2021-12",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 9325
+  },
+  {
+    "id": 31,
+    "type": "standalone",
+    "title": "TDay Tales - The More Things Change",
+    "author": "BadEnds",
+    "summary": null,
+    "tags": [
+      "gore",
+      "noncon",
+      "snuff",
+      "watersports",
+      "scat"
+    ],
+    "file": "stories/t_day_tales_the_more_things_change.md",
+    "date": "2025-10",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      
+    ],
+    "wordCount": 20909
+  },
+  {
+    "id": 32,
+    "type": "standalone",
+    "title": "What a Workout",
+    "author": "RonaSerena",
+    "summary": null,
+    "tags": [
+      "musk"
+    ],
+    "file": "stories/what_a_workout.md",
+    "date": "2022-07",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "brandy"
+    ],
+    "wordCount": 8288
+  },
+  {
+    "id": 33,
+    "type": "standalone",
+    "title": "TDay Tales - Big Bad Wolf",
+    "author": "Jackson",
+    "summary": null,
+    "tags": [
+
+    ],
+    "file": "stories/big_bad_wolf.md",
+    "date": "2023-01",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 15473
+  },
+  {
+    "id": 34,
+    "type": "standalone",
+    "title": "Trouble in Paradise",
+    "author": "Jackson",
+    "summary": null,
+    "tags": [
+
+    ],
+    "file": "stories/trouble_in_paradise_chapter_1.md",
+    "date": "2023-01",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 15941
   }
 ]
