@@ -231,6 +231,7 @@ function renderLibrary() {
       <p class="card-description">${meta.description || ''}</p>
       <div class="card-footer">
         <span class="card-cta">Read  </span>
+        <button class="card-map-btn" aria-label="Story map" title="Story map"><svg viewBox="0 0 16 16" width="15" height="15" fill="none" stroke="currentColor" stroke-width="1.3"><circle cx="3" cy="8" r="1.8"/><circle cx="12.5" cy="3.5" r="1.8"/><circle cx="12.5" cy="12.5" r="1.8"/><path d="M4.6 7 11 4.2M4.6 9 11 11.8"/></svg></button>
         <button class="card-info-btn" aria-label="Adventure info" title="Adventure info">&#9432;</button>
       </div>
     `;
@@ -256,6 +257,11 @@ function renderLibrary() {
     card.querySelector('.card-info-btn').addEventListener('click', function(e) {
       e.stopPropagation();
       showAdventureInfo(meta);
+    });
+
+    card.querySelector('.card-map-btn').addEventListener('click', function(e) {
+      e.stopPropagation();
+      openStoryMapForAdventure(meta.id);
     });
 
     storyGrid.appendChild(card);
@@ -1194,6 +1200,237 @@ document.getElementById('btn-back-author').addEventListener('click', function() 
   showScreen('library');
   history.pushState({ screen: 'library' }, '', window.location.pathname);
 });
+
+// ─── STORY MAP (reader) ───────────────────────────────────────
+// A full overview of an adventure's branching structure. Openable from an
+// adventure card (no path highlight) or from inside the reader (highlights the
+// current session's path). Clicking a scene jumps straight to it.
+
+// From an adventure card: load the node data, then show the map cold.
+async function openStoryMapForAdventure(id) {
+  try {
+    await ensureAdventureLoaded(id);
+  } catch (err) {
+    showToast('Could not load the story map: ' + err.message, 4000);
+    return;
+  }
+  var meta = state.manifest.find(function(m){ return m.id === id; }) || {};
+  renderReaderStoryMap(id, meta.title || id, /*highlightPath*/ false);
+}
+
+// From inside the reader: show the current adventure, highlighting the path
+// taken this session.
+function openStoryMapCurrent() {
+  if (!state.storyId || !state.nodeMap) return;
+  var title = (state.storyMeta && state.storyMeta.title) ? state.storyMeta.title : state.storyId;
+  renderReaderStoryMap(state.storyId, title, /*highlightPath*/ true);
+}
+
+function renderReaderStoryMap(adventureId, title, highlightPath) {
+  var overlay = document.getElementById('story-map-overlay');
+  var body    = document.getElementById('map-body');
+  var titleEl = document.getElementById('map-title');
+  if (!overlay || !body) return;
+  titleEl.textContent = title;
+
+  var nodes = Object.keys(state.nodeMap).map(function(k){ return state.nodeMap[k]; });
+  body.innerHTML = '';
+  if (!nodes.length) { body.innerHTML = '<p class="map-empty">No scenes to map.</p>'; overlay.style.display = 'flex'; return; }
+
+  var byId = {};
+  nodes.forEach(function(n){ byId[n.id] = n; });
+
+  // Path taken this session (for highlight)
+  var visited = {};
+  if (highlightPath) {
+    state.history.forEach(function(id){ visited[id] = true; });
+    if (state.currentId != null) visited[state.currentId] = true;
+  }
+
+  // BFS depth from the opening (id 1, or the first node)
+  var startId = byId[1] ? 1 : nodes[0].id;
+  var depth = {}; depth[startId] = 0;
+  var queue = [startId];
+  while (queue.length) {
+    var cur = queue.shift();
+    var node = byId[cur];
+    if (!node) continue;
+    (node.choices || []).forEach(function(c) {
+      var t = (c.nextId === null || c.nextId === undefined) ? null : c.nextId;
+      if (t != null && byId[t] && depth[t] === undefined) {
+        depth[t] = depth[cur] + 1;
+        queue.push(t);
+      }
+    });
+  }
+  var maxDepth = 0;
+  Object.keys(depth).forEach(function(k){ if (depth[k] > maxDepth) maxDepth = depth[k]; });
+  var orphanCol = maxDepth + 1;
+  nodes.forEach(function(n){ if (depth[n.id] === undefined) depth[n.id] = orphanCol; });
+
+  // Group into columns
+  var columns = {};
+  nodes.forEach(function(n){ (columns[depth[n.id]] = columns[depth[n.id]] || []).push(n); });
+  var colKeys = Object.keys(columns).map(Number).sort(function(a,b){ return a-b; });
+
+  var COL_W = 230, NODE_W = 180, NODE_H = 64, V_GAP = 28, PAD = 40;
+  var maxRows = 0;
+  colKeys.forEach(function(d){ if (columns[d].length > maxRows) maxRows = columns[d].length; });
+
+  var positions = {};
+  colKeys.forEach(function(d, ci) {
+    var col = columns[d];
+    var colHeight = col.length * NODE_H + (col.length - 1) * V_GAP;
+    var totalHeight = maxRows * NODE_H + (maxRows - 1) * V_GAP;
+    var startY = PAD + (totalHeight - colHeight) / 2;
+    col.forEach(function(n, ri) {
+      positions[n.id] = { x: PAD + ci * COL_W, y: startY + ri * (NODE_H + V_GAP) };
+    });
+  });
+
+  var width  = PAD * 2 + (colKeys.length - 1) * COL_W + NODE_W;
+  var height = PAD * 2 + maxRows * NODE_H + (maxRows - 1) * V_GAP;
+
+  var canvas = document.createElement('div');
+  canvas.className = 'map-canvas';
+  canvas.style.width  = width + 'px';
+  canvas.style.height = height + 'px';
+
+  // Edges (SVG)
+  var svgNS = 'http://www.w3.org/2000/svg';
+  var svg = document.createElementNS(svgNS, 'svg');
+  svg.setAttribute('class', 'map-edges');
+  svg.setAttribute('width', width);
+  svg.setAttribute('height', height);
+  svg.setAttribute('viewBox', '0 0 ' + width + ' ' + height);
+  nodes.forEach(function(n) {
+    var from = positions[n.id];
+    if (!from) return;
+    (n.choices || []).forEach(function(c) {
+      var t = (c.nextId === null || c.nextId === undefined) ? null : c.nextId;
+      if (t == null || !positions[t]) return;
+      var to = positions[t];
+      var x1 = from.x + NODE_W, y1 = from.y + NODE_H / 2;
+      var x2 = to.x,            y2 = to.y + NODE_H / 2;
+      var midX = (x1 + x2) / 2;
+      var path = document.createElementNS(svgNS, 'path');
+      path.setAttribute('d', 'M ' + x1 + ' ' + y1 + ' C ' + midX + ' ' + y1 + ', ' + midX + ' ' + y2 + ', ' + x2 + ' ' + y2);
+      var onPath = highlightPath && visited[n.id] && visited[t];
+      path.setAttribute('class', 'map-edge' + (x2 < x1 ? ' backward' : '') + (onPath ? ' on-path' : ''));
+      svg.appendChild(path);
+    });
+  });
+  canvas.appendChild(svg);
+
+  // Scene nodes
+  nodes.forEach(function(n) {
+    var pos = positions[n.id];
+    if (!pos) return;
+    var box = document.createElement('button');
+    var isOpening = n.id === startId;
+    var isEnding = n.isEnding || !((n.choices || []).length);
+    box.className = 'map-node' +
+      (isOpening ? ' opening' : '') +
+      (isEnding ? ' ending' : '') +
+      (highlightPath && visited[n.id] ? ' visited' : '') +
+      (highlightPath && n.id === state.currentId ? ' current' : '');
+    box.style.left = pos.x + 'px';
+    box.style.top  = pos.y + 'px';
+    box.style.width = NODE_W + 'px';
+    box.style.height = NODE_H + 'px';
+    var sceneName = n.title || n.sceneName || '';
+    var label = sceneName ? escapeHtmlMap(sceneName) : '<em>Scene ' + n.id + '</em>';
+    var meta = isEnding ? 'Ending' : ((n.choices || []).filter(function(c){ return c.nextId != null; }).length + ' choices');
+    box.innerHTML =
+      '<span class="map-node-id">Scene ' + n.id + (highlightPath && n.id === state.currentId ? ' • you are here' : '') + '</span>' +
+      '<span class="map-node-name">' + label + '</span>' +
+      '<span class="map-node-meta">' + meta + '</span>';
+    box.addEventListener('click', function() { jumpToMapScene(adventureId, n.id); });
+    canvas.appendChild(box);
+  });
+
+  body.appendChild(canvas);
+  overlay.style.display = 'flex';
+}
+
+function escapeHtmlMap(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Find the shortest path (list of node ids) from the opening to `targetId`
+// over the choice graph, so a map jump can populate the "path taken" trail.
+// Returns the full path including the target, or just [targetId] if unreachable.
+function shortestPathToNode(targetId) {
+  var startId = state.nodeMap[1] ? 1 : (Object.keys(state.nodeMap)[0]);
+  if (startId == null) return [targetId];
+  if (String(startId) === String(targetId)) return [targetId];
+  var queue = [startId];
+  var prev = {};               // nodeId -> the node we reached it from
+  var seen = {}; seen[startId] = true;
+  while (queue.length) {
+    var cur = queue.shift();
+    var node = state.nodeMap[cur];
+    if (!node) continue;
+    var choices = node.choices || [];
+    for (var i = 0; i < choices.length; i++) {
+      var t = choices[i].nextId;
+      if (t === null || t === undefined || !state.nodeMap[t]) continue;
+      if (seen[t]) continue;
+      seen[t] = true;
+      prev[t] = cur;
+      if (String(t) === String(targetId)) {
+        // Reconstruct path from target back to start
+        var path = [t];
+        var p = cur;
+        while (p !== undefined && p !== null) {
+          path.unshift(p);
+          p = prev[p];
+        }
+        return path;
+      }
+      queue.push(t);
+    }
+  }
+  return [targetId]; // unreachable from the opening — drop in directly
+}
+
+// Jump to a chosen scene: ensure the adventure is loaded, enter the game
+// screen, reconstruct the path so "path taken" / back button work, then show
+// the chosen node.
+async function jumpToMapScene(adventureId, nodeId) {
+  var overlay = document.getElementById('story-map-overlay');
+  if (overlay) overlay.style.display = 'none';
+  try {
+    await ensureAdventureLoaded(adventureId);
+  } catch (err) {
+    showToast('Could not open that scene: ' + err.message, 4000);
+    return;
+  }
+  state.inventory     = new Set();
+  state.deadEndActive = false;
+  // Build the trail leading to this node; everything before it becomes history
+  var path = shortestPathToNode(nodeId);
+  state.history   = path.slice(0, -1);   // ancestors
+  state.currentId = null;                // so goToNode doesn't re-push
+  showScreen('game');
+  history.replaceState({ screen: 'library' }, '', window.location.pathname);
+  goToNode(path[path.length - 1]);
+}
+
+function initStoryMapControls() {
+  var close = document.getElementById('map-close');
+  var overlay = document.getElementById('story-map-overlay');
+  if (close) close.addEventListener('click', function(){ overlay.style.display = 'none'; });
+  if (overlay) overlay.addEventListener('click', function(e){ if (e.target === overlay) overlay.style.display = 'none'; });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape' && overlay && overlay.style.display !== 'none') overlay.style.display = 'none';
+  });
+  var mapBtn = document.getElementById('cyoa-map-btn');
+  if (mapBtn) mapBtn.addEventListener('click', openStoryMapCurrent);
+}
+initStoryMapControls();
+
+
 
 // -- Start ----------------------------------------
 try {

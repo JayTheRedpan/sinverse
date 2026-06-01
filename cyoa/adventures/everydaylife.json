@@ -1,0 +1,186 @@
+[
+  {
+    "id": 1,
+    "author": "Phrenics",
+    "title": "Morning Fog",
+    "image": null,
+    "tags": [
+        "abuse",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "An anthropomorphic male feline.",
+        "nextId": 2
+      },
+      {
+        "text": "An anthropomorphic male kobold.",
+        "nextId": 3
+      }
+    ]
+  },
+  {
+    "id": 2,
+    "title": "Feline",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "Risk sleeping, just a litle longer. You have time.",
+        "nextId": 4
+      },
+      {
+        "text": "Set yourself to your role. It's not worth five minutes, in exchange for what could happen to you if you fail again.",
+        "nextId": null
+      },
+      {
+        "text": "Wake her, but normally. She'll just ask you to get to work if she wants it. But maybe she won't.",
+        "nextId": null
+      }
+    ]
+  },
+  {
+    "id": 3,
+    "title": "Kobold",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "Your calling is to worship a dragon like it deserves. Give in.",
+        "nextId": null
+      },
+      {
+        "text": "Resist your nature.",
+        "nextId": null
+      }
+    ]
+  },
+  {
+    "id": 4,
+    "title": "F - A Little Longer.",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "Endure.",
+        "nextId": null
+      },
+      {
+        "text": "Struggle.",
+        "nextId": 5
+      }
+    ]
+  },
+  {
+    "id": 5,
+    "title": "F - Struggle.",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "Beg. Apologise. Plead. Anything but this. You didn't mean to.",
+        "nextId": null
+      },
+      {
+        "text": "Resist. Spit. Insult.",
+        "nextId": 6
+      }
+    ]
+  },
+  {
+    "id": 6,
+    "title": "F - Are you sure that was wise?",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "gore",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "STOPSTOPSTOPSTOP",
+        "nextId": 7
+      },
+      {
+        "text": "HURTSITHURTS",
+        "nextId": 7
+      }
+    ]
+  },
+  {
+    "id": 7,
+    "title": "F - She doesn't stop.",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "gore",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "Awaken.",
+        "nextId": 8
+      },
+      {
+        "text": "Hope for death.",
+        "nextId": 8
+      }
+    ]
+  },
+  {
+    "id": 8,
+    "title": "F - Adorn her.",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "gore",
+        "noncon",
+        "vore"
+    ],
+    "choices": [
+      {
+        "text": "Your fate ends here.",
+        "nextId": null
+      },
+      {
+        "text": "Your fate is eternal.",
+        "nextId": 9
+      }
+    ]
+  },
+  {
+    "id": 9,
+    "title": "F - Your fate is eternal.",
+    "author": "Phrenics",
+    "image": null,
+    "tags": [
+        "abuse",
+        "noncon"
+    ],
+    "choices": [
+      {
+        "text": "After your end.",
+        "nextId": null
+      }
+    ]
+  }
+]

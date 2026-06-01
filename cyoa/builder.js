@@ -234,8 +234,9 @@ function buildNodeCard(node) {
 
   // Wire word count
   var ta = blurbWrap.querySelector('textarea');
-  ta.addEventListener('input', function() { updateWc(this, wcId); });
-  updateWc(ta, wcId);
+  var wcEl = blurbWrap.querySelector('#' + wcId) || blurbWrap.querySelector('.builder-wc');
+  ta.addEventListener('input', function() { updateWc(this, wcEl); });
+  updateWc(ta, wcEl);
 
   // Wire the formatting toolbar buttons
   blurbWrap.querySelectorAll('.md-tool-btn').forEach(function(btn) {
@@ -243,7 +244,7 @@ function buildNodeCard(node) {
     btn.addEventListener('mousedown', function(e) {
       e.preventDefault();
       applyMarkdownFormat(ta, btn.getAttribute('data-md'));
-      updateWc(ta, wcId);
+      updateWc(ta, wcEl);
     });
   });
 
@@ -347,10 +348,12 @@ function appendChoiceRow(container, text, nextId, addBtn, currentNodeId) {
 }
 
 // -- Word count helper
-function updateWc(ta, wcId) {
+function updateWc(ta, wcRef) {
   var text  = ta.value.trim();
   var words = text === '' ? 0 : text.split(/\s+/).length;
-  var el    = document.getElementById(wcId);
+  // wcRef may be the element itself or an id string. Prefer the element so it
+  // works even before the card is attached to the document.
+  var el = (wcRef && wcRef.nodeType) ? wcRef : document.getElementById(wcRef);
   if (!el) return;
   var met  = words >= 300;
   el.textContent = words + ' / 300 words minimum';
