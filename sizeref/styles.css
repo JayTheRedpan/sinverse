@@ -1678,6 +1678,42 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 }
 .mychars-add-btn:hover { border-color: var(--accent); background: var(--accent-dim); }
 
+/* Export button on each roster card — matches the Edit button */
+.mychars-export-btn {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mychars-export-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
+/* New Character + Import buttons share a row */
+.mychars-add-row { display: flex; flex-direction: column; gap: 0; }
+.mychars-add-row .mychars-add-btn { margin-bottom: 0.35rem; }
+.mychars-import-btn {
+  width: calc(100% - 2rem);
+  margin: 0 1rem 0.75rem;
+  padding: 0.55rem;
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  background: none;
+  border: 1px dashed var(--border-mid);
+  border-radius: var(--radius);
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.mychars-import-btn:hover { border-color: var(--accent); color: var(--accent); background: var(--accent-dim); }
+
 /* ── Custom character modal ──────────────────────────────────── */
 .custom-modal-overlay {
   position: fixed;
@@ -1913,4 +1949,49 @@ body.sandbox-active .sr-img-wrap {
   max-height: 64px;
   width: auto;
   object-fit: contain;
+}
+
+/* ── Character picker: sort bar ──────────────────────────────── */
+.char-modal-sortbar {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.5rem 1rem;
+  border-bottom: 1px solid var(--border);
+  flex-wrap: wrap;
+}
+.char-modal-sort-label {
+  font-family: var(--font-caps, var(--font-display));
+  font-size: 0.58rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted, var(--text-secondary));
+  margin-right: 0.15rem;
+}
+.char-modal-sort-btn {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.char-modal-sort-btn:hover { border-color: var(--accent); color: var(--accent); }
+.char-modal-sort-btn.active {
+  border-color: var(--accent);
+  color: var(--bg);
+  background: var(--accent);
+}
+
+/* Height sub-label on picker cards */
+.cpm-height {
+  font-family: var(--font-caps, var(--font-display));
+  font-size: 0.62rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted, var(--text-secondary));
+  text-align: center;
+  margin-top: 0.1rem;
 }

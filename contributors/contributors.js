@@ -74,7 +74,7 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var cCount = adventureNodes.filter(function(n){ return n.author === id; }).length;
 
   var defs = [
-    { n: gCount, label: 'Images',     url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
+    { n: gCount, label: 'Artworks',   url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
     { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
     { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
   ];
@@ -262,7 +262,11 @@ async function init() {
       window.history.replaceState({}, '', cleanUrl);
     }
 
-    // Sort rest by total contribution count descending
+    // Sort rest by weighted contribution score descending.
+    // A single adventure scene is a smaller unit of work than a full image or
+    // story, so it's weighted at 1/5 for ranking purposes only — the displayed
+    // counts elsewhere remain the true, unweighted numbers.
+    var ADVENTURE_WEIGHT = 0.2;
     rest.sort(function(a, b) {
       function count(id) {
         var g = galleryItems.reduce(function(sum, i) {
@@ -275,7 +279,7 @@ async function init() {
           return sum + 1;
         }, 0);
         var c = adventureNodes.filter(function(n){ return n.author === id; }).length;
-        return g + l + c;
+        return g + l + (c * ADVENTURE_WEIGHT);
       }
       return count(b.id) - count(a.id);
     });

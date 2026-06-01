@@ -291,5 +291,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/raan/"
     }
+  },
+  {
+    "id": "Zandy",
+    "name": "Zandy",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780330284/zandy_jgsvsm.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/diamonikon/"
+    }
   }
 ]

@@ -1351,10 +1351,64 @@ function renderReaderStoryMap(adventureId, title, highlightPath) {
 
   body.appendChild(canvas);
   overlay.style.display = 'flex';
+  enableMapDragScroll(body);
 }
 
 function escapeHtmlMap(s) {
   return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// Grab-and-drag panning (both axes) for a scrollable map body. A small
+// threshold distinguishes a drag from a click, and after a real drag the
+// click is swallowed so it doesn't trigger a scene jump.
+function enableMapDragScroll(el) {
+  if (!el || el._dragBound) return;
+  el._dragBound = true;
+  var isDown = false, moved = false;
+  var startX = 0, startY = 0, startLeft = 0, startTop = 0;
+  var DRAG_THRESHOLD = 5;
+  el.style.cursor = 'grab';
+
+  el.addEventListener('pointerdown', function(e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    isDown = true; moved = false;
+    startX = e.clientX; startY = e.clientY;
+    startLeft = el.scrollLeft; startTop = el.scrollTop;
+    el.style.cursor = 'grabbing';
+    el.style.userSelect = 'none';
+  });
+  el.addEventListener('pointermove', function(e) {
+    if (!isDown) return;
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if (!moved && (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD)) {
+      moved = true;
+      if (el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (err) {} }
+    }
+    if (moved) {
+      el.scrollLeft = startLeft - dx;
+      el.scrollTop  = startTop - dy;
+      e.preventDefault();
+    }
+  });
+  function endDrag(e) {
+    if (!isDown) return;
+    isDown = false;
+    el.style.cursor = 'grab';
+    el.style.userSelect = '';
+    if (el.releasePointerCapture && e && e.pointerId !== undefined) {
+      try { el.releasePointerCapture(e.pointerId); } catch (err) {}
+    }
+    // Swallow the click that fires right after a drag so it doesn't jump
+    if (moved) {
+      el.addEventListener('click', function suppress(ev) {
+        ev.stopPropagation(); ev.preventDefault();
+        el.removeEventListener('click', suppress, true);
+      }, true);
+    }
+  }
+  el.addEventListener('pointerup', endDrag);
+  el.addEventListener('pointercancel', endDrag);
+  el.addEventListener('pointerleave', endDrag);
 }
 
 // Find the shortest path (list of node ids) from the opening to `targetId`
