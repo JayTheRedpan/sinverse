@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780286866" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780345398" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -1685,6 +1685,9 @@ Promise.all([
       showPage('not-found', false);
       history.replaceState({ type: 'page', id: 'not-found' }, '', '#not-found');
     }
+  } else {
+    // Fresh visit with no deep-link: show the default landing page.
+    loadLorePage('world-of-sinverse', false);
   }
 }).catch(function(e) {
   console.error('Failed to load wiki data:', e);
