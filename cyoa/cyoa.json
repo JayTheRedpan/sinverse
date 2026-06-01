@@ -4,5 +4,11 @@
     "title": "Captured",
     "description": "You have been hunted down and captured by one of Sin's huntresses...good luck.",
     "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779657924/capturedJay_d9mkm5.png"
+  },
+  {
+    "id": "everydaylife",
+    "title": "Everyday Life",
+    "description": "It's been a month since your capture. Every day your concept of normality fades, but still, you hold hope for freedom.",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780292203/everdaylife_gqv5ch.webp"
   }
 ]
