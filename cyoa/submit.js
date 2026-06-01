@@ -12,47 +12,40 @@ fetch('../_data/tags.json')
   .catch(function(){ /* leave empty if unavailable */ });
 
 
+// Single unified submission form. Every scene — whether it's part of a brand
+// new story or a branch added to an existing story — posts one row here.
+// `submissionType` ('story' | 'branch') distinguishes them; story scenes leave
+// parentId/branchText blank, branch scenes leave summary/pathId blank.
+// NOTE: the entry.* IDs below are placeholders — replace each with the real ID
+// from the unified form's "Get pre-filled link" URL.
 const FORMS = {
-  newStory: {
-    action: 'https://docs.google.com/forms/d/e/1FAIpQLSfAAPRWFs2TL4QVBlx6GCzEhMKxdny0rCrJwzZnCAG_L611Wg/formResponse',
+  submission: {
+    action: 'https://docs.google.com/forms/d/e/1FAIpQLSedyP4gmr2lOZoYpEh_4Vnd6fECDwLLT_Mrjj8NznOlRrrdeA/formResponse',
     fields: {
-      story:     'entry.1758226504',
-      author:    'entry.1046349014',
-      summary:   'entry.896008103',
-      title:     'entry.1363323010',
-      blurb:     'entry.120272987',
-      tags:      'entry.1419124577',
-      imageLink: 'entry.462250081',
-      isEnding:  'entry.1607455706',
-      path1:     'entry.1303831148',
-      path1Id:   'entry.1932009715',
-      path2:     'entry.1265254790',
-      path2Id:   'entry.1373190640',
-      path3:     'entry.1088383893',
-      path3Id:   'entry.380826477',
-      path4:     'entry.1926641281',
-      path4Id:   'entry.15030012',
-    }
-  },
-  newBranch: {
-    action: 'https://docs.google.com/forms/d/e/1FAIpQLSd-I4_dxSj7fdOfvkQkUnDA7zKea2-TAvrPmR2IMnyfnsbETw/formResponse',
-    fields: {
-      story:         'entry.1758226504',
-      author:        'entry.1046349014',
-      currentId:     'entry.1846449635',
-      newBranchText: 'entry.1810102385',
-      title:         'entry.1573360396',
-      blurb:         'entry.120272987',
-      tags:          'entry.1419124577',
-      imageLink:     'entry.462250081',
-      isEnding:      'entry.1933267705',
-      path1:         'entry.1303831148',
-      path2:         'entry.1265254790',
-      path3:         'entry.1088383893',
-      path4:         'entry.1926641281',
+      submissionType: 'entry.1177017336',
+      story:          'entry.1163655137',
+      author:         'entry.687642526',
+      sceneId:        'entry.1117435850',
+      parentId:       'entry.1297230468',
+      branchText:     'entry.1866009772',
+      summary:        'entry.1871137109',
+      title:          'entry.2066354214',
+      blurb:          'entry.853816147',
+      tags:           'entry.1375708215',
+      isEnding:       'entry.436306734',
+      imageLink:      'entry.866353116',
+      path1:          'entry.1483163042',
+      path1Id:        'entry.1254249639',
+      path2:          'entry.1219434053',
+      path2Id:        'entry.60165910',
+      path3:          'entry.1815825692',
+      path3Id:        'entry.962906094',
+      path4:          'entry.849792395',
+      path4Id:        'entry.704030206',
     }
   }
 };
+
 
 // Story-level tags -- shown on library card, describe the story overall
 // Node-level content tags -- loaded from tags.json on init
@@ -579,7 +572,12 @@ window.showNewStoryForm = function() {
       { key: 'path4',     type: 'text',       label: 'Choice 4',            placeholder: 'Fourth choice text',                        hint: '(optional)' },
       { key: 'imageLink', type: 'text',       label: 'Image URL',           placeholder: 'Optional link to a cover image',            hint: '(optional)' },
     ],
-    onSubmit: function(data) { return submitToGoogle('newStory', data); }
+    onSubmit: function(data) {
+      // Single opening scene → unified form as a 'story' submission
+      data.submissionType = 'story';
+      data.sceneId = '1';
+      return submitToGoogle('submission', data);
+    }
   });
 };
 

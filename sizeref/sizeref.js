@@ -3074,6 +3074,7 @@ function updateSlotUI() {
 
 // ── Character picker modal ─────────────────────────────────────
 var modalTargetSel = null;  // the slot-select that triggered the modal
+var charModalSort = 'name'; // 'name' | 'height-desc' | 'height-asc'
 
 function openCharModal(sel) {
   modalTargetSel = sel;
@@ -3099,6 +3100,26 @@ function buildModalGrid(query) {
   if (!grid) return;
   grid.innerHTML = '';
   var q = query.trim().toLowerCase();
+  var sortMode = charModalSort || 'name';
+
+  // Use the module's unit-aware height formatter (respects the metric toggle)
+  function fmtHeight(inches) {
+    if (!inches && inches !== 0) return '';
+    return fH(inches);
+  }
+
+  // Sort a list of entries (each has .name and .height) by the active mode
+  function applySort(list) {
+    var arr = list.slice();
+    if (sortMode === 'height-desc') {
+      arr.sort(function(a,b){ return (b.height||0) - (a.height||0); });
+    } else if (sortMode === 'height-asc') {
+      arr.sort(function(a,b){ return (a.height||0) - (b.height||0); });
+    } else {
+      arr.sort(function(a,b){ return a.name.localeCompare(b.name); });
+    }
+    return arr;
+  }
 
   function makeCard(entry) {
     var card = document.createElement('div');
@@ -3106,11 +3127,13 @@ function buildModalGrid(query) {
     var imgUrl = entry.img || DEFAULTS.headshot[entry.sil] || DEFAULTS.headshot.giantess || '';
     var isReal = !!entry.img;
     var imgThumb = (window.SinverseImg ? SinverseImg.thumb(imgUrl, 160) : imgUrl);
+    var heightLabel = fmtHeight(entry.height);
     card.innerHTML =
       '<div class="cpm-img-wrap">' +
         '<img class="cpm-img'+(isReal?'':' sr-sil-filter')+'" src="'+imgThumb+'" alt="'+entry.name+'" loading="lazy" />' +
       '</div>' +
-      '<div class="cpm-name">'+entry.name+'</div>';
+      '<div class="cpm-name">'+entry.name+'</div>' +
+      (heightLabel ? '<div class="cpm-height">'+heightLabel+'</div>' : '');
     card.addEventListener('click', function() {
       if (modalTargetSel) {
         // Rebuild options to ensure custom chars are present before setting value
@@ -3129,19 +3152,24 @@ function buildModalGrid(query) {
   var customChars2 = (loadCustom().chars||[]).filter(function(c){return c&&c.name&&c.height;});
   var filteredCustom = customChars2.filter(function(c){
     return !q || c.name.toLowerCase().indexOf(q) >= 0;
+  }).map(function(c){
+    return { value: c.id, name: c.name, img: c.profile_image||'', sil:'giantess', canon:false,
+             height: c.height };  // true standing height, not pose-corrected
   });
+  filteredCustom = applySort(filteredCustom);
 
   // Canon characters
   var canonEntries = [];
   S.chars.forEach(function(c) {
     canonEntries.push({value:'canon_'+c.id, name:c.name,
       img:c.profile_image||'',
-      sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', canon:true});
+      sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', canon:true,
+      height: c.height});  // true standing height, not pose-corrected
   });
   var filteredCanon = canonEntries.filter(function(e){
     return !q || e.name.toLowerCase().indexOf(q) >= 0;
   });
-  filteredCanon.sort(function(a,b){ return a.name.localeCompare(b.name); });
+  filteredCanon = applySort(filteredCanon);
 
   if (!filteredCustom.length && !filteredCanon.length) {
     grid.innerHTML = '<div class="cpm-empty">No characters found</div>';
@@ -3154,12 +3182,7 @@ function buildModalGrid(query) {
     customLabel.className = 'cpm-section-label';
     customLabel.textContent = 'My Characters';
     grid.appendChild(customLabel);
-    filteredCustom.forEach(function(c) {
-      grid.appendChild(makeCard({
-        value: c.id, name: c.name,
-        img: c.profile_image||'', sil:'giantess', canon:false
-      }));
-    });
+    filteredCustom.forEach(function(c) { grid.appendChild(makeCard(c)); });
   }
 
   // ── Canon section ────────────────────────────────────────────
@@ -3185,6 +3208,22 @@ function wireCharModal() {
   document.getElementById('char-modal-search').addEventListener('input', function() {
     buildModalGrid(this.value);
   });
+  // Sort buttons
+  var sortBtns = document.querySelectorAll('.char-modal-sort-btn');
+  function reflectActiveSort() {
+    sortBtns.forEach(function(b) {
+      b.classList.toggle('active', b.getAttribute('data-sort') === charModalSort);
+    });
+  }
+  sortBtns.forEach(function(btn) {
+    btn.addEventListener('click', function() {
+      charModalSort = btn.getAttribute('data-sort');
+      reflectActiveSort();
+      var sv = document.getElementById('char-modal-search');
+      buildModalGrid(sv ? sv.value : '');
+    });
+  });
+  reflectActiveSort();
   // Escape key
   document.addEventListener('keydown', function(e) {
     if (e.key === 'Escape') closeCharModal();
@@ -3948,6 +3987,108 @@ function loadCustom() {
 function getCustomChar(id){return (loadCustom().chars||[]).find(function(c){return c.id===id;})||null;}
 function saveCustom(d){try{localStorage.setItem(STORE,JSON.stringify(d));}catch(e){}}
 
+// ── Character share: export / import ──────────────────────────
+// A shared character is ONE JSON file: the character record plus its up to
+// three images (height/length/profile) embedded as base64 data URLs. No zip
+// needed — it's a single double-clickable file.
+var CHAR_EXPORT_VERSION = 1;
+var IMG_PFXS = ['i', 'l', 'p']; // height-image, length-image, profile
+
+function exportCustomChar(id) {
+  var char = getCustomChar(id);
+  if (!char) { alert('Character not found.'); return; }
+  var slot = parseInt((char.id || '').replace('custom_', ''), 10);
+
+  // Gather the three images from IndexedDB
+  var imgGets = IMG_PFXS.map(function(pfx) {
+    return getImg('custom_' + slot + '_' + pfx).then(function(dataUrl) {
+      return { pfx: pfx, data: dataUrl || null };
+    });
+  });
+
+  Promise.all(imgGets).then(function(results) {
+    var images = {};
+    results.forEach(function(r) { if (r.data) images[r.pfx] = r.data; });
+
+    // Strip slot-specific identity from the record; import assigns a fresh slot
+    var record = JSON.parse(JSON.stringify(char));
+    delete record.id;
+
+    var payload = {
+      _sinverse: 'sizeref-character',
+      version: CHAR_EXPORT_VERSION,
+      exported: new Date().toISOString(),
+      character: record,
+      images: images   // { i?: dataURL, l?: dataURL, p?: dataURL }
+    };
+
+    var blob = new Blob([JSON.stringify(payload)], { type: 'application/json' });
+    var url = URL.createObjectURL(blob);
+    var a = document.createElement('a');
+    var safeName = (char.name || 'character').replace(/[^a-z0-9]+/gi, '_').replace(/^_+|_+$/g, '').toLowerCase() || 'character';
+    a.href = url;
+    a.download = 'sinverse_' + safeName + '.json';
+    document.body.appendChild(a);
+    a.click();
+    document.body.removeChild(a);
+    setTimeout(function(){ URL.revokeObjectURL(url); }, 1000);
+  });
+}
+
+// Import: read a shared character JSON, claim a fresh slot, store its images,
+// and add it to My Characters. Returns a promise resolving to the new char id.
+function importCustomChar(fileText) {
+  return new Promise(function(resolve, reject) {
+    var payload;
+    try { payload = JSON.parse(fileText); }
+    catch (e) { reject(new Error('That file isn\u2019t valid JSON.')); return; }
+
+    if (!payload || payload._sinverse !== 'sizeref-character' || !payload.character) {
+      reject(new Error('That doesn\u2019t look like a Sinverse character file.'));
+      return;
+    }
+
+    var d = loadCustom();
+    var chars = d.chars || [];
+
+    // Find the lowest free slot number (cap matches the roster limit)
+    var used = {};
+    chars.forEach(function(c){ var n = parseInt((c.id||'').replace('custom_',''),10); if (!isNaN(n)) used[n] = true; });
+    var slot = 1;
+    while (used[slot]) slot++;
+    if (slot > MAX_CUSTOM) { reject(new Error('You\u2019ve reached the maximum of ' + MAX_CUSTOM + ' custom characters. Remove one first.')); return; }
+
+    var record = payload.character;
+    record.id = 'custom_' + slot;
+    record.custom = true;
+    record.canonical = false;
+
+    // Avoid duplicate display names
+    var baseName = record.name || 'Imported Character';
+    var nameTaken = function(n){ return chars.some(function(c){ return (c.name||'').toLowerCase() === n.toLowerCase(); }); };
+    if (nameTaken(baseName)) {
+      var k = 2;
+      while (nameTaken(baseName + ' (' + k + ')')) k++;
+      record.name = baseName + ' (' + k + ')';
+    }
+
+    // Store images into IndexedDB under the new slot, and flag has_img
+    var images = payload.images || {};
+    if (!d['slot'+slot]) d['slot'+slot] = {};
+    var imgPuts = IMG_PFXS.filter(function(pfx){ return images[pfx]; }).map(function(pfx) {
+      d['slot'+slot][pfx+'_has_img'] = true;
+      return storeImg('custom_' + slot + '_' + pfx, images[pfx]);
+    });
+
+    Promise.all(imgPuts).then(function() {
+      chars.push(record);
+      d.chars = chars;
+      saveCustom(d);
+      resolve(record.id);
+    }).catch(function(err){ reject(err); });
+  });
+}
+
 function clearSlot(slot){
   var d=loadCustom(); d.chars=(d.chars||[]).filter(function(c){return c.id!=='custom_'+slot;}); saveCustom(d);
   // Remove from all compare slots that had this custom char selected
@@ -4015,10 +4156,14 @@ function renderRoster() {
         '</div>'+
       '</div>'+
       '<div class="mychars-card-actions">'+
+        '<button class="mychars-export-btn" data-id="'+c.id+'" title="Export / share this character">&#8682; Export</button>'+
         '<button class="mychars-edit-btn" data-id="'+c.id+'">Edit</button>'+
         '<button class="mychars-del-btn" data-id="'+c.id+'">&#10005;</button>'+
       '</div>';
 
+    card.querySelector('.mychars-export-btn').addEventListener('click', function() {
+      exportCustomChar(c.id);
+    });
     card.querySelector('.mychars-edit-btn').addEventListener('click', function() {
       openCustomModal(c.id);
     });
@@ -4149,6 +4294,30 @@ if (myAddBtn) myAddBtn.addEventListener('click', function() {
   openCustomModal(newId);
 });
 
+// My Characters — import a shared character file
+var myImportBtn  = document.getElementById('mychars-import-btn');
+var myImportFile = document.getElementById('mychars-import-file');
+if (myImportBtn && myImportFile) {
+  myImportBtn.addEventListener('click', function() { myImportFile.click(); });
+  myImportFile.addEventListener('change', function() {
+    var f = this.files && this.files[0];
+    if (!f) return;
+    var reader = new FileReader();
+    reader.onload = function(e) {
+      importCustomChar(e.target.result).then(function(newId) {
+        renderRoster();
+        fillSelects();
+        var ch = getCustomChar(newId);
+        alert('Imported "' + (ch ? ch.name : 'character') + '" into My Characters.');
+      }).catch(function(err) {
+        alert(err.message || 'Could not import that file.');
+      });
+    };
+    reader.readAsText(f);
+    this.value = ''; // allow re-importing the same file
+  });
+}
+
 var modalClose = document.getElementById('custom-modal-close');
 if (modalClose) modalClose.addEventListener('click', closeCustomModal);
 
@@ -4200,6 +4369,12 @@ function applyGlobalUnit(isM) {
   });
   if(S.view==='stats') renderStatsView();
   renderActive();
+  // If the character picker is open, rebuild it so heights reflect the new unit
+  var _cmo = document.getElementById('char-modal-overlay');
+  if (_cmo && _cmo.style.display !== 'none') {
+    var _cms = document.getElementById('char-modal-search');
+    buildModalGrid(_cms ? _cms.value : '');
+  }
 }
 g('btn-imperial').addEventListener('click',function(){applyGlobalUnit(false);});
 

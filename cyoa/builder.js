@@ -456,48 +456,58 @@ async function submitAll() {
 
     var data;
     if (branchMode) {
-      // Each scene becomes its own newBranch record, all sharing the parent
-      // node. The first scene declares the attach-choice; later scenes note
-      // their cluster origin and encode internal wiring into the path text.
+      // Branch scene: attaches to an existing story at branchMode.parentNode.
+      // First scene carries the attach-choice text; sceneId is the builder's
+      // local scene number so the reviewer can wire the cluster together.
       data = {
-        story:     title,
-        author:    author,
-        currentId: branchMode.parentNode,
-        newBranchText: i === 0
-          ? choiceText
-          : '(cluster scene ' + (i + 1) + ' \u2014 reached from within this submission)',
-        title:    node.sceneName,
-        blurb:    node.blurb,
-        tags:     node.tags.join(', '),
-        isEnding: node.isEnding ? 'Yes' : 'No',
-        path1:    branchPathText(node.choices[0]),
-        path2:    branchPathText(node.choices[1]),
-        path3:    branchPathText(node.choices[2]),
-        path4:    branchPathText(node.choices[3])
+        submissionType: 'branch',
+        story:      title,
+        author:     author,
+        sceneId:    String(node.id),
+        parentId:   i === 0 ? branchMode.parentNode : '',
+        branchText: i === 0 ? choiceText : '',
+        summary:    '',
+        title:      node.sceneName,
+        blurb:      node.blurb,
+        tags:       node.tags.join(', '),
+        isEnding:   node.isEnding ? 'Yes' : 'No',
+        imageLink:  '',
+        path1:   node.choices[0] ? node.choices[0].text : '',
+        path1Id: node.choices[0] ? String(node.choices[0].nextId || 'null') : '',
+        path2:   node.choices[1] ? node.choices[1].text : '',
+        path2Id: node.choices[1] ? String(node.choices[1].nextId || 'null') : '',
+        path3:   node.choices[2] ? node.choices[2].text : '',
+        path3Id: node.choices[2] ? String(node.choices[2].nextId || 'null') : '',
+        path4:   node.choices[3] ? node.choices[3].text : '',
+        path4Id: node.choices[3] ? String(node.choices[3].nextId || 'null') : '',
       };
-      var okB = await submitToGoogle('newBranch', data);
-      if (!okB) failed++;
     } else {
+      // New-story scene.
       data = {
-        story:    title,
-        author:   author,
-        summary:  i === 0 ? summary : '(see scene 1)',
-        title:    node.sceneName,
-        blurb:    node.blurb,
-        tags:     node.tags.join(', '),
-        isEnding: node.isEnding ? 'Yes' : 'No',
-        path1:    node.choices[0] ? node.choices[0].text   : '',
-        path1Id:  node.choices[0] ? String(node.choices[0].nextId || 'dead end') : '',
-        path2:    node.choices[1] ? node.choices[1].text   : '',
-        path2Id:  node.choices[1] ? String(node.choices[1].nextId || 'dead end') : '',
-        path3:    node.choices[2] ? node.choices[2].text   : '',
-        path3Id:  node.choices[2] ? String(node.choices[2].nextId || 'dead end') : '',
-        path4:    node.choices[3] ? node.choices[3].text   : '',
-        path4Id:  node.choices[3] ? String(node.choices[3].nextId || 'dead end') : '',
+        submissionType: 'story',
+        story:      title,
+        author:     author,
+        sceneId:    String(node.id),
+        parentId:   '',
+        branchText: '',
+        summary:    i === 0 ? summary : '',
+        title:      node.sceneName,
+        blurb:      node.blurb,
+        tags:       node.tags.join(', '),
+        isEnding:   node.isEnding ? 'Yes' : 'No',
+        imageLink:  '',
+        path1:   node.choices[0] ? node.choices[0].text : '',
+        path1Id: node.choices[0] ? String(node.choices[0].nextId || 'null') : '',
+        path2:   node.choices[1] ? node.choices[1].text : '',
+        path2Id: node.choices[1] ? String(node.choices[1].nextId || 'null') : '',
+        path3:   node.choices[2] ? node.choices[2].text : '',
+        path3Id: node.choices[2] ? String(node.choices[2].nextId || 'null') : '',
+        path4:   node.choices[3] ? node.choices[3].text : '',
+        path4Id: node.choices[3] ? String(node.choices[3].nextId || 'null') : '',
       };
-      var ok = await submitToGoogle('newStory', data);
-      if (!ok) failed++;
     }
+    var ok = await submitToGoogle('submission', data);
+    if (!ok) failed++;
     await new Promise(function(res) { setTimeout(res, 400); });
   }
 
@@ -518,17 +528,6 @@ async function submitAll() {
   }
 
   document.getElementById('submit-done-btn').style.display = '';
-}
-
-// Encode a choice's text plus its internal cluster target (if any) so the
-// reviewer can see how the submitted scenes are meant to link together.
-function branchPathText(choice) {
-  if (!choice) return '';
-  var label = choice.text || '';
-  if (choice.nextId) {
-    label += ' \u2192 [scene ' + choice.nextId + ' in this submission]';
-  }
-  return label;
 }
 
 // -- Apply a markdown format to the current textarea selection
@@ -777,6 +776,59 @@ function renderStoryMap(container) {
   });
 
   container.appendChild(canvas);
+  enableMapDragScrollB(container);
+}
+
+// Grab-and-drag panning (both axes) for the builder story-map body. Mirrors
+// the reader's version; a threshold distinguishes drag from click and the
+// post-drag click is swallowed so dragging doesn't trigger a scene jump.
+function enableMapDragScrollB(el) {
+  if (!el || el._dragBound) return;
+  el._dragBound = true;
+  var isDown = false, moved = false;
+  var startX = 0, startY = 0, startLeft = 0, startTop = 0;
+  var DRAG_THRESHOLD = 5;
+  el.style.cursor = 'grab';
+
+  el.addEventListener('pointerdown', function(e) {
+    if (e.button !== undefined && e.button !== 0) return;
+    isDown = true; moved = false;
+    startX = e.clientX; startY = e.clientY;
+    startLeft = el.scrollLeft; startTop = el.scrollTop;
+    el.style.cursor = 'grabbing';
+    el.style.userSelect = 'none';
+  });
+  el.addEventListener('pointermove', function(e) {
+    if (!isDown) return;
+    var dx = e.clientX - startX, dy = e.clientY - startY;
+    if (!moved && (Math.abs(dx) > DRAG_THRESHOLD || Math.abs(dy) > DRAG_THRESHOLD)) {
+      moved = true;
+      if (el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (err) {} }
+    }
+    if (moved) {
+      el.scrollLeft = startLeft - dx;
+      el.scrollTop  = startTop - dy;
+      e.preventDefault();
+    }
+  });
+  function endDrag(e) {
+    if (!isDown) return;
+    isDown = false;
+    el.style.cursor = 'grab';
+    el.style.userSelect = '';
+    if (el.releasePointerCapture && e && e.pointerId !== undefined) {
+      try { el.releasePointerCapture(e.pointerId); } catch (err) {}
+    }
+    if (moved) {
+      el.addEventListener('click', function suppress(ev) {
+        ev.stopPropagation(); ev.preventDefault();
+        el.removeEventListener('click', suppress, true);
+      }, true);
+    }
+  }
+  el.addEventListener('pointerup', endDrag);
+  el.addEventListener('pointercancel', endDrag);
+  el.addEventListener('pointerleave', endDrag);
 }
 
 function escapeHtmlSM(s) {

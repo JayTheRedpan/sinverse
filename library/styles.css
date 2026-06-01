@@ -1505,3 +1505,31 @@
   transition: background 0.15s, border-color 0.15s;
 }
 .lib-info-read:hover { background: var(--accent-dim); border-color: var(--accent); }
+
+/* ── Characters in the reader info panel ────────────────────── */
+.reader-characters {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.5rem;
+}
+.reader-characters-label {
+  font-family: var(--font-caps);
+  font-size: 0.52rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.reader-characters-list {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.5rem;
+}
+.reader-char-link {
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+  transition: color 0.15s;
+}
+.reader-char-link:hover { color: var(--accent-light, var(--accent)); }

@@ -824,5 +824,23 @@
 
     ],
     "wordCount": 13069
+  },
+  {
+    "id": 39,
+    "type": "standalone",
+    "title": "A Wizard's Hubris",
+    "author": "Zandy",
+    "summary": null,
+    "tags": [
+      "noncon"
+    ],
+    "file": "stories/a_wizards_hubris.md",
+    "date": "2024-01",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+
+    ],
+    "wordCount": 8719
   }
 ]

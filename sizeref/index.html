@@ -63,7 +63,11 @@
         <span class="mychars-count" id="mychars-count">0 / 8</span>
       </div>
       <div id="mychars-roster" class="mychars-roster"></div>
-      <button id="mychars-add-btn" class="mychars-add-btn">+ New Character</button>
+      <div class="mychars-add-row">
+        <button id="mychars-add-btn" class="mychars-add-btn">+ New Character</button>
+        <button id="mychars-import-btn" class="mychars-import-btn" title="Load a character someone shared with you">&#8681; Import character</button>
+        <input id="mychars-import-file" type="file" accept="application/json,.json" style="display:none" />
+      </div>
     </div>
 
     <!-- Custom char edit modal -->
@@ -167,7 +171,7 @@
 <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
 <script src="../_shared/registry.js"></script>
 <script src="../_shared/images.js?v=1780172445"></script>
-<script src="sizeref.js?v=1780172445"></script>
+<script src="sizeref.js?v=1780336198"></script>
 
 <!-- ── Resize popup backdrop ──────────────────── -->
 <div id="sr-resize-backdrop" class="sr-resize-backdrop"></div>
@@ -179,6 +183,12 @@
       <div class="char-modal-title">Select Character</div>
       <input id="char-modal-search" class="char-modal-search" type="text" placeholder="Search…" autocomplete="off" />
       <button id="char-modal-close" class="char-modal-close" title="Close">&#10005;</button>
+    </div>
+    <div class="char-modal-sortbar">
+      <span class="char-modal-sort-label">Sort</span>
+      <button class="char-modal-sort-btn" data-sort="name" title="Sort A–Z">Name</button>
+      <button class="char-modal-sort-btn" data-sort="height-desc" title="Tallest first">Height &#9660;</button>
+      <button class="char-modal-sort-btn" data-sort="height-asc" title="Shortest first">Height &#9650;</button>
     </div>
     <div id="char-modal-grid" class="char-modal-grid"></div>
   </div>

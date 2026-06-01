@@ -52,6 +52,9 @@ function renderMeta() {
     tagsEl.appendChild(span);
   });
 
+  // Characters featured in this story (mirrors the gallery viewer)
+  renderReaderCharacters(story.characters);
+
   // Posted + in-universe dates
   var datesEl = document.getElementById('reader-dates');
   if (datesEl) {
@@ -66,6 +69,34 @@ function renderMeta() {
   }
 
   // Word count shown after content loads (see loadContent/loadChapter)
+}
+
+// Render the "Characters" list in the info panel, linking each to its wiki
+// page — same behaviour as the gallery viewer's character links.
+function renderReaderCharacters(characters) {
+  var el = document.getElementById('reader-characters');
+  if (!el) return;
+  el.innerHTML = '';
+  if (!characters || !characters.length) { el.style.display = 'none'; return; }
+  el.style.display = '';
+
+  var label = document.createElement('div');
+  label.className   = 'reader-characters-label';
+  label.textContent = 'Characters';
+  el.appendChild(label);
+
+  var list = document.createElement('div');
+  list.className = 'reader-characters-list';
+  characters.forEach(function(charId) {
+    var displayName = String(charId).replace(/_/g, ' ');
+    displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+    var a = document.createElement('a');
+    a.className   = 'reader-char-link';
+    a.href        = '../wiki/?character=' + encodeURIComponent(String(charId).toLowerCase());
+    a.textContent = displayName;
+    list.appendChild(a);
+  });
+  el.appendChild(list);
 }
 
 // Format a "2025-05" style posted date into "May 2025"
