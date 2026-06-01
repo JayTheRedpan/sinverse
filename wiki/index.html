@@ -23,7 +23,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
-  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780265810" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780286866" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
@@ -378,7 +378,7 @@
     /* Era band layer sits behind the events */
     .wiki-tl-bands {
       position: absolute;
-      top: 0; left: 0; right: 0;
+      top: 18px; left: 0; right: 0;    /* leave clear space above for the TDay point label */
       height: 34px;             /* slim name-only strip */
       z-index: 0;
     }
@@ -413,15 +413,15 @@
     /* TDay vertical divider */
     .wiki-tl-divider {
       position: absolute;
-      top: 0;
+      top: -18px;               /* extend up through the clear zone above the bands */
       width: 2px;
-      height: 60px;
+      height: 78px;
       background: var(--accent);
-      z-index: 2;
+      z-index: 3;               /* above bands so the TDay label never collides */
     }
     .wiki-tl-divider-label {
       position: absolute;
-      top: -2px;
+      top: -4px;                /* sits in the clear space above every era band */
       left: 50%;
       transform: translateX(-50%);
       font-family: var(--font-caps);
@@ -434,6 +434,7 @@
       white-space: nowrap;
       border: 1px solid var(--accent);
       border-radius: 2px;
+      z-index: 4;
     }
     .wiki-timeline-line {
       position: absolute;
@@ -462,6 +463,27 @@
     .wiki-timeline-event > * { pointer-events: auto; }
     /* Hovered event rises above its neighbours so clicks land where you point */
     .wiki-timeline-event:hover { z-index: 5; }
+    /* When zoomed out and events crowd together, collapse to dots only.
+       The label reappears on hover and as the user zooms in. */
+    .wiki-timeline-event.dot-only .wiki-tl-date,
+    .wiki-timeline-event.dot-only .wiki-tl-title { display: none; }
+    .wiki-timeline-event.dot-only .wiki-tl-dot::after { display: none; }
+    .wiki-timeline-event.dot-only:hover .wiki-tl-date,
+    .wiki-timeline-event.dot-only:hover .wiki-tl-title {
+      display: block;
+      position: absolute;
+      top: 1.1rem; left: 50%;
+      transform: translateX(-50%);
+      background: var(--bg);
+      border: 1px solid var(--border-mid);
+      border-radius: 3px;
+      padding: 0.2rem 0.45rem;
+      white-space: nowrap;
+      z-index: 6;
+    }
+    .wiki-timeline-event.dot-only:hover .wiki-tl-title { top: 2.6rem; }
+    /* Fully culled when zoomed way out and dots would overlap */
+    .wiki-timeline-event.tl-hidden { display: none; }
     /* Staggered events drop their labels lower to avoid collisions */
     .wiki-timeline-event.staggered { top: 44px; }
     .wiki-timeline-event.staggered .wiki-tl-date { margin-top: 2.6rem; }
@@ -1531,10 +1553,15 @@ function showPage(id, pushState) {
       else app.classList.remove('sidebar-collapsed');
     }
   }
-  // When the timeline becomes visible, centre the view on TDay. (It can't be
-  // measured while hidden, so do it now that the page is active.)
+  // When the timeline becomes visible, fit the full span to the viewport then
+  // centre on TDay. (It can't be measured while hidden, so do it now.)
   if (id === 'timeline') {
-    requestAnimationFrame(function() { requestAnimationFrame(centerTimelineOnTDay); });
+    requestAnimationFrame(function() {
+      requestAnimationFrame(function() {
+        fitTimelineToViewport();
+        centerTimelineOnTDay();
+      });
+    });
   }
 }
 
@@ -1876,7 +1903,7 @@ document.getElementById('wiki-main').addEventListener('click', function(e) {
 
 // ── Timeline ──────────────────────────────────────────────────
 var TL_PX_PER_YEAR = 88;        // horizontal scale, adjusted by zoom controls
-var TL_PX_MIN = 24, TL_PX_MAX = 200, TL_PX_STEP = 22, TL_PX_DEFAULT = 88;
+var TL_PX_MIN = 6, TL_PX_MAX = 200, TL_PX_STEP = 22, TL_PX_DEFAULT = 88;
 
 function buildTimeline() {
   var container = document.getElementById('timeline-container');
@@ -2102,14 +2129,21 @@ function buildTimeline() {
   trackWrap.appendChild(track);
   container.appendChild(trackWrap);
   enableDragScroll(trackWrap);
-  // Remember where TDay (T±0) sits so the view can centre on it
+  // Remember where TDay (T±0) sits so the view can centre on it,
+  // and the dated year span so the view can fit-to-content.
   trackWrap._tdayX = xForYear(0);
+  trackWrap._minYear = minYear;
+  trackWrap._maxYear = maxYear;
+  trackWrap._edgePad = EDGE_PAD;
 
   var fn = document.createElement('p');
   fn.className = 'wiki-tl-footnote';
   fn.innerHTML = 'Dates relative to TDay (T&plusmn;0) — <em>T-N</em> = N years before; <em>T+N</em> = N years after. Bands mark the eras; click any event to expand.';
   container.appendChild(fn);
   container.appendChild(detail);
+
+  // Collapse crowded event labels to dots at the current zoom level
+  applyEventDensity();
 }
 
 
@@ -2191,16 +2225,94 @@ function rebuildTimelinePreservingCenter() {
 // (relative to the wrap's left edge) anchored in place — used for wheel zoom.
 function rebuildTimelineAnchoredAt(offsetX) {
   var wrap = document.querySelector('.wiki-timeline-wrap');
-  var anchorRatio = 0.5;
-  if (wrap && wrap.scrollWidth > 0) {
-    anchorRatio = (wrap.scrollLeft + offsetX) / wrap.scrollWidth;
+  // Convert the cursor's screen x to the YEAR under it, using the pre-zoom
+  // scale. After rebuild we scroll so that same year sits back under the
+  // cursor. (A width-ratio anchor drifts because the edge padding and the
+  // "Present" zone are fixed-width and don't scale with zoom.)
+  var anchorYear = null;
+  if (wrap && wrap._minYear !== undefined) {
+    var contentX = wrap.scrollLeft + offsetX;           // x within the track
+    anchorYear = wrap._minYear + (contentX - wrap._edgePad) / TL_PX_PER_YEAR_PREV();
   }
   buildTimeline();
   var nw = document.querySelector('.wiki-timeline-wrap');
-  if (nw && nw.scrollWidth > nw.clientWidth) {
-    nw.scrollLeft = anchorRatio * nw.scrollWidth - offsetX;
+  if (nw && anchorYear !== null && nw._minYear !== undefined) {
+    var newContentX = nw._edgePad + (anchorYear - nw._minYear) * TL_PX_PER_YEAR;
+    nw.scrollLeft = newContentX - offsetX;
   }
+  _tlPrevScale = null;
   updateZoomButtons();
+}
+// The scale used to render the timeline currently on screen. We snapshot it
+// before each zoom so the anchor conversion uses the pre-change scale.
+var _tlPrevScale = null;
+function TL_PX_PER_YEAR_PREV() { return _tlPrevScale !== null ? _tlPrevScale : TL_PX_PER_YEAR; }
+
+// Choose an initial zoom so the entire dated span fits the viewport width
+// (clamped to the zoom limits), then rebuild at that scale. This keeps even a
+// very long era on-screen at first load; the user can zoom in for detail.
+function fitTimelineToViewport() {
+  var wrap = document.querySelector('.wiki-timeline-wrap');
+  if (!wrap || wrap._minYear === undefined) return;
+  var span = wrap._maxYear - wrap._minYear;
+  if (span <= 0) return;
+  var avail = wrap.clientWidth - (wrap._edgePad * 2);
+  if (avail <= 0) return;
+  var fitPx = avail / span;
+  // Clamp into the allowed zoom range; round to a tidy step
+  fitPx = Math.max(TL_PX_MIN, Math.min(TL_PX_MAX, Math.floor(fitPx)));
+  if (fitPx !== TL_PX_PER_YEAR) {
+    TL_PX_PER_YEAR = fitPx;
+    buildTimeline();
+    updateZoomButtons();
+  }
+}
+
+
+// Level-of-detail for events. Two thresholds, applied left-to-right per row
+// (staggered vs not, which don't collide vertically):
+//   • DOT_GAP   — if a dot is closer than this to the last *visible* dot, hide
+//                 it entirely so far-out views don't smear into a blob.
+//   • LABEL_GAP — a visible dot only shows its label if it clears this much
+//                 room from the last *labelled* dot; otherwise it's dot-only.
+// The TDay anchor always stays fully visible.
+function applyEventDensity() {
+  var track = document.querySelector('.wiki-timeline-track');
+  if (!track) return;
+  var DOT_GAP = 13;
+  var LABEL_GAP = 110;
+  var events = Array.prototype.slice.call(track.querySelectorAll('.wiki-timeline-event'));
+  events.sort(function(a, b){ return parseFloat(a.style.left) - parseFloat(b.style.left); });
+  var lastDot   = { top: -Infinity, bottom: -Infinity };
+  var lastLabel = { top: -Infinity, bottom: -Infinity };
+  events.forEach(function(ev) {
+    var x = parseFloat(ev.style.left) || 0;
+    var row = ev.classList.contains('staggered') ? 'bottom' : 'top';
+
+    // Anchor (TDay) is never culled
+    if (ev.classList.contains('anchor')) {
+      ev.classList.remove('dot-only', 'tl-hidden');
+      lastDot[row] = x; lastLabel[row] = x;
+      return;
+    }
+
+    // Tier 1: hide the dot if it would overlap the previous visible dot
+    if (x - lastDot[row] < DOT_GAP) {
+      ev.classList.add('tl-hidden');
+      ev.classList.remove('dot-only');
+      return;
+    }
+    ev.classList.remove('tl-hidden');
+    lastDot[row] = x;
+
+    // Tier 2: show the label only if there's room; otherwise dot-only
+    if (x - lastLabel[row] < LABEL_GAP) {
+      ev.classList.add('dot-only');
+    } else {
+      ev.classList.remove('dot-only');
+      lastLabel[row] = x;
+    }
+  });
 }
 
 // Scroll the timeline so TDay (T\u00b10) is centred in the viewport.
@@ -2223,16 +2335,17 @@ function initTimelineZoom() {
   var inc = document.getElementById('tl-zoom-in');
   var reset = document.getElementById('tl-zoom-reset');
   if (out) out.addEventListener('click', function() {
-    TL_PX_PER_YEAR = Math.max(TL_PX_MIN, TL_PX_PER_YEAR - TL_PX_STEP);
+    TL_PX_PER_YEAR = Math.max(TL_PX_MIN, TL_PX_PER_YEAR / 1.35);
     rebuildTimelinePreservingCenter();
   });
   if (inc) inc.addEventListener('click', function() {
-    TL_PX_PER_YEAR = Math.min(TL_PX_MAX, TL_PX_PER_YEAR + TL_PX_STEP);
+    TL_PX_PER_YEAR = Math.min(TL_PX_MAX, TL_PX_PER_YEAR * 1.35);
     rebuildTimelinePreservingCenter();
   });
   if (reset) reset.addEventListener('click', function() {
-    TL_PX_PER_YEAR = TL_PX_DEFAULT;
-    rebuildTimelinePreservingCenter();
+    // "Fit" returns to the whole-span view centred on TDay
+    fitTimelineToViewport();
+    centerTimelineOnTDay();
   });
 
   // Wheel over the timeline zooms (toward the cursor) instead of scrolling the
@@ -2247,19 +2360,24 @@ function initTimelineZoom() {
       var delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
       if (delta === 0) return;
       e.preventDefault();
-      // Throttle so one trackpad swipe doesn't jump the whole zoom range
+      // Light throttle so one trackpad swipe doesn't fire dozens of rebuilds
       var now = Date.now();
-      if (now - lastWheelZoom < 90) return;
+      if (now - lastWheelZoom < 60) return;
       lastWheelZoom = now;
       var rect = wrap.getBoundingClientRect();
       var offsetX = e.clientX - rect.left;   // cursor x within the wrap
       var prev = TL_PX_PER_YEAR;
-      if (delta < 0) {
-        TL_PX_PER_YEAR = Math.min(TL_PX_MAX, TL_PX_PER_YEAR + TL_PX_STEP);
-      } else {
-        TL_PX_PER_YEAR = Math.max(TL_PX_MIN, TL_PX_PER_YEAR - TL_PX_STEP);
+      // Multiplicative zoom — each tick scales by a fixed ratio, so the change
+      // feels the same whether you're zoomed way out or way in (additive steps
+      // felt fine when zoomed in but doubled the scale when zoomed out).
+      var factor = delta < 0 ? 1.18 : 1 / 1.18;
+      var next = TL_PX_PER_YEAR * factor;
+      next = Math.max(TL_PX_MIN, Math.min(TL_PX_MAX, next));
+      if (Math.abs(next - prev) > 0.01) {
+        _tlPrevScale = prev;          // remember the on-screen scale for anchoring
+        TL_PX_PER_YEAR = next;
+        rebuildTimelineAnchoredAt(offsetX);
       }
-      if (TL_PX_PER_YEAR !== prev) rebuildTimelineAnchoredAt(offsetX);
     }, { passive: false });
   }
 

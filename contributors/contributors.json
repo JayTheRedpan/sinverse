@@ -163,7 +163,8 @@
     "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780116022/phrenics_zsedkc.gif",
     "bio": null,
     "types": [
-      "Writer"
+      "Writer",
+      "CYOA Author"
     ],
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/phrenics/",

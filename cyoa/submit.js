@@ -105,7 +105,20 @@ function renderField(f) {
     var wcId    = 'wc-' + f.key;
     var minAttr = min ? ' data-min-words="' + min + '"' : '';
     var wcHtml  = min ? '<div id="' + wcId + '" class="word-count"><span class="wc-hint">0 / ' + min + ' words minimum</span></div>' : '<div id="' + wcId + '" class="word-count"><span class="wc-hint">0 words</span></div>';
-    return '<div class="submit-field">' + label + '<textarea class="submit-input submit-textarea" data-field="' + f.key + '" data-wc-id="' + wcId + '" placeholder="' + (f.placeholder || '') + '" rows="5"' + minAttr + '>' + (f.value || '') + '</textarea>' + wcHtml + '</div>';
+    var toolbar = '';
+    if (f.markdownTools) {
+      toolbar =
+        '<div class="submit-md-toolbar" data-for="' + f.key + '">' +
+          '<button type="button" class="md-tool-btn" data-md="bold" title="Bold (wrap in **)"><strong>B</strong></button>' +
+          '<button type="button" class="md-tool-btn" data-md="italic" title="Italic (wrap in *)"><em>I</em></button>' +
+          '<button type="button" class="md-tool-btn" data-md="heading" title="Heading">H</button>' +
+          '<button type="button" class="md-tool-btn" data-md="quote" title="Block quote">&#8220;&#8221;</button>' +
+          '<button type="button" class="md-tool-btn" data-md="hr" title="Scene divider">&#8213;</button>' +
+          '<button type="button" class="submit-md-preview" data-for="' + f.key + '">&#128065; Preview</button>' +
+          '<button type="button" class="submit-md-tips">&#9998; Tips</button>' +
+        '</div>';
+    }
+    return '<div class="submit-field">' + label + toolbar + '<textarea class="submit-input submit-textarea" data-field="' + f.key + '" data-wc-id="' + wcId + '" placeholder="' + (f.placeholder || '') + '" rows="5"' + minAttr + '>' + (f.value || '') + '</textarea>' + wcHtml + '</div>';
   }
 
   if (f.type === 'checkboxes') {
@@ -155,6 +168,138 @@ function wireWordCount(container) {
     ta.addEventListener('input', update);
     update();
   });
+}
+
+
+// -- Markdown formatting toolbar / preview / tips for submit-modal textareas --
+function wireMarkdownTools(container) {
+  container.querySelectorAll('.submit-md-toolbar').forEach(function(bar) {
+    var key = bar.getAttribute('data-for');
+    var ta  = container.querySelector('textarea[data-field="' + key + '"]');
+    if (!ta) return;
+    bar.querySelectorAll('.md-tool-btn').forEach(function(btn) {
+      btn.addEventListener('mousedown', function(e) {
+        e.preventDefault();
+        applyMarkdownFormatSubmit(ta, btn.getAttribute('data-md'));
+      });
+    });
+    var prev = bar.querySelector('.submit-md-preview');
+    if (prev) prev.addEventListener('click', function() { openSubmitPreview(ta.value); });
+    var tips = bar.querySelector('.submit-md-tips');
+    if (tips) tips.addEventListener('click', openSubmitTips);
+  });
+}
+
+function applyMarkdownFormatSubmit(ta, kind) {
+  var start = ta.selectionStart, end = ta.selectionEnd, value = ta.value;
+  var selected = value.slice(start, end);
+  function setValue(nv, s, e) {
+    ta.value = nv; ta.focus(); ta.setSelectionRange(s, e);
+    ta.dispatchEvent(new Event('input', { bubbles: true }));
+  }
+  if (kind === 'bold' || kind === 'italic') {
+    var marker = kind === 'bold' ? '**' : '*';
+    if (selected) {
+      var wrapped = value.slice(start - marker.length, start) === marker && value.slice(end, end + marker.length) === marker;
+      if (wrapped) {
+        setValue(value.slice(0, start - marker.length) + selected + value.slice(end + marker.length), start - marker.length, end - marker.length);
+      } else {
+        setValue(value.slice(0, start) + marker + selected + marker + value.slice(end), start + marker.length, end + marker.length);
+      }
+    } else {
+      var ph = kind === 'bold' ? 'bold text' : 'italic text';
+      var ins = marker + ph + marker;
+      setValue(value.slice(0, start) + ins + value.slice(end), start + marker.length, start + marker.length + ph.length);
+    }
+    return;
+  }
+  if (kind === 'heading') {
+    var ls = value.lastIndexOf('\n', start - 1) + 1;
+    var le = value.indexOf('\n', start); if (le === -1) le = value.length;
+    var line = value.slice(ls, le), nl;
+    if (/^#+\s/.test(line)) nl = line.replace(/^#+\s+/, '');
+    else nl = '## ' + line;
+    setValue(value.slice(0, ls) + nl + value.slice(le), ls, ls + nl.length);
+    return;
+  }
+  if (kind === 'quote') {
+    var qs = value.lastIndexOf('\n', start - 1) + 1;
+    var qe = value.indexOf('\n', end); if (qe === -1) qe = value.length;
+    var block = value.slice(qs, qe);
+    var quoted = block.split('\n').map(function(l){ return l.startsWith('> ') ? l : '> ' + l; }).join('\n');
+    setValue(value.slice(0, qs) + quoted + value.slice(qe), qs, qs + quoted.length);
+    return;
+  }
+  if (kind === 'hr') {
+    var before = value.slice(0, end), after = value.slice(end);
+    var prefix = before.endsWith('\n\n') ? '' : (before.endsWith('\n') ? '\n' : '\n\n');
+    var suffix = after.startsWith('\n') ? '' : '\n';
+    var ins = prefix + '---' + suffix;
+    var caret = before.length + ins.length;
+    setValue(before + ins + after, caret, caret);
+    return;
+  }
+}
+
+function renderSubmitMarkdown(src) {
+  if (!window.marked) {
+    return src.split(/\n\n+/).map(function(p){
+      return '<p>' + p.replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/\n/g,'<br>') + '</p>';
+    }).join('');
+  }
+  // Strip links — submitted scenes must not contain clickable links
+  return marked.parse(src).replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
+}
+
+function openSubmitPreview(text) {
+  var src = (text || '').trim();
+  var body = src ? renderSubmitMarkdown(src) : '<p class="md-preview-empty">Nothing written yet — your scene text will appear here, formatted.</p>';
+  showSubmitInfoModal('Preview', 'Scene', '<div class="md-preview-render">' + body + '</div>');
+}
+
+function openSubmitTips() {
+  var html =
+    '<p>Scene text supports <strong>Markdown</strong> — a simple way to add formatting. You don\'t have to use any of it, but here\'s what you can do.</p>' +
+    '<div class="md-tips-subhead">The basics</div>' +
+    '<table class="md-tips-table">' +
+      '<tr><th>To get this</th><th>Type this</th></tr>' +
+      '<tr><td><em>italic</em></td><td><code>*italic*</code></td></tr>' +
+      '<tr><td><strong>bold</strong></td><td><code>**bold**</code></td></tr>' +
+      '<tr><td><strong><em>bold italic</em></strong></td><td><code>***both***</code></td></tr>' +
+      '<tr><td>A new paragraph</td><td>Leave a <strong>blank line</strong> between paragraphs</td></tr>' +
+      '<tr><td>A line break (same paragraph)</td><td>End a line with two spaces</td></tr>' +
+      '<tr><td>A scene break / divider</td><td><code>---</code> on its own line</td></tr>' +
+    '</table>' +
+    '<div class="md-tips-subhead">Neat extras</div>' +
+    '<table class="md-tips-table">' +
+      '<tr><th>To get this</th><th>Type this</th></tr>' +
+      '<tr><td>A quote or aside</td><td><code>&gt; quoted text</code></td></tr>' +
+      '<tr><td>A bulleted list</td><td><code>- item</code> on each line</td></tr>' +
+      '<tr><td>A numbered list</td><td><code>1. item</code> on each line</td></tr>' +
+      '<tr><td>A heading / section title</td><td><code># Heading</code> &nbsp;(more <code>#</code> = smaller)</td></tr>' +
+    '</table>' +
+    '<p class="md-tips-note">Tip: use the <strong>&#128065; Preview</strong> button to see exactly how your formatting will look to readers, or highlight text and use the <strong>B</strong> / <em>I</em> buttons to wrap it instantly.</p>';
+  showSubmitInfoModal('Help', 'Formatting your scene', html);
+}
+
+function showSubmitInfoModal(eyebrow, title, bodyHtml) {
+  var ov = document.createElement('div');
+  ov.className = 'builder-modal-overlay submit-info-overlay';
+  ov.innerHTML =
+    '<div class="builder-modal">' +
+      '<div class="builder-modal-head">' +
+        '<div><div class="builder-modal-eyebrow">' + eyebrow + '</div>' +
+        '<div class="builder-modal-title">' + title + '</div></div>' +
+        '<button class="builder-modal-close" aria-label="Close">&#10005;</button>' +
+      '</div>' +
+      '<div class="builder-modal-body">' + bodyHtml + '</div>' +
+    '</div>';
+  document.body.appendChild(ov);
+  function close() { ov.remove(); document.removeEventListener('keydown', onKey); }
+  function onKey(e) { if (e.key === 'Escape') close(); }
+  ov.addEventListener('click', function(e) { if (e.target === ov) close(); });
+  ov.querySelector('.builder-modal-close').addEventListener('click', close);
+  document.addEventListener('keydown', onKey);
 }
 
 // -- Validate form before submit --
@@ -306,6 +451,8 @@ function buildFormModal(opts) {
 
   // Wire word count now that DOM exists
   wireWordCount(box);
+  // Wire markdown toolbar / preview / tips for any markdownTools textareas
+  wireMarkdownTools(box);
 
   // Wire dynamic choice fields
   box.querySelectorAll('[data-choices-start]').forEach(function(wrap) {
@@ -436,24 +583,4 @@ window.showNewStoryForm = function() {
   });
 };
 
-window.showNewBranchForm = function(storyTitle, nodeId, branchText) {
-  var isDeadEnd = !branchText;
 
-  buildFormModal({
-    title:    isDeadEnd ? 'Continue This Path' : 'Add a Branch',
-    subtitle: isDeadEnd ? 'Write the next scene for this unwritten path' : 'Add a new branch from this scene',
-    fields: [
-      { key: 'story',         type: 'hidden',     value: storyTitle },
-      { key: 'currentId',     type: 'hidden',     value: String(nodeId) },
-      { key: 'newBranchText', type: 'text',       label: 'New choice text',  placeholder: 'The button label readers click to reach your scene', value: branchText || '', required: true },
-      { key: 'author',        type: 'text',       label: 'Your handle',      placeholder: 'Optional -- for author credit', hint: '(optional)' },
-      { key: 'title',         type: 'text',       label: 'Scene title',       placeholder: 'A short evocative title for this scene',     required: true  },
-      { key: 'blurb',         type: 'textarea',   label: 'Scene text',       placeholder: 'Write your scene here...', required: true, minWords: 300 },
-      { key: 'tags',          type: 'checkboxes', label: 'Scene content tags', options: NODE_TAGS.slice().sort(), hint: '(warn readers before entering this scene)' },
-      { key: 'isEnding',      type: 'toggle',     label: 'Is this an ending?', hint: 'If yes, path choices are not needed' },
-      { key: 'choices',       type: 'choices',    label: 'Choices', startCount: 2, max: 4 },
-      { key: 'imageLink',     type: 'text',       label: 'Image URL',        placeholder: 'Optional link to a scene image', hint: '(optional)' },
-    ],
-    onSubmit: function(data) { return submitToGoogle('newBranch', data); }
-  });
-};

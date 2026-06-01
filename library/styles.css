@@ -212,7 +212,6 @@
 .lib-card-cover-wrap .lib-type-badge {
   position: absolute;
   top: 0.6rem; left: 0.6rem;
-  backdrop-filter: blur(4px);
 }
 .lib-type-standalone  { background: rgba(30,70,50,0.85);   color: #90c8a0; }
 .lib-type-serial      { background: rgba(50,50,110,0.85);  color: #a0a8e0; }
@@ -1353,8 +1352,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  background: rgba(20,14,11,0.82);
-  backdrop-filter: blur(4px);
+  background: #140e0b;
   border: 1px solid rgba(196,154,120,0.3);
   border-radius: 1px;
   padding: 0.15em 0.5em;
@@ -1370,8 +1368,7 @@
   height: 22px;
   border-radius: 50%;
   border: 1px solid rgba(196,154,120,0.5);
-  background: rgba(20,14,11,0.82);
-  backdrop-filter: blur(4px);
+  background: #140e0b;
   color: var(--accent);
   font-family: var(--font-display);
   font-style: italic;
@@ -1395,8 +1392,7 @@
   letter-spacing: 0.1em;
   text-transform: uppercase;
   color: var(--accent);
-  background: rgba(20,14,11,0.82);
-  backdrop-filter: blur(4px);
+  background: #140e0b;
   border: 1px solid rgba(196,154,120,0.3);
   border-radius: 1px;
   padding: 0.15em 0.5em;
