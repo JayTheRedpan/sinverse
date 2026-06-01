@@ -694,6 +694,55 @@ a:hover { color: var(--accent-light); }
   color: var(--accent);
 }
 
+/* ── Markdown elements within a scene ───────── */
+.scene-blurb strong { font-weight: 700; color: var(--text-primary); }
+.scene-blurb em { font-style: italic; }
+.scene-blurb a {
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.scene-blurb a:hover { color: var(--accent-light); }
+.scene-blurb h1,
+.scene-blurb h2,
+.scene-blurb h3 {
+  font-family: var(--font-display);
+  font-weight: 600;
+  color: var(--text-primary);
+  line-height: 1.25;
+  margin: 1.4em 0 0.5em;
+}
+.scene-blurb h1 { font-size: 1.5em; }
+.scene-blurb h2 { font-size: 1.3em; }
+.scene-blurb h3 { font-size: 1.15em; font-style: italic; }
+.scene-blurb blockquote {
+  border-left: 2px solid var(--accent);
+  padding-left: 1.1em;
+  margin: 1.2em 0;
+  color: var(--text-secondary);
+  font-style: italic;
+}
+.scene-blurb ul,
+.scene-blurb ol {
+  margin: 0 0 1.1em;
+  padding-left: 1.5em;
+}
+.scene-blurb li { margin-bottom: 0.4em; }
+.scene-blurb hr {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 2em auto;
+  width: 40%;
+}
+.scene-blurb code {
+  font-family: ui-monospace, monospace;
+  font-size: 0.88em;
+  background: var(--bg);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.08em 0.35em;
+}
+
 /* ── Scene byline ───────────────────────────── */
 .scene-byline {
   margin-top: 1.5rem;
@@ -2204,3 +2253,140 @@ a:hover { color: var(--accent-light); }
   color: var(--accent);
   background: transparent;
 }
+
+/* ── Markdown tools in the submit / new-branch modal ─────────── */
+.submit-md-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 4px;
+  margin: 0.5rem 0;
+}
+.submit-md-toolbar .md-tool-btn,
+.submit-md-preview,
+.submit-md-tips {
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.8rem;
+  line-height: 1;
+  min-width: 30px;
+  height: 28px;
+  padding: 0 0.5rem;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: border-color 0.15s, color 0.15s, background 0.15s;
+}
+.submit-md-toolbar .md-tool-btn:hover,
+.submit-md-preview:hover,
+.submit-md-tips:hover {
+  border-color: var(--accent);
+  color: var(--accent);
+}
+.submit-md-toolbar .md-tool-btn strong { font-weight: 700; }
+.submit-md-toolbar .md-tool-btn em { font-style: italic; }
+.submit-md-preview { margin-left: auto; }
+
+/* Modal shell (preview + tips) shown over the submit modal */
+.builder-modal-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(4px);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+}
+.builder-modal {
+  background: var(--bg-panel);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  max-width: 600px;
+  width: 100%;
+  max-height: 85vh;
+  display: flex;
+  flex-direction: column;
+  box-shadow: 0 16px 48px rgba(0,0,0,0.5);
+}
+.builder-modal-head {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1.25rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+}
+.builder-modal-eyebrow {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.25rem;
+}
+.builder-modal-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.3rem;
+  color: var(--text-primary);
+}
+.builder-modal-close {
+  background: transparent;
+  border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  padding: 0.25rem;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.builder-modal-close:hover { color: var(--accent); }
+.builder-modal-body {
+  padding: 1.5rem;
+  overflow-y: auto;
+  color: var(--text-secondary);
+  line-height: 1.7;
+}
+.builder-modal-body p { margin: 0 0 1rem; }
+.builder-modal-body p:last-child { margin-bottom: 0; }
+
+/* Rendered markdown preview */
+.md-preview-render { color: var(--text-primary); }
+.md-preview-render h1, .md-preview-render h2, .md-preview-render h3 {
+  font-family: var(--font-display); color: var(--text-primary); margin: 1.2rem 0 0.6rem;
+}
+.md-preview-render em { font-style: italic; }
+.md-preview-render strong { font-weight: 700; color: var(--text-primary); }
+.md-preview-render hr { border: none; border-top: 1px solid var(--border); margin: 1.5rem 0; }
+.md-preview-render blockquote {
+  border-left: 2px solid var(--accent); padding-left: 1rem; margin: 1rem 0;
+  color: var(--text-secondary); font-style: italic;
+}
+.md-preview-render ul, .md-preview-render ol { padding-left: 1.25rem; margin: 0 0 1rem; }
+.md-preview-render li { margin-bottom: 0.3rem; }
+.md-preview-empty { color: var(--text-muted); font-style: italic; }
+
+/* Tips table */
+.md-tips-table { width: 100%; border-collapse: collapse; margin: 1rem 0; font-size: 0.85rem; }
+.md-tips-table th, .md-tips-table td {
+  text-align: left; padding: 0.5rem 0.75rem; border-bottom: 1px solid var(--border); vertical-align: top;
+}
+.md-tips-table th {
+  font-family: var(--font-caps); font-size: 0.6rem; letter-spacing: 0.12em;
+  text-transform: uppercase; color: var(--text-muted);
+}
+.md-tips-table code {
+  font-family: ui-monospace, monospace; font-size: 0.82rem; background: var(--bg);
+  border: 1px solid var(--border); border-radius: 3px; padding: 0.1rem 0.35rem; color: var(--accent-light, var(--accent));
+}
+.md-tips-note { font-size: 0.85rem; color: var(--text-muted); }
+.md-tips-subhead {
+  font-family: var(--font-caps); font-size: 0.62rem; letter-spacing: 0.16em;
+  text-transform: uppercase; color: var(--accent); margin: 1.5rem 0 0.5rem;
+}
+.md-tips-subhead:first-of-type { margin-top: 1rem; }

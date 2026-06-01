@@ -496,15 +496,31 @@ function renderSceneTitle(title) {
   el.style.display = title ? '' : 'none';
 }
 
+// Render scene markdown with links neutralised — submitted scenes must not
+// contain clickable links. We render normally, then strip any anchor tags,
+// keeping their visible text. This is version-independent (doesn't rely on
+// marked's renderer API, which changes between releases).
+function renderSceneMarkdown(src) {
+  var html = marked.parse(src);
+  // Replace <a ...>text</a> with just text
+  html = html.replace(/<a\b[^>]*>([\s\S]*?)<\/a>/gi, '$1');
+  return html;
+}
+
 function renderBlurb(text, author) {
   sceneBlurb.style.animation = 'none';
   sceneBlurb.offsetHeight;
   sceneBlurb.style.animation = '';
-  // Split on double newline for paragraphs, single newline for line breaks
-  const paragraphs = text.split(/\n\n+/);
-  sceneBlurb.innerHTML = paragraphs
-    .map(p => `<p>${p.replace(/\n/g, '<br>')}</p>`)
-    .join('');
+  // Render the scene text as Markdown so bold/italic/quotes/dividers/lists/etc.
+  // all work. Fall back to simple paragraph splitting if marked isn't loaded.
+  var src = text || '';
+  if (window.marked) {
+    sceneBlurb.innerHTML = renderSceneMarkdown(src);
+  } else {
+    sceneBlurb.innerHTML = src.split(/\n\n+/)
+      .map(function(p){ return '<p>' + p.replace(/\n/g, '<br>') + '</p>'; })
+      .join('');
+  }
 
   if (author) {
     const authorLink = document.createElement('a');
@@ -639,10 +655,23 @@ function renderChoices(node) {
   addBranchBtn.className   = 'btn-ghost add-branch-btn';
   addBranchBtn.textContent = '+ Add a branch to this scene';
   addBranchBtn.addEventListener('click', () => {
-    const storyTitle = state.storyMeta .title || state.storyId;
-    window.showNewBranchForm(storyTitle, state.currentId, '');
+    goToBranchBuilder(state.currentId, '');
   });
   choicesWrap.appendChild(addBranchBtn);
+}
+
+// Navigate to the full-page branch builder (mirrors the new-story page,
+// seeded with the parent story + node this cluster attaches to).
+function goToBranchBuilder(nodeId, choiceText) {
+  const storyTitle = state.storyMeta && state.storyMeta.title ? state.storyMeta.title : state.storyId;
+  const params = new URLSearchParams({
+    mode:   'branch',
+    story:  storyTitle,
+    storyId: state.storyId || '',
+    node:   String(nodeId),
+    choice: choiceText || ''
+  });
+  window.location.href = 'new-story.html?' + params.toString();
 }
 
 function renderDeadEnd(node) {
@@ -877,8 +906,7 @@ function renderDeadEndState(nodeId, choiceText) {
   const deadEndFormBtn = deadEndWrap.querySelector('#dead-end-submit-btn');
   if (deadEndFormBtn) {
     deadEndFormBtn.onclick = () => {
-      const storyTitle = state.storyMeta.title || state.storyId;
-      window.showNewBranchForm(storyTitle, state.currentId, '');
+      goToBranchBuilder(state.currentId, choiceText || '');
     };
   }
   const main = document.querySelector('.game-main');

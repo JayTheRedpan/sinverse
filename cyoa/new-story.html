@@ -25,8 +25,8 @@
   <link rel="stylesheet" href="../_shared/styles-global.css" />
   <link rel="icon" type="image/x-icon" href="../favicon.ico" />
   <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
-  <link rel="stylesheet" href="styles.css" />
-  <link rel="stylesheet" href="builder.css" />
+  <link rel="stylesheet" href="styles.css?v=1780284508" />
+  <link rel="stylesheet" href="builder.css?v=1780285669" />
 </head>
 <body>
 
@@ -36,18 +36,21 @@
   <header class="builder-topbar">
     <a href="index.html" class="builder-back">&#8592; Adventures</a>
     <div class="builder-topbar-center">
-      <span class="builder-topbar-title">New Adventure</span>
+      <span class="builder-topbar-title" id="builder-topbar-title">New Adventure</span>
       <span class="builder-topbar-sep">—</span>
       <span id="node-count" class="builder-node-count">0 Scenes</span>
     </div>
+    <button id="btn-collapse-all" class="builder-tips-btn" title="Collapse all scenes"><span class="btn-ico">&#9776;</span><span class="btn-txt"> Collapse all</span></button>
+    <button id="btn-story-map" class="builder-tips-btn" title="Story map"><span class="btn-ico">&#9135;&#9472;</span><span class="btn-txt"> Story map</span></button>
+    <button id="btn-md-tips" class="builder-tips-btn" title="Formatting tips"><span class="btn-ico">&#9998;</span><span class="btn-txt"> Formatting tips</span></button>
     <button id="btn-submit-all" class="btn-primary builder-submit-btn">Submit</button>
   </header>
 
   <!-- Single column scroll -->
   <div class="builder-scroll">
 
-    <!-- Adventure details -->
-    <section class="builder-section">
+    <!-- Adventure details (NEW STORY mode) -->
+    <section class="builder-section" id="section-adventure-details">
       <div class="builder-section-title">Adventure details</div>
 
       <div class="node-field">
@@ -65,6 +68,24 @@
         <input id="meta-summary" class="builder-input" type="text" placeholder="One or two sentences shown on the adventure card in the library" />
       </div>
 
+    </section>
+
+    <!-- Branch details (BRANCH mode) -->
+    <section class="builder-section" id="section-branch-details" style="display:none">
+      <div class="builder-section-title">Continue a path</div>
+
+      <div class="builder-branch-context" id="branch-context"></div>
+
+      <div class="node-field">
+        <label class="node-label">Choice text readers click <span class="req">*</span></label>
+        <input id="branch-choice-text" class="builder-input" type="text" placeholder="The button label at the path that leads into your first scene" />
+        <div class="builder-field-hint">This is the button readers will see at the unwritten path. Your first scene below is where it leads.</div>
+      </div>
+
+      <div class="node-field">
+        <label class="node-label">Your handle <span class="builder-optional">(optional — for author credit)</span></label>
+        <input id="branch-author" class="builder-input" type="text" placeholder="Anonymous if left blank" />
+      </div>
     </section>
 
     <!-- Divider -->
@@ -94,10 +115,83 @@
       <button id="submit-done-btn" class="btn-ghost" style="display:none; margin-top:1rem">Done</button>
     </div>
   </div>
+  <!-- Story map modal -->
+  <div id="story-map-overlay" class="builder-modal-overlay story-map-overlay" style="display:none">
+    <div class="builder-modal story-map-modal">
+      <div class="builder-modal-head">
+        <div>
+          <div class="builder-modal-eyebrow">Story map</div>
+          <div class="builder-modal-title">Your story paths</div>
+        </div>
+        <button class="builder-modal-close" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="story-map-legend">
+        <span class="story-map-legend-item"><span class="smk smk-opening"></span> Opening</span>
+        <span class="story-map-legend-item"><span class="smk smk-scene"></span> Scene</span>
+        <span class="story-map-legend-item"><span class="smk smk-ending"></span> Ending</span>
+        <span class="story-map-hint">Click a scene to jump to it</span>
+      </div>
+      <div id="story-map-body" class="story-map-body"></div>
+    </div>
+  </div>
+
+  <!-- Markdown preview modal -->
+  <div id="md-preview-overlay" class="builder-modal-overlay" style="display:none">
+    <div class="builder-modal">
+      <div class="builder-modal-head">
+        <div>
+          <div class="builder-modal-eyebrow">Preview</div>
+          <div id="md-preview-scene" class="builder-modal-title">Scene</div>
+        </div>
+        <button class="builder-modal-close" aria-label="Close">&#10005;</button>
+      </div>
+      <div id="md-preview-body" class="builder-modal-body md-preview-render"></div>
+    </div>
+  </div>
+
+  <!-- Markdown formatting tips modal -->
+  <div id="md-tips-overlay" class="builder-modal-overlay" style="display:none">
+    <div class="builder-modal">
+      <div class="builder-modal-head">
+        <div>
+          <div class="builder-modal-eyebrow">Help</div>
+          <div class="builder-modal-title">Formatting your scenes</div>
+        </div>
+        <button class="builder-modal-close" aria-label="Close">&#10005;</button>
+      </div>
+      <div class="builder-modal-body">
+        <p>Scene text supports <strong>Markdown</strong> — a simple way to add formatting. You don't have to use any of it, but here's what you can do.</p>
+
+        <div class="md-tips-subhead">The basics</div>
+        <table class="md-tips-table">
+          <tr><th>To get this</th><th>Type this</th></tr>
+          <tr><td><em>italic</em></td><td><code>*italic*</code></td></tr>
+          <tr><td><strong>bold</strong></td><td><code>**bold**</code></td></tr>
+          <tr><td><strong><em>bold italic</em></strong></td><td><code>***both***</code></td></tr>
+          <tr><td>A new paragraph</td><td>Leave a <strong>blank line</strong> between paragraphs</td></tr>
+          <tr><td>A line break (same paragraph)</td><td>End a line with two spaces</td></tr>
+          <tr><td>A scene break / divider</td><td><code>---</code> on its own line</td></tr>
+        </table>
+
+        <div class="md-tips-subhead">Neat extras</div>
+        <table class="md-tips-table">
+          <tr><th>To get this</th><th>Type this</th></tr>
+          <tr><td>A quote or aside</td><td><code>&gt; quoted text</code></td></tr>
+          <tr><td>A bulleted list</td><td><code>- item</code> on each line</td></tr>
+          <tr><td>A numbered list</td><td><code>1. item</code> on each line</td></tr>
+          <tr><td>A heading / section title</td><td><code># Heading</code> &nbsp;(more <code>#</code> = smaller)</td></tr>
+          <tr><td>A stacked / dramatic beat<br><span class="md-tips-dim">(each on its own line)</span></td><td><code>It was over.&nbsp;&nbsp;</code><br><code>Or so she thought.</code><br><span class="md-tips-dim">(two trailing spaces after the first)</span></td></tr>
+        </table>
+
+        <p class="md-tips-note">Tip: use the <strong>&#128065; Preview</strong> button on any scene to see exactly how your formatting will look to readers before you submit. You can also highlight text and use the <strong>B</strong> / <em>I</em> toolbar buttons to wrap it instantly.</p>
+      </div>
+    </div>
+  </div>
 
 </div>
 
-<script src="submit.js"></script>
-<script src="builder.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+<script src="submit.js?v=1780284508"></script>
+<script src="builder.js?v=1780285669"></script>
 </body>
 </html>
