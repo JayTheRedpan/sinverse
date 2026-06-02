@@ -135,16 +135,16 @@
       "label": "Sitting (in a seat)"
     },
     {
+      "value": 0.63,
+      "label": "Kneeling"
+    },
+    {
       "value": 0.52,
       "label": "Sitting (on floor)"
     },
     {
       "value": 0.48,
       "label": "Seated / crouching"
-    },
-    {
-      "value": 0.63,
-      "label": "Kneeling"
     },
     {
       "value": 0.13,
