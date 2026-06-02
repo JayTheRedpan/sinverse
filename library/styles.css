@@ -141,6 +141,60 @@
 }
 .tag-filter-btn:hover  { border-color: var(--border-mid); color: var(--text-secondary); }
 .tag-filter-btn.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.tag-filter-btn.selected { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+
+/* Tag filter controls: mode toggle + bulk actions */
+.filter-group-tags { width: 100%; }
+.tag-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.tag-mode-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border-mid, var(--border));
+  border-radius: var(--radius, 4px);
+  overflow: hidden;
+}
+.tag-mode-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-mid, var(--border));
+  padding: 0.3em 0.7em;
+  font-family: var(--font-caps);
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.tag-mode-btn:last-child { border-right: none; }
+.tag-mode-btn.active { background: var(--accent); color: var(--bg); }
+.tag-mode-btn:hover:not(.active) { color: var(--text-secondary); }
+.tag-bulk { display: inline-flex; gap: 0.4rem; }
+.tag-bulk-btn {
+  background: transparent;
+  border: 1px dashed var(--border-mid, var(--border));
+  border-radius: 2px;
+  padding: 0.25em 0.6em;
+  font-family: var(--font-caps);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.tag-bulk-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tag-mode-hint {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
 
 /* -- Library Grid ------------------------------ */
 .lib-grid {

@@ -4302,6 +4302,19 @@ function openCustomModal(id) {
 function closeCustomModal() {
   var modal = document.getElementById('custom-modal');
   if (modal) modal.style.display = 'none';
+
+  // If the character being edited was never given a name, it's an abandoned
+  // stub (created by "+ New Character" but closed without saving) — discard it
+  // so it doesn't linger as an "unnamed character" record.
+  if (editingCustomId) {
+    var ch = getCustomChar(editingCustomId);
+    if (ch && (!ch.name || !ch.name.trim())) {
+      var d = loadCustom();
+      d.chars = (d.chars || []).filter(function(c){ return c.id !== editingCustomId; });
+      saveCustom(d);
+    }
+  }
+
   // Restore modal-form id
   var formEl = document.getElementById('custom-modal-form') || document.querySelector('[data-slot]');
   if (formEl && formEl.id !== 'custom-modal-form') {

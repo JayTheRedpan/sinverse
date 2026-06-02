@@ -3,9 +3,10 @@
 var state = {
   items:      [],
   filtered:   [],
-  typeFilter: { comic: true, scene: true, charref: true },
+  typeFilter: { comic: true, scene: true, charref: true, set: true },
   canonOnly:  false,
-  hiddenTags: new Set(),  // tags excluded by user
+  tagMode:    'exclude',     // 'exclude' = hide selected tags; 'include' = show only items with a selected tag
+  selectedTags: new Set(),   // normalized tags the user has clicked
   sortOrder:  'newest',
   query:      '',
 };
@@ -14,6 +15,19 @@ var TYPE_LABELS = {
   comic:   'Comic',
   scene:   'World Scene',
   charref: 'Reference',
+  set:     'Set',
+};
+
+// Small inline-SVG icon per type for at-a-glance distinction in the badge.
+var TYPE_ICONS = {
+  // stacked pages
+  comic:   '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="2" width="8" height="11" rx="1"/><path d="M5.5 2.5V13.5M13 4v9a1 1 0 0 1-1 1H5"/></svg>',
+  // single frame
+  scene:   '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="3" width="11" height="10" rx="1"/><circle cx="6" cy="6.5" r="1"/><path d="M3 11l3-2.5 2.5 2 2-1.5L13 11"/></svg>',
+  // person
+  charref: '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.5"/><path d="M3.5 13c0-2.8 2-4.5 4.5-4.5s4.5 1.7 4.5 4.5"/></svg>',
+  // grid of squares
+  set:     '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="0.8"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="0.8"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="0.8"/><rect x="9" y="9" width="4.5" height="4.5" rx="0.8"/></svg>',
 };
 
 // -- Boot
@@ -70,33 +84,91 @@ async function init() {
 // -- Tag filters built from data
 function buildTagFilters(warningTags) {
   var container = document.getElementById('tag-filters');
-  if (!warningTags || !warningTags.length) { container.style.display = 'none'; return; }
+  if (!warningTags || !warningTags.length) {
+    container.style.display = 'none';
+    var ctrls = document.querySelector('.tag-controls'); if (ctrls) ctrls.style.display = 'none';
+    var hint = document.getElementById('tag-mode-hint'); if (hint) hint.style.display = 'none';
+    return;
+  }
 
-  // Load saved hidden tags from localStorage
+  // Restore saved mode + selected tags (gallery-specific keys)
   try {
-    var saved = JSON.parse(localStorage.getItem('sinverse_hidden_tags') || '[]');
-    state.hiddenTags = new Set(saved);
-  } catch(e) { state.hiddenTags = new Set(); }
+    var savedMode = localStorage.getItem('sinverse_gallery_tag_mode');
+    if (savedMode === 'include' || savedMode === 'exclude') state.tagMode = savedMode;
+    var savedSel = JSON.parse(localStorage.getItem('sinverse_gallery_selected_tags') || '[]');
+    state.selectedTags = new Set(savedSel.map(function(t){ return String(t).trim().toLowerCase(); }));
+  } catch(e) { state.selectedTags = new Set(); }
 
   var sortedTags = warningTags.slice().sort();
+  container.innerHTML = '';
   sortedTags.forEach(function(tag) {
+    var key = String(tag).trim().toLowerCase();
     var btn = document.createElement('button');
-    btn.className = 'tag-filter-btn' + (state.hiddenTags.has(tag) ? '' : ' active');
+    btn.className = 'tag-filter-btn' + (state.selectedTags.has(key) ? ' selected' : '');
     btn.textContent = tag;
-    btn.setAttribute('data-tag', tag);
+    btn.setAttribute('data-tag', key);
     btn.addEventListener('click', function() {
-      if (state.hiddenTags.has(tag)) {
-        state.hiddenTags.delete(tag);
-        btn.classList.add('active');
-      } else {
-        state.hiddenTags.add(tag);
-        btn.classList.remove('active');
-      }
-      localStorage.setItem('sinverse_hidden_tags', JSON.stringify([...state.hiddenTags]));
+      if (state.selectedTags.has(key)) state.selectedTags.delete(key);
+      else state.selectedTags.add(key);
+      btn.classList.toggle('selected', state.selectedTags.has(key));
+      persistTagState();
       applyFilters();
     });
     container.appendChild(btn);
   });
+
+  // Mode toggle
+  document.querySelectorAll('.tag-mode-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-mode') === state.tagMode);
+    b.addEventListener('click', function() {
+      state.tagMode = b.getAttribute('data-mode');
+      document.querySelectorAll('.tag-mode-btn').forEach(function(x){
+        x.classList.toggle('active', x.getAttribute('data-mode') === state.tagMode);
+      });
+      updateTagModeHint();
+      persistTagState();
+      applyFilters();
+    });
+  });
+
+  // Select all / none
+  var selAll = document.getElementById('tag-select-all');
+  var selNone = document.getElementById('tag-select-none');
+  if (selAll) selAll.addEventListener('click', function() {
+    sortedTags.forEach(function(t){ state.selectedTags.add(String(t).trim().toLowerCase()); });
+    reflectTagButtons();
+    persistTagState();
+    applyFilters();
+  });
+  if (selNone) selNone.addEventListener('click', function() {
+    state.selectedTags.clear();
+    reflectTagButtons();
+    persistTagState();
+    applyFilters();
+  });
+
+  updateTagModeHint();
+}
+
+function reflectTagButtons() {
+  document.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+    b.classList.toggle('selected', state.selectedTags.has(b.getAttribute('data-tag')));
+  });
+}
+
+function updateTagModeHint() {
+  var hint = document.getElementById('tag-mode-hint');
+  if (!hint) return;
+  hint.textContent = state.tagMode === 'include'
+    ? 'Showing only works with any selected tag.'
+    : 'Hiding works that have any selected tag.';
+}
+
+function persistTagState() {
+  try {
+    localStorage.setItem('sinverse_gallery_tag_mode', state.tagMode);
+    localStorage.setItem('sinverse_gallery_selected_tags', JSON.stringify([...state.selectedTags]));
+  } catch(e) {}
 }
 
 // -- Filter + sort + render
@@ -113,7 +185,16 @@ function applyFilters() {
   state.filtered = state.items.filter(function(item) {
     if (!state.typeFilter[item.type]) return false;
     if (state.canonOnly && !item.canonical) return false;
-    if (state.hiddenTags.size && (item.tags || []).some(function(t){ return state.hiddenTags.has(t); })) return false;
+    // Tag filtering by mode (case/space-insensitive)
+    if (state.selectedTags.size) {
+      var itemTags = (item.tags || []).map(function(t){ return String(t).trim().toLowerCase(); });
+      var hasSelected = itemTags.some(function(t){ return state.selectedTags.has(t); });
+      if (state.tagMode === 'include') {
+        if (!hasSelected) return false;
+      } else {
+        if (hasSelected) return false;
+      }
+    }
     // Character filter from URL param is now folded into the search query
     if (state.characterFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
     if (q) {
@@ -152,22 +233,31 @@ function renderGrid() {
 
   state.filtered.forEach(function(item) {
     var card = document.createElement('a');
-    card.className = 'gallery-card gallery-card-' + item.type;
+    var isMulti = item.type === 'comic' || item.type === 'set';
+    card.className = 'gallery-card gallery-card-' + item.type + (isMulti ? ' has-stack' : '');
     card.href      = 'viewer.html?id=' + item.id;
 
-    var thumbSrc = item.coverImage || item.image || '';
+    var thumbSrc = item.coverImage || item.image ||
+      (item.images && item.images.length ? item.images[0] : '') ||
+      (item.pages && item.pages.length ? item.pages[0] : '') || '';
     var thumb = (window.SinverseImg ? SinverseImg.thumb(thumbSrc, 500) : thumbSrc);
+
+    // Count label for multi-image types
+    var countLabel = '';
+    if (item.type === 'comic') countLabel = (item.pages ? item.pages.length : 0) + ' pages';
+    else if (item.type === 'set') countLabel = (item.images ? item.images.length : 0) + ' images';
 
     card.innerHTML =
       '<div class="gallery-thumb-wrap">' +
         (thumb
           ? '<img class="gallery-thumb" src="' + thumb + '" alt="' + item.title + '" loading="lazy" />'
           : '<div class="gallery-thumb-placeholder">&#10022;</div>') +
-        '<span class="gallery-type-badge type-' + item.type + '">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
+        '<span class="gallery-type-badge type-' + item.type + '">' +
+          (TYPE_ICONS[item.type] || '') +
+          '<span class="gallery-type-badge-txt">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
+        '</span>' +
         (item.canonical ? '<span class="gallery-canonical-badge">&#10022;</span>' : '') +
-        (item.type === 'comic'
-          ? '<span class="gallery-page-count">' + (item.pages ? item.pages.length : 0) + ' pages</span>'
-          : '') +
+        (countLabel ? '<span class="gallery-page-count">' + countLabel + '</span>' : '') +
       '</div>' +
       '<div class="gallery-card-body">' +
         '<div class="gallery-card-title">' + item.title + '</div>' +
@@ -195,13 +285,18 @@ function resetSearch() {
   if (inp) inp.value = '';
   state.query = '';
   document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.add('active'); });
-  state.typeFilter = { comic: true, scene: true, charref: true };
+  state.typeFilter = { comic: true, scene: true, charref: true, set: true };
   state.canonOnly = false;
   var cb = document.getElementById('canon-filter-btn');
   if (cb) cb.classList.remove('active');
-  state.hiddenTags = new Set();
-  localStorage.removeItem('sinverse_hidden_tags');
-  document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.add('active'); });
+  state.selectedTags = new Set();
+  state.tagMode = 'exclude';
+  localStorage.removeItem('sinverse_gallery_selected_tags');
+  localStorage.removeItem('sinverse_gallery_tag_mode');
+  localStorage.removeItem('sinverse_hidden_tags'); // legacy key cleanup
+  document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('.tag-mode-btn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-mode') === 'exclude'); });
+  if (typeof updateTagModeHint === 'function') updateTagModeHint();
   document.querySelectorAll('#type-filters .type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
   applyFilters();
 }

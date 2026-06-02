@@ -313,5 +313,35 @@
     "date": "2024-10",
     "universe_date": null,
     "canonical": true
+  },
+  {
+    "id": 11,
+    "type": "set",
+    "title": "WayNAnimation Sketches",
+    "artist": "WayNAnimation",
+    "coverImage": null,
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413772/01_ukuaex.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413774/02_t6zf4n.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413775/03_ojp1u3.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413777/04_lisb3k.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413779/05_hzhxqn.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413780/06_zh4szi.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413782/07_rtqwnx.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413783/08_oil3lh.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780413785/09_utzv6t.webp"
+    ],
+    "characters": [
+      "jay",
+      "popo",
+      "sin"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "synopsis": null,
+    "date": "2024-06",
+    "universe_date": null,
+    "canonical": false
   }
 ]

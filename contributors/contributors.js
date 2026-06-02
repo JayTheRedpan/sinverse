@@ -64,6 +64,7 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var gCount = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length > 0) return sum + i.pages.length;
+    if (i.type === 'set' && i.images && i.images.length > 0) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var lCount = libraryItems.reduce(function(sum, i) {
@@ -177,6 +178,7 @@ function renderAnon(galleryItems, libraryItems, adventureNodes) {
   var gAnon = galleryItems.reduce(function(sum, i) {
     if (!isAnon(i.artist)) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length > 0) return sum + i.pages.length;
+    if (i.type === 'set' && i.images && i.images.length > 0) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var lAnon = libraryItems.reduce(function(sum, i) {
@@ -271,7 +273,9 @@ async function init() {
       function count(id) {
         var g = galleryItems.reduce(function(sum, i) {
           if (i.artist !== id) return sum;
-          return sum + (i.type === 'comic' && i.pages && i.pages.length ? i.pages.length : 1);
+          if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
+          if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
+          return sum + 1;
         }, 0);
         var l = libraryItems.reduce(function(sum, i) {
           if (i.author !== id) return sum;

@@ -151,6 +151,64 @@
   color: var(--accent);
   background: var(--bg-panel);
 }
+.tag-filter-btn.selected {
+  border-color: var(--accent);
+  color: var(--accent);
+  background: var(--bg-panel);
+}
+
+/* Tag filter controls: mode toggle + bulk actions */
+.filter-group-tags { width: 100%; }
+.tag-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 0.35rem;
+}
+.tag-mode-toggle {
+  display: inline-flex;
+  border: 1px solid var(--border-mid, var(--border));
+  border-radius: var(--radius, 4px);
+  overflow: hidden;
+}
+.tag-mode-btn {
+  background: transparent;
+  border: none;
+  border-right: 1px solid var(--border-mid, var(--border));
+  padding: 0.3em 0.7em;
+  font-family: var(--font-caps);
+  font-size: 0.56rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+}
+.tag-mode-btn:last-child { border-right: none; }
+.tag-mode-btn.active { background: var(--accent); color: var(--bg); }
+.tag-mode-btn:hover:not(.active) { color: var(--text-secondary); }
+.tag-bulk { display: inline-flex; gap: 0.4rem; }
+.tag-bulk-btn {
+  background: transparent;
+  border: 1px dashed var(--border-mid, var(--border));
+  border-radius: 2px;
+  padding: 0.25em 0.6em;
+  font-family: var(--font-caps);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.tag-bulk-btn:hover { border-color: var(--accent); color: var(--accent); }
+.tag-mode-hint {
+  font-size: 0.72rem;
+  font-style: italic;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
 .tag-filter-btn:hover:not(.active) {
   border-color: var(--border-mid);
   color: var(--text-secondary);
@@ -227,6 +285,9 @@
 .gallery-type-badge {
   position: absolute;
   top: 0.6rem; left: 0.6rem;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
   font-family: var(--font-caps);
   font-size: 0.55rem;
   letter-spacing: 0.14em;
@@ -235,10 +296,18 @@
   border-radius: 2px;
   backdrop-filter: blur(4px);
 }
+.gallery-type-badge svg { flex-shrink: 0; }
 
 .type-comic   { background: rgba(90,50,140,0.85); color: #d4b8f0; }
 .type-scene   { background: rgba(30,70,110,0.85); color: #a8c8e8; }
 .type-charref { background: rgba(122,34,51,0.85); color: var(--accent-light); }
+.type-set     { background: rgba(40,110,90,0.85); color: #a8e8cf; }
+
+/* Per-type accent strip on the card thumbnail (reinforces color coding) */
+.gallery-card-comic   .gallery-thumb-wrap { box-shadow: inset 3px 0 0 #9b6dd6; }
+.gallery-card-scene   .gallery-thumb-wrap { box-shadow: inset 3px 0 0 #4d8ec9; }
+.gallery-card-charref .gallery-thumb-wrap { box-shadow: inset 3px 0 0 var(--accent); }
+.gallery-card-set     .gallery-thumb-wrap { box-shadow: inset 3px 0 0 #3fbf95; }
 
 .gallery-canonical-badge {
   position: absolute;
@@ -335,10 +404,10 @@
    VIEWER
    =============================================== */
 
-.viewer-body { display: flex; flex-direction: column; min-height: 100vh; }
+.viewer-body { display: flex; flex-direction: column; height: 100vh; overflow: hidden; }
 
 .viewer-topbar {
-  position: sticky; top: 0;
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -370,7 +439,7 @@
 }
 .viewer-logo-link:hover .viewer-nav-logo { opacity: 1; }
 
-.view-panel { flex: 1; }
+.view-panel { flex: 1; min-height: 0; overflow: hidden; }
 
 /* -- Comic reader ------------------------------ */
 .comic-synopsis-wrap {
@@ -443,43 +512,14 @@
   min-height: calc(100vh - 52px);
 }
 
-.comic-page-wrap {
-  width: 100%;
-}
-
-.comic-page-img {
-  width: 100%;
-  height: auto;
-  border-radius: var(--radius);
-  display: block;
-}
-
-.comic-controls {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  gap: 1.5rem;
-  padding: 0.75rem 1rem;
-  flex-shrink: 0;
-}
-
-.comic-nav-btn { min-width: 80px; }
-.comic-counter {
-  font-family: var(--font-caps);
-  font-size: 0.7rem;
-  letter-spacing: 0.15em;
-  color: var(--text-muted);
-  min-width: 60px;
-  text-align: center;
-}
-
 .comic-back-btn { font-size: 0.65rem; }
 
 /* -- Scene / Ref viewer layout ----------------- */
 .scene-viewer-layout {
   display: grid;
   grid-template-columns: 1fr 320px;
-  min-height: calc(100vh - 52px);
+  height: 100%;
+  overflow: hidden;
 }
 
 .scene-image-panel {
@@ -489,11 +529,13 @@
   justify-content: center;
   padding: 2rem;
   overflow: hidden;
+  min-height: 0;
+  min-width: 0;
 }
 
 .scene-full-img {
   max-width: 100%;
-  max-height: calc(100vh - 52px - 4rem);
+  max-height: 100%;
   object-fit: contain;
   border-radius: var(--radius);
 }
@@ -570,12 +612,20 @@
   .gallery-controls { padding: 1rem 1.5rem; }
   .gallery-footer   { padding: 1.25rem 1.5rem; }
 
+  /* On mobile, stacked content can exceed the viewport — let the page scroll */
+  .viewer-body { height: auto; min-height: 100vh; overflow: visible; }
+  .view-panel  { overflow: visible; }
+
   .scene-viewer-layout {
     grid-template-columns: 1fr;
     grid-template-rows: auto auto;
+    height: auto;
+    overflow: visible;
   }
   .scene-image-panel { padding: 1rem; min-height: 50vw; }
-  .scene-meta-panel  { border-left: none; border-top: 1px solid var(--border); }
+  .scene-meta-panel  { border-left: none; border-top: 1px solid var(--border); overflow-y: visible; }
+  .set-viewer-layout { height: auto; overflow: visible; }
+  .set-meta-panel    { position: static; }
 
   .gallery-grid { grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); }
 }
@@ -586,38 +636,33 @@
   .comic-controls { gap: 0.75rem; }
 }
 
-/* ── Comic reader with sidebar ─────────────────────────────── */
-.comic-reader-layout {
-  display: grid;
-  grid-template-columns: 1fr 300px;
-  min-height: calc(100vh - 64px);
-}
-.comic-page-col {
-  display: flex;
+/* ── Comic reader: reuses scene-image-panel, stacks page + controls + strip ── */
+.comic-image-panel {
   flex-direction: column;
-  align-items: center;   /* centers .comic-page-wrap horizontally */
-  background: #0a0a0a;
+  gap: 0.5rem;
+  padding: 1.5rem 1.5rem 1rem;
 }
-.comic-page-col .comic-page-wrap {
-  width: 100%;
-  max-width: 800px;
-  padding: 1.5rem 1.5rem 0;
+.comic-image-panel .scene-full-img {
+  flex: 1 1 auto;
+  min-height: 0;          /* allow the image to shrink so controls/strip fit */
 }
-.comic-meta-panel {
-  border-left: 1px solid var(--border);
-  overflow-y: auto;
+.comic-controls {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.5rem;
+  flex-shrink: 0;
 }
-@media (max-width: 768px) {
-  .comic-reader-layout {
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr auto;
-    height: auto;
-  }
-  .comic-meta-panel {
-    border-left: none;
-    border-top: 1px solid var(--border);
-  }
+.comic-nav-btn { min-width: 80px; }
+.comic-counter {
+  font-family: var(--font-caps);
+  font-size: 0.7rem;
+  letter-spacing: 0.15em;
+  color: var(--text-muted);
+  min-width: 60px;
+  text-align: center;
 }
+.comic-meta-panel { border-left: 1px solid var(--border); }
 
 /* ── Character filter bar ─────────────────────────────────── */
 .char-filter-bar {
@@ -876,3 +921,210 @@
   color: var(--accent);
   font-style: normal;
 }
+
+/* ── Multi-image "stack" cue (comics + sets) ────────────────── */
+/* Layered top edges that make multi-image cards look like a pile. */
+.gallery-card.has-stack .gallery-thumb-wrap {
+  margin-top: 5px;
+}
+.gallery-card.has-stack .gallery-thumb-wrap::before,
+.gallery-card.has-stack .gallery-thumb-wrap::after {
+  content: '';
+  position: absolute;
+  left: 4px; right: 4px;
+  height: 6px;
+  border-radius: 3px 3px 0 0;
+  z-index: 1;
+  pointer-events: none;
+}
+/* topmost faint sheet */
+.gallery-card.has-stack .gallery-thumb-wrap::before {
+  top: -5px;
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-bottom: none;
+  opacity: 0.85;
+}
+/* second sheet, slightly inset */
+.gallery-card.has-stack .gallery-thumb-wrap::after {
+  top: -3px; left: 8px; right: 8px;
+  height: 4px;
+  background: var(--bg-inset);
+  opacity: 0.6;
+}
+
+/* ── Set viewer (grid layout) ───────────────────────────────── */
+.set-viewer-layout {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  max-width: 1400px;
+  margin: 0 auto;
+  padding: 1.5rem;
+  height: 100%;
+  overflow-y: auto;
+}
+.set-meta-panel { flex: 0 0 280px; position: sticky; top: 0; }
+.set-count {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin: 0.25rem 0 0.5rem;
+}
+.set-grid-panel { flex: 1; min-width: 0; }
+.set-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+  gap: 0.75rem;
+}
+.set-grid-cell {
+  border: none;
+  padding: 0;
+  background: var(--bg-inset);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  aspect-ratio: 1;
+  transition: transform 0.2s ease, box-shadow 0.2s ease;
+}
+.set-grid-cell img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.set-grid-cell:hover { transform: translateY(-2px); box-shadow: 0 6px 18px rgba(0,0,0,0.4); }
+
+/* ── Set lightbox ───────────────────────────────────────────── */
+.set-lightbox {
+  position: fixed; inset: 0;
+  background: rgba(0,0,0,0.92);
+  z-index: 600;
+  display: flex; align-items: center; justify-content: center;
+  padding: 3rem 1rem 1rem;
+}
+.set-lightbox-panel {
+  position: relative;
+  width: 100%; height: 100%;
+  background: transparent;     /* override scene-image-panel's dark fill */
+  flex-direction: column;
+}
+.set-lightbox-panel .scene-full-img { flex: 1 1 auto; min-height: 0; }
+.set-lightbox-close {
+  position: absolute; top: 1rem; right: 1.2rem;
+  background: transparent; border: none; color: #fff;
+  font-size: 1.6rem; cursor: pointer; opacity: 0.8; z-index: 10;
+}
+.set-lightbox-close:hover { opacity: 1; }
+.set-lightbox-nav {
+  position: absolute; top: 50%; transform: translateY(-50%);
+  background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.25);
+  color: #fff; font-size: 2rem; line-height: 1;
+  width: 48px; height: 64px; cursor: pointer; border-radius: 6px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s; z-index: 10;
+}
+.set-lightbox-nav:hover { background: rgba(0,0,0,0.7); }
+.set-lightbox-prev { left: 0.5rem; }
+.set-lightbox-next { right: 0.5rem; }
+.set-lightbox-bar {
+  flex-shrink: 0;
+  display: flex; align-items: center; justify-content: center; gap: 1.5rem;
+  padding-top: 0.5rem;
+}
+.set-lightbox-bar .comic-counter { color: rgba(255,255,255,0.85); }
+.set-lightbox-bar .viewer-download { margin: 0; align-self: center; }
+
+@media (max-width: 720px) {
+  .set-viewer-layout { flex-direction: column; }
+  .set-meta-panel { flex: none; width: 100%; position: static; }
+  .set-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
+}
+
+/* ── Image zoom controls (scene / ref viewers) ──────────────── */
+.scene-image-panel { position: relative; }
+.scene-full-img { transition: transform 0.15s ease; transform-origin: center center; }
+.img-zoom-controls {
+  position: absolute;
+  bottom: 1rem; right: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.3rem;
+  background: rgba(12,9,8,0.8);
+  backdrop-filter: blur(6px);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem;
+  z-index: 5;
+}
+.img-zoom-fitrow, .img-zoom-row {
+  display: flex;
+  align-items: center;
+  gap: 0.2rem;
+}
+.img-zoom-fitrow { justify-content: center; }
+.img-zoom-btn {
+  background: transparent;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1rem;
+  width: 32px; height: 32px;
+  cursor: pointer;
+  border-radius: 3px;
+  display: flex; align-items: center; justify-content: center;
+  transition: background 0.15s, color 0.15s;
+}
+.img-zoom-btn:hover { background: var(--bg-card); color: var(--accent); }
+.img-zoom-fit { font-size: 1.05rem; }
+.img-zoom-pct {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0 0.3rem;
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.06em;
+  color: var(--text-muted);
+  min-width: 3.4em;
+}
+
+/* ── Comic page jump strip ──────────────────────────────────── */
+.comic-thumb-strip {
+  display: flex;
+  gap: 0.4rem;
+  overflow-x: auto;
+  overflow-y: hidden;
+  flex-shrink: 0;
+  padding: 0.5rem 0.25rem;
+  max-width: 100%;
+  justify-content: center;   /* center when they fit; scroll when they don't */
+  scrollbar-width: thin;
+}
+/* When the strip overflows, justify-content:center can clip the start; this
+   keeps the first thumb reachable by letting margins auto-center the track */
+.comic-thumb-strip::before,
+.comic-thumb-strip::after { content: ''; margin: auto; }
+.comic-thumb {
+  position: relative;
+  flex: 0 0 auto;
+  width: 54px; height: 72px;
+  padding: 0;
+  border: 2px solid transparent;
+  border-radius: 3px;
+  background: var(--bg-inset);
+  cursor: pointer;
+  overflow: hidden;
+  opacity: 0.6;
+  transition: opacity 0.15s, border-color 0.15s;
+}
+.comic-thumb img { width: 100%; height: 100%; object-fit: cover; display: block; }
+.comic-thumb:hover { opacity: 1; }
+.comic-thumb.active { opacity: 1; border-color: var(--accent); }
+.comic-thumb-num {
+  position: absolute;
+  bottom: 0; right: 0;
+  background: rgba(12,9,8,0.85);
+  color: var(--text-secondary);
+  font-family: var(--font-caps);
+  font-size: 0.5rem;
+  padding: 0.05em 0.3em;
+  border-top-left-radius: 3px;
+}
+.comic-thumb.active .comic-thumb-num { color: var(--accent); }
