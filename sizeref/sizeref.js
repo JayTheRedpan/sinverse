@@ -115,6 +115,7 @@ var DEFAULTS = {
   headshot: {},
   length:       '',  // first length silhouette URL
   lengthPresets: [], // [{id,label,inches}]
+  poses: [],         // [{value, label}] height-correction pose options
 };
 
 function populateDefaults(data) {
@@ -123,6 +124,15 @@ function populateDefaults(data) {
   DEFAULTS.headshotSils  = data.headshot_silhouettes || [];
   DEFAULTS.lengthPresets = data.length_presets       || [];
   S.builds              = data.builds              || [];
+  // Pose options (height-correction multipliers). Fall back to the built-in
+  // list if defaults.json doesn't define them, so the tool never breaks.
+  if (data.poses && data.poses.length) {
+    DEFAULTS.poses = data.poses.map(function(p) {
+      return { v: String(p.value), l: p.label };
+    });
+  } else {
+    DEFAULTS.poses = POSES_FALLBACK.slice();
+  }
   DEFAULTS.heightSils.forEach(function(s)   { DEFAULTS.height[s.id]   = s.url; });
   DEFAULTS.headshotSils.forEach(function(s) { DEFAULTS.headshot[s.id] = s.url; });
   DEFAULTS.length = DEFAULTS.lengthSils.length ? DEFAULTS.lengthSils[0].url : '';
@@ -133,7 +143,9 @@ var ZMIN    = 0.25;
 var ZMAX    = 8;
 var cropImgs = {};   // slot -> Image object
 
-var POSES = [
+// Fallback pose list — used only if defaults.json doesn't define `poses`.
+// The live list comes from DEFAULTS.poses (loaded from defaults.json).
+var POSES_FALLBACK = [
   {v:'1',    l:'Standing (full height)'},
   {v:'0.85', l:'Standing, relaxed'},
   {v:'0.75', l:'Sitting upright'},
@@ -150,7 +162,7 @@ async function init() {
   }
   S.chars   = await fetchJSON('../_data/characters.json', []);
   S.objects = await fetchJSON('./objects.json', []);
-  var defsData = await fetchJSON('./defaults.json', {});
+  var defsData = await fetchJSON('./defaults.json?v=1780365037', {});
   populateDefaults(defsData);
 
   buildForms();
@@ -2219,13 +2231,25 @@ function buildForm(slot) {
   wrap.appendChild(hf);
 
   // ── IMAGES section ──────────────────────────────────────────
-  // Declare all image-related variables here for use across sub-tabs
+  // Declare all image-related variables here for use across sub-tabs.
+  // For a NEW character (no existing record) the image source defaults to
+  // Upload / Link; an existing character keeps whatever it was saved with.
+  // A character counts as "new" for defaulting purposes when it has no saved
+  // image configuration yet (the "+ New Character" stub has none). Such chars
+  // default every image source to Upload / Link; once a source/silhouette has
+  // been chosen and saved, that choice is respected on re-open.
+  var hasAnyImgConfig = !!(ex && (
+    ex.image || ex.i_has_img || ex.default_silhouette ||
+    ex.length_image || ex.default_length_silhouette ||
+    ex.profile_image || ex.default_headshot_silhouette
+  ));
+  var isNewChar = !hasAnyImgConfig;
   var curHSilId = (ex && ex.default_silhouette) || (DEFAULTS.heightSils[0] && DEFAULTS.heightSils[0].id) || '';
   var hasHUpload = !!(ex && (ex.image || ex.i_has_img));
-  var hselVal = hasHUpload ? 'upload' : curHSilId;
+  var hselVal = hasHUpload ? 'upload' : (isNewChar ? 'upload' : curHSilId);
   var hasCustomLImg = ex && ex.length_image && ex.length_image.startsWith('data');
   var curLSil = (ex && ex.default_length_silhouette) || (DEFAULTS.lengthSils[0] && DEFAULTS.lengthSils[0].id) || '';
-  var lsilVal = hasCustomLImg ? 'custom' : curLSil;
+  var lsilVal = hasCustomLImg ? 'custom' : (isNewChar ? 'custom' : curLSil);
   var exFlip = ex && ex.length_orient_flip;
   var exRot  = ex && ex.length_orient_rotate ? ex.length_orient_rotate : 0;
   var exHeadroom = ex && ex.headroom_pct ? ex.headroom_pct : 0;
@@ -2233,7 +2257,7 @@ function buildForm(slot) {
   var exCrops = { i: (ex&&ex.crop_i)||null, l: (ex&&ex.crop_l)||null, p: (ex&&ex.crop_p)||null };
   var curPSilId = (ex && ex.default_headshot_silhouette) || (DEFAULTS.headshotSils[0] && DEFAULTS.headshotSils[0].id) || '';
   var hasPUpload = !!(ex && ex.profile_image);
-  var pselVal = hasPUpload ? 'upload' : curPSilId;
+  var pselVal = hasPUpload ? 'upload' : (isNewChar ? 'upload' : curPSilId);
 
   var imagesDet = makeDet('Images', false, 'section-images');
   var imagesBody = imagesDet.querySelector('.det-body');
@@ -2293,7 +2317,7 @@ function buildForm(slot) {
   pf.style.display = hasHUpload ? '' : 'none';
   pf.innerHTML += '<div class="cf-hint" style="margin-bottom:.3rem">Adjust if image shows seated or crouching</div>' +
     '<select class="builder-input" id="pose-'+slot+'">' +
-    POSES.map(function(p){return '<option value="'+p.v+'"'+(p.v===exCorr?' selected':'')+'>'+p.l+'</option>';}).join('') +
+    (DEFAULTS.poses.length ? DEFAULTS.poses : POSES_FALLBACK).map(function(p){return '<option value="'+p.v+'"'+(p.v===exCorr?' selected':'')+'>'+p.l+'</option>';}).join('') +
     '</select>';
   htPanel.appendChild(pf);
   imagesBody.appendChild(htPanel);
@@ -3024,6 +3048,44 @@ function onDragEnd(e) {
     r.classList.remove('slot-dragging', 'slot-drag-over');
   });
   dragSrc = null;
+}
+
+// Place a custom character into the compare lineup: reuse an empty char slot
+// if one exists, otherwise add a new slot (when under the max). Used after a
+// character is first created or imported so it shows up immediately.
+function addCharToLineup(charId) {
+  var container = document.getElementById('sr-char-slots');
+  if (!container) return;
+
+  // Look for an existing empty char slot to fill
+  var emptySel = null;
+  allSlotSelects().forEach(function(sel) {
+    if (emptySel) return;
+    if (sel.getAttribute('data-type') === 'char' && !sel.value) emptySel = sel;
+  });
+
+  function assign(sel) {
+    if (!sel) return;
+    buildSelectOptions(sel, sel.value); // ensure the custom char is an option
+    sel.value = charId;
+    var row = sel.closest('.sr-slot-row');
+    var pb = row && row.querySelector('.slot-picker-btn');
+    var ch = getCustomChar(charId);
+    if (pb && ch) pb.textContent = ch.name;
+    sel.dispatchEvent(new Event('change'));
+  }
+
+  if (emptySel) {
+    assign(emptySel);
+    return;
+  }
+  // No empty slot — add one if there's room
+  var slots = container.querySelectorAll('.sr-slot-row');
+  if (slots.length >= MAX_SLOTS) return; // lineup full; leave as-is
+  var row = createSlotRow('char');
+  container.appendChild(row);
+  updateSlotUI();
+  assign(row.querySelector('.slot-select'));
 }
 
 function addSlot(type) {
@@ -4225,6 +4287,13 @@ function openCustomModal(id) {
       return;
     }
     autoSave(slot);
+    // On first save, drop the character into the compare lineup automatically.
+    // (If it's already in a slot — i.e. this was an edit — don't add a dupe.)
+    var charId = 'custom_' + slot;
+    var alreadyInLineup = allSlotSelects().some(function(sel) {
+      return sel.getAttribute('data-type') === 'char' && sel.value === charId;
+    });
+    if (!alreadyInLineup) addCharToLineup(charId);
     closeCustomModal();
   });
   formEl.appendChild(doneBtn);
@@ -4307,6 +4376,7 @@ if (myImportBtn && myImportFile) {
       importCustomChar(e.target.result).then(function(newId) {
         renderRoster();
         fillSelects();
+        addCharToLineup(newId);   // show the imported character immediately
         var ch = getCustomChar(newId);
         alert('Imported "' + (ch ? ch.name : 'character') + '" into My Characters.');
       }).catch(function(err) {
