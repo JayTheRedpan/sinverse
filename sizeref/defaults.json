@@ -124,5 +124,31 @@
       "muscleRatio": 0.4,
       "description": "Extremely large build"
     }
+  ],
+  "poses": [
+    {
+      "value": 1.0,
+      "label": "Standing"
+    },
+    {
+      "value": 0.75,
+      "label": "Sitting (in a seat)"
+    },
+    {
+      "value": 0.52,
+      "label": "Sitting (on floor)"
+    },
+    {
+      "value": 0.48,
+      "label": "Seated / crouching"
+    },
+    {
+      "value": 0.63,
+      "label": "Kneeling"
+    },
+    {
+      "value": 0.13,
+      "label": "Lying down"
+    }
   ]
 }

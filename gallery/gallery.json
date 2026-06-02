@@ -44,5 +44,274 @@
     "date": "2025-01",
     "universe_date": 0,
     "canonical": true
+  },
+  {
+    "id": 3,
+    "type": "comic",
+    "title": "Jay's Inerno",
+    "artist": "FastTrack",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368642/00_b8l86s.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368642/01_meavgn.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368643/02_dlwx40.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368644/03_ca7qmd.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368644/04_ojv40v.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368645/05_xdxlxw.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368645/06_bgd8yr.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368646/07_txshyy.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368647/08_dzibzo.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368647/09_jn2mwf.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368648/10_rrsu3v.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368648/11_n0hv3f.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368649/12_uqkieo.webp"
+    ],
+    "characters": [
+      "sin",
+      "jay",
+      "libby",
+      "sandy",
+      "popo",
+      "fera",
+      "tita",
+      "hazel",
+      "becka",
+      "bella",
+      "contra"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "synopsis": "One little red panda has a very interesting journey through the rings of hell...",
+    "date": "2018-09",
+    "universe_date": null,
+    "canonical": true
+  },
+  {
+    "id": 4,
+    "type": "comic",
+    "title": "A Toy's Capture",
+    "artist": "FastTrack",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368638/00_evl1dc.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368638/01_ha4atv.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368639/02_ryu1ka.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368639/03_pfcc8w.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368640/04_kggydt.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368641/05_es2awl.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368641/06_znuztb.webp"
+    ],
+    "characters": [
+      "brandy",
+      "jay"
+    ],
+    "tags": [
+      "noncon",
+      "micro",
+      "m/m"
+    ],
+    "synopsis": "How exactly a toy can go from being captured to purchased, and what that life might entail.",
+    "date": "2024-01",
+    "universe_date": null,
+    "canonical": true
+  },
+  {
+    "id": 5,
+    "type": "comic",
+    "title": "The Unfinished Comic",
+    "artist": "FastTrack",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368630/00_khtjbi.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368631/01_ntsibx.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368632/02_ghx1ss.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368632/03_bxc8xs.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368633/04_ksfdz8.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368633/05_rhbchk.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368634/06_kemhjq.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368634/07_bsem5m.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368635/08_gvha1v.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368636/09_rvccfx.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368636/10_hnccdr.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368637/11_lfqmzc.webp"
+    ],
+    "characters": [
+      "popo",
+      "sin",
+      "juxta"
+    ],
+    "tags": [
+      "noncon",
+      "micro",
+      "vore"
+    ],
+    "synopsis": "A long form Sinverse comic that was never completed.",
+    "date": "2019-05",
+    "universe_date": null,
+    "canonical": true
+  },
+  {
+    "id": 6,
+    "type": "comic",
+    "title": "Sin's Party",
+    "artist": "FastTrack",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368615/00_ji8zfi.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368616/01_q0dxhw.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368616/02_pnjnng.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368617/03_jutdxa.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368617/04_jty0ss.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780370101/05_hy0hea.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780370100/06_gonnc9.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368619/07_qpdrun.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368619/08_rtrsf9.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368620/09_wuwylw.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368628/10_a2maoi.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368629/11_erkxcc.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368629/12_td9pap.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368630/13_knenwp.webp"
+    ],
+    "characters": [
+      "marian",
+      "kel",
+      "zuzu",
+      "dominka",
+      "rhonda",
+      "hannah",
+      "autumn",
+      "contra",
+      "popo",
+      "daisy",
+      "fera",
+      "veronica",
+      "becka",
+      "sandy",
+      "brandy",
+      "hydey",
+      "prima",
+      "libby",
+      "sin",
+      "lady",
+      "jay",
+      "xena",
+      "sissy"
+    ],
+    "tags": [
+      "noncon",
+      "micro",
+      "vore",
+      "feral"
+    ],
+    "synopsis": "Marian is invited to one of Sin's infamous parties, and fun ensues.",
+    "date": "2019-06",
+    "universe_date": null,
+    "canonical": true
+  },
+  {
+    "id": 7,
+    "type": "comic",
+    "title": "Project Sylph",
+    "artist": "Bananitryi",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368610/00_smskni.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368611/01_eenvpl.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368612/02_jn1nws.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368612/03_mnq6is.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368613/04_hqisqe.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368613/05_oelpng.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368614/06_maxikf.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368614/07_ujku56.webp"
+    ],
+    "characters": [
+      "jay",
+      "sin",
+      "riley"
+    ],
+    "tags": [
+      "noncon",
+      "m/m"
+    ],
+    "synopsis": "It seems Sin has new plans for the grand heirarchy of Sinverse and how certain toys might be more useful than other...",
+    "date": "2025-10",
+    "universe_date": null,
+    "canonical": true
+  },
+  {
+    "id": 8,
+    "type": "comic",
+    "title": "Popo's Hunt",
+    "artist": "FsdrNippon",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368608/00_osn2v9.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368609/01_kknghl.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368610/02_nrnhnj.webp"
+    ],
+    "characters": [
+      "popo"
+    ],
+    "tags": [
+      "noncon",
+      "micro"
+    ],
+    "synopsis": "A short comic of one bunny huntress catching an escaped micro in The Wilds",
+    "date": "2024-10",
+    "universe_date": null,
+    "canonical": true
+  },
+  {
+    "id": 9,
+    "type": "comic",
+    "title": "Lady's Run",
+    "artist": "FastTrack",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368604/00_jh5gkz.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368605/01_vulga5.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368605/02_tcx7am.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368606/03_fxcayp.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368607/04_xc4csh.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368607/05_qccks9.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368608/06_cdvyff.webp"
+    ],
+    "characters": [
+      "lady",
+      "jay",
+      "sandy",
+      "veronica"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "synopsis": "Even with the Apotheosis Serum, its important that girls maintain their physical fitness.  A lovely Lady goes on her morning run.",
+    "date": "2019-01",
+    "universe_date": null,
+    "canonical": true
+  },
+  {
+    "id": 10,
+    "type": "comic",
+    "title": "Jenny's Growth",
+    "artist": "FastTrack",
+    "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368600/00_wtiocd.webp",
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368601/01_oqnkjx.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368601/02_fy8mub.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368602/03_gbqzut.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368602/04_rtoahj.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368603/05_epaavy.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368603/06_pymtkx.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368604/99_bgytfc.webp"
+    ],
+    "characters": [
+      "jenny",
+      "riley",
+      "veronica"
+    ],
+    "tags": [
+      "noncon",
+      "vore",
+      "watersports"
+    ],
+    "synopsis": "Whats it like when a growing girl gets her first toy?",
+    "date": "2024-10",
+    "universe_date": null,
+    "canonical": true
   }
 ]
