@@ -24,7 +24,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
-  <link rel="stylesheet" href="styles.css?v=1780202227" />
+  <link rel="stylesheet" href="styles.css?v=1780428281" />
 </head>
 <body class="viewer-body">
 
@@ -35,16 +35,26 @@
 
   <!-- ── COMIC READER ─────────────────────────── -->
   <div id="view-comic" class="view-panel" style="display:none">
-    <div class="comic-reader-layout">
-      <div class="comic-page-col">
-        <div class="comic-page-wrap">
-          <img id="comic-page-img" src="" alt="Comic page" class="comic-page-img" />
+    <div class="scene-viewer-layout">
+      <div class="scene-image-panel comic-image-panel">
+        <img id="comic-page-img" src="" alt="Comic page" class="scene-full-img" />
+        <div class="img-zoom-controls">
+          <div class="img-zoom-fitrow">
+            <button id="comic-zoom-reset" class="img-zoom-btn img-zoom-fit" aria-label="Fit whole image" title="Fit whole image">&#9974;</button>
+            <button id="comic-zoom-width" class="img-zoom-btn img-zoom-fit" aria-label="Fit width" title="Fit width">&#8596;</button>
+          </div>
+          <div class="img-zoom-row">
+            <button id="comic-zoom-out" class="img-zoom-btn" aria-label="Zoom out" title="Zoom out">&#8722;</button>
+            <span id="comic-zoom-pct" class="img-zoom-pct">100%</span>
+            <button id="comic-zoom-in" class="img-zoom-btn" aria-label="Zoom in" title="Zoom in">&#43;</button>
+          </div>
         </div>
         <div class="comic-controls">
           <button id="comic-prev" class="btn-ghost comic-nav-btn">&#8592; Prev</button>
           <span id="comic-page-counter" class="comic-counter"></span>
           <button id="comic-next" class="btn-ghost comic-nav-btn">Next &#8594;</button>
         </div>
+        <div id="comic-thumb-strip" class="comic-thumb-strip"></div>
       </div>
       <aside class="scene-meta-panel comic-meta-panel">
         <span class="type-badge type-comic">Comic</span>
@@ -55,6 +65,7 @@
         <div id="comic-dates" class="viewer-dates"></div>
         <p id="comic-synopsis-reader" class="viewer-synopsis"></p>
         <div id="comic-characters-reader" class="viewer-characters"></div>
+        <a id="comic-download" href="#" download class="btn-ghost viewer-download">&#8595; Download page</a>
       </aside>
     </div>
   </div>
@@ -64,6 +75,17 @@
     <div class="scene-viewer-layout">
       <div class="scene-image-panel">
         <img id="scene-img" src="" alt="" class="scene-full-img" />
+        <div class="img-zoom-controls">
+          <div class="img-zoom-fitrow">
+            <button id="scene-zoom-reset" class="img-zoom-btn img-zoom-fit" aria-label="Fit whole image" title="Fit whole image">&#9974;</button>
+            <button id="scene-zoom-width" class="img-zoom-btn img-zoom-fit" aria-label="Fit width" title="Fit width">&#8596;</button>
+          </div>
+          <div class="img-zoom-row">
+            <button id="scene-zoom-out" class="img-zoom-btn" aria-label="Zoom out" title="Zoom out">&#8722;</button>
+            <span id="scene-zoom-pct" class="img-zoom-pct">100%</span>
+            <button id="scene-zoom-in" class="img-zoom-btn" aria-label="Zoom in" title="Zoom in">&#43;</button>
+          </div>
+        </div>
       </div>
       <aside class="scene-meta-panel">
         <span id="scene-type-badge" class="type-badge type-scene">World Scene</span>
@@ -84,6 +106,17 @@
     <div class="scene-viewer-layout">
       <div class="scene-image-panel">
         <img id="ref-img" src="" alt="" class="scene-full-img" />
+        <div class="img-zoom-controls">
+          <div class="img-zoom-fitrow">
+            <button id="ref-zoom-reset" class="img-zoom-btn img-zoom-fit" aria-label="Fit whole image" title="Fit whole image">&#9974;</button>
+            <button id="ref-zoom-width" class="img-zoom-btn img-zoom-fit" aria-label="Fit width" title="Fit width">&#8596;</button>
+          </div>
+          <div class="img-zoom-row">
+            <button id="ref-zoom-out" class="img-zoom-btn" aria-label="Zoom out" title="Zoom out">&#8722;</button>
+            <span id="ref-zoom-pct" class="img-zoom-pct">100%</span>
+            <button id="ref-zoom-in" class="img-zoom-btn" aria-label="Zoom in" title="Zoom in">&#43;</button>
+          </div>
+        </div>
       </div>
       <aside class="scene-meta-panel">
         <span class="type-badge type-charref">Character Reference</span>
@@ -101,14 +134,59 @@
           <span class="ref-detail-label">Artist notes</span>
           <p id="ref-notes" class="ref-notes-text"></p>
         </div>
-        <a id="ref-download" href="#" download class="btn-primary viewer-download" style="margin-top:1rem">&#8595; Download reference sheet</a>
+        <a id="ref-download" href="#" download class="btn-ghost viewer-download">&#8595; Download</a>
       </aside>
+    </div>
+  </div>
+
+  <!-- ── SET VIEWER ───────────────────────────── -->
+  <div id="view-set" class="view-panel" style="display:none">
+    <div class="set-viewer-layout">
+      <aside class="scene-meta-panel set-meta-panel">
+        <span class="type-badge type-set">Set</span>
+        <span id="set-canonical" class="canonical-badge" style="display:none">&#10022; Canonical</span>
+        <h1 id="set-title" class="viewer-h1"></h1>
+        <p id="set-artist" class="viewer-artist"></p>
+        <div id="set-count" class="set-count"></div>
+        <div id="set-tags" class="viewer-tags"></div>
+        <div id="set-dates" class="viewer-dates"></div>
+        <p id="set-synopsis" class="viewer-synopsis"></p>
+        <div id="set-characters" class="viewer-characters"></div>
+      </aside>
+      <div class="set-grid-panel">
+        <div id="set-grid" class="set-grid"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Set lightbox: same image experience as scene/comic, as an overlay -->
+  <div id="set-lightbox" class="set-lightbox" style="display:none">
+    <button id="set-lightbox-close" class="set-lightbox-close" aria-label="Close">&#10005;</button>
+    <div class="scene-image-panel set-lightbox-panel">
+      <img id="set-lightbox-img" class="scene-full-img" src="" alt="" />
+      <div class="img-zoom-controls">
+        <div class="img-zoom-fitrow">
+          <button id="set-zoom-reset" class="img-zoom-btn img-zoom-fit" aria-label="Fit whole image" title="Fit whole image">&#9974;</button>
+          <button id="set-zoom-width" class="img-zoom-btn img-zoom-fit" aria-label="Fit width" title="Fit width">&#8596;</button>
+        </div>
+        <div class="img-zoom-row">
+          <button id="set-zoom-out" class="img-zoom-btn" aria-label="Zoom out" title="Zoom out">&#8722;</button>
+          <span id="set-zoom-pct" class="img-zoom-pct">100%</span>
+          <button id="set-zoom-in" class="img-zoom-btn" aria-label="Zoom in" title="Zoom in">&#43;</button>
+        </div>
+      </div>
+      <button id="set-lightbox-prev" class="set-lightbox-nav set-lightbox-prev" aria-label="Previous">&#8249;</button>
+      <button id="set-lightbox-next" class="set-lightbox-nav set-lightbox-next" aria-label="Next">&#8250;</button>
+      <div class="set-lightbox-bar">
+        <span id="set-lightbox-counter" class="comic-counter"></span>
+        <a id="set-lightbox-download" href="#" download class="btn-ghost viewer-download">&#8595; Download</a>
+      </div>
     </div>
   </div>
 
   <script src="../_shared/registry.js"></script>
   <script src="../_shared/dates.js?v=1780108110"></script>
-  <script src="viewer.js?v=1780108110"></script>
+  <script src="viewer.js?v=1780428281"></script>
 
 <script src="../_shared/nav.js?v=1780201284"></script>
 <script>initNav('gallery');</script>

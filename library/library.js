@@ -5,7 +5,8 @@ var state = {
   collections:[],
   typeFilter: { standalone: true, serial: true },
   canonOnly:  false,
-  hiddenTags: new Set(),
+  tagMode:    'exclude',     // 'exclude' = hide selected tags; 'include' = show only stories with a selected tag
+  selectedTags: new Set(),   // normalized tags the user has clicked
   sortOrder:  'newest',
   query:      '',
   view:       'grid',
@@ -75,32 +76,91 @@ async function init() {
 // -- Tag filters built from stories/serials only
 function buildTagFilters(warningTags) {
   var container = document.getElementById('tag-filters');
-  if (!warningTags || !warningTags.length) { container.style.display = 'none'; return; }
+  if (!warningTags || !warningTags.length) {
+    container.style.display = 'none';
+    var ctrls = document.querySelector('.tag-controls'); if (ctrls) ctrls.style.display = 'none';
+    var hint = document.getElementById('tag-mode-hint'); if (hint) hint.style.display = 'none';
+    return;
+  }
 
+  // Restore saved mode + selected tags
   try {
-    var saved = JSON.parse(localStorage.getItem('sinverse_hidden_tags') || '[]');
-    state.hiddenTags = new Set(saved);
-  } catch(e) { state.hiddenTags = new Set(); }
+    var savedMode = localStorage.getItem('sinverse_tag_mode');
+    if (savedMode === 'include' || savedMode === 'exclude') state.tagMode = savedMode;
+    var savedSel = JSON.parse(localStorage.getItem('sinverse_selected_tags') || '[]');
+    state.selectedTags = new Set(savedSel.map(function(t){ return String(t).trim().toLowerCase(); }));
+  } catch(e) { state.selectedTags = new Set(); }
 
   var sortedTags = warningTags.slice().sort();
+  container.innerHTML = '';
   sortedTags.forEach(function(tag) {
+    var key = String(tag).trim().toLowerCase();
     var btn = document.createElement('button');
-    btn.className = 'tag-filter-btn' + (state.hiddenTags.has(tag) ? '' : ' active');
+    btn.className = 'tag-filter-btn' + (state.selectedTags.has(key) ? ' selected' : '');
     btn.textContent = tag;
-    btn.setAttribute('data-tag', tag);
+    btn.setAttribute('data-tag', key);
     btn.addEventListener('click', function() {
-      if (state.hiddenTags.has(tag)) {
-        state.hiddenTags.delete(tag);
-        btn.classList.add('active');
-      } else {
-        state.hiddenTags.add(tag);
-        btn.classList.remove('active');
-      }
-      localStorage.setItem('sinverse_hidden_tags', JSON.stringify([...state.hiddenTags]));
+      if (state.selectedTags.has(key)) state.selectedTags.delete(key);
+      else state.selectedTags.add(key);
+      btn.classList.toggle('selected', state.selectedTags.has(key));
+      persistTagState();
       applyFilters();
     });
     container.appendChild(btn);
   });
+
+  // Mode toggle
+  document.querySelectorAll('.tag-mode-btn').forEach(function(b) {
+    b.classList.toggle('active', b.getAttribute('data-mode') === state.tagMode);
+    b.addEventListener('click', function() {
+      state.tagMode = b.getAttribute('data-mode');
+      document.querySelectorAll('.tag-mode-btn').forEach(function(x){
+        x.classList.toggle('active', x.getAttribute('data-mode') === state.tagMode);
+      });
+      updateTagModeHint();
+      persistTagState();
+      applyFilters();
+    });
+  });
+
+  // Select all / none
+  var selAll = document.getElementById('tag-select-all');
+  var selNone = document.getElementById('tag-select-none');
+  if (selAll) selAll.addEventListener('click', function() {
+    sortedTags.forEach(function(t){ state.selectedTags.add(String(t).trim().toLowerCase()); });
+    reflectTagButtons();
+    persistTagState();
+    applyFilters();
+  });
+  if (selNone) selNone.addEventListener('click', function() {
+    state.selectedTags.clear();
+    reflectTagButtons();
+    persistTagState();
+    applyFilters();
+  });
+
+  updateTagModeHint();
+}
+
+function reflectTagButtons() {
+  document.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+    b.classList.toggle('selected', state.selectedTags.has(b.getAttribute('data-tag')));
+  });
+}
+
+function updateTagModeHint() {
+  var hint = document.getElementById('tag-mode-hint');
+  if (!hint) return;
+  hint.textContent = state.tagMode === 'include'
+    ? 'Showing only works with any selected tag.'
+    : 'Hiding works that have any selected tag.';
+}
+
+function persistTagState() {
+  try {
+    localStorage.setItem('sinverse_tag_mode', state.tagMode);
+    localStorage.setItem('sinverse_selected_tags', JSON.stringify([...state.selectedTags]));
+  } catch(e) {}
 }
 
 
@@ -119,9 +179,14 @@ function resetSearch() {
   state.canonOnly = false;
   var cb = document.getElementById('canon-filter-btn');
   if (cb) cb.classList.remove('active');
-  state.hiddenTags = new Set();
-  localStorage.removeItem('sinverse_hidden_tags');
-  document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.add('active'); });
+  state.selectedTags = new Set();
+  state.tagMode = 'exclude';
+  localStorage.removeItem('sinverse_selected_tags');
+  localStorage.removeItem('sinverse_tag_mode');
+  localStorage.removeItem('sinverse_hidden_tags'); // legacy key cleanup
+  document.querySelectorAll('.tag-filter-btn').forEach(function(b){ b.classList.remove('selected'); });
+  document.querySelectorAll('.tag-mode-btn').forEach(function(b){ b.classList.toggle('active', b.getAttribute('data-mode') === 'exclude'); });
+  if (typeof updateTagModeHint === 'function') updateTagModeHint();
   document.querySelectorAll('#type-filters .type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
   applyFilters();
 }
@@ -139,7 +204,16 @@ function applyFilters() {
   var filtered = state.stories.filter(function(item) {
     if (!state.typeFilter[item.type]) return false;
     if (state.canonOnly && !item.canonical) return false;
-    if (state.hiddenTags.size && (item.tags || []).some(function(t){ return state.hiddenTags.has(t); })) return false;
+    // Tag filtering by mode (matching is case/space-insensitive)
+    if (state.selectedTags.size) {
+      var itemTags = (item.tags || []).map(function(t){ return String(t).trim().toLowerCase(); });
+      var hasSelected = itemTags.some(function(t){ return state.selectedTags.has(t); });
+      if (state.tagMode === 'include') {
+        if (!hasSelected) return false;   // show only works with a selected tag
+      } else {
+        if (hasSelected) return false;    // hide works that have a selected tag
+      }
+    }
     if (charFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(charFilter)) return false;
     if (q) {
       var modes = getActiveModes();

@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
-  <link rel="stylesheet" href="styles.css?v=1780283081" />
+  <link rel="stylesheet" href="styles.css?v=1780425222" />
 </head>
 <body>
 
@@ -74,8 +74,19 @@
         </div>
       </div>
       <div class="filter-row">
-        <div class="filter-group">
+        <div class="filter-group filter-group-tags">
           <span class="filter-group-label">Tags</span>
+          <div class="tag-controls">
+            <div class="tag-mode-toggle" id="tag-mode-toggle" role="group" aria-label="Tag filter mode">
+              <button class="tag-mode-btn active" data-mode="exclude">Hide these</button>
+              <button class="tag-mode-btn" data-mode="include">Show only these</button>
+            </div>
+            <div class="tag-bulk">
+              <button id="tag-select-all" class="tag-bulk-btn">Select all</button>
+              <button id="tag-select-none" class="tag-bulk-btn">Clear</button>
+            </div>
+          </div>
+          <div class="tag-mode-hint" id="tag-mode-hint"></div>
           <div id="tag-filters" class="tag-filter-row"></div>
         </div>
       </div>
@@ -124,7 +135,7 @@
     </div>
   </div>
 
-  <script src="library.js?v=1780210162"></script>
+  <script src="library.js?v=1780425222"></script>
 
 <script src="../_shared/nav.js?v=1780201284"></script>
 <script>initNav('library');</script>

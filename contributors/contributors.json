@@ -328,5 +328,18 @@
       "x": "https://x.com/FsdrNippon",
       "skeb": "https://skeb.jp/@FsdrNippon"
     }
+  },
+  {
+    "id": "WayNAnimation",
+    "name": "WayNAnimation",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780414171/waynanimation_p3qkdq.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinty": "https://www.furaffinity.net/user/waynanimation",
+      "x": "https://x.com/WayNLag"
+    }
   }
 ]
