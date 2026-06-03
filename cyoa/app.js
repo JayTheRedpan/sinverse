@@ -15,8 +15,9 @@ const CONFIG = {
 // -- State ---------------------------------------
 const state = {
   deadEndActive: false,  // true when showing a dead end screen
-  tagMode:      'exclude',  // 'exclude' = hide selected tags; 'include' = show only stories with a selected tag
-  selectedTags: new Set(),  // normalized tags the user has clicked
+  // Per-tag tristate filtering. tagStates maps a normalized tag -> 'include'
+  // or 'exclude'; a tag absent from the map is neutral (no effect).
+  tagStates:    {},
   manifest:  [],
   story:     null,
   storyId:   null,
@@ -321,57 +322,36 @@ function buildTagFilters() {
     return;
   }
 
-  // Restore saved mode + selected tags (CYOA-specific keys)
+  // Restore saved per-tag states (CYOA-specific key)
   try {
-    const savedMode = localStorage.getItem('sinverse_cyoa_tag_mode');
-    if (savedMode === 'include' || savedMode === 'exclude') state.tagMode = savedMode;
-    const savedSel = JSON.parse(localStorage.getItem('sinverse_cyoa_selected_tags') || '[]');
-    state.selectedTags = new Set(savedSel.map(t => String(t).trim().toLowerCase()));
-  } catch(e) { state.selectedTags = new Set(); }
+    const saved = JSON.parse(localStorage.getItem('sinverse_cyoa_tag_states') || '{}');
+    state.tagStates = (saved && typeof saved === 'object') ? saved : {};
+  } catch(e) { state.tagStates = {}; }
 
   const sortedTags = [...tagSet].sort();
   container.innerHTML = '';
   sortedTags.forEach(tag => {
     const key = String(tag).trim().toLowerCase();
     const btn = document.createElement('button');
-    btn.className = 'tag-filter-btn' + (state.selectedTags.has(key) ? ' selected' : '');
-    btn.textContent = tag;
     btn.setAttribute('data-tag', key);
     btn.addEventListener('click', () => {
-      if (state.selectedTags.has(key)) state.selectedTags.delete(key);
-      else state.selectedTags.add(key);
-      btn.classList.toggle('selected', state.selectedTags.has(key));
+      // Cycle: neutral -> include -> exclude -> neutral
+      const cur = state.tagStates[key];
+      if (!cur)                   state.tagStates[key] = 'include';
+      else if (cur === 'include') state.tagStates[key] = 'exclude';
+      else                        delete state.tagStates[key];
+      paintTagButton(btn, key);
       persistTagState();
       applyFilters();
     });
+    paintTagButton(btn, key);
     container.appendChild(btn);
   });
 
-  // Mode toggle (Hide these / Show only these)
-  document.querySelectorAll('.tag-mode-btn').forEach(b => {
-    b.classList.toggle('active', b.getAttribute('data-mode') === state.tagMode);
-    b.addEventListener('click', () => {
-      state.tagMode = b.getAttribute('data-mode');
-      document.querySelectorAll('.tag-mode-btn').forEach(x => {
-        x.classList.toggle('active', x.getAttribute('data-mode') === state.tagMode);
-      });
-      updateTagModeHint();
-      persistTagState();
-      applyFilters();
-    });
-  });
-
-  // Select all / Clear
-  const selAll  = document.getElementById('tag-select-all');
+  // Clear-all button (resets every tag to neutral)
   const selNone = document.getElementById('tag-select-none');
-  if (selAll) selAll.addEventListener('click', () => {
-    sortedTags.forEach(t => state.selectedTags.add(String(t).trim().toLowerCase()));
-    reflectTagButtons();
-    persistTagState();
-    applyFilters();
-  });
   if (selNone) selNone.addEventListener('click', () => {
-    state.selectedTags.clear();
+    state.tagStates = {};
     reflectTagButtons();
     persistTagState();
     applyFilters();
@@ -380,27 +360,54 @@ function buildTagFilters() {
   updateTagModeHint();
 }
 
+// Render one tag button to reflect its tristate. Leading glyph keeps the state
+// legible without relying on colour alone: ＋ included, － excluded, blank off.
+function paintTagButton(btn, key) {
+  const st = state.tagStates[key];
+  const text = btn._label || (btn._label = btn.textContent || key);
+  btn.className = 'tag-filter-btn tristate' + (st ? ' ' + st : ' neutral');
+  const glyph = st === 'include' ? '＋' : (st === 'exclude' ? '－' : '');
+  btn.innerHTML = (glyph ? '<span class="tag-tri-glyph">' + glyph + '</span>' : '') + '<span class="tag-tri-label">' + text + '</span>';
+  btn.setAttribute('aria-pressed', st ? 'true' : 'false');
+  btn.title = st === 'include' ? 'Including: only adventures WITH this tag pass (click to exclude)'
+            : st === 'exclude' ? 'Excluding: adventures with this tag are hidden (click to clear)'
+            : 'Click to require this tag; click again to exclude it';
+}
+
 function reflectTagButtons() {
   document.querySelectorAll('.tag-filter-btn').forEach(b => {
-    b.classList.toggle('selected', state.selectedTags.has(b.getAttribute('data-tag')));
+    paintTagButton(b, b.getAttribute('data-tag'));
   });
 }
 
 function updateTagModeHint() {
   const hint = document.getElementById('tag-mode-hint');
   if (!hint) return;
-  hint.textContent = state.tagMode === 'include'
-    ? 'Showing only adventures with any selected tag.'
-    : 'Hiding adventures that have any selected tag.';
+  let inc = 0, exc = 0;
+  Object.keys(state.tagStates || {}).forEach(k => {
+    if (state.tagStates[k] === 'include') inc++;
+    else if (state.tagStates[k] === 'exclude') exc++;
+  });
+  if (!inc && !exc) {
+    hint.textContent = 'Tap a tag once to require it (＋), again to exclude it (－), again to clear.';
+  } else {
+    const parts = [];
+    if (inc) parts.push('requiring ' + inc + ' tag' + (inc > 1 ? 's' : ''));
+    if (exc) parts.push('excluding ' + exc + ' tag' + (exc > 1 ? 's' : ''));
+    hint.textContent = 'Showing adventures ' + parts.join(' and ') + '.';
+  }
 }
 
 function persistTagState() {
   try {
-    localStorage.setItem('sinverse_cyoa_tag_mode', state.tagMode);
-    localStorage.setItem('sinverse_cyoa_selected_tags', JSON.stringify([...state.selectedTags]));
+    localStorage.setItem('sinverse_cyoa_tag_states', JSON.stringify(state.tagStates || {}));
   } catch(e) {}
-  // Clear any legacy single-tag key
-  try { localStorage.removeItem('sinverse_cyoa_active_tag'); } catch(e) {}
+  // Clear legacy keys
+  try {
+    localStorage.removeItem('sinverse_cyoa_active_tag');
+    localStorage.removeItem('sinverse_cyoa_tag_mode');
+    localStorage.removeItem('sinverse_cyoa_selected_tags');
+  } catch(e) {}
 }
 
 function applyFilters() {
@@ -413,12 +420,18 @@ function applyFilters() {
     if (!meta) return;
     const matchText = !query || (meta.title || '').toLowerCase().includes(query);
 
-    // Tag filtering by mode (case/space-insensitive, any-match)
+    // Per-tag tristate filtering (case/space-insensitive). Hidden if it carries
+    // ANY excluded tag, or if there are included tags and it lacks them all.
     let matchTag = true;
-    if (state.selectedTags.size) {
+    const includeTags = [], excludeTags = [];
+    Object.keys(state.tagStates || {}).forEach(k => {
+      if (state.tagStates[k] === 'include') includeTags.push(k);
+      else if (state.tagStates[k] === 'exclude') excludeTags.push(k);
+    });
+    if (includeTags.length || excludeTags.length) {
       const metaTags = (meta.tags || []).map(t => String(t).trim().toLowerCase());
-      const hasSelected = metaTags.some(t => state.selectedTags.has(t));
-      matchTag = (state.tagMode === 'include') ? hasSelected : !hasSelected;
+      if (excludeTags.some(t => metaTags.indexOf(t) > -1)) matchTag = false;
+      else if (includeTags.length && !includeTags.some(t => metaTags.indexOf(t) > -1)) matchTag = false;
     }
 
     card.style.display = (matchText && matchTag) ? '' : 'none';

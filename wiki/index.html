@@ -181,13 +181,20 @@
       min-width: 0;
       box-sizing: border-box;
     }
-    /* Constrain article prose width within the expanding main */
+    /* Constrain article prose width within the expanding main. Centering the
+       container keeps header/body/relationships/featured aligned in one column
+       so wide screens don't strand all the empty space on the right. */
+    #char-detail-content,
+    #lore-detail-content {
+      max-width: min(1100px, 100%);
+      margin: 0 auto;
+    }
     .wiki-md-content,
     .wiki-char-content,
     .wiki-intro-body,
     .wiki-cat-body,
     .wiki-search-results {
-      max-width: 860px;
+      max-width: min(1100px, 100%);
     }
 
     /* ── Page sections ── */
@@ -1015,14 +1022,40 @@
       padding-bottom: 0.4rem;
       border-bottom: 1px solid var(--border);
     }
+    /* Auto-generated section headers (Featured Content, Relationships) styled to
+       match the markdown <h2> headers so the page reads as one consistent doc. */
+    .wiki-section-h {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-size: 1.6rem;
+      font-weight: 300;
+      color: var(--text-primary);
+      margin: 2rem 0 0.75rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
     .wiki-md-content h3 {
       font-family: var(--font-caps);
-      font-size: 0.6rem;
-      letter-spacing: 0.18em;
+      font-size: 0.95rem;
+      letter-spacing: 0.14em;
       text-transform: uppercase;
-      color: var(--accent);
-      margin: 1.5rem 0 0.5rem;
+      color: var(--accent-light);
+      font-weight: 600;
+      margin: 1.75rem 0 0.6rem;
+      display: flex;
+      align-items: center;
+      gap: 0.6rem;
     }
+    /* Flanking marks (the "== text ==" look) added via CSS so the markdown
+       stays clean — author just writes "### After TDay". */
+    .wiki-md-content h3::before,
+    .wiki-md-content h3::after {
+      content: "";
+      height: 1px;
+      background: var(--accent-dim, var(--border-mid));
+      flex: 0 0 1.4rem;
+    }
+    .wiki-md-content h3::after { flex: 1; }
     .wiki-md-content p {
       font-family: var(--font-body);
       font-size: 1rem;
@@ -1070,8 +1103,6 @@
     /* ── Character content links ── */
     .wiki-char-content-links {
       margin-top: 2.5rem;
-      padding-top: 1.5rem;
-      border-top: 1px solid var(--border);
     }
     .wiki-char-content-row {
       display: flex;
@@ -1651,11 +1682,26 @@ function fW(lbs) {
   if (!lbs) return '—';
   if (wikiMetric) {
     var kg = lbs * 0.453592;
-    if (kg >= 1000) return (kg/1000).toFixed(1) + ' t';
+    if (kg >= 1000) return (kg/1000).toFixed(1).replace(/\.0$/,'') + ' t';
     return Math.round(kg).toLocaleString() + ' kg';
   }
-  if (lbs >= 100000) return (lbs/2000).toFixed(1) + ' t';
+  // Switch to tons at ~1 ton (2000 lbs) so imperial and metric agree on scale.
+  if (lbs >= 2000) return (lbs/2000).toFixed(1).replace(/\.0$/,'') + ' tons';
   return Math.round(lbs).toLocaleString() + ' lbs';
+}
+// Length: stay in inches until 12" (a penis length reads as 5", not 0'5"),
+// then switch to feet/inches. Metric: cm until 100, then metres.
+function fLen(inches) {
+  if (wikiMetric) {
+    var cm = Math.round(inches * 2.54);
+    if (cm >= 100) return (cm / 100).toFixed(2).replace(/\.?0+$/, '') + ' m';
+    return cm + ' cm';
+  }
+  if (inches >= 12) {
+    var ft = Math.floor(inches / 12), ins = Math.round(inches % 12);
+    return ft + "'" + ins + '"';
+  }
+  return (Math.round(inches * 10) / 10) + '"';
 }
 
 var galleryItems = [];
@@ -2482,7 +2528,6 @@ function loadCharPage(charId, pushState) {
     ['Height',     '<span class="char-stat-val" data-inches="' + char.height + '">' + fH(char.height) + '</span>'],
     ['Weight',     char.weight ? fW(char.weight) : '—'],
     ['Faction',    char.faction || '—'],
-    ['Status',     char.status ? (char.status.charAt(0).toUpperCase() + char.status.slice(1)) : '—'],
   ];
   if (char.transformed_by) {
     var xfLabel = char.transformed_by.split('-').map(function(w){ return w.charAt(0).toUpperCase()+w.slice(1); }).join(' ');
@@ -2490,11 +2535,8 @@ function loadCharPage(charId, pushState) {
   }
   if (char.anatomy && char.anatomy.penis && char.length) {
     var rawLenIn = char.length * (char.length_correction||1);
-    var lenStr = wikiMetric ? Math.round(rawLenIn * 2.54) + ' cm' : rawLenIn.toFixed(1) + '"';
+    var lenStr = fLen(rawLenIn);
     statRows.push(['Length', '<span class="char-stat-val" data-inches="' + rawLenIn + '">' + lenStr + '</span>']);
-  }
-  if (char.age_appearance) {
-    statRows.push(['Apparent age', char.age_appearance.charAt(0).toUpperCase() + char.age_appearance.slice(1)]);
   }
 
   var statTable = '<table class="wiki-stat-table">' +
@@ -2510,7 +2552,7 @@ function loadCharPage(charId, pushState) {
     heroHtml +
     '<div class="wiki-char-meta">' +
       '<div class="wiki-char-meta-name">' + char.name + '</div>' +
-      '<div class="wiki-char-meta-sub">' + (char.species||'') + (char.faction ? ' &nbsp;·&nbsp; ' + char.faction : '') + '</div>' +
+      '<div class="wiki-char-meta-sub">' + (char.faction || '') + '</div>' +
       statTable +
     '</div>' +
   '</div>';
@@ -2539,17 +2581,17 @@ function loadCharPage(charId, pushState) {
 
       var gUrl = '../gallery/?character=' + encodeURIComponent(charName.toLowerCase());
       var lUrl = '../library/?character=' + encodeURIComponent(charName.toLowerCase());
-      var gSub = galleryCount === 0 ? 'No pieces yet' : (galleryCount === 1 ? '1 piece' : galleryCount + ' pieces');
+      var gSub = galleryCount === 0 ? 'No artworks yet' : (galleryCount === 1 ? '1 artwork' : galleryCount + ' artworks');
       var lSub = libraryCount === 0 ? 'No stories yet' : (libraryCount === 1 ? '1 story' : libraryCount + ' stories');
       var contentLinks =
         '<div class="wiki-char-content-links">' +
-          '<div class="wiki-section-title">Featured Content</div>' +
+          '<div class="wiki-section-h">Featured Content</div>' +
           '<div class="wiki-char-content-row">' +
             '<div class="wiki-char-content-card" data-href="' + gUrl + '">' +
               '<div class="wiki-char-content-card-count">' + galleryCount + '</div>' +
               '<div>' +
                 '<div class="wiki-char-content-card-label">Gallery</div>' +
-                '<div class="wiki-char-content-card-sub">' + gSub + ' of art &amp; media</div>' +
+                '<div class="wiki-char-content-card-sub">' + gSub + '</div>' +
               '</div>' +
             '</div>' +
             '<div class="wiki-char-content-card" data-href="' + lUrl + '">' +
@@ -2579,7 +2621,7 @@ function loadCharPage(charId, pushState) {
       }
       var relHtml =
         '<div class="wiki-char-relationships">' +
-          '<div class="wiki-section-title">Relationships</div>' +
+          '<div class="wiki-section-h">Relationships</div>' +
           relInner +
         '</div>';
 

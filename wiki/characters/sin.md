@@ -20,7 +20,9 @@ What is not detached is her contempt for men. The reason has never been confirme
 
 She is unbothered by the suffering she presides over. More than unbothered — she cultivates it. Sin takes special, deliberate care to maintain a society in which toys are kept and traded as, in her own words, "sexual livestock."
 
-## Before TDay
+## History
+
+### Before TDay
 
 Before TDay, Sin was a researcher at a bio-sciences and genetics laboratory. It was there, working with a mind that outstripped everyone around her, that she synthesised the first working batch of the serum she would come to call Apotheosis — and administered it to herself, the first test subject in history. What walked out of that lab was no longer what had walked in.
 
@@ -28,7 +30,7 @@ She did not announce herself. She worked from the shadows, founding her own rese
 
 A number of the men in Sin's life did not survive her ascent. Her old boss, for one, simply disappeared — as did others who had known her before. No bodies, no explanations. By the time anyone thought to wonder, the world had bigger changes to reckon with.
 
-## After TDay
+### After TDay
 
 Once the Chaos subsided and the mega-cities reformed, SinCorp reformed with them — every mega-city now hosts its own SinCorp laboratory, each pursuing its own branch of devious and frequently unsettling research at any given time. Sin sits at the centre of it all as the Matriarch of Angora, the unofficial capital.
 
@@ -66,9 +68,6 @@ She is always, without exception, entirely in control of any encounter, and very
 - Several men in Sin's life vanished before TDay, including her old boss. None were ever found.
 - Most toys taken to meet Sin are never seen again.
 
-## Gallery
-
-*To be documented.*
 
 ## Related
 
