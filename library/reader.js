@@ -1,8 +1,16 @@
 'use strict';
+/* ============================================================================
+   Sinverse — Library story reader (reader.html?story=<id>)
+   ----------------------------------------------------------------------------
+   Loads a story's .md file and renders it with marked.js. Also supports legacy
+   .html story files. Reading-comfort controls (font size / line spacing) are
+   saved to localStorage.
+   ========================================================================== */
 
 var story       = null;
 var chapterIdx  = 0;
 
+// ── INIT: read ?story= param, load manifest entry, render meta + chapters ─
 async function init() {
   var params = new URLSearchParams(window.location.search);
   var id     = parseInt(params.get('id'), 10);
@@ -33,6 +41,7 @@ async function init() {
   }
 }
 
+// ── META PANEL: title, author, tags, characters, posted date ─────────────
 function renderMeta() {
   document.title = story.title + ' — Sinverse Library';
   document.getElementById('reader-topbar-title').textContent = story.title;
@@ -111,6 +120,7 @@ function formatPostedDate(s) {
   return s;
 }
 
+// ── CHAPTERS: list, load a chapter, fetch the .md/.html file ──────────────
 function renderChapterList() {
   var wrap = document.getElementById('reader-chapters');
   var list = document.getElementById('reader-chapter-list');
@@ -209,6 +219,7 @@ async function loadFile(filePath) {
   }
 }
 
+// ── EXTERNAL-LINK story fallback ──────────────────────────────────────────
 function renderExternalLink(url) {
   var link = url || story.externalUrl;
   document.getElementById('reader-content').innerHTML =
@@ -223,6 +234,7 @@ var READER_PREFS_KEY = 'sinverse_reader_prefs';
 // Font size in px steps; line height as a unitless multiplier.
 var FONT_MIN = 16, FONT_MAX = 28, FONT_DEFAULT = 19, FONT_STEP = 1;
 var LH_MIN = 1.4, LH_MAX = 2.6, LH_DEFAULT = 1.9, LH_STEP = 0.15;
+// ── READING PREFERENCES: font size + line spacing, saved to localStorage ──
 var readerPrefs = { font: FONT_DEFAULT, lh: LH_DEFAULT };
 
 function loadReaderPrefs() {
@@ -281,6 +293,7 @@ function initReadingControls() {
 }
 
 // -- Reading progress bar
+// ── SCROLL PROGRESS BAR ───────────────────────────────────────────────────
 function initProgress() {
   var wrap = document.getElementById('reader-progress-wrap');
   wrap.style.display = '';

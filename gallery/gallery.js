@@ -1,4 +1,18 @@
 'use strict';
+/* ============================================================================
+   Sinverse — Gallery browser
+   ----------------------------------------------------------------------------
+   Grid of artworks loaded from gallery.json. Supports four item types:
+   scene, comic, charref (character reference), and set (a bundle of images).
+
+   - `state` holds filters: tagMode ('exclude'|'include'), selectedTags (Set),
+     typeFilter, search query, sort order.
+   - Tag filtering: mode-toggle system (Hide these / Show only these) with
+     any-match logic, persisted to localStorage (sinverse_gallery_*). The tag
+     list comes from _data/tags.json — a tag missing there gets no filter button.
+   - Clicking a card opens viewer.html?id=N (see viewer.js).
+   - Artist names link to ../contributors/?creator=<artist>.
+   ========================================================================== */
 
 var state = {
   items:      [],
@@ -31,6 +45,7 @@ var TYPE_ICONS = {
 };
 
 // -- Boot
+// ── INIT: load tags + gallery.json, build filters, first render ──────────
 async function init() {
   try {
     var res = await fetch('gallery.json');
@@ -82,6 +97,9 @@ async function init() {
 }
 
 // -- Tag filters built from data
+// ── TAG FILTERING ─────────────────────────────────────────────────────────
+// Mode-toggle (exclude/include) + select-all/clear, persisted to localStorage
+// (sinverse_gallery_* keys). Tag list from _data/tags.json. Any-match logic.
 function buildTagFilters(warningTags) {
   var container = document.getElementById('tag-filters');
   if (!warningTags || !warningTags.length) {
@@ -172,6 +190,8 @@ function persistTagState() {
 }
 
 // -- Filter + sort + render
+// ── SEARCH + FILTER + SORT ────────────────────────────────────────────────
+// applyFilters() filters by type, canon, tags, and search; then renderGrid().
 function getActiveModes() {
   var modes = [];
   document.querySelectorAll('.search-mode-btn.active').forEach(function(b){ modes.push(b.getAttribute('data-mode')); });
@@ -218,6 +238,9 @@ function applyFilters() {
   renderGrid();
 }
 
+// ── RENDER GRID ───────────────────────────────────────────────────────────
+// Builds the cards. Per-type icon/colour, stacked edge for multi-image items
+// (comic/set). Clicking a card opens viewer.html?id=N.
 function renderGrid() {
   var grid  = document.getElementById('gallery-grid');
   var count = document.getElementById('gallery-count');
@@ -280,6 +303,7 @@ document.querySelectorAll('.search-mode-btn').forEach(function(btn) {
   });
 });
 
+// ── RESET ─────────────────────────────────────────────────────────────────
 function resetSearch() {
   var inp = document.getElementById('search-input');
   if (inp) inp.value = '';
@@ -303,6 +327,7 @@ function resetSearch() {
 
 
 // -- Filter panel toggle
+// ── UI WIRING: collapsible filter panel, type/canon toggles, search box ───
 var filterToggleBtn = document.getElementById('filter-toggle-btn');
 var filterPanel = document.getElementById('filter-panel');
 if (filterToggleBtn && filterPanel) {

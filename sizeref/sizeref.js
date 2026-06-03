@@ -1,4 +1,33 @@
 'use strict';
+/* ============================================================================
+   Sinverse — Size Reference tool (the biggest single file on the site)
+   ----------------------------------------------------------------------------
+   Lets users compare characters at scale across three views: Height (scene),
+   Length (anatomy), and Stats. Supports canon characters (from
+   _data/characters.json) and user-created custom characters.
+
+   KEY CONCEPTS
+   - Heights are in INCHES throughout (72 = 6ft, 144 = 12ft).
+   - `S` is the global state object (current view, zoom, characters, overrides).
+   - Canon chars: loaded from _data/characters.json into S.chars.
+   - Custom chars: stored in localStorage 'sinverse_custom_chars' as
+     { chars: [ {id:'custom_1', name, height, default_silhouette, ...} ] }.
+     Their images live separately in IndexedDB (store 'sizeref_images').
+   - Config: defaults.json (silhouettes/poses/builds), objects.json (props),
+     builds.json (body types).
+
+   IMPORTANT BEHAVIORS
+   - calcStats(): all the per-character numbers. Linear dims scale with height,
+     volumes/masses with the cube. Penis girth/width scale from the char's
+     LENGTH (not height). Fluid outputs use an intentional mass^1.5 exaggeration.
+   - Copy image: doCopyImage() captures the scene via html2canvas. It briefly
+     un-clips the scroll container so zoomed scenes capture fully, then restores.
+   - Bot/screenshot API: applyURLParams() reads ?char1/h1/view/screenshot/scale
+     and (in screenshot mode) replaces the page with a single PNG. See
+     MAINTENANCE.md §10 for the full parameter list.
+   - Layout: .sr-app is height:100vh but must subtract the 52px global nav via
+     `body.has-global-nav .sr-app { height: calc(100vh - 52px) }` (see styles).
+   ========================================================================== */
 
 // ── State ─────────────────────────────────────────────────────
 var sandboxMode    = false;
