@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <script src="../_shared/agegate.js?v=1780259511"></script>
+  <script src="../_shared/agegate.js?v=1780460382"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wiki — Sinverse</title>
@@ -238,6 +238,35 @@
       line-height: 1.85;
       margin-bottom: 1.5rem;
     }
+    .wiki-char-relationships { margin: 2rem 0; }
+    .wiki-rel-list { list-style: none; padding: 0; margin: 0; }
+    .wiki-rel-list li {
+      font-family: var(--font-body);
+      font-size: 1rem;
+      color: var(--text-secondary);
+      padding: 0.5rem 0;
+      border-bottom: 1px solid var(--border);
+      line-height: 1.5;
+    }
+    .wiki-rel-list li:last-child { border-bottom: none; }
+    .wiki-rel-type {
+      display: inline-block;
+      min-width: 5.5rem;
+      font-family: var(--font-caps);
+      font-size: 0.62rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--accent);
+    }
+    .wiki-rel-link {
+      color: var(--text-primary);
+      cursor: pointer;
+      text-decoration: underline;
+      text-decoration-color: var(--border-mid);
+    }
+    .wiki-rel-link:hover { color: var(--accent-light); }
+    .wiki-rel-note { color: var(--text-muted); font-style: italic; }
+    .wiki-rel-none { color: var(--text-muted); font-style: italic; font-family: var(--font-body); }
     .wiki-lore-body + .wiki-section-title { margin-top: 2.5rem; }
 
     /* ── FAQ ── */
@@ -2452,7 +2481,6 @@ function loadCharPage(charId, pushState) {
     ['Pronouns',   char.pronouns || '—'],
     ['Height',     '<span class="char-stat-val" data-inches="' + char.height + '">' + fH(char.height) + '</span>'],
     ['Weight',     char.weight ? fW(char.weight) : '—'],
-    ['Build',      char.build ? (char.build.charAt(0).toUpperCase() + char.build.slice(1)) : '—'],
     ['Faction',    char.faction || '—'],
     ['Status',     char.status ? (char.status.charAt(0).toUpperCase() + char.status.slice(1)) : '—'],
   ];
@@ -2533,9 +2561,52 @@ function loadCharPage(charId, pushState) {
             '</div>' +
           '</div>' +
         '</div>';
-      container.innerHTML = header + bodyHtml + contentLinks;
+      // Relationships — auto-rendered from characters.json (single source of
+      // truth). Always shown, so an absence of relationships is itself clear.
+      var relInner;
+      if (char.relationships && char.relationships.length) {
+        var relRows = char.relationships.map(function(rel) {
+          var target = characters.find(function(c){ return c.name.toLowerCase() === String(rel.name).toLowerCase(); });
+          var nameHtml = target
+            ? '<span class="wiki-rel-link" data-target="' + target.name.toLowerCase() + '">' + rel.name + '</span>'
+            : rel.name;
+          var noteHtml = rel.note ? ' <span class="wiki-rel-note">— ' + rel.note + '</span>' : '';
+          return '<li><span class="wiki-rel-type">' + (rel.type || 'Connection') + '</span> ' + nameHtml + noteHtml + '</li>';
+        }).join('');
+        relInner = '<ul class="wiki-rel-list">' + relRows + '</ul>';
+      } else {
+        relInner = '<p class="wiki-rel-none">No known relationships on record.</p>';
+      }
+      var relHtml =
+        '<div class="wiki-char-relationships">' +
+          '<div class="wiki-section-title">Relationships</div>' +
+          relInner +
+        '</div>';
+
+      // Place the auto-generated blocks (Featured Content, Relationships) at
+      // placeholder tokens in the markdown so authors control their position.
+      // Tokens: {{FEATURED}} and {{RELATIONSHIPS}}. If a token is absent, the
+      // block is appended at the end as a fallback (so older pages still work).
+      var assembled = bodyHtml;
+      var usedFeatured = false, usedRel = false;
+      // marked may wrap a lone token as <p>{{TOKEN}}</p>; strip that wrapper too.
+      var featRe = /(<p>\s*)?\{\{FEATURED\}\}(\s*<\/p>)?/;
+      var relRe  = /(<p>\s*)?\{\{RELATIONSHIPS\}\}(\s*<\/p>)?/;
+      if (featRe.test(assembled)) { assembled = assembled.replace(featRe, contentLinks); usedFeatured = true; }
+      if (relRe.test(assembled))  { assembled = assembled.replace(relRe, relHtml);       usedRel = true; }
+      container.innerHTML = header + assembled +
+        (usedRel ? '' : relHtml) +
+        (usedFeatured ? '' : contentLinks);
 
       renderWikiImages(container);
+      // Wire relationship links to load the related character's page
+      container.querySelectorAll('.wiki-rel-link').forEach(function(el) {
+        el.addEventListener('click', function() {
+          var t = this.getAttribute('data-target');
+          var cId = characters.find(function(c){ return c.name.toLowerCase() === t.toLowerCase(); });
+          if (cId) loadCharPage(cId.id);
+        });
+      });
       // Wire internal wiki links in character markdown
       container.querySelectorAll('.wiki-lore-link').forEach(function(el) {
         el.style.cssText = 'color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--border-mid);';

@@ -1,4 +1,15 @@
 'use strict';
+/* ============================================================================
+   Sinverse — Library browser
+   ----------------------------------------------------------------------------
+   Lists stories from library.json. Each story's prose is a .md file in
+   library/stories/, opened via reader.html (see reader.js).
+
+   - Same mode-toggle tag filtering as the gallery (Hide these / Show only
+     these), persisted to localStorage (sinverse_* keys), tags from
+     _data/tags.json. Matching is case/whitespace-insensitive.
+   - collections.json defines curated groupings of stories.
+   ========================================================================== */
 
 var state = {
   stories:    [],
@@ -19,6 +30,7 @@ var TYPE_LABELS = {
   collection: 'Collection',
 };
 
+// ── INIT: load tags + library.json, build filters, first render ──────────
 async function init() {
   try {
     var [storiesRes, collectionsRes] = await Promise.all([
@@ -74,6 +86,9 @@ async function init() {
 }
 
 // -- Tag filters built from stories/serials only
+// ── TAG FILTERING ─────────────────────────────────────────────────────────
+// Mode-toggle system (exclude/include) + select-all/clear. Tag list comes from
+// _data/tags.json. State persists to localStorage. Mirrors the gallery module.
 function buildTagFilters(warningTags) {
   var container = document.getElementById('tag-filters');
   if (!warningTags || !warningTags.length) {
@@ -164,6 +179,9 @@ function persistTagState() {
 }
 
 
+// ── SEARCH + FILTER + SORT ────────────────────────────────────────────────
+// applyFilters() is the heart: runs every keystroke/toggle, decides which
+// stories show, then hands off to the active render mode (list/grid).
 function getActiveModes() {
   var modes = [];
   document.querySelectorAll('.search-mode-btn.active').forEach(function(b){ modes.push(b.getAttribute('data-mode')); });
@@ -243,6 +261,8 @@ function applyFilters() {
 }
 
 // -- Collections tab
+// ── COLLECTIONS ───────────────────────────────────────────────────────────
+// Curated story groupings from collections.json, shown as their own tab.
 function renderCollectionsTab(q) {
   var grid  = document.getElementById('lib-grid');
   grid.className = 'lib-grid';
@@ -351,6 +371,7 @@ function collectionsFor(storyId) {
 }
 
 // -- Helpers
+// ── WORD COUNT helpers ────────────────────────────────────────────────────
 function totalWords(item) {
   if (item.wordCount) return item.wordCount;
   if (item.chapters)  return item.chapters.reduce(function(sum, c) { return sum + (c.wordCount || 0); }, 0);
@@ -363,6 +384,7 @@ function fmtWords(n) {
   return n + ' words';
 }
 
+// ── STORY INFO MODAL + card click → open reader.html ──────────────────────
 function openInfoModal(item, words) {
   var existing = document.getElementById('lib-info-overlay');
   if (existing) existing.remove();
@@ -403,6 +425,7 @@ function handleCardClick(item) {
 }
 
 // -- List view
+// ── RENDER: list view / grid view / per-title color palette ───────────────
 function renderListView(items) {
   var grid = document.getElementById('lib-grid');
   grid.className = 'lib-list';
@@ -586,6 +609,7 @@ document.getElementById('view-grid-btn').addEventListener('click', function() {
 // -- Search and filters
 
 // -- Filter panel toggle
+// ── UI WIRING: collapsible filter panel, canon toggle, search box ─────────
 var filterToggleBtn = document.getElementById('filter-toggle-btn');
 var filterPanel = document.getElementById('filter-panel');
 if (filterToggleBtn && filterPanel) {

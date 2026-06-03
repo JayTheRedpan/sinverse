@@ -25,7 +25,29 @@
       "bustSize": null,
       "penis": true,
       "vag": false
-    }
+    },
+    "relationships": [
+      {
+        "name": "Libby",
+        "type": "Partner",
+        "note": "Jay's romantic partner"
+      },
+      {
+        "name": "Joy",
+        "type": "Sibling",
+        "note": "Jay's clone, regarded as his sister"
+      },
+      {
+        "name": "Jenny",
+        "type": "Child",
+        "note": ""
+      },
+      {
+        "name": "Riley",
+        "type": "Child",
+        "note": "by a different partner than Jenny's"
+      }
+    ]
   },
   {
     "id": 1,
@@ -53,7 +75,14 @@
       "bustSize": "d",
       "penis": true,
       "vag": false
-    }
+    },
+    "relationships": [
+      {
+        "name": "Joy",
+        "type": "Creator",
+        "note": "created Joy in a SinCorp lab, cloned from parts of Jay"
+      }
+    ]
   },
   {
     "id": 2,
@@ -445,7 +474,14 @@
       "bustSize": "d",
       "penis": true,
       "vag": false
-    }
+    },
+    "relationships": [
+      {
+        "name": "Jay",
+        "type": "Parent",
+        "note": ""
+      }
+    ]
   },
   {
     "id": 16,
@@ -557,7 +593,14 @@
       "bustSize": "d",
       "penis": true,
       "vag": false
-    }
+    },
+    "relationships": [
+      {
+        "name": "Jay",
+        "type": "Partner",
+        "note": "her romantic partner; the toy through whom much of the Sinverse is witnessed"
+      }
+    ]
   },
   {
     "id": 20,
@@ -669,7 +712,19 @@
       "bustSize": "d",
       "penis": true,
       "vag": false
-    }
+    },
+    "relationships": [
+      {
+        "name": "Jay",
+        "type": "Sibling",
+        "note": "the original; Joy is his clone, regarded as his sister"
+      },
+      {
+        "name": "Sin",
+        "type": "Created by",
+        "note": "Sin cloned her in a lab from parts of Jay"
+      }
+    ]
   },
   {
     "id": 24,
@@ -1173,7 +1228,14 @@
       "bustSize": "d",
       "penis": true,
       "vag": false
-    }
+    },
+    "relationships": [
+      {
+        "name": "Jay",
+        "type": "Parent",
+        "note": ""
+      }
+    ]
   },
   {
     "id": 42,

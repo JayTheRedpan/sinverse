@@ -18,6 +18,7 @@ fetch('../_data/tags.json')
 // parentId/branchText blank, branch scenes leave summary/pathId blank.
 // NOTE: the entry.* IDs below are placeholders — replace each with the real ID
 // from the unified form's "Get pre-filled link" URL.
+// ── FORM DEFINITIONS: maps each submission type to its Google Form fields ─
 const FORMS = {
   submission: {
     action: 'https://docs.google.com/forms/d/e/1FAIpQLSedyP4gmr2lOZoYpEh_4Vnd6fECDwLLT_Mrjj8NznOlRrrdeA/formResponse',
@@ -52,6 +53,7 @@ const FORMS = {
 var NODE_TAGS = [];
 
 // -- Submit to Google Forms silently --
+// ── SUBMIT: post the collected data to the Google Form endpoint ───────────
 async function submitToGoogle(formKey, data) {
   const form = FORMS[formKey];
   const body = new FormData();
@@ -68,6 +70,7 @@ async function submitToGoogle(formKey, data) {
 }
 
 // -- Render a single field --
+// ── FIELD RENDERING: build each input type in the modal form ──────────────
 function renderField(f) {
   if (f.type === 'hidden') {
     return '<input type="hidden" data-field="' + f.key + '" value="' + (f.value || '') + '" />';
@@ -142,6 +145,7 @@ function renderField(f) {
 }
 
 // -- Wire word count listeners after DOM insert --
+// ── EDITOR HELPERS: word count + markdown formatting toolbar + preview ────
 function wireWordCount(container) {
   container.querySelectorAll('textarea[data-wc-id]').forEach(function(ta) {
     var wcId     = ta.getAttribute('data-wc-id');
@@ -275,6 +279,7 @@ function openSubmitTips() {
   showSubmitInfoModal('Help', 'Formatting your scene', html);
 }
 
+// ── INFO / PREVIEW / TIPS MODALS ──────────────────────────────────────────
 function showSubmitInfoModal(eyebrow, title, bodyHtml) {
   var ov = document.createElement('div');
   ov.className = 'builder-modal-overlay submit-info-overlay';
@@ -296,6 +301,7 @@ function showSubmitInfoModal(eyebrow, title, bodyHtml) {
 }
 
 // -- Validate form before submit --
+// ── VALIDATION ────────────────────────────────────────────────────────────
 function validateForm(overlay, fields) {
   overlay.querySelectorAll('.submit-field-error').forEach(function(e) { e.remove(); });
   overlay.querySelectorAll('.submit-input-error').forEach(function(e) { e.classList.remove('submit-input-error'); });
@@ -365,6 +371,7 @@ function showFieldError(el, msg) {
 }
 
 // -- Append a choice row to modal choice list
+// ── DYNAMIC CHOICE ROWS (for branching-story submissions) ─────────────────
 function appendModalChoiceRow(container, addBtn, max) {
   var row = document.createElement('div');
   row.className = 'modal-choice-row';
@@ -405,6 +412,7 @@ function updateRemoveButtons(container) {
 }
 
 // -- Build modal --
+// ── FORM MODAL BUILDER: assembles + opens a submission form ───────────────
 function buildFormModal(opts) {
   var title    = opts.title;
   var subtitle = opts.subtitle;
