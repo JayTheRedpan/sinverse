@@ -8,6 +8,14 @@
 
 (function () {
   var KEY = 'sinverse_age_ok';
+
+  // Bot/screenshot bypass: automated image-capture requests (e.g. the Discord
+  // bot hitting ?screenshot=1) are not a human browsing the gated content, so
+  // skip the age gate and let the page render the requested image directly.
+  try {
+    if (/[?&]screenshot=1(?:&|$)/.test(window.location.search)) return;
+  } catch (e) {}
+
   try {
     if (sessionStorage.getItem(KEY) === '1') return; // already confirmed
   } catch (e) {

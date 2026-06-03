@@ -341,5 +341,17 @@
       "furaffinty": "https://www.furaffinity.net/user/waynanimation",
       "x": "https://x.com/WayNLag"
     }
+  },
+  {
+    "id": "Atacama",
+    "name": "Atacama",
+    "avatar": null,
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+
+    }
   }
 ]

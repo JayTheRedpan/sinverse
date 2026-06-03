@@ -1,21 +1,6 @@
 [
   {
     "id": 1,
-    "type": "scene",
-    "title": "Jail Break",
-    "artist": "",
-    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565348/Jail_Break_ini2fi.png",
-    "characters": [
-      "prima"
-    ],
-    "tags": [],
-    "date": "2025-01",
-    "universe_date": 1,
-    "canonical": true,
-    "synopsis": "Prima bursting into a prison refuge to find some playmates."
-  },
-  {
-    "id": 2,
     "type": "comic",
     "title": "Sinverse Rise",
     "artist": "FastTrack",
@@ -41,9 +26,24 @@
       "noncon"
     ],
     "synopsis": "The brief introduction to the Sinverse and how it came to be.",
-    "date": "2025-01",
+    "date": "2022-09",
     "universe_date": 0,
     "canonical": true
+  },
+  {
+    "id": 2,
+    "type": "scene",
+    "title": "Jail Break",
+    "artist": "Atacama",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779565348/Jail_Break_ini2fi.png",
+    "characters": [
+      "prima"
+    ],
+    "tags": [],
+    "date": "2020-02",
+    "universe_date": 1,
+    "canonical": true,
+    "synopsis": "Prima bursting into a prison refuge to find some playmates."
   },
   {
     "id": 3,

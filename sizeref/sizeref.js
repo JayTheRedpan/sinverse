@@ -19,7 +19,7 @@ var S = {
   zoomH:       1,
   charFlips:   {},
   charRotations: {},
-  zoomL:       0.5,
+  zoomL:       0.75,
   view:        'height',
   pxPerIn:     2,
   pxPerInLen:  2,
@@ -201,19 +201,32 @@ function applyURLParams() {
   // ── Set view ──────────────────────────────────────────────
   var view = p.get('view');
   if (view && ['height','length','stats','compare'].indexOf(view) > -1) {
-    // Click the actual view button so all side effects (render, zoom, etc.) fire
-    var viewBtn = document.querySelector('.sr-view-btn[data-view="' + view + '"]');
+    // 'compare' is the legacy name for the height/scene view
+    if (view === 'compare') view = 'height';
+    // Click the actual view tab so all side effects (render, zoom, etc.) fire
+    var viewBtn = document.querySelector('.sr-view-tab[data-view="' + view + '"]');
     if (viewBtn) viewBtn.click();
   }
 
   // ── Screenshot mode: render canvas area as full-page image ──
   if (p.get('screenshot') === '1') {
+    // Scale (ruler) is hidden by default for the bot; opt in with ?scale=1
+    var showScale = p.get('scale') === '1';
     // Wait for render to settle, then auto-capture like clipboard button
     setTimeout(function() {
       var target = S.view === 'length'
         ? document.getElementById('sr-length-area')
         : document.getElementById('sr-canvas-area');
       if (!target || typeof html2canvas === 'undefined') return;
+
+      // Hide the scale ruler unless the caller opted in (display:none so it
+      // leaves no blank column in the captured image)
+      var rulerCol = document.getElementById('sr-ruler-col');
+      var lenRulerWrap = document.getElementById('sr-length-ruler-wrap');
+      if (!showScale) {
+        if (rulerCol)     rulerCol.style.display = 'none';
+        if (lenRulerWrap) lenRulerWrap.style.display = 'none';
+      }
 
       var filteredImgs = Array.from(target.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
       var srcList = filteredImgs.map(function(img){ return img.src; });
@@ -233,6 +246,7 @@ function applyURLParams() {
             }
           }).then(function(canvas) {
             // Replace entire page with just the captured image
+            window._screenshotDone = true;  // suppress any deferred renders
             document.body.innerHTML = '';
             document.body.style.cssText = 'margin:0;padding:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;min-height:100vh;';
             var img = new Image();
@@ -252,14 +266,37 @@ function applyURLParams() {
       if (match) return 'canon_' + match.id;
     }
     if (h) {
+      // Build a custom character in the CURRENT storage shape: an entry in
+      // loadCustom().chars[] keyed id:'custom_N', with a default silhouette so
+      // it renders without an uploaded image.
       var d = loadCustom();
-      var key = customSlot === 1 ? 'slot1' : 'slot2';
-      if (!d[key]) d[key] = {};
-      d[key].name   = n || (customSlot === 1 ? 'Character 1' : 'Character 2');
-      d[key].height = parseFloat(h);
-      d[key].i_has_img = false;
+      if (!Array.isArray(d.chars)) d.chars = [];
+      var id = 'custom_' + customSlot;
+      var defSil = (DEFAULTS.heightSils[0] && DEFAULTS.heightSils[0].id) || 'giantess';
+      var lenParam = p.get(customSlot === 1 ? 'l1' : 'l2');   // optional length (inches)
+      var wParam   = p.get(customSlot === 1 ? 'w1' : 'w2');   // optional weight (lbs)
+      var rec = {
+        id: id,
+        name: n || ('Character ' + customSlot),
+        height: parseFloat(h),
+        height_correction: 1,
+        headroom_pct: 0,
+        weight: wParam ? parseFloat(wParam) : null,
+        image: '',
+        length: lenParam ? parseFloat(lenParam) : null,
+        length_image: '',
+        profile_image: '',
+        default_silhouette: defSil,
+        default_length_silhouette: (DEFAULTS.lengthSils && DEFAULTS.lengthSils[0] && DEFAULTS.lengthSils[0].id) || 'humanoid',
+        default_headshot_silhouette: defSil,
+        canonical: false,
+        custom: true
+      };
+      // Replace any existing record for this slot id, else append
+      var idx = d.chars.findIndex(function(c){ return c && c.id === id; });
+      if (idx > -1) d.chars[idx] = rec; else d.chars.push(rec);
       saveCustom(d);
-      return 'custom_' + customSlot;
+      return id;
     }
     return null;
   }
@@ -517,6 +554,9 @@ function allObjects() {
 
 // ── Render ────────────────────────────────────────────────────
 function render() {
+  // After screenshot/bot capture replaces the page with a single image, the
+  // scene elements no longer exist — bail so deferred renders don't throw.
+  if (window._screenshotDone) return;
   if (document.getElementById('sr-global-resize-popup')) return;
   if (renderInProgress) return; // prevent re-entrant render
   renderInProgress = true;
@@ -525,6 +565,7 @@ function render() {
   var empty   = document.getElementById('sr-empty');
   var figs    = document.getElementById('sr-figures');
   var stats   = document.getElementById('sr-stats');
+  if (!figs || !stats) { renderInProgress = false; return; }
 
   // Sandbox positions are stored in sandboxPositions{} and applied after render
   figs.innerHTML = '';
@@ -889,6 +930,9 @@ function objStatBlock(obj, slotIdx) {
   var _objKey = _objSels[slotIdx] && _objSels[slotIdx].value ? (slotIdx+'_'+_objSels[slotIdx].value) : ('slot_'+slotIdx);
   var isFlipped = S.charFlips && S.charFlips[_objKey];
   block.innerHTML =
+    (allSlotSelects().filter(function(s){return s.value;}).length > 1
+      ? '<button class="sr-stat-remove" data-slot="'+slotIdx+'" title="Remove from scene" aria-label="Remove from scene">&#10005;</button>'
+      : '')+
     '<div class="sr-stat-name">'+obj.label+'</div>'+
     '<div class="sr-stat-pose-note sr-stat-pose-spacer">&nbsp;</div>'+
     '<div class="sr-stat-grid">'+
@@ -901,6 +945,11 @@ function objStatBlock(obj, slotIdx) {
       '<button class="unit-btn sr-rot-btn" data-slot="'+slotIdx+'" data-dir="1" title="Rotate right">&#8635;</button>'+
       '<button class="unit-btn sr-full-reset-btn" data-slot="'+slotIdx+'" data-type="obj">Reset</button>'+
     '</div></div>';
+
+  var rmBtnO = block.querySelector('.sr-stat-remove');
+  if (rmBtnO) rmBtnO.addEventListener('click', function() {
+    removeCharBySlotIndex(parseInt(this.getAttribute('data-slot'), 10));
+  });
 
   wireFlipRotate(block, slotIdx);
   return block;
@@ -1092,6 +1141,9 @@ function statBlock(char, slotIdx) {
   var isFlipped = S.charFlips && S.charFlips[charKey];
 
   block.innerHTML =
+    (allSlotSelects().filter(function(s){return s.value;}).length > 1
+      ? '<button class="sr-stat-remove" data-slot="'+slotIdx+'" title="Remove from scene" aria-label="Remove from scene">&#10005;</button>'
+      : '')+
     '<div class="sr-stat-name">'+char.name+
       (char.canonical?' <span class="sr-stat-canon">&#10022;</span>':'')+
       (isOv?' <span class="sr-override-badge">&#x21D4;</span>':'')+
@@ -1103,6 +1155,11 @@ function statBlock(char, slotIdx) {
     '</div>'+
     '<div class="sr-stat-resize-wrap">'+resizeControlsFlipHTML(char, slotIdx, isFlipped)+'</div>'+
     (char.wiki?'<a href="../wiki/?character='+char.name.toLowerCase()+'" class="sr-wiki-link">View wiki &rarr;</a>':'<div class="sr-wiki-spacer"></div>');
+
+  var rmBtn = block.querySelector('.sr-stat-remove');
+  if (rmBtn) rmBtn.addEventListener('click', function() {
+    removeCharBySlotIndex(parseInt(this.getAttribute('data-slot'), 10));
+  });
 
   wireResizeControls(block);
 
@@ -1204,7 +1261,7 @@ function calcStats(char, slotIdx) {
     footWidIn:       3.5 * hR,
     handLenIn:       7.6 * hR,
     handWidIn:       3.4 * hR,
-    penisWidIn:      1.45 * hR,   // avg erect diameter ~1.45" (girth/π)
+    penisWidIn:      (scaledLength(char, slotIdx) || 0) * 0.266,   // diameter = girth/π, scaled from actual length
     // Tongue
     tongueLenIn:     3.3 * hR,
     tongueWidIn:     1.9 * hR,
@@ -1233,9 +1290,9 @@ function calcStats(char, slotIdx) {
     // Body warmth
     warmthRadiusIn:  60  * hR,    // ~5ft at ref — distance where body heat is clearly felt
     // Anatomy — all linear dimensions scale with hR, volume/mass with hR^3
-    penisGirthIn:    4.6 * hR,   // avg circumference 4.6" scaled by height
+    penisGirthIn:    (scaledLength(char, slotIdx) || 0) * 0.836,   // circumference = length * (4.6/5.5), proportional to actual length
     testicleG:      20   * mR,   // avg 20g each, scale with mass
-    penisG:        100   * Math.pow(hR, 3), // avg 100g, volume scales hR^3
+    penisG:        100   * Math.pow((scaledLength(char, slotIdx) || 5.5) / 5.5, 3), // volume ∝ length^3, anchored 100g at 5.5"
   };
 }
 
@@ -1694,6 +1751,7 @@ function renderStatsView() {
   });
 
   panel.appendChild(scroll);
+  enableDragScrollSV(scroll);
 
   // Wire resize controls via event delegation
   scroll.addEventListener('click', function(e) {
@@ -2123,7 +2181,7 @@ function lengthStatBlock(char, slotIdx) {
     block.querySelectorAll('.len-img-toggle .unit-btn').forEach(function(btn){
       btn.addEventListener('click', function(){
         S.lenImgMode[this.getAttribute('data-id')] = this.getAttribute('data-mode');
-        S.zoomL = 0.5;  // reset zoom so new content fits
+        S.zoomL = 0.75;  // reset zoom so new content fits
         renderLengthView();
         document.getElementById('zoom-label').textContent = '50%';
       });
@@ -2259,7 +2317,7 @@ function buildForm(slot) {
   var hasPUpload = !!(ex && ex.profile_image);
   var pselVal = hasPUpload ? 'upload' : (isNewChar ? 'upload' : curPSilId);
 
-  var imagesDet = makeDet('Images', false, 'section-images');
+  var imagesDet = makeDet('Images', true, 'section-images');
   var imagesBody = imagesDet.querySelector('.det-body');
 
   // ── Sub-tab bar ─────────────────────────────────────────────
@@ -3112,6 +3170,34 @@ function removeSlot(row) {
   row.remove();
   updateSlotUI();
   renderActive();
+}
+
+// Remove the character occupying a given slot index (used by the X button on
+// the bottom info cards). Removes the whole slot row if more than one exists,
+// otherwise just clears the selection so the scene empties cleanly.
+function removeCharBySlotIndex(slotIdx) {
+  var sels = allSlotSelects();
+  var sel = sels[slotIdx];
+  if (!sel) return;
+
+  // Count how many slots actually hold a character/object. Never allow the
+  // scene to be emptied — the last remaining one can't be removed.
+  var filled = sels.filter(function(s){ return s.value; }).length;
+  if (filled <= 1) return;
+
+  var row = sel.closest('.sr-slot-row');
+  var container = document.getElementById('sr-char-slots');
+  var rowCount = container ? container.querySelectorAll('.sr-slot-row').length : 1;
+  if (row && rowCount > 1) {
+    removeSlot(row);
+  } else {
+    // Only one slot row but multiple values shouldn't happen; clear safely.
+    sel.value = '';
+    var pb = row && row.querySelector('.slot-picker-btn');
+    if (pb) pb.textContent = pb.getAttribute('data-placeholder') || 'Select…';
+    sel.dispatchEvent(new Event('change'));
+    renderActive();
+  }
 }
 
 function updateSlotUI() {
@@ -4471,11 +4557,20 @@ if (gridBtn) gridBtn.addEventListener('click', function() {
 
 // Copy viewer to clipboard
 var copyWithScale = false; // default: scale hidden in copy
-
-g('btn-copy-scale').addEventListener('click', function() {
-  copyWithScale = !copyWithScale;
-  this.title = copyWithScale ? 'Scale included in copy' : 'Include scale in copy';
-  this.classList.toggle('active', copyWithScale);
+function syncScaleButtons() {
+  ['btn-copy-scale', 'btn-copy-scale-length'].forEach(function(id) {
+    var b = document.getElementById(id);
+    if (!b) return;
+    b.title = copyWithScale ? 'Scale included in copy' : 'Include scale in copy';
+    b.classList.toggle('active', copyWithScale);
+  });
+}
+['btn-copy-scale', 'btn-copy-scale-length'].forEach(function(id) {
+  var btn = document.getElementById(id);
+  if (btn) btn.addEventListener('click', function() {
+    copyWithScale = !copyWithScale;
+    syncScaleButtons();
+  });
 });
 
 // ── Sandbox mode ──────────────────────────────────────────────
@@ -4526,6 +4621,50 @@ function applySandboxPositions() {
     wrap.style.position = 'relative';
     makeDraggable(wrap);
   });
+}
+
+// Grab-to-drag panning for a scroll container (both axes). Ignores drags that
+// start on interactive controls; an optional skipFn lets callers bail in
+// contexts where dragging means something else (e.g. sandbox figure-dragging).
+function enableDragScroll(container, skipFn) {
+  if (!container || container._dragWired) return;
+  container._dragWired = true;
+  var down = false, moved = false, sx = 0, sy = 0, sl = 0, st = 0;
+  container.style.cursor = 'grab';
+  container.addEventListener('pointerdown', function(e) {
+    if (skipFn && skipFn(e)) return;
+    if (e.target.closest('button, input, a, select, textarea, .sr-img-wrap, .sr-obj-shape, .sr-obj-img, [style*="pointer-events:all"]')) return;
+    down = true; moved = false;
+    sx = e.clientX; sy = e.clientY;
+    sl = container.scrollLeft; st = container.scrollTop;
+    container.style.cursor = 'grabbing';
+  });
+  container.addEventListener('pointermove', function(e) {
+    if (!down) return;
+    var dx = e.clientX - sx, dy = e.clientY - sy;
+    if (!moved && (Math.abs(dx) > 5 || Math.abs(dy) > 5)) moved = true;
+    if (moved) {
+      container.scrollLeft = sl - dx;
+      container.scrollTop  = st - dy;
+    }
+  });
+  function endDS() {
+    if (!down) return;
+    down = false;
+    container.style.cursor = 'grab';
+  }
+  container.addEventListener('pointerup', endDS);
+  container.addEventListener('pointerleave', endDS);
+  container.addEventListener('click', function(e) {
+    if (moved) { e.stopPropagation(); e.preventDefault(); moved = false; }
+  }, true);
+}
+
+// Grab-to-drag panning for the stats scroll container (both axes). Ignores
+// drags that start on interactive controls, and suppresses the click that
+// would otherwise fire after a real drag.
+function enableDragScrollSV(container) {
+  enableDragScroll(container);
 }
 
 function makeDraggable(el) {
@@ -4816,7 +4955,7 @@ function bakedDataUrl(src) {
     .catch(function(){ return null; });
 }
 
-g('btn-copy-img').addEventListener('click', function() {
+function doCopyImage() {
   var btn = this;
   var target = S.view === 'length'
     ? document.getElementById('sr-length-area')
@@ -4839,6 +4978,28 @@ g('btn-copy-img').addEventListener('click', function() {
   var scrollEl = document.getElementById('sr-scroll');
   var savedGridBg = scrollEl ? scrollEl.style.backgroundImage : '';
   if (scrollEl && S.gridLines) scrollEl.style.backgroundImage = 'none';
+
+  // When zoomed, the scene is taller than the scroll viewport and clipped +
+  // scrolled. html2canvas would only capture the visible slice, and the crop
+  // math (viewport-relative rects) would be thrown off by the scroll offset.
+  // Temporarily un-clip the scroll container so the FULL scene is laid out and
+  // captured, then restore afterward.
+  var savedScroll = null;
+  if (scrollEl) {
+    savedScroll = {
+      overflowX: scrollEl.style.overflowX,
+      overflowY: scrollEl.style.overflowY,
+      scrollTop: scrollEl.scrollTop,
+      scrollLeft: scrollEl.scrollLeft,
+      height: scrollEl.style.height,
+      alignItems: scrollEl.style.alignItems
+    };
+    scrollEl.style.overflowX = 'visible';
+    scrollEl.style.overflowY = 'visible';
+    scrollEl.style.height = 'auto';
+    scrollEl.scrollTop = 0;
+    scrollEl.scrollLeft = 0;
+  }
 
   // Pre-bake silhouette images (rose-gold filtered) so they render correctly
   var filteredImgs = Array.from(target.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
@@ -4915,6 +5076,13 @@ function domCropCanvas(canvas, target, scale, padding) {
             if (lenRulerWrap) lenRulerWrap.style.visibility = '';
           }
           if (scrollEl && S.gridLines) scrollEl.style.backgroundImage = savedGridBg;
+          if (scrollEl && savedScroll) {
+            scrollEl.style.overflowX = savedScroll.overflowX;
+            scrollEl.style.overflowY = savedScroll.overflowY;
+            scrollEl.style.height = savedScroll.height;
+            scrollEl.scrollTop = savedScroll.scrollTop;
+            scrollEl.scrollLeft = savedScroll.scrollLeft;
+          }
 
         function fallbackDownload() {
           var url = URL.createObjectURL(blob);
@@ -4937,11 +5105,23 @@ function domCropCanvas(canvas, target, scale, padding) {
         }
       }, 'image/png');
     }).catch(function() {
+      if (scrollEl && savedScroll) {
+        scrollEl.style.overflowX = savedScroll.overflowX;
+        scrollEl.style.overflowY = savedScroll.overflowY;
+        scrollEl.style.height = savedScroll.height;
+        scrollEl.scrollTop = savedScroll.scrollTop;
+        scrollEl.scrollLeft = savedScroll.scrollLeft;
+      }
+      if (scrollEl && S.gridLines) scrollEl.style.backgroundImage = savedGridBg;
       btn.textContent = '✗';
       setTimeout(function(){ btn.innerHTML='&#128203;'; btn.disabled=false; }, 1500);
     });
   });
-});
+}
+var _copyBtnH = g('btn-copy-img');
+if (_copyBtnH) _copyBtnH.addEventListener('click', doCopyImage);
+var _copyBtnL = g('btn-copy-img-length');
+if (_copyBtnL) _copyBtnL.addEventListener('click', doCopyImage);
 g('btn-metric').addEventListener('click',function(){applyGlobalUnit(true);});
 
 function renderOrSandbox() {
@@ -4956,7 +5136,7 @@ g('btn-zoom-out').addEventListener('click',function(){
   else{S.zoomH=Math.max(ZMIN,parseFloat((S.zoomH-ZSTEP).toFixed(2)));renderOrSandbox();}
 });
 g('btn-zoom-reset').addEventListener('click',function(){
-  if(S.view==='length'){S.zoomL=0.5;applyLengthZoom();}
+  if(S.view==='length'){S.zoomL=0.75;applyLengthZoom();}
   else{S.zoomH=1;renderOrSandbox();}
 });
 document.querySelectorAll('.custom-clear-btn').forEach(function(btn){btn.addEventListener('click',function(){clearSlot(parseInt(this.getAttribute('data-slot')));});});

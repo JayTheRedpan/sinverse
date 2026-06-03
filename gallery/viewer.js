@@ -20,51 +20,62 @@ function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
   var MIN = 1, MAX = 5;
   var drag = null;
 
-  // The scale that makes the image's WIDTH fill the panel width. At scale 1 the
-  // image is object-fit:contain (letterboxed); if it's already width-limited
-  // this is ~1, if it's tall/narrow this is >1.
-  function fitWidthScale() {
-    var prev = img.style.transform;
-    img.style.transform = 'none';
-    var fit = img.getBoundingClientRect();
-    img.style.transform = prev;
+  // Compute the image's letterboxed "fit" box (object-fit:contain at scale 1)
+  // from natural dimensions + the image element's box. This is deterministic
+  // and immune to CSS transitions (measuring a live transformed rect was the
+  // bug that let panning drift the image off into the void).
+  function fitBox() {
     var pr = panel.getBoundingClientRect();
-    if (!fit.width) return 1;
-    return Math.min(MAX, Math.max(1, pr.width / fit.width));
+    var ir = img.getBoundingClientRect();  // the <img> element's own box
+    // The element box is what flex/grid gave the image; object-fit:contain then
+    // letterboxes the natural image inside it.
+    var nw = img.naturalWidth || ir.width, nh = img.naturalHeight || ir.height;
+    var boxW = ir.width, boxH = ir.height;
+    if (!nw || !nh || !boxW || !boxH) return { w: boxW, h: boxH, cx: pr.width/2, cy: pr.height/2, pr: pr };
+    var s = Math.min(boxW / nw, boxH / nh);   // contain scale
+    var fw = nw * s, fh = nh * s;             // fitted (displayed) size at scale 1
+    // Fitted image is centered within the element box; element box center
+    // relative to the panel:
+    var boxCxRel = (ir.left - pr.left) + boxW / 2;
+    var boxCyRel = (ir.top  - pr.top)  + boxH / 2;
+    return { w: fw, h: fh, cxRel: boxCxRel, cyRel: boxCyRel, pr: pr };
   }
 
-  // Measure the image's "fit" box (its on-screen size/position at scale 1,
-  // transform removed) so panning clamps to the actual image area — not the
-  // whole panel, which in the comic view also contains controls + strip.
+  function fitWidthScale() {
+    var f = fitBox();
+    if (!f.w) return 1;
+    return Math.min(MAX, Math.max(1, f.pr.width / f.w));
+  }
+
   function maxOffset() {
-    var prevTransform = img.style.transform;
-    img.style.transform = 'none';
-    var fit = img.getBoundingClientRect();   // fitted, untransformed box
-    img.style.transform = prevTransform;     // restore current transform
-    var pr = panel.getBoundingClientRect();
-    // Scaled image extends (scale-1)/2 of the fit size beyond each fit edge,
-    // measured from the fit box's own center.
-    var scaledW = fit.width * scale, scaledH = fit.height * scale;
-    // Visible viewport for the image = the panel rect. The image's fit box is
-    // centered on (fit.left+fit.width/2). Allowed pan keeps the scaled image
-    // covering the panel: offset can move until a scaled edge meets a panel edge.
-    var fitCx = fit.left + fit.width / 2,  prCx = pr.left + pr.width / 2;
-    var fitCy = fit.top + fit.height / 2,  prCy = pr.top + pr.height / 2;
-    var baseDx = fitCx - prCx;  // where the fit box center sits vs panel center
-    var baseDy = fitCy - prCy;
+    var f = fitBox();
+    var pr = f.pr;
+    var scaledW = f.w * scale, scaledH = f.h * scale;
+    // Offset of the fitted image's center from the panel center at scale 1.
+    // (translate scales about the element center, and the fitted image is
+    // centered in the element, so the fitted center == element center.)
+    var baseDx = (f.cxRel != null ? f.cxRel : pr.width / 2) - pr.width / 2;
+    var baseDy = (f.cyRel != null ? f.cyRel : pr.height / 2) - pr.height / 2;
     return {
-      // max translate so the scaled image's edge reaches the panel's edge
-      xPos: Math.max(0,  scaledW / 2 - (pr.width  / 2) - baseDx),
-      xNeg: Math.max(0,  scaledW / 2 - (pr.width  / 2) + baseDx),
-      yPos: Math.max(0,  scaledH / 2 - (pr.height / 2) - baseDy),
-      yNeg: Math.max(0,  scaledH / 2 - (pr.height / 2) + baseDy)
+      xPos: Math.max(0, scaledW / 2 - pr.width  / 2 - baseDx),
+      xNeg: Math.max(0, scaledW / 2 - pr.width  / 2 + baseDx),
+      yPos: Math.max(0, scaledH / 2 - pr.height / 2 - baseDy),
+      yNeg: Math.max(0, scaledH / 2 - pr.height / 2 + baseDy)
     };
   }
   function clamp() {
     var m = maxOffset();
-    tx = Math.max(-m.xNeg, Math.min(m.xPos, tx));
-    ty = Math.max(-m.yNeg, Math.min(m.yPos, ty));
+    // Allow a little overscroll into the black (so fast scrolls don't slam into
+    // a hard wall and bounce), but never enough to push the whole image away —
+    // cap the slack at ~12% of the panel so a meaningful slice always shows.
+    var pr = panel.getBoundingClientRect();
+    var slackX = Math.min(pr.width, pr.height) * 0.12;
+    var slackY = slackX;
+    tx = Math.max(-(m.xNeg + slackX), Math.min(m.xPos + slackX, tx));
+    ty = Math.max(-(m.yNeg + slackY), Math.min(m.yPos + slackY, ty));
   }
+  // Toggle the CSS transition: smooth for button zoom, instant for drag/wheel
+  function setSmooth(on) { img.style.transition = on ? '' : 'none'; }
   function apply() {
     if (scale === 1) { tx = 0; ty = 0; }
     else clamp();
@@ -74,10 +85,11 @@ function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
   }
   function zoomTo(s) { scale = Math.max(MIN, Math.min(MAX, Math.round(s * 100) / 100)); apply(); }
 
-  if (out)   out.addEventListener('click',   function(){ zoomTo(scale - 0.25); });
-  if (inc)   inc.addEventListener('click',   function(){ zoomTo(scale + 0.25); });
-  if (reset) reset.addEventListener('click', function(){ scale = 1; tx = 0; ty = 0; apply(); });
+  if (out)   out.addEventListener('click',   function(){ setSmooth(true); zoomTo(scale - 0.25); });
+  if (inc)   inc.addEventListener('click',   function(){ setSmooth(true); zoomTo(scale + 0.25); });
+  if (reset) reset.addEventListener('click', function(){ setSmooth(true); scale = 1; tx = 0; ty = 0; apply(); });
   if (widthBtn) widthBtn.addEventListener('click', function(){
+    setSmooth(true);
     scale = fitWidthScale();
     tx = 0;
     apply();
@@ -90,6 +102,7 @@ function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
   // Grab-to-drag panning (pointer events cover mouse + touch)
   img.addEventListener('pointerdown', function(e) {
     if (scale <= 1) return;
+    setSmooth(false);
     drag = { x: e.clientX, y: e.clientY, tx: tx, ty: ty };
     img.setPointerCapture(e.pointerId);
     img.style.cursor = 'grabbing';
@@ -111,13 +124,14 @@ function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
   img.addEventListener('pointercancel', endDrag);
 
   // Double-click toggles between fit and 2x
-  img.addEventListener('dblclick', function(){ scale === 1 ? zoomTo(2) : (function(){ scale = 1; tx = 0; ty = 0; apply(); })(); });
+  img.addEventListener('dblclick', function(){ setSmooth(true); scale === 1 ? zoomTo(2) : (function(){ scale = 1; tx = 0; ty = 0; apply(); })(); });
 
   // Scroll wheel pans the image while zoomed (vertical; shift = horizontal).
   // Falls through to normal page scroll when at fit (scale 1).
   panel.addEventListener('wheel', function(e) {
     if (scale <= 1) return;
     e.preventDefault();
+    setSmooth(false);   // instant pan — no animated bounce on fast scroll
     if (e.shiftKey) { tx -= e.deltaY; }
     else { ty -= e.deltaY; tx -= e.deltaX; }
     apply();
@@ -205,13 +219,40 @@ function showPage(n) {
     dl.href = pages[comicPage] || '#';
     dl.download = (item.title || 'comic').replace(/\s+/g, '_') + '_p' + (comicPage + 1) + '.jpg';
   }
-  // Highlight the active thumbnail and scroll it into view within the strip
+  // Highlight the active thumbnail. Center it within the strip horizontally
+  // without yanking the page (use manual scrollLeft, not scrollIntoView which
+  // can scroll the whole window on mobile).
   var strip = document.getElementById('comic-thumb-strip');
   if (strip) {
     var thumbs = strip.querySelectorAll('.comic-thumb');
     thumbs.forEach(function(t, i){ t.classList.toggle('active', i === comicPage); });
     var active = thumbs[comicPage];
-    if (active) active.scrollIntoView({ behavior: 'smooth', block: 'nearest', inline: 'center' });
+    if (active) {
+      var target = active.offsetLeft - (strip.clientWidth / 2) + (active.clientWidth / 2);
+      strip.scrollTo({ left: target, behavior: 'smooth' });
+    }
+  }
+
+  // On mobile the whole page scrolls, so jump back to the top of the comic
+  // image when the page changes (matches prev/next behavior; lets readers go
+  // top-to-bottom without manually scrolling up each time).
+  if (window.matchMedia('(max-width: 900px)').matches) {
+    var panel = document.querySelector('#view-comic .comic-image-panel');
+    if (panel) {
+      // After the new image starts loading, scroll so the TOP of the image sits
+      // just below any fixed bars (global nav + viewer topbar), which
+      // scrollIntoView ignores and would hide behind.
+      img.addEventListener('load', function onLoad() {
+        img.removeEventListener('load', onLoad);
+        var nav = document.querySelector('.global-nav');
+        var topbar = document.querySelector('.viewer-topbar');
+        var offset = 0;
+        if (nav && getComputedStyle(nav).position === 'fixed') offset += nav.offsetHeight;
+        if (topbar && getComputedStyle(topbar).position === 'fixed') offset += topbar.offsetHeight;
+        var top = panel.getBoundingClientRect().top + window.pageYOffset - offset;
+        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
+      });
+    }
   }
 }
 
@@ -244,7 +285,8 @@ function renderScene() {
   img.alt = item.title;
 
   document.getElementById('scene-title').textContent       = item.title;
-  document.getElementById('scene-artist').textContent      = item.artist ? 'by ' + item.artist : '';
+  var sceneArtistEl = document.getElementById('scene-artist');
+  if (sceneArtistEl) sceneArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
   document.getElementById('scene-description').textContent = item.description || '';
 
   if (item.canonical) document.getElementById('scene-canonical').style.display = '';
@@ -269,7 +311,8 @@ function renderCharRef() {
   img.alt = item.title;
 
   document.getElementById('ref-title').textContent  = item.title;
-  document.getElementById('ref-artist').textContent = item.artist ? 'by ' + item.artist : '';
+  var refArtistEl = document.getElementById('ref-artist');
+  if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
 
   if (item.canonical) document.getElementById('ref-canonical').style.display = '';
 
