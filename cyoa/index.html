@@ -25,7 +25,7 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
-  <link rel="stylesheet" href="styles.css?v=1780288026" />
+  <link rel="stylesheet" href="styles.css?v=1780459645" />
 </head>
 <body>
 
@@ -41,8 +41,24 @@
     </header>
 
     <div class="cyoa-search-bar">
-      <input id="search-input" class="search-input" type="text" placeholder="Search by title..." aria-label="Search adventures" />
-      <div id="tag-filters" class="tag-filters"></div>
+      <div class="cyoa-search-row">
+        <input id="search-input" class="search-input" type="text" placeholder="Search by title..." aria-label="Search adventures" />
+        <button id="filter-toggle-btn" class="filter-toggle-btn" title="Show/hide filters">Filters ▾</button>
+      </div>
+      <div id="filter-panel" class="filter-panel">
+        <div class="tag-controls">
+          <div class="tag-mode-toggle" id="tag-mode-toggle" role="group" aria-label="Tag filter mode">
+            <button class="tag-mode-btn active" data-mode="exclude">Hide these</button>
+            <button class="tag-mode-btn" data-mode="include">Show only these</button>
+          </div>
+          <div class="tag-bulk">
+            <button id="tag-select-all" class="tag-bulk-btn">Select all</button>
+            <button id="tag-select-none" class="tag-bulk-btn">Clear</button>
+          </div>
+        </div>
+        <div class="tag-mode-hint" id="tag-mode-hint"></div>
+        <div id="tag-filters" class="tag-filters"></div>
+      </div>
     </div>
 
     <div id="adventure-grid" class="adventure-grid">
@@ -203,7 +219,7 @@
 
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script src="submit.js?v=1780333113"></script>
-  <script src="app.js?v=1780333113"></script>
+  <script src="app.js?v=1780458757"></script>
   <script>
     // Show library screen immediately -- age gate is on landing page
     document.getElementById('screen-library').style.display = 'block';

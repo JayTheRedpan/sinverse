@@ -2,7 +2,7 @@
   {
     "id": 1,
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779657923/huntressCity_ml0hyu.png",
-    "tags": ["NonCon"],
+    "tags": ["noncon"],
     "choices": [
       {
         "text": "A male human",
@@ -24,7 +24,7 @@
     "id": 2,
     "image": null,
     "tags": [
-      "NonCon"
+      "noncon"
     ],
     "choices": [
       {
@@ -51,7 +51,7 @@
     "id": 3,
     "image": null,
     "tags": [
-      "DubCon"
+      "noncon"
     ],
     "choices": [
       {
@@ -78,8 +78,7 @@
     "id": 4,
     "image": null,
     "tags": [
-      "SubCon",
-      "RedPan"
+      "noncon"
     ],
     "choices": [
       {

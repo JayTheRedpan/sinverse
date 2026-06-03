@@ -1054,6 +1054,12 @@
   padding: 0.3rem;
   z-index: 5;
 }
+/* Hide on-screen zoom controls on touch/mobile (placed after the base rule so
+   it wins the cascade). Pinch-to-zoom covers it and avoids overlapping the
+   comic page controls. */
+@media (max-width: 900px) {
+  .img-zoom-controls { display: none !important; }
+}
 .img-zoom-fitrow, .img-zoom-row {
   display: flex;
   align-items: center;

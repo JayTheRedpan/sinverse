@@ -15,7 +15,8 @@ const CONFIG = {
 // -- State ---------------------------------------
 const state = {
   deadEndActive: false,  // true when showing a dead end screen
-  activeTag:     null,   // currently selected tag filter
+  tagMode:      'exclude',  // 'exclude' = hide selected tags; 'include' = show only stories with a selected tag
+  selectedTags: new Set(),  // normalized tags the user has clicked
   manifest:  [],
   story:     null,
   storyId:   null,
@@ -199,7 +200,6 @@ async function fetchNodeCount(meta) {
 
 function renderLibrary() {
   storyGrid.innerHTML  = '';
-  state.activeTag      = null;
   if (searchInput) searchInput.value = '';
   if (!state.manifest.length) {
     storyGrid.innerHTML = '<div class="loading-placeholder">No adventures found.</div>';
@@ -293,6 +293,18 @@ function renderLibrary() {
   if (searchInput) {
     searchInput.oninput = applyFilters;
   }
+  // Collapsible filter panel toggle (matches gallery/library)
+  var filterToggleBtn = document.getElementById('filter-toggle-btn');
+  var filterPanel = document.getElementById('filter-panel');
+  if (filterToggleBtn && filterPanel && !filterToggleBtn._wired) {
+    filterToggleBtn._wired = true;
+    filterToggleBtn.addEventListener('click', function() {
+      var open = filterPanel.classList.toggle('open');
+      filterToggleBtn.textContent = open ? 'Filters ▴' : 'Filters ▾';
+    });
+  }
+  // Apply any restored (persisted) tag selections to the freshly-rendered cards
+  applyFilters();
 }
 
 // -- Search & Filter -----------------------------
@@ -300,44 +312,115 @@ function buildTagFilters() {
   // Collect all unique tags across all stories
   const tagSet = new Set();
   state.manifest.forEach(m => (m.tags || []).forEach(t => tagSet.add(t)));
-  tagFilters.innerHTML = '';
 
-  // All button
-  const allBtn = document.createElement('button');
-  allBtn.className = 'tag-filter-btn' + (state.activeTag === null ? ' active' : '');
-  allBtn.textContent = 'All';
-  allBtn.addEventListener('click', () => { state.activeTag = null; applyFilters(); });
-  tagFilters.appendChild(allBtn);
+  const container = tagFilters;
+  if (!tagSet.size) {
+    container.style.display = 'none';
+    const ctrls = document.querySelector('.tag-controls'); if (ctrls) ctrls.style.display = 'none';
+    const hint = document.getElementById('tag-mode-hint'); if (hint) hint.style.display = 'none';
+    return;
+  }
 
-  tagSet.forEach(tag => {
+  // Restore saved mode + selected tags (CYOA-specific keys)
+  try {
+    const savedMode = localStorage.getItem('sinverse_cyoa_tag_mode');
+    if (savedMode === 'include' || savedMode === 'exclude') state.tagMode = savedMode;
+    const savedSel = JSON.parse(localStorage.getItem('sinverse_cyoa_selected_tags') || '[]');
+    state.selectedTags = new Set(savedSel.map(t => String(t).trim().toLowerCase()));
+  } catch(e) { state.selectedTags = new Set(); }
+
+  const sortedTags = [...tagSet].sort();
+  container.innerHTML = '';
+  sortedTags.forEach(tag => {
+    const key = String(tag).trim().toLowerCase();
     const btn = document.createElement('button');
-    btn.className = 'tag-filter-btn' + (state.activeTag === tag ? ' active' : '');
+    btn.className = 'tag-filter-btn' + (state.selectedTags.has(key) ? ' selected' : '');
     btn.textContent = tag;
+    btn.setAttribute('data-tag', key);
     btn.addEventListener('click', () => {
-      state.activeTag = state.activeTag === tag ? null : tag;
+      if (state.selectedTags.has(key)) state.selectedTags.delete(key);
+      else state.selectedTags.add(key);
+      btn.classList.toggle('selected', state.selectedTags.has(key));
+      persistTagState();
       applyFilters();
     });
-    tagFilters.appendChild(btn);
+    container.appendChild(btn);
+  });
+
+  // Mode toggle (Hide these / Show only these)
+  document.querySelectorAll('.tag-mode-btn').forEach(b => {
+    b.classList.toggle('active', b.getAttribute('data-mode') === state.tagMode);
+    b.addEventListener('click', () => {
+      state.tagMode = b.getAttribute('data-mode');
+      document.querySelectorAll('.tag-mode-btn').forEach(x => {
+        x.classList.toggle('active', x.getAttribute('data-mode') === state.tagMode);
+      });
+      updateTagModeHint();
+      persistTagState();
+      applyFilters();
+    });
+  });
+
+  // Select all / Clear
+  const selAll  = document.getElementById('tag-select-all');
+  const selNone = document.getElementById('tag-select-none');
+  if (selAll) selAll.addEventListener('click', () => {
+    sortedTags.forEach(t => state.selectedTags.add(String(t).trim().toLowerCase()));
+    reflectTagButtons();
+    persistTagState();
+    applyFilters();
+  });
+  if (selNone) selNone.addEventListener('click', () => {
+    state.selectedTags.clear();
+    reflectTagButtons();
+    persistTagState();
+    applyFilters();
+  });
+
+  updateTagModeHint();
+}
+
+function reflectTagButtons() {
+  document.querySelectorAll('.tag-filter-btn').forEach(b => {
+    b.classList.toggle('selected', state.selectedTags.has(b.getAttribute('data-tag')));
   });
 }
 
+function updateTagModeHint() {
+  const hint = document.getElementById('tag-mode-hint');
+  if (!hint) return;
+  hint.textContent = state.tagMode === 'include'
+    ? 'Showing only adventures with any selected tag.'
+    : 'Hiding adventures that have any selected tag.';
+}
+
+function persistTagState() {
+  try {
+    localStorage.setItem('sinverse_cyoa_tag_mode', state.tagMode);
+    localStorage.setItem('sinverse_cyoa_selected_tags', JSON.stringify([...state.selectedTags]));
+  } catch(e) {}
+  // Clear any legacy single-tag key
+  try { localStorage.removeItem('sinverse_cyoa_active_tag'); } catch(e) {}
+}
+
 function applyFilters() {
-  const query      = searchInput.value.trim().toLowerCase();
-  const activeTag  = state.activeTag;
-  const cards      = storyGrid.querySelectorAll('.adventure-card:not(.new-adventure-card)');
+  const query = searchInput.value.trim().toLowerCase();
+  const cards = storyGrid.querySelectorAll('.adventure-card:not(.new-adventure-card)');
   let anyVisible = false;
 
-  // Update tag button active states
-  tagFilters.querySelectorAll('.tag-filter-btn').forEach(btn => {
-    btn.classList.toggle('active',
-      btn.textContent === 'All' ? activeTag === null : btn.textContent === activeTag
-    );
-  });
-
   cards.forEach((card, i) => {
-    const meta      = state.manifest[i];
-    const matchText = !query || meta.title.toLowerCase().includes(query);
-    const matchTag  = !activeTag || (meta.tags || []).includes(activeTag);
+    const meta = state.manifest[i];
+    if (!meta) return;
+    const matchText = !query || (meta.title || '').toLowerCase().includes(query);
+
+    // Tag filtering by mode (case/space-insensitive, any-match)
+    let matchTag = true;
+    if (state.selectedTags.size) {
+      const metaTags = (meta.tags || []).map(t => String(t).trim().toLowerCase());
+      const hasSelected = metaTags.some(t => state.selectedTags.has(t));
+      matchTag = (state.tagMode === 'include') ? hasSelected : !hasSelected;
+    }
+
     card.style.display = (matchText && matchTag) ? '' : 'none';
   });
 
@@ -347,7 +430,7 @@ function applyFilters() {
   if (!anyVisible && !existing) {
     const msg = document.createElement('div');
     msg.className   = 'no-results loading-placeholder';
-    msg.textContent = 'No adventures match your search.';
+    msg.textContent = 'No adventures match your filters.';
     storyGrid.appendChild(msg);
   } else if (anyVisible && existing) {
     existing.remove();
