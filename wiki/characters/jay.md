@@ -18,13 +18,15 @@ Jay is curious, adaptable, and possessed of a quick wit that has served him bett
 
 He is not a sexual creature by inclination. Jay does not seek out the encounters that define so much of his life in the new world; they are thrust upon him, wanted or not, as a matter of course in a world where a being his size has little say in the matter. When it happens, he resists — and is overpowered. That is the shape of most of his experiences: not consent, but the simple physics of size.
 
-## Before TDay
+## History
+
+### Before TDay
 
 Before TDay, Jay was a pilot. Not for any major airline — he owned a small Cessna and made his living on contract work, transporting people and shipments wherever the job took him. It was independent, itinerant work that suited him: a man, a small plane, and the open sky.
 
 The wings on his chest were, to Jay, never a coincidence. He had been marked for flight before he ever sat in a cockpit.
 
-## After TDay
+### After TDay
 
 Jay survived TDay — and the most popular account of how is that he was simply not on the ground when the world ended. Where others were caught in the Chaos, Jay was in the air, watching it unfold from the one place the new giants could not immediately reach.
 
@@ -56,7 +58,7 @@ His old advantages count for little here. The speed that once carried him across
 - The most popular theory holds that Jay rode out TDay in the air — and that he only became prey when something far larger finally brought him down. None of it is canon; it is just a story the world likes to tell about him.
 - His durability under use far exceeds what his frame should allow — a detail many attribute to SinCorp toy-enhancement treatments, though no one has ever seen him undergo them.
 
-## Gallery
+## Associated Images
 
 ![Jay's Crest | Jay's iconic chest crest — a natural marking in the shape of a pilot's wings](https://res.cloudinary.com/dq40xaaux/image/upload/v1779891405/jaycrest_m8l6l6.png)
 

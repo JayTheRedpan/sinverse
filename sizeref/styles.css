@@ -1882,10 +1882,14 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 /* ── Sandbox mode: figures become freely draggable ───────────── */
 #sr-figures.sandbox-active {
   align-items: flex-end; /* keep ground alignment */
+  position: relative;    /* positioning context for absolutely-placed figures */
 }
 
 /* ── Sandbox mode ─────────────────────────────────────────────── */
-/* Transform-based drag: no overflow/clipping changes needed */
+/* In sandbox, each figure is anchored to the scene origin (its baseline flex
+   position is captured once and turned into an absolute left), so its stored
+   drag offset is independent of other figures' widths or order — no jump on
+   reorder, no drift on zoom. */
 body.sandbox-active .sr-img-wrap {
   cursor: grab;
   will-change: transform;

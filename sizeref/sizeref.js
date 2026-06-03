@@ -569,7 +569,10 @@ function allCharSlots() {
 function effectiveHSlot(char, slotIdx) {
   var key = charKeyForSlot(slotIdx);
   var ov = key ? S.heightOverrides[key] : S.heightOverrides[slotIdx];
-  if (ov !== undefined) return ov;
+  // An override is a TRUE (standing) height typed by the user. Apply the pose
+  // correction the same way the canonical path does, so a posed character's
+  // figure renders at the correct pose-adjusted size instead of full height.
+  if (ov !== undefined) return ov * (char.height_correction || 1);
   return char.height * (char.height_correction || 1);
 }
 
@@ -598,6 +601,9 @@ function render() {
 
   // Sandbox positions are stored in sandboxPositions{} and applied after render
   figs.innerHTML = '';
+  // Clear any sandbox-locked container box when not in sandbox so the normal
+  // flex layout governs the scene again.
+  if (!sandboxMode) { figs.style.height = ''; figs.style.width = ''; }
   stats.innerHTML = '';
 
   // Populate stats FIRST so their height is in the layout before we measure canvasH
@@ -697,7 +703,15 @@ function renderChar(figs, char, slotIdx) {
 
   var iw = el('div'); iw.className = 'sr-img-wrap';
   iw.style.height = (pH + headroomPx) + 'px';
-  iw.setAttribute('data-slot-idx', String(slotIdx !== undefined ? slotIdx : -1)); // for sandbox position restore
+  iw.setAttribute('data-slot-idx', String(slotIdx !== undefined ? slotIdx : -1)); // layering/sandbox helper
+  // Sandbox positions are keyed by the CHARACTER (its select value), not slot
+  // index, so reordering slots never makes a character inherit a neighbor's
+  // position. charKeyForSlot returns 'idx_value'; we want just the value part.
+  (function(){
+    var _sels = allSlotSelects();
+    var _v = (slotIdx !== undefined && _sels[slotIdx]) ? _sels[slotIdx].value : '';
+    iw.setAttribute('data-char-key', _v || ('idx_' + (slotIdx !== undefined ? slotIdx : -1)));
+  })();
   iw.draggable = false;
   // Only constrain height — let width follow the image's natural aspect ratio
   var img = el('img');
@@ -1026,10 +1040,13 @@ function resizeControlsHTML(char, slotIdx) {
   var _rKey = charKeyForSlot(slotIdx);
   var ovH = _rKey ? S.heightOverrides[_rKey] : S.heightOverrides[slotIdx];
   var isOv = ovH !== undefined;
-  var effH = effectiveHSlot(char, slotIdx);
-  var curFt = Math.floor(effH / 12);
-  var curIn = Math.round(effH % 12);
-  var curCm = Math.round(effH * 2.54);
+  // The resize popup edits TRUE (standing) height: the override value if set,
+  // otherwise the character's canonical height. Not the pose-corrected render
+  // height (effectiveHSlot), so the input prepopulates with a natural number.
+  var trueH = isOv ? ovH : char.height;
+  var curFt = Math.floor(trueH / 12);
+  var curIn = Math.round(trueH % 12);
+  var curCm = Math.round(trueH * 2.54);
   // Popup is built on document.body by the click handler to avoid fixed-position clipping
   // Data attributes carry the values to the handler
   return (
@@ -1065,6 +1082,10 @@ function wireResizeControls(block) {
       var curFt2 = btn.getAttribute('data-cur-ft') || '';
       var curIn2 = btn.getAttribute('data-cur-in') || '';
       var curCm2 = btn.getAttribute('data-cur-cm') || '';
+      // Split current cm into metres + remaining cm for the metric inputs
+      var curCmTotal = parseFloat(curCm2) || 0;
+      var curM2  = Math.floor(curCmTotal / 100);
+      var curRc2 = Math.round(curCmTotal % 100);
 
       // Close any existing popup
       var oldPop = document.getElementById('sr-global-resize-popup');
@@ -1081,7 +1102,8 @@ function wireResizeControls(block) {
         '</div>' +
         '<div class="sr-resize-popup-inputs">' +
           (S.metric
-            ? '<input class="sr-resize-cm builder-input numInput" type="number" min="0" placeholder="cm" value="' + curCm2 + '" /><span class="sv-resize-unit">cm</span>'
+            ? '<input class="sr-resize-m builder-input numInput" type="number" min="0" max="9999" placeholder="m" value="' + curM2 + '" /><span class="sv-resize-unit">m</span>' +
+              '<input class="sr-resize-cm builder-input numInput" type="number" min="0" max="99" placeholder="cm" value="' + curRc2 + '" /><span class="sv-resize-unit">cm</span>'
             : '<input class="sr-resize-ft builder-input numInput" type="number" min="0" max="9999" placeholder="ft" value="' + curFt2 + '" /><span class="sv-resize-unit">ft</span>' +
               '<input class="sr-resize-in builder-input numInput" type="number" min="0" max="11" placeholder="in" value="' + curIn2 + '" /><span class="sv-resize-unit">in</span>'
           ) +
@@ -1095,9 +1117,11 @@ function wireResizeControls(block) {
         var idx2 = parseInt(this.getAttribute('data-slotidx'));
         var inches;
         if (S.metric) {
-          var cm = parseFloat(popup.querySelector('.sr-resize-cm').value);
-          if (!cm || cm <= 0) return;
-          inches = cm / 2.54;
+          var m  = parseFloat(popup.querySelector('.sr-resize-m').value)  || 0;
+          var cm = parseFloat(popup.querySelector('.sr-resize-cm').value) || 0;
+          var totalCm = m * 100 + cm;
+          if (totalCm <= 0) return;
+          inches = totalCm / 2.54;
         } else {
           var ft  = parseFloat(popup.querySelector('.sr-resize-ft').value) || 0;
           var ins = parseFloat(popup.querySelector('.sr-resize-in').value) || 0;
@@ -1121,10 +1145,13 @@ function wireResizeControls(block) {
                    document.getElementById('sr-resize-popup-' + idx2);
       var inches;
       if (S.metric) {
+        var mEl  = popup2 && popup2.querySelector('.sr-resize-m');
         var cmEl = popup2 && popup2.querySelector('.sr-resize-cm');
-        var cm = cmEl ? parseFloat(cmEl.value) : 0;
-        if (!cm || cm <= 0) return;
-        inches = cm / 2.54;
+        var m  = mEl  ? (parseFloat(mEl.value)  || 0) : 0;
+        var cm = cmEl ? (parseFloat(cmEl.value) || 0) : 0;
+        var totalCm = m * 100 + cm;
+        if (totalCm <= 0) return;
+        inches = totalCm / 2.54;
       } else {
         var ftEl = popup2 && popup2.querySelector('.sr-resize-ft');
         var inEl = popup2 && popup2.querySelector('.sr-resize-in');
@@ -1157,8 +1184,12 @@ function statBlock(char, slotIdx) {
 
   var effH_in = effectiveHSlot(char, slotIdx);
   var _ovKey = charKeyForSlot(slotIdx);
-  var isOv = (_ovKey ? S.heightOverrides[_ovKey] : S.heightOverrides[slotIdx]) !== undefined;
-  var trueH = isOv ? effH_in : char.height;  // true canonical height
+  var _ovVal = _ovKey ? S.heightOverrides[_ovKey] : S.heightOverrides[slotIdx];
+  var isOv = _ovVal !== undefined;
+  // Displayed "Height" is the TRUE (standing) height: the raw override value if
+  // set, else canonical. effH_in is the pose-corrected RENDER height, shown
+  // separately in the "renders as ..." note below.
+  var trueH = isOv ? _ovVal : char.height;
   var isPosed = char.height_correction && char.height_correction < 0.99;
   var poseNote = isPosed
     ? '<div class="sr-stat-pose-note">renders as '+fH(effH_in)+' (posed)</div>'
@@ -1594,7 +1625,8 @@ function renderStatsView() {
       ? (s.testicleG >= 1000 ? fmt(s.testicleG/1000,2,'kg ea.') : Math.round(s.testicleG)+' g ea.')
       : (s.testicleG >= 453.6 ? fmt(s.testicleG/453.6,2,'lbs ea.') : Math.round(s.testicleG/28.35)+' oz ea.');
 
-    var isOvStats = S.heightOverrides[slotIdx] !== undefined;
+    var _ovKeyStats = charKeyForSlot(slotIdx);
+    var isOvStats = (_ovKeyStats ? S.heightOverrides[_ovKeyStats] : S.heightOverrides[slotIdx]) !== undefined;
 
     card.innerHTML =
       '<div class="sv-header">' +
@@ -1607,9 +1639,13 @@ function renderStatsView() {
       '</div>' +
 
       (function(){
-        var isOvSV = S.heightOverrides[slotIdx] !== undefined;
-        var trueHSV = isOvSV ? effectiveHSlot(char, slotIdx) : char.height;
-        var poseNoteSV = (!isOvSV && char.height_correction && char.height_correction < 0.99)
+        var _ovKeySV = charKeyForSlot(slotIdx);
+        var _ovValSV = _ovKeySV ? S.heightOverrides[_ovKeySV] : S.heightOverrides[slotIdx];
+        var isOvSV = _ovValSV !== undefined;
+        // Display TRUE height: raw override if set, else canonical. The
+        // pose-corrected render height is shown in the "renders as ..." note.
+        var trueHSV = isOvSV ? _ovValSV : char.height;
+        var poseNoteSV = (char.height_correction && char.height_correction < 0.99)
           ? 'renders as ' + fH(effectiveHSlot(char, slotIdx)) + ' posed' : '';
         return statSection('Scale', [
           statRow('Height', fH(trueHSV), poseNoteSV),
@@ -3091,20 +3127,12 @@ function onDrop(e) {
     } else {
       container.insertBefore(dragSrc, this);
     }
-    // Exit sandbox on reorder — positions don't make sense after order change
-    if (sandboxMode) {
-      sandboxMode = false;
-      document.body.classList.remove('sandbox-active');
-      var btn = document.getElementById('btn-sandbox');
-      if (btn) { btn.textContent = 'Sandbox: Off'; btn.classList.remove('active'); }
-      var _toast = document.createElement('div');
-      _toast.textContent = 'Sandbox reset — character order changed';
-      _toast.style.cssText = 'position:fixed;bottom:1.5rem;left:50%;transform:translateX(-50%);background:var(--bg-panel);border:1px solid var(--border-mid);color:var(--text-secondary);font-family:var(--font-caps);font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;padding:0.5rem 1rem;border-radius:var(--radius);z-index:9999;pointer-events:none;';
-      document.body.appendChild(_toast);
-      setTimeout(function(){ _toast.remove(); }, 2000);
-    }
+    // Reorder only changes the draw/layering order — each character keeps its
+    // current sandbox position and the zoom level is unchanged. We just migrate
+    // the per-slot state keys below and re-render with the new layering.
 
-    // Migrate flip/rotation/resize state — keys include slot index, remap after reorder
+    // Migrate flip/rotation/resize state — keys include slot index, remap after reorder.
+    // (Sandbox positions are keyed by character now, so they need no remapping.)
     (function() {
       var newSels = allSlotSelects();
       var moved = slotVals.slice();
@@ -4638,18 +4666,89 @@ function applySandboxPositions() {
   var figs = document.getElementById('sr-figures');
   if (!figs) return;
   var wraps = Array.from(figs.querySelectorAll('.sr-img-wrap'));
-  wraps.forEach(function(wrap, i) {
-    var sid = wrap.getAttribute('data-slot-idx') || String(i);
-    var pos = sandboxPositions[sid];
-    var tx = pos ? pos.tx : 0;
-    var ty = pos ? pos.ty : 0;
-    wrap.style.transform = 'translate('+tx+'px,'+ty+'px)';
-    wrap.style.cursor = 'grab';
-    wrap.style.userSelect = 'none';
-    wrap.style.zIndex = String(wraps.length - i);
-    wrap.style.position = 'relative';
-    makeDraggable(wrap);
-  });
+  if (!wraps.length) return;
+
+  function pin() {
+    // Reset to flow and clear any prior locks so we measure the CURRENT scale
+    // (figures grow on zoom; the container must be re-measured, not stale-locked).
+    figs.style.height = '';
+    figs.style.width  = '';
+    wraps.forEach(function(w){
+      w.style.position = '';
+      w.style.left = ''; w.style.top = ''; w.style.bottom = ''; w.style.width = '';
+    });
+    void figs.offsetHeight; // force reflow before measuring
+
+    var figsRect = figs.getBoundingClientRect();
+    var containerH = figsRect.height;
+    var containerW = figsRect.width;
+    var geo = wraps.map(function(wrap) {
+      var r = wrap.getBoundingClientRect();
+      return {
+        left:   r.left - figsRect.left,
+        top:    r.top  - figsRect.top,
+        width:  r.width,
+        height: r.height
+      };
+    });
+
+    // Lock the container box so the all-absolute flex parent can't collapse
+    // (which previously zeroed its height and squished widths to min-width).
+    figs.style.height = containerH + 'px';
+    figs.style.width  = containerW + 'px';
+
+    var ppi = (typeof S !== 'undefined' && S.pxPerIn) ? S.pxPerIn : 1;
+
+    wraps.forEach(function(wrap, i) {
+      var sid = wrap.getAttribute('data-char-key') || wrap.getAttribute('data-slot-idx') || String(i);
+      var g = geo[i];
+
+      // If this figure has no stored position yet, capture its current natural
+      // (flex) placement into the scale-independent coordinate system NOW, so it
+      // stays put on later zoom/resize/reorder instead of drifting with the flex
+      // baseline. cxFrac = centre x / scene width; groundInches = feet above floor.
+      if (!sandboxPositions[sid] || sandboxPositions[sid].cxFrac === undefined) {
+        sandboxPositions[sid] = {
+          cxFrac:       (g.left + g.width / 2) / containerW,
+          groundInches: (containerH - g.height - g.top) / ppi
+        };
+      }
+      var pos = sandboxPositions[sid];
+
+      wrap.style.position = 'absolute';
+      wrap.style.width  = g.width + 'px';
+      var leftPx = (pos.cxFrac * containerW) - (g.width / 2);
+      var groundPx = (pos.groundInches || 0) * ppi;
+      var topPx = containerH - g.height - groundPx;
+      wrap.style.left = leftPx + 'px';
+      wrap.style.top  = topPx + 'px';
+      wrap.style.transform = '';
+      wrap.style.cursor = 'grab';
+      wrap.style.userSelect = 'none';
+      wrap.style.zIndex = String(wraps.length - i);
+      makeDraggable(wrap);
+    });
+  }
+
+  // Pin once images have a real laid-out size (so widths/positions are correct),
+  // otherwise wait for them to load. Pinning happens on the next frame so flex
+  // layout has settled.
+  var imgs = wraps.map(function(w){ return w.querySelector('img'); }).filter(Boolean);
+  var pending = imgs.filter(function(im){ return !(im.complete && im.naturalWidth > 0); });
+  if (pending.length) {
+    var remaining = pending.length;
+    pending.forEach(function(im) {
+      var done = function() {
+        im.removeEventListener('load', done);
+        im.removeEventListener('error', done);
+        if (--remaining <= 0) requestAnimationFrame(pin);
+      };
+      im.addEventListener('load', done);
+      im.addEventListener('error', done);
+    });
+  } else {
+    requestAnimationFrame(pin);
+  }
 }
 
 // Grab-to-drag panning for a scroll container (both axes). Ignores drags that
@@ -4697,19 +4796,15 @@ function enableDragScrollSV(container) {
 }
 
 function makeDraggable(el) {
-  var startX, startY, baseTx, baseTy;
-  function currentTranslate() {
-    var m = (el.style.transform || '').match(/translate\(([-\d.]+)px,\s*([-\d.]+)px\)/);
-    return m ? {tx: parseFloat(m[1]), ty: parseFloat(m[2])} : {tx: 0, ty: 0};
-  }
+  var startX, startY, baseLeft, baseTop;
   function onDown(e) {
     if (!sandboxMode) return;
     e.preventDefault();
     var cx = e.touches ? e.touches[0].clientX : e.clientX;
     var cy = e.touches ? e.touches[0].clientY : e.clientY;
     startX = cx; startY = cy;
-    var t = currentTranslate();
-    baseTx = t.tx; baseTy = t.ty;
+    baseLeft = parseFloat(el.style.left) || 0;
+    baseTop  = parseFloat(el.style.top)  || 0;
     el.style.cursor = 'grabbing';
     var allWraps = document.querySelectorAll('#sr-figures .sr-img-wrap');
     el.style.zIndex = String(allWraps.length + 10);
@@ -4722,12 +4817,25 @@ function makeDraggable(el) {
     e.preventDefault();
     var cx = e.touches ? e.touches[0].clientX : e.clientX;
     var cy = e.touches ? e.touches[0].clientY : e.clientY;
-    var tx = baseTx + (cx - startX);
-    var ty = baseTy + (cy - startY);
-    el.style.transform = 'translate(' + tx + 'px,' + ty + 'px)';
-    // Persist position immediately so any re-render restores it
-    var sid = el.getAttribute('data-slot-idx');
-    if (sid !== null) sandboxPositions[sid] = {tx: tx, ty: ty};
+    var leftPx = baseLeft + (cx - startX);
+    var topPx  = baseTop  + (cy - startY);
+    el.style.left = leftPx + 'px';
+    el.style.top  = topPx + 'px';
+    // Persist in SCALE-INDEPENDENT coordinates so the position survives zoom,
+    // resize, and reorder without jumping:
+    //  - cxFrac: figure centre x as a fraction of the scene width
+    //  - groundInches: feet height above the ground line, in inches
+    var figs = document.getElementById('sr-figures');
+    if (!figs) return;
+    var cw = parseFloat(figs.style.width)  || figs.getBoundingClientRect().width  || 1;
+    var chH = parseFloat(figs.style.height) || figs.getBoundingClientRect().height || 1;
+    var w = el.getBoundingClientRect().width;
+    var h = el.getBoundingClientRect().height;
+    var ppi = (typeof S !== 'undefined' && S.pxPerIn) ? S.pxPerIn : 1;
+    var cxFrac = (leftPx + w / 2) / cw;
+    var groundInches = (chH - h - topPx) / ppi;
+    var sid = el.getAttribute('data-char-key') || el.getAttribute('data-slot-idx');
+    if (sid !== null) sandboxPositions[sid] = { cxFrac: cxFrac, groundInches: groundInches };
   }
   function onUp() {
     el.style.cursor = 'grab';
