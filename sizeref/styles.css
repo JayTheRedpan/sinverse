@@ -609,6 +609,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   border-top: 1px solid var(--border);
   background: var(--bg-panel);
   padding-left: 1.5rem;  /* match sr-length-scroll left padding */
+  overflow: hidden;      /* ruler is sized to full content; clip to viewport */
 }
 .sr-headshot-spacer {
   width: 90px;           /* match sr-headshot-wrap width */

@@ -686,7 +686,18 @@ function render() {
       // the overflowing tops of tall figures become scrollable instead of clipped.
       scrollEl2.style.alignItems = 'flex-start';
       scene2.style.marginTop = 'auto';
-      requestAnimationFrame(function() { scrollEl2.scrollTop = scrollEl2.scrollHeight; });
+      // Restore the scroll position the user was at (centered fraction) across a
+      // zoom change; only snap to the bottom on the very first zoom-in (no prior
+      // fraction captured), so the ground is shown by default.
+      var fracToRestore = _preserveHeightScrollFrac;
+      requestAnimationFrame(function() {
+        if (fracToRestore != null && scrollEl2.scrollHeight > scrollEl2.clientHeight) {
+          var target = fracToRestore * scrollEl2.scrollHeight - scrollEl2.clientHeight / 2;
+          scrollEl2.scrollTop = Math.max(0, Math.min(target, scrollEl2.scrollHeight - scrollEl2.clientHeight));
+        } else {
+          scrollEl2.scrollTop = scrollEl2.scrollHeight;
+        }
+      });
     } else {
       scene2.style.minHeight = '';
       scene2.style.marginTop = '';
@@ -721,13 +732,14 @@ function renderChar(figs, char, slotIdx) {
   var iw = el('div'); iw.className = 'sr-img-wrap';
   iw.style.height = (pH + headroomPx) + 'px';
   iw.setAttribute('data-slot-idx', String(slotIdx !== undefined ? slotIdx : -1)); // layering/sandbox helper
-  // Sandbox positions are keyed by the CHARACTER (its select value), not slot
-  // index, so reordering slots never makes a character inherit a neighbor's
-  // position. charKeyForSlot returns 'idx_value'; we want just the value part.
+  // Sandbox positions are keyed PER SLOT (slotIdx + '_' + value) so two slots
+  // holding the SAME character stay independent — otherwise duplicates would
+  // share a key, stack on the same spot, and the second would appear to vanish.
   (function(){
     var _sels = allSlotSelects();
     var _v = (slotIdx !== undefined && _sels[slotIdx]) ? _sels[slotIdx].value : '';
-    iw.setAttribute('data-char-key', _v || ('idx_' + (slotIdx !== undefined ? slotIdx : -1)));
+    var _key = _v ? (slotIdx + '_' + _v) : ('idx_' + (slotIdx !== undefined ? slotIdx : -1));
+    iw.setAttribute('data-char-key', _key);
   })();
   iw.draggable = false;
   // Only constrain height — let width follow the image's natural aspect ratio
@@ -813,13 +825,13 @@ function renderObj(figs, obj, slotIdx) {
   var iw = el('div'); iw.className = 'sr-img-wrap';
   iw.style.height = pH + 'px';
   iw.setAttribute('data-slot-idx', String(slotIdx !== undefined ? slotIdx : -1));
-  // Key sandbox position by the OBJECT (its select value), not slot index, so
-  // reordering slots never makes an object inherit a neighbor's position —
-  // matching how characters are keyed (fixes position jumps).
+  // Key sandbox position PER SLOT (slotIdx + '_' + value) so duplicate objects
+  // in different slots stay independent (don't stack on one spot).
   (function(){
     var _sels = allSlotSelects();
     var _v = (slotIdx !== undefined && _sels[slotIdx]) ? _sels[slotIdx].value : '';
-    iw.setAttribute('data-char-key', _v || ('idx_' + (slotIdx !== undefined ? slotIdx : -1)));
+    var _key = _v ? (slotIdx + '_' + _v) : ('idx_' + (slotIdx !== undefined ? slotIdx : -1));
+    iw.setAttribute('data-char-key', _key);
   })();
   iw.draggable = false;
 
@@ -879,8 +891,18 @@ function silhouette(h, w) {
 // Re-rendering at a larger pxPerIn naturally scales all images correctly.
 function applyZoom() {
   document.getElementById('zoom-label').textContent = Math.round(S.zoomH*100)+'%';
+  // Preserve the viewer's scroll position across the zoom (keep the same content
+  // centered) instead of snapping to the bottom on every re-render.
+  var scrollEl = document.getElementById('sr-scroll');
+  var frac = 0.5;
+  if (scrollEl && scrollEl.scrollHeight > scrollEl.clientHeight) {
+    frac = (scrollEl.scrollTop + scrollEl.clientHeight / 2) / scrollEl.scrollHeight;
+  }
+  _preserveHeightScrollFrac = frac;
   render();  // re-render with new pxPerIn = canvasH * zoomH / maxH
+  _preserveHeightScrollFrac = null;
 }
+var _preserveHeightScrollFrac = null;
 
 // ── Ruler ─────────────────────────────────────────────────────
 // Ruler is OUTSIDE zoom — tick positions calculated with zoom factor applied
@@ -1999,22 +2021,30 @@ function updateLengthGrid() {
     stepPx = S.pxPerInLen * step2;
   }
   if (stepPx < 1) return;
-  // Measure the ruler element's actual left edge relative to the scroll container
-  // to get the precise 0-mark offset
-  var rulerEl = document.getElementById('sr-length-ruler');
-  var offsetPx = 90 + 24; // fallback: HEADSHOT_W + 1.5rem padding
-  if (rulerEl && scrollEl) {
-    var rulerRect  = rulerEl.getBoundingClientRect();
-    var scrollRect = scrollEl.getBoundingClientRect();
-    offsetPx = rulerRect.left - scrollRect.left + scrollEl.scrollLeft;
+  // The length bars share a left origin (length = 0). Find that origin in the
+  // scroll container's CONTENT space (independent of scroll): it's the left edge
+  // of a length bar. Use the first row's bar; fall back to headshot width.
+  var sx = scrollEl.scrollLeft || 0;
+  var scrollRect = scrollEl.getBoundingClientRect();
+  var bar = scrollEl.querySelector('.sr-length-img-wrap');
+  var originContent;
+  if (bar) {
+    var br = bar.getBoundingClientRect();
+    originContent = (br.left - scrollRect.left) + sx;   // content-space x of length 0
+  } else {
+    originContent = 90 + 24; // fallback: HEADSHOT_W + padding
   }
-  // Use two backgrounds: solid block to hide lines left of 0, then repeating lines
+  // The background is attached to the (non-scrolling) container, so to make the
+  // lines track the content we offset the position by -scrollLeft. This keeps
+  // the grid aligned with both the bars and the ruler (which also shifts by
+  // -scrollLeft).
+  var viewOffset = originContent - sx;
   var blockColor = 'var(--bg)';  // same as viewer background
   scrollEl.style.backgroundImage =
-    'linear-gradient(to right, ' + blockColor + ' ' + offsetPx + 'px, transparent ' + offsetPx + 'px), ' +
+    'linear-gradient(to right, ' + blockColor + ' ' + viewOffset + 'px, transparent ' + viewOffset + 'px), ' +
     'repeating-linear-gradient(to right, ' + lineColor + ' 0px, ' + lineColor + ' 1px, transparent 1px, transparent ' + stepPx + 'px)';
   scrollEl.style.backgroundSize = '100% 100%, ' + stepPx + 'px 100%';
-  scrollEl.style.backgroundPosition = '0 0, ' + offsetPx + 'px 0';
+  scrollEl.style.backgroundPosition = '0 0, ' + viewOffset + 'px 0';
   scrollEl.style.backgroundRepeat = 'no-repeat, repeat-x';
 }
 
@@ -2125,6 +2155,32 @@ function renderLengthView() {
   updateLengthRuler(0, S.pxPerInLen || 1);
   document.getElementById('zoom-label').textContent = Math.round(S.zoomL*100)+'%';
   updateLengthGrid();
+
+  // Enable horizontal scrolling when zoomed in (rows are wider than the
+  // viewport). The ruler + grid are kept aligned to the horizontal scroll
+  // position by syncLengthRulerScroll (wired once).
+  var lenScroll = document.getElementById('sr-length-scroll');
+  if (lenScroll) {
+    lenScroll.style.overflowX = (S.zoomL > 1) ? 'auto' : 'hidden';
+    if (!lenScroll._hSyncWired) {
+      lenScroll._hSyncWired = true;
+      lenScroll.addEventListener('scroll', syncLengthRulerScroll);
+    }
+    syncLengthRulerScroll();
+  }
+}
+
+// Keep the horizontal length ruler (and the grid lines) aligned with the
+// content as it scrolls horizontally. The ruler lives outside the scroll
+// container, so we translate its ticks by -scrollLeft to match.
+function syncLengthRulerScroll() {
+  var scrollEl = document.getElementById('sr-length-scroll');
+  var rulerInner = document.getElementById('sr-length-ruler');
+  if (!scrollEl || !rulerInner) return;
+  var sx = scrollEl.scrollLeft || 0;
+  rulerInner.style.transform = 'translateX(' + (-sx) + 'px)';
+  // Re-align the grid background to the new scroll position.
+  if (typeof updateLengthGrid === 'function') updateLengthGrid();
 }
 
 function renderLengthRow(entity) {
@@ -2223,8 +2279,32 @@ function renderLengthRow(entity) {
 }
 
 function applyLengthZoom() {
+  // Preserve scroll position across the zoom (keep the same content centered)
+  // instead of resetting to the start. Horizontal especially, since zooming the
+  // length view mainly changes width.
+  var scrollEl = document.getElementById('sr-length-scroll');
+  var fracX = 0, fracY = 0;
+  if (scrollEl) {
+    if (scrollEl.scrollWidth > scrollEl.clientWidth)
+      fracX = (scrollEl.scrollLeft + scrollEl.clientWidth / 2) / scrollEl.scrollWidth;
+    if (scrollEl.scrollHeight > scrollEl.clientHeight)
+      fracY = (scrollEl.scrollTop + scrollEl.clientHeight / 2) / scrollEl.scrollHeight;
+  }
   // Zoom baked into pxPerInLen — renderLengthView recalculates and updates ruler
   renderLengthView();
+  if (scrollEl) {
+    requestAnimationFrame(function() {
+      if (fracX > 0 && scrollEl.scrollWidth > scrollEl.clientWidth) {
+        var tx = fracX * scrollEl.scrollWidth - scrollEl.clientWidth / 2;
+        scrollEl.scrollLeft = Math.max(0, Math.min(tx, scrollEl.scrollWidth - scrollEl.clientWidth));
+      }
+      if (fracY > 0 && scrollEl.scrollHeight > scrollEl.clientHeight) {
+        var ty = fracY * scrollEl.scrollHeight - scrollEl.clientHeight / 2;
+        scrollEl.scrollTop = Math.max(0, Math.min(ty, scrollEl.scrollHeight - scrollEl.clientHeight));
+      }
+      syncLengthRulerScroll();
+    });
+  }
 }
 
 function updateLengthRuler(maxLen, pxPerIn) {
@@ -2232,7 +2312,19 @@ function updateLengthRuler(maxLen, pxPerIn) {
   if (!ruler) return;
   ruler.innerHTML = '';
   var effPx = pxPerIn;  // zoom baked in
-  var rulerW = ruler.getBoundingClientRect().width || 400;
+  // Build ticks across the FULL content width (the widest row), not just the
+  // visible ruler width — otherwise ticks would be missing when the user scrolls
+  // right while zoomed. The rows live in sr-length-zoom.
+  var areaW = (function(){ var a=document.getElementById('sr-length-area'); return a?a.clientWidth:400; })();
+  var rulerW = areaW || 400;
+  var zoomEl = document.getElementById('sr-length-zoom');
+  if (zoomEl) rulerW = Math.max(rulerW, zoomEl.scrollWidth, zoomEl.getBoundingClientRect().width);
+  // The ruler element is normally only viewport-wide and clips its overflow, so
+  // ticks past the viewport would be hidden even after we translate it. Give it
+  // the full content width so its clip box contains every tick; the translate
+  // (syncLengthRulerScroll) then reveals the right portion as the user scrolls.
+  ruler.style.width = rulerW + 'px';
+  ruler.style.flex = '0 0 auto';
 
   if (S.metric) {
     var pxPerCm = effPx / 2.54;
@@ -5038,6 +5130,77 @@ function topOpaqueWrapAt(clientX, clientY) {
   return null;
 }
 
+// After a sandbox drag, a figure may sit above the figures box (lifted into the
+// air). Grow the box + scene so its top is reachable by scroll and included in
+// the copy, shifting all figures down so the ground stays put. Mirrors the
+// expansion pin() does on render, but runs on drag-end (no re-render needed).
+function reflowSandboxContainer() {
+  if (!sandboxMode) return;
+  var figs = document.getElementById('sr-figures');
+  if (!figs) return;
+  var wraps = Array.from(figs.querySelectorAll('.sr-img-wrap'));
+  if (!wraps.length) return;
+
+  var figsRect = figs.getBoundingClientRect();
+  var curH = parseFloat(figs.style.height) || figsRect.height;
+  var areaEl = document.getElementById('sr-canvas-area');
+  var minH = areaEl ? areaEl.clientHeight : curH;
+
+  // Highest current top relative to the figures box. Negative = above the top
+  // (lifted into the air and currently clipped/unreachable).
+  var minTop = Infinity;
+  wraps.forEach(function(w) {
+    var t = parseFloat(w.style.top);
+    if (isNaN(t)) t = w.getBoundingClientRect().top - figsRect.top;
+    if (t < minTop) minTop = t;
+  });
+  if (!isFinite(minTop)) return;
+
+  var pad = 8;
+  // Desired box height = current height adjusted so the highest figure has `pad`
+  // headroom. If the highest top is already >= pad (nothing above), we can
+  // shrink back toward the viewport height; if it's < pad, grow.
+  var shift = pad - minTop;             // move so highest top becomes `pad`
+  var newH = curH + shift;
+  if (newH < minH) { shift += (minH - newH); newH = minH; }
+  if (Math.abs(shift) < 1 && Math.abs(newH - curH) < 1) return;
+
+  var scrollC = document.getElementById('sr-scroll');
+  var sceneC  = document.getElementById('sr-scene');
+  var prevScrollTop = scrollC ? scrollC.scrollTop : 0;
+  var prevScrollH   = scrollC ? scrollC.scrollHeight : 0;
+
+  figs.style.height = Math.round(newH) + 'px';
+  wraps.forEach(function(w) {
+    var t = parseFloat(w.style.top) || 0;
+    w.style.top = Math.round(t + shift) + 'px';
+  });
+
+  if (scrollC && sceneC) {
+    if (newH > minH + 1) {
+      sceneC.style.minHeight = Math.round(newH) + 'px';
+      scrollC.style.overflowY = 'auto';
+      scrollC.style.alignItems = 'flex-start';
+      sceneC.style.marginTop = 'auto';
+    } else {
+      sceneC.style.minHeight = '';
+      scrollC.style.overflowY = (S.zoomH > 1) ? 'auto' : 'hidden';
+      scrollC.style.alignItems = '';
+      sceneC.style.marginTop = '';
+    }
+    // Keep the SAME content in view: the whole scene grew/shrank at the top by
+    // (scrollHeight delta), so move the scroll position by the same delta rather
+    // than letting the browser auto-jump.
+    var newScrollH = scrollC.scrollHeight;
+    var delta = newScrollH - prevScrollH;
+    var targetTop = prevScrollTop + delta;
+    targetTop = Math.max(0, Math.min(targetTop, newScrollH - scrollC.clientHeight));
+    scrollC.scrollTop = targetTop;
+  }
+  if (typeof updateRuler === 'function') updateRuler();
+  if (typeof syncRulerScroll === 'function') syncRulerScroll();
+}
+
 function makeDraggable(el) {
   var startX, startY, baseLeft, baseTop;
   function onDown(e) {
@@ -5101,6 +5264,10 @@ function makeDraggable(el) {
     document.removeEventListener('mouseup',   onUp);
     document.removeEventListener('touchmove', onMove);
     document.removeEventListener('touchend',  onUp);
+    // A figure may now sit above the container's top (lifted into the air).
+    // Re-expand the figures box / scroll area so its top is reachable by scroll
+    // and included in the copy — without waiting for a re-render.
+    reflowSandboxContainer();
   }
   el._srOnDown = onDown;   // exposed so a transparent-hit on another figure can hand off here
   el.addEventListener('mousedown',  onDown);
@@ -5374,9 +5541,14 @@ function bakedDataUrl(src) {
 
 function doCopyImage() {
   var btn = this;
+  // Both views capture an INNER content wrapper (not the scroll-clipped outer
+  // area): html2canvas renders it and its children fully regardless of an
+  // ancestor's overflow, so the whole scene is captured with no live un-clip
+  // (hence no flash) and live/capture coordinates always match. The scale is
+  // painted onto the canvas afterward for both views.
   var target = S.view === 'length'
-    ? document.getElementById('sr-length-area')
-    : document.getElementById('sr-canvas-area');
+    ? document.getElementById('sr-length-zoom')
+    : document.getElementById('sr-zoom');
   if (!target || typeof html2canvas === 'undefined') return;
 
   btn.textContent = '…';
@@ -5397,23 +5569,13 @@ function doCopyImage() {
   // the live page (the crop math measures live element rects, so the full scene
   // must be laid out). Ruler/grid hiding is done in the CLONE instead — see
   // onclone — so the live page never visibly flickers.
+  var savedArea = null;
+  var savedLenScroll = null;
   function enterCaptureState() {
-    if (scrollEl) {
-      savedScroll = {
-        overflowX: scrollEl.style.overflowX,
-        overflowY: scrollEl.style.overflowY,
-        scrollTop: scrollEl.scrollTop,
-        scrollLeft: scrollEl.scrollLeft,
-        height: scrollEl.style.height,
-        alignItems: scrollEl.style.alignItems
-      };
-      scrollEl.style.overflowX = 'visible';
-      scrollEl.style.overflowY = 'visible';
-      scrollEl.style.height = 'auto';
-      scrollEl.scrollTop = 0;
-      scrollEl.scrollLeft = 0;
-      if (rulerInner) rulerInner.style.transform = 'translateY(0px)';
-    }
+    // Capturing the inner content wrapper means there's nothing to mutate on the
+    // live DOM for the height view — so the page never visibly changes (no
+    // flash). The height scale is painted onto the output canvas afterward,
+    // computed from the crop's ground line, so it needs no live ruler changes.
   }
 
   // Pre-bake silhouette/object images (rose-gold filtered) so they render in
@@ -5436,13 +5598,37 @@ function doCopyImage() {
     // Enter capture state only now (bake finished) so there's no visible flash.
     enterCaptureState();
 
+    // The inner wrapper reports its full content size (it isn't clipped), so
+    // these dimensions already cover the whole scene at any zoom.
+    var capW = Math.max(target.scrollWidth, target.offsetWidth);
+    var capH = Math.max(target.scrollHeight, target.offsetHeight);
+
     html2canvas(target, {
       logging: false,
       backgroundColor: null,
       useCORS: true,
       allowTaint: false,
       scale: 2,
+      width: capW,
+      height: capH,
+      windowWidth: Math.max(capW, document.documentElement.clientWidth),
+      windowHeight: Math.max(capH, document.documentElement.clientHeight),
+      scrollX: 0,
+      scrollY: 0,
       onclone: function(doc) {
+        // Length view: un-clip the area + scroll IN THE CLONE so the full rows
+        // and the scale ruler render (no live DOM change, so no flash).
+        if (S.view === 'length') {
+          var cLenArea = doc.getElementById('sr-length-area');
+          var cLenScroll = doc.getElementById('sr-length-scroll');
+          if (cLenArea) { cLenArea.style.overflow = 'visible'; cLenArea.style.height = 'auto'; cLenArea.style.maxHeight = 'none'; }
+          if (cLenScroll) {
+            cLenScroll.style.overflow = 'visible';
+            cLenScroll.style.height = 'auto';
+            cLenScroll.scrollTop = 0;     // capture from the top, not the scrolled position
+            cLenScroll.scrollLeft = 0;
+          }
+        }
         // The foot/cm scale is painted manually onto the output canvas (see
         // drawHeightScaleOnCanvas). Hide the DOM ruler column with VISIBILITY
         // (not display) so it disappears from the capture but KEEPS its layout
@@ -5547,13 +5733,84 @@ function drawHeightScaleOnCanvas(canvas, target, scale, padding) {
   return out;
 }
 
+// Paint the horizontal length scale along the BOTTOM of an already-cropped
+// length-view capture. The rows share a left origin (length = 0) which, after
+// cropping with `pad` of left padding, sits at x = pad. Ticks march right at
+// pxPerInLen (zoom baked in) * scale. Adds a panel strip below the rows.
+function drawLengthScaleOnCanvas(canvas, target, scale, padding) {
+  var s = scale || 1;
+  var pad = (padding || 16) * s;
+  var ppi = (S.pxPerInLen || 0) * s;   // canvas px per inch horizontally
+  if (ppi <= 0) return canvas;
+
+  var stripH = Math.round(30 * s);     // height of the scale strip
+  var W = canvas.width;
+  var H = canvas.height;
+  var out = document.createElement('canvas');
+  out.width = W;
+  out.height = H + stripH;
+  var ctx = out.getContext('2d');
+
+  ctx.drawImage(canvas, 0, 0);
+  ctx.fillStyle = '#1a1210';           // --bg-panel
+  ctx.fillRect(0, H, W, stripH);
+  ctx.strokeStyle = 'rgba(122,82,64,0.55)';
+  ctx.lineWidth = Math.max(1, Math.round(1 * s));
+  ctx.beginPath(); ctx.moveTo(0, H + 0.5); ctx.lineTo(W, H + 0.5); ctx.stroke();
+
+  var originX = pad;   // length 0 sits at the left padding of the crop
+  ctx.save();
+  ctx.font = Math.round(11 * s) + "px 'Cormorant SC', Georgia, serif";
+  ctx.textBaseline = 'alphabetic';
+  ctx.textAlign = 'center';
+  ctx.fillStyle = '#c4a882';
+  ctx.strokeStyle = 'rgba(196,168,130,0.6)';
+
+  function tickAt(inches, label) {
+    var x = originX + inches * ppi;
+    if (x < 0 || x > W) return;
+    ctx.beginPath();
+    ctx.moveTo(x, H);
+    ctx.lineTo(x, H + Math.round(8 * s));
+    ctx.stroke();
+    ctx.fillText(label, x, H + Math.round(22 * s));
+  }
+
+  if (S.metric) {
+    var pxPerCm = ppi / 2.54;
+    var stepCm = niceInterval(48 * s, pxPerCm);
+    var maxCm = Math.ceil((W - originX) / pxPerCm) + stepCm;
+    for (var cm = 0; cm <= maxCm; cm += stepCm) {
+      tickAt(cm / 2.54, cm >= 100 ? (cm/100).toFixed(cm%100===0?0:1)+'m' : cm+'cm');
+    }
+  } else {
+    var inchSteps = [1,2,3,6,12,24,36,60,120,240];
+    var step = inchSteps[inchSteps.length-1];
+    for (var si=0; si<inchSteps.length; si++) {
+      if (ppi * inchSteps[si] >= 48 * s) { step = inchSteps[si]; break; }
+    }
+    var maxIn = Math.ceil((W - originX) / ppi) + step;
+    for (var i = 0; i <= maxIn; i += step) {
+      tickAt(i, i >= 12 ? Math.floor(i/12)+"' "+(i%12)+'"' : i+'"');
+    }
+  }
+  ctx.restore();
+  return out;
+}
+
 function domCropCanvas(canvas, target, scale, padding) {
   var pad = (padding || 16) * (scale || 1);
   var targetRect = target.getBoundingClientRect();
   var s = scale || 1;
+  var isLength = (S.view === 'length');
 
-  // Measure all figure and object elements to find content bounds on all 4 sides
-  var items = Array.from(target.querySelectorAll('.sr-img-wrap, .sr-obj-shape, .sr-obj-img'));
+  // Measure content elements to find bounds on all 4 sides. Each view has its
+  // own content elements: the height view uses figure/object wraps; the length
+  // view uses its row image wraps.
+  var sel = isLength
+    ? '.sr-length-row'
+    : '.sr-img-wrap, .sr-obj-shape, .sr-obj-img';
+  var items = Array.from(target.querySelectorAll(sel));
   if (!items.length) return canvas;
 
   var minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
@@ -5572,11 +5829,14 @@ function domCropCanvas(canvas, target, scale, padding) {
 
   if (!isFinite(minX) || maxX <= minX || maxY <= minY) return canvas;
 
-  // Use ground line as definitive bottom boundary
-  var ground = target.querySelector('.sr-ground');
-  if (ground) {
-    var gr = ground.getBoundingClientRect();
-    maxY = gr.bottom - targetRect.top;
+  // Height view: snap the bottom to the ground line. Length view has no ground —
+  // use the measured content bottom directly.
+  if (!isLength) {
+    var ground = target.querySelector('.sr-ground');
+    if (ground) {
+      var gr = ground.getBoundingClientRect();
+      maxY = gr.bottom - targetRect.top;
+    }
   }
 
   // Crop all 4 sides
@@ -5602,8 +5862,23 @@ function domCropCanvas(canvas, target, scale, padding) {
       if (copyWithScale && S.view !== 'length') {
         try { canvas = drawHeightScaleOnCanvas(canvas, target, 2, 20); } catch(e) { console.warn('scale draw failed:', e); }
       }
+      if (copyWithScale && S.view === 'length') {
+        try { canvas = drawLengthScaleOnCanvas(canvas, target, 2, 20); } catch(e) { console.warn('length scale draw failed:', e); }
+      }
       canvas.toBlob(function(blob) {
         function restoreDom() {
+          if (savedArea && savedArea.el) {
+            savedArea.el.style.overflow = savedArea.overflow;
+            savedArea.el.style.height = savedArea.height;
+            savedArea.el.style.maxHeight = savedArea.maxHeight;
+          }
+          if (savedLenScroll && savedLenScroll.el) {
+            savedLenScroll.el.style.overflowX = savedLenScroll.overflowX;
+            savedLenScroll.el.style.overflowY = savedLenScroll.overflowY;
+            savedLenScroll.el.style.height = savedLenScroll.height;
+            savedLenScroll.el.scrollTop = savedLenScroll.scrollTop;
+            savedLenScroll.el.scrollLeft = savedLenScroll.scrollLeft;
+          }
           if (scrollEl && savedScroll) {
             scrollEl.style.overflowX = savedScroll.overflowX;
             scrollEl.style.overflowY = savedScroll.overflowY;
@@ -5639,6 +5914,18 @@ function domCropCanvas(canvas, target, scale, padding) {
         }
       }, 'image/png');
     }).catch(function() {
+      if (savedArea && savedArea.el) {
+        savedArea.el.style.overflow = savedArea.overflow;
+        savedArea.el.style.height = savedArea.height;
+        savedArea.el.style.maxHeight = savedArea.maxHeight;
+      }
+      if (savedLenScroll && savedLenScroll.el) {
+        savedLenScroll.el.style.overflowX = savedLenScroll.overflowX;
+        savedLenScroll.el.style.overflowY = savedLenScroll.overflowY;
+        savedLenScroll.el.style.height = savedLenScroll.height;
+        savedLenScroll.el.scrollTop = savedLenScroll.scrollTop;
+        savedLenScroll.el.scrollLeft = savedLenScroll.scrollLeft;
+      }
       if (scrollEl && savedScroll) {
         scrollEl.style.overflowX = savedScroll.overflowX;
         scrollEl.style.overflowY = savedScroll.overflowY;
@@ -5660,8 +5947,34 @@ if (_copyBtnL) _copyBtnL.addEventListener('click', doCopyImage);
 g('btn-metric').addEventListener('click',function(){applyGlobalUnit(true);});
 
 function renderOrSandbox() {
+  // Preserve the viewer's scroll position (both axes) across a zoom re-render so
+  // it doesn't jump to the bottom-left. This is the function the height zoom
+  // buttons actually call.
+  var scrollEl = document.getElementById('sr-scroll');
+  var frac = null, fracX = null;
+  if (scrollEl) {
+    if (scrollEl.scrollHeight > scrollEl.clientHeight + 1)
+      frac = (scrollEl.scrollTop + scrollEl.clientHeight / 2) / scrollEl.scrollHeight;
+    if (scrollEl.scrollWidth > scrollEl.clientWidth + 1)
+      fracX = (scrollEl.scrollLeft + scrollEl.clientWidth / 2) / scrollEl.scrollWidth;
+  }
+  _preserveHeightScrollFrac = frac;
+  _preserveHeightScrollFracX = fracX;
   render();
+  // Restore horizontal position after the re-render/layout (vertical is handled
+  // inside render's zoom block via _preserveHeightScrollFrac).
+  if (scrollEl && fracX != null) {
+    requestAnimationFrame(function() {
+      if (scrollEl.scrollWidth > scrollEl.clientWidth + 1) {
+        var tx = fracX * scrollEl.scrollWidth - scrollEl.clientWidth / 2;
+        scrollEl.scrollLeft = Math.max(0, Math.min(tx, scrollEl.scrollWidth - scrollEl.clientWidth));
+      }
+    });
+  }
+  _preserveHeightScrollFrac = null;
+  _preserveHeightScrollFracX = null;
 }
+var _preserveHeightScrollFracX = null;
 g('btn-zoom-in').addEventListener('click',function(){
   if(S.view==='length'){S.zoomL=Math.min(ZMAX,parseFloat((S.zoomL+ZSTEP).toFixed(2)));applyLengthZoom();}
   else{S.zoomH=Math.min(ZMAX,parseFloat((S.zoomH+ZSTEP).toFixed(2)));renderOrSandbox();}
