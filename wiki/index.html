@@ -320,7 +320,7 @@
       color: var(--text-secondary);
       line-height: 1.85;
     }
-    .wiki-faq-item.open .wiki-faq-a { max-height: 600px; }
+    .wiki-faq-item.open .wiki-faq-a { max-height: 1200px; }
 
     /* ── Lore cards ── */
     .wiki-lore-cards {
@@ -1591,6 +1591,26 @@ var currentCharSlug = null;
 var activeTagFilter = null;
 
 var LORE_PAGES = []; // loaded from lore.json
+var faqEntries = []; // [{question, answer}] parsed from lore/faq.md for search
+
+// Parse the FAQ markdown into {question, answer} pairs so individual questions
+// are searchable. Each "## Question" heading starts a new entry; the text until
+// the next heading is its answer (used for snippet + secondary matching).
+function buildFaqIndex(md) {
+  faqEntries = [];
+  if (!md) return;
+  // Drop frontmatter
+  md = md.replace(/^---[\s\S]*?---\s*/, '');
+  var parts = md.split(/^##\s+/m);
+  parts.forEach(function(block) {
+    block = block.trim();
+    if (!block) return;
+    var nl = block.indexOf('\n');
+    var question = (nl === -1 ? block : block.slice(0, nl)).trim();
+    var answer = (nl === -1 ? '' : block.slice(nl + 1)).trim();
+    if (question) faqEntries.push({ question: question, answer: answer });
+  });
+}
 
 // ── Navigation ────────────────────────────────────────────────
 function showPage(id, pushState) {
@@ -1714,7 +1734,8 @@ Promise.all([
   fetch('lore.json').then(function(r){ return r.json(); }),
   fetch('../gallery/gallery.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
   fetch('../library/library.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
-  fetch('eras.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
+  fetch('eras.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+  fetch('lore/faq.md').then(function(r){ return r.text(); }).catch(function(){ return ''; })
 ]).then(function(results) {
   characters = results[0];
   timelineEvents = results[1];
@@ -1722,6 +1743,7 @@ Promise.all([
   galleryItems = results[3];
   libraryItems = results[4];
   erasData = results[5] || [];
+  buildFaqIndex(results[6] || '');
   buildLoreSidebar();
   buildTimeline();
   initTimelineZoom();
@@ -1731,11 +1753,16 @@ Promise.all([
   var restoreHash = window._restoreHash;
   if (restoreHash) {
     window._restoreHash = null;
-    var charMatch = restoreHash.match(/^#char-(\d+)$/);
+    var charMatch = restoreHash.match(/^#char-(.+)$/);
     var loreMatch = restoreHash.match(/^#lore-(.+)$/);
     var catMatch  = restoreHash.match(/^#cat-(.+)$/);
     var pageMatch = restoreHash.match(/^#page-(.+)$/);
-    if (charMatch) { loadCharPage(parseInt(charMatch[1]), false); }
+    if (charMatch) {
+      var ref = decodeURIComponent(charMatch[1]);
+      var c = characters.find(function(x){ return x.wiki === ref; })
+           || (/^\d+$/.test(ref) ? characters.find(function(x){ return x.id === parseInt(ref); }) : null);
+      if (c) loadCharPage(c.id, false);
+    }
     else if (loreMatch) { loadLorePage(loreMatch[1], false); }
     else if (catMatch) {
       var section = decodeURIComponent(catMatch[1].replace(/-/g, ' '));
@@ -2515,11 +2542,11 @@ function loadCharPage(charId, pushState) {
   var char = characters.find(function(c){ return c.id === charId; });
   if (!char) return;
 
-  var slug = char.name.toLowerCase().replace(/\s+/g, '-');
+  var slug = char.wiki || char.name.toLowerCase().replace(/\s+/g, '-');
   var container = document.getElementById('char-detail-content');
   container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;padding:2rem 0">Loading…</p>';
   showPage('character', false);
-  if (pushState !== false) history.pushState({ type: 'character', id: charId }, '', '#char-' + charId);
+  if (pushState !== false) history.pushState({ type: 'character', id: charId, slug: slug }, '', '#char-' + slug);
 
   // Build stat block from JSON
   var statRows = [
@@ -2769,12 +2796,45 @@ function runSearch(q) {
     });
   });
 
+  // FAQ questions (each accordion item is individually searchable)
+  faqEntries.forEach(function(fe, idx) {
+    var score = 0;
+    var qLower = fe.question.toLowerCase();
+    if (qLower === qlLower) score = 100;
+    else if (qLower.startsWith(qlLower)) score = 80;
+    else if (qLower.includes(qlLower)) score = 65;
+    else if (fe.answer && fe.answer.toLowerCase().includes(qlLower)) score = 35;
+    if (score) {
+      // Short plain-text snippet from the answer for the sub-line
+      var snippet = fe.answer.replace(/[#*_`>\-]/g, '').replace(/\s+/g, ' ').trim();
+      if (snippet.length > 90) snippet = snippet.slice(0, 90).replace(/\s+\S*$/, '') + '…';
+      results.push({
+        type: 'faq', score: score,
+        label: fe.question,
+        sub: snippet || 'FAQ',
+        action: function(i){ return function(){ openFaqItem(i); }; }(idx)
+      });
+    }
+  });
+
   results.sort(function(a,b){ return b.score - a.score; });
   renderSearchResults(q, results);
 }
 
-var TYPE_LABELS = { character: 'Character', lore: 'Lore', timeline: 'Timeline' };
-var TYPE_COLORS = { character: 'var(--accent)', lore: 'var(--accent-light)', timeline: 'var(--text-secondary)' };
+var TYPE_LABELS = { character: 'Character', lore: 'Lore', timeline: 'Timeline', faq: 'FAQ' };
+var TYPE_COLORS = { character: 'var(--accent)', lore: 'var(--accent-light)', timeline: 'var(--text-secondary)', faq: 'var(--accent-light)' };
+
+// Open the FAQ page and expand the Nth accordion item (matching faqEntries order).
+function openFaqItem(idx) {
+  loadLorePage('faq');
+  setTimeout(function() {
+    var items = document.querySelectorAll('#lore-detail-content .wiki-faq-item, .wiki-faq-item');
+    var target = items[idx];
+    if (!target) return;
+    if (!target.classList.contains('open')) target.classList.add('open');
+    target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+  }, 200);
+}
 
 function renderSearchResults(q, results) {
   showPage('search', false);

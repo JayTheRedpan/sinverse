@@ -1597,3 +1597,11 @@
   transition: color 0.15s;
 }
 .reader-char-link:hover { color: var(--accent-light, var(--accent)); }
+/* Related-works cross-links (library <-> gallery) */
+.reader-related {
+  display: flex;
+  flex-direction: column;
+  gap: 0.4rem;
+  margin-top: 0.6rem;
+}
+.reader-related .reader-char-link { display: inline-block; }

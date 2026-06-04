@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../_shared/agegate.js?v=1780460382"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Jay's Stash</title>
+  <!-- Hidden module: intentionally minimal/quiet social preview. -->
+  <meta name="robots" content="noindex" />
+  <meta name="theme-color" content="#c49a78" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
+  <link rel="stylesheet" href="styles.css?v=1780546496" />
+</head>
+<body>
+
+  <header class="stash-header">
+    <div class="stash-brand">
+      <div class="stash-title-block">
+        <h1 class="stash-title">Jay's Stash</h1>
+        <span class="stash-eyebrow">A little collection of things Jay keeps to himself</span>
+      </div>
+    </div>
+    <p class="stash-intro">
+      Not strictly Sinverse — just works Jay's fond of, kept tucked away. Stories and art share one shelf here.
+    </p>
+  </header>
+
+  <div class="stash-controls">
+    <div class="search-bar-row">
+      <input id="stash-search" class="search-input" type="text" placeholder="Search the stash…" aria-label="Search the stash" />
+      <button id="stash-clear" class="search-clear-btn" title="Clear search and reset filters">✕ Clear</button>
+      <button id="stash-filter-toggle" class="filter-toggle-btn" title="Show/hide filters">Filters ▾</button>
+    </div>
+    <div id="stash-filter-panel" class="filter-panel">
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-group-label">Search</span>
+          <div class="search-mode-toggles">
+            <button class="search-mode-btn active" data-mode="title"   title="Search titles">Title</button>
+            <button class="search-mode-btn active" data-mode="creator" title="Search creators">Creator</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-group-label">Show</span>
+          <div class="filter-btns" id="stash-kind-filters">
+            <button class="type-toggle-btn active" data-kind="image">Images</button>
+            <button class="type-toggle-btn active" data-kind="story">Stories</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group filter-group-tags">
+          <span class="filter-group-label">Tags</span>
+          <div class="tag-controls">
+            <div class="tag-bulk">
+              <button id="stash-tag-clear" class="tag-bulk-btn">Clear all</button>
+            </div>
+            <div class="tag-tri-legend" aria-hidden="true">
+              <span class="tag-tri-legend-item"><span class="tag-tri-chip neutral">Tag</span> off</span>
+              <span class="tag-tri-legend-item"><span class="tag-tri-chip include">＋ Tag</span> require</span>
+              <span class="tag-tri-legend-item"><span class="tag-tri-chip exclude">－ Tag</span> exclude</span>
+            </div>
+          </div>
+          <div class="tag-mode-hint" id="stash-tag-hint"></div>
+          <div id="stash-tag-filters" class="tag-filter-row"></div>
+        </div>
+      </div>
+    </div><!-- /filter-panel -->
+  </div>
+
+  <div class="results-bar">
+    <div class="results-sort">
+      <label class="results-sort-label" for="stash-sort">Sort:</label>
+      <select id="stash-sort" class="sort-select-inline">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title">Title A–Z</option>
+        <option value="creator">Creator A–Z</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="stash-grid" class="stash-grid">
+    <div class="loading-placeholder">Opening the stash…</div>
+  </div>
+
+  <div class="stash-footer">
+    <a href="../" class="footer-home-link">&#8592; Sinverse Home</a>
+    <span class="footer-sep">&middot;</span>
+    <span id="stash-count" class="stash-count"></span>
+  </div>
+
+  <!-- In-page image lightbox -->
+  <div id="stash-lightbox" class="stash-lightbox" style="display:none">
+    <button id="stash-lightbox-close" class="stash-overlay-close" aria-label="Close">&#10005;</button>
+    <div class="stash-lightbox-inner">
+      <img id="stash-lightbox-img" src="" alt="" />
+      <div class="stash-lightbox-meta">
+        <h2 id="stash-lightbox-title" class="stash-overlay-title"></h2>
+        <p id="stash-lightbox-creator" class="stash-overlay-creator"></p>
+        <div id="stash-lightbox-tags" class="stash-overlay-tags"></div>
+        <p id="stash-lightbox-blurb" class="stash-overlay-blurb"></p>
+      </div>
+    </div>
+  </div>
+
+  <!-- In-page story reader -->
+  <div id="stash-reader" class="stash-reader" style="display:none">
+    <div class="stash-reader-bar">
+      <button id="stash-reader-close" class="stash-reader-back" aria-label="Back to stash">&#8592; Back to the stash</button>
+      <span id="stash-reader-bartitle" class="stash-reader-bartitle"></span>
+    </div>
+    <div class="stash-reader-scroll">
+      <article class="stash-reader-article">
+        <h1 id="stash-reader-title" class="stash-reader-title"></h1>
+        <p id="stash-reader-creator" class="stash-reader-creator"></p>
+        <div id="stash-reader-tags" class="stash-overlay-tags"></div>
+        <p id="stash-reader-blurb" class="stash-reader-blurb"></p>
+        <div id="stash-reader-chapters" class="stash-reader-chapters" style="display:none">
+          <div class="stash-reader-chapters-label">Chapters</div>
+          <div id="stash-reader-chapter-list" class="stash-reader-chapter-list"></div>
+        </div>
+        <hr class="stash-reader-rule" />
+        <div id="stash-reader-content" class="stash-reader-content"></div>
+      </article>
+    </div>
+  </div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/marked/9.1.6/marked.min.js"></script>
+  <script src="../_shared/images.js?v=1780172038"></script>
+  <script src="stash.js?v=1780545738"></script>
+
+  <script src="../_shared/nav.js?v=1780533713"></script>
+  <script>initNav('stash');</script>
+</body>
+</html>

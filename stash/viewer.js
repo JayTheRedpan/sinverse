@@ -174,19 +174,14 @@ async function init() {
   if (!id) { window.location.href = 'index.html'; return; }
 
   try {
-    var res = await fetch('./gallery.json');
-    if (!res.ok) throw new Error('Could not load gallery.json');
-    var items = await res.json();
+    var res = await fetch('./stash.json');
+    if (!res.ok) throw new Error('Could not load stash.json');
+    var raw = await res.json();
+    window._stashAll = raw;   // full list (images + stories) for related-link resolution
+    var items = raw.filter(function(i){ return i.kind === 'image'; }).map(normalizeStashImage);
     item = items.find(function(i) { return i.id === id; });
     if (!item) throw new Error('Item not found: ' + id);
-    // Also load the library index so related-work links can resolve titles, and
-    // build reciprocal links (a link declared on either side shows on both).
-    window._galleryItems = items;
-    try {
-      var libRes = await fetch('../library/library.json');
-      window._libraryItems = libRes.ok ? await libRes.json() : [];
-    } catch(e) { window._libraryItems = []; }
-    buildRelatedFor(item, 'gallery', window._galleryItems, window._libraryItems);
+    item._related = buildStashRelated(item, raw);
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
     render();
   } catch(e) {
@@ -194,11 +189,54 @@ async function init() {
   }
 }
 
-// Resolve the effective related-works list for an item, merging its own
-// declared `relates_to` with any reciprocal links declared on the other side.
-// Each entry is { module: 'gallery'|'library', id: N }. Single source of truth:
-// you declare a link on ONE item and it appears on both.
-function buildRelatedFor(target, targetModule, galleryItems, libraryItems) {
+// Resolve a stash item's related entries WITHIN the stash, with auto-reciprocity.
+// `relates_to` entries may be a bare id (5) or an object ({ "id": 5 }). If item A
+// lists B, B automatically shows A too — declare the link on either side only.
+function buildStashRelated(target, all) {
+  var ids = {}, order = [];
+  function add(id) {
+    id = parseInt(id, 10);
+    if (isNaN(id) || id === target.id || ids[id]) return;
+    ids[id] = true; order.push(id);
+  }
+  function refsOf(it) {
+    return (it.relates_to || []).map(function(r){ return (r && typeof r === 'object') ? r.id : r; });
+  }
+  // 1) Links this item declares directly.
+  refsOf(target).forEach(add);
+  // 2) Reciprocals: any stash item that points AT this one.
+  (all || []).forEach(function(it){
+    if (refsOf(it).map(Number).indexOf(target.id) !== -1) add(it.id);
+  });
+  // Resolve to {id, title, kind} for rendering.
+  return order.map(function(id){
+    var found = (all || []).find(function(x){ return x.id === id; });
+    return found ? { id: id, title: found.title, kind: found.kind } : null;
+  }).filter(Boolean);
+}
+
+// Map a stash image entry onto the gallery viewer's expected shape:
+//   creator -> artist, blurb -> synopsis, and derive a viewer `type`:
+//   - has `pages`  -> comic
+//   - has `images` -> set
+//   - otherwise    -> scene (single image)
+function normalizeStashImage(it) {
+  var out = {};
+  for (var k in it) out[k] = it[k];
+  out.artist   = it.artist || it.creator || '';
+  out.synopsis = it.synopsis || it.blurb || '';
+  if (!out.type || out.type === 'image') {
+    if (it.pages && it.pages.length)       out.type = 'comic';
+    else if (it.images && it.images.length) out.type = 'set';
+    else                                    out.type = 'scene';
+  }
+  return out;
+}
+
+// (Cross-module related-links are not used in the stash. buildRelatedFor just
+// clears the list; the original renderRelatedLinks hides the container when empty.)
+function buildRelatedFor(target) { if (target) target._related = []; }
+function _unusedBuildRelatedFor(target, targetModule, galleryItems, libraryItems) {
   var out = [];
   var seen = {};
   function add(module, id) {
@@ -228,7 +266,7 @@ function buildRelatedFor(target, targetModule, galleryItems, libraryItems) {
 }
 
 function render() {
-  document.title = item.title + ' — Sinverse Gallery';
+  document.title = item.title + ' — Jay\'s Stash';
   document.getElementById('viewer-title').textContent = item.title;
 
   if (item.type === 'comic')   renderComic();
@@ -545,23 +583,13 @@ function renderRelatedLinks(containerId, related) {
   el.appendChild(label);
   var rendered = 0;
   related.forEach(function(r) {
-    var title, href;
-    if (r.module === 'library') {
-      var s = (window._libraryItems || []).find(function(x){ return x.id === r.id; });
-      if (!s) return;
-      title = s.title;
-      href  = '../library/reader.html?id=' + r.id;
-    } else {
-      var g = (window._galleryItems || []).find(function(x){ return x.id === r.id; });
-      if (!g) return;
-      title = g.title;
-      href  = 'viewer.html?id=' + r.id;
-    }
+    // Within the stash: images -> viewer.html, stories -> reader.html.
+    var href = (r.kind === 'story' ? 'reader.html?id=' : 'viewer.html?id=') + r.id;
     if (rendered > 0) el.appendChild(document.createTextNode(', '));
     var a = document.createElement('a');
     a.className = 'viewer-related-link';
     a.href = href;
-    a.textContent = title;
+    a.textContent = r.title;
     el.appendChild(a);
     rendered++;
   });

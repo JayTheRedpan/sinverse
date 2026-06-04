@@ -38,31 +38,23 @@ function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
   var drag = null;
 
   // Compute the image's letterboxed "fit" box (object-fit:contain at scale 1)
-  // from natural dimensions + the image element's UNTRANSFORMED layout box.
-  // Using getBoundingClientRect() here read the *transformed* rect, which made
-  // clamp() recompute different limits every pointermove and produced a rapid
-  // stutter at the edges. offsetWidth/Height and offset position are immune to
-  // the CSS transform, so the geometry is stable while panning/zooming.
+  // from natural dimensions + the image element's box. This is deterministic
+  // and immune to CSS transitions (measuring a live transformed rect was the
+  // bug that let panning drift the image off into the void).
   function fitBox() {
     var pr = panel.getBoundingClientRect();
-    var boxW = img.offsetWidth, boxH = img.offsetHeight;   // layout size (no transform)
-    var nw = img.naturalWidth || boxW, nh = img.naturalHeight || boxH;
-    if (!nw || !nh || !boxW || !boxH) return { w: boxW, h: boxH, cxRel: pr.width/2, cyRel: pr.height/2, pr: pr };
+    var ir = img.getBoundingClientRect();  // the <img> element's own box
+    // The element box is what flex/grid gave the image; object-fit:contain then
+    // letterboxes the natural image inside it.
+    var nw = img.naturalWidth || ir.width, nh = img.naturalHeight || ir.height;
+    var boxW = ir.width, boxH = ir.height;
+    if (!nw || !nh || !boxW || !boxH) return { w: boxW, h: boxH, cx: pr.width/2, cy: pr.height/2, pr: pr };
     var s = Math.min(boxW / nw, boxH / nh);   // contain scale
     var fw = nw * s, fh = nh * s;             // fitted (displayed) size at scale 1
-    // Untransformed element position relative to the panel. Walk offsetParent
-    // chain up to (and including) the panel so we get layout coords, not the
-    // transformed rect. If the chain doesn't reach the panel, fall back to
-    // assuming the image is centered in the panel (the object-fit:contain case).
-    var ox = 0, oy = 0, node = img, reached = false;
-    for (var guard = 0; node && guard < 12; guard++) {
-      if (node === panel) { reached = true; break; }
-      ox += node.offsetLeft; oy += node.offsetTop;
-      node = node.offsetParent;
-    }
-    var boxCxRel, boxCyRel;
-    if (reached) { boxCxRel = ox + boxW / 2; boxCyRel = oy + boxH / 2; }
-    else         { boxCxRel = pr.width / 2;  boxCyRel = pr.height / 2; }
+    // Fitted image is centered within the element box; element box center
+    // relative to the panel:
+    var boxCxRel = (ir.left - pr.left) + boxW / 2;
+    var boxCyRel = (ir.top  - pr.top)  + boxH / 2;
     return { w: fw, h: fh, cxRel: boxCxRel, cyRel: boxCyRel, pr: pr };
   }
 
@@ -179,52 +171,11 @@ async function init() {
     var items = await res.json();
     item = items.find(function(i) { return i.id === id; });
     if (!item) throw new Error('Item not found: ' + id);
-    // Also load the library index so related-work links can resolve titles, and
-    // build reciprocal links (a link declared on either side shows on both).
-    window._galleryItems = items;
-    try {
-      var libRes = await fetch('../library/library.json');
-      window._libraryItems = libRes.ok ? await libRes.json() : [];
-    } catch(e) { window._libraryItems = []; }
-    buildRelatedFor(item, 'gallery', window._galleryItems, window._libraryItems);
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
     render();
   } catch(e) {
     document.body.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-muted)">' + e.message + '</div>';
   }
-}
-
-// Resolve the effective related-works list for an item, merging its own
-// declared `relates_to` with any reciprocal links declared on the other side.
-// Each entry is { module: 'gallery'|'library', id: N }. Single source of truth:
-// you declare a link on ONE item and it appears on both.
-function buildRelatedFor(target, targetModule, galleryItems, libraryItems) {
-  var out = [];
-  var seen = {};
-  function add(module, id) {
-    var key = module + ':' + id;
-    if (seen[key]) return;
-    if (module === targetModule && id === target.id) return; // no self-links
-    seen[key] = true;
-    out.push({ module: module, id: id });
-  }
-  // 1) Links this item declares directly.
-  (target.relates_to || []).forEach(function(r) {
-    if (r && r.module && r.id != null) add(r.module, parseInt(r.id, 10));
-  });
-  // 2) Reciprocals: any item (in either module) that points AT this one.
-  function scan(list, module) {
-    (list || []).forEach(function(it) {
-      (it.relates_to || []).forEach(function(r) {
-        if (r && r.module === targetModule && parseInt(r.id, 10) === target.id) {
-          add(module, it.id);
-        }
-      });
-    });
-  }
-  scan(galleryItems, 'gallery');
-  scan(libraryItems, 'library');
-  target._related = out;
 }
 
 function render() {
@@ -250,7 +201,6 @@ function renderComic() {
   renderTags('comic-tags-reader', item.tags);
   renderDates('comic-dates', item);
   renderCharacterLinks('comic-characters-reader', item.characters);
-  renderRelatedLinks('comic-related', item._related);
 
   // Start on page 0
   comicPage = 0;
@@ -361,7 +311,6 @@ function renderScene() {
   renderTags('scene-tags', item.tags);
   renderDates('scene-dates', item);
   renderCharacterLinks('scene-characters', item.characters);
-  renderRelatedLinks('scene-related', item._related);
 
   var dl = document.getElementById('scene-download');
   dl.href     = item.image || '#';
@@ -383,7 +332,6 @@ function renderCharRef() {
   if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
 
   if (item.canonical) document.getElementById('ref-canonical').style.display = '';
-  renderRelatedLinks('ref-related', item._related);
 
   renderTags('ref-tags', item.tags);
   renderDates('ref-dates', item);
@@ -434,7 +382,6 @@ function renderSet() {
   renderTags('set-tags', item.tags);
   renderDates('set-dates', item);
   renderCharacterLinks('set-characters', item.characters);
-  renderRelatedLinks('set-related', item._related);
 
   // Build the image grid
   var grid = document.getElementById('set-grid');
@@ -529,43 +476,6 @@ function renderDates(containerId, it) {
     rows += '<div class="viewer-date-row"><span class="viewer-date-label">Set</span><span class="viewer-date-val">' + SinverseDates.label(it.universe_date) + '</span></div>';
   }
   el.innerHTML = rows;
-}
-
-// Render "Related works" links in an info panel: cross-links to library stories
-// or other gallery items. Resolves each link's title from the loaded indexes.
-function renderRelatedLinks(containerId, related) {
-  var el = document.getElementById(containerId);
-  if (!el) return;
-  el.innerHTML = '';
-  if (!related || !related.length) { el.style.display = 'none'; return; }
-  el.style.display = '';
-  var label = document.createElement('span');
-  label.className = 'viewer-related-label';
-  label.textContent = 'Related: ';
-  el.appendChild(label);
-  var rendered = 0;
-  related.forEach(function(r) {
-    var title, href;
-    if (r.module === 'library') {
-      var s = (window._libraryItems || []).find(function(x){ return x.id === r.id; });
-      if (!s) return;
-      title = s.title;
-      href  = '../library/reader.html?id=' + r.id;
-    } else {
-      var g = (window._galleryItems || []).find(function(x){ return x.id === r.id; });
-      if (!g) return;
-      title = g.title;
-      href  = 'viewer.html?id=' + r.id;
-    }
-    if (rendered > 0) el.appendChild(document.createTextNode(', '));
-    var a = document.createElement('a');
-    a.className = 'viewer-related-link';
-    a.href = href;
-    a.textContent = title;
-    el.appendChild(a);
-    rendered++;
-  });
-  if (!rendered) el.style.display = 'none';
 }
 
 function renderCharacterLinks(containerId, characters) {

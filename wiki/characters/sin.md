@@ -1,14 +1,14 @@
 ## Overview
 
-Sin is the titular figure of the Sinverse and the progenitor of the world as it now exists. A black bunny of genius-level intellect, she discovered the Apotheosis Serum, tested it on herself, and orchestrated the event known as TDay — the day the world was remade in her image. She is the founder of SinCorp and the Matriarch of Angora, the unofficial capital of the post-TDay world.
+Sin is the titular figure of the Sinverse and the progenitor of the world as it now exists. A black bunny of genius-level intellect, she discovered the Apotheosis Serum, tested it on herself, and orchestrated the event known as TDay — the day the world was remade to her vision. She is the founder of SinCorp and the Matriarch of Angora, the unofficial capital of the post-TDay world.
 
-She stands 13 feet tall. To the giantesses who rule the mega-cities she commands respect; to the toys who live beneath them, she is something closer to a god — and a boogeyman.
+She stands 13 feet tall. To the giantesses who rule the mega-cities she commands respect; to the toys who live beneath them, she is something closer to a cruel deity — and a boogeyman.
 
 {{FEATURED}}
 
 ## Appearance
 
-Sin is a black bunny, her fur dark and her hair deeper still — a black so complete it seems to drink the light. A single golden streak runs through her bangs. It appears entirely natural, which surprises those who meet her: Sin is not the type to dye her hair or spare a thought for vanity.
+Sin is a black bunny, her fur dark and her hair deeper still — a black so complete it seems to drink the light. A single golden streak runs through her bangs, the same gold as her eyes, which catch the light with a cold metallic sheen. It appears entirely natural, which surprises those who meet her: Sin doesn't seem one for vanity.
 
 Her transformation reshaped her into more than a giantess. She bears equine genitalia — a change many believe she chose deliberately, engineering herself to maximise her capacity to dominate and ruin a toy. Her original cottontail was likewise replaced by a long, horse-like tail in the same black as her hair, which she typically keeps bound in a neat braid to keep it out of her way while she works.
 
@@ -67,6 +67,7 @@ She is always, without exception, entirely in control of any encounter, and very
 - SinCorp was originally funded by selling "soldier durability treatments" to the military — the precursor science to the toy-durability treatments that now keep prey alive under their owners.
 - Several men in Sin's life vanished before TDay, including her old boss. None were ever found.
 - Most toys taken to meet Sin are never seen again.
+- A persistent rumor holds that Sin neither eats nor drinks anything ordinary — that she subsists entirely on shrunken toys, devouring them to sustain herself. Whether it is literal truth or simply another story grown up around her, no one who could confirm it has ever returned to say.
 
 
 ## Related

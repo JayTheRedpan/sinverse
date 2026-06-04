@@ -563,6 +563,22 @@
   text-decoration: underline;
   text-underline-offset: 2px;
 }
+/* Related-works cross-links (gallery <-> library) */
+.viewer-related { display: flex; flex-wrap: wrap; gap: 0.4rem; align-items: center; margin-top: 0.5rem; }
+.viewer-related-label {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.viewer-related-link {
+  font-size: 0.82rem;
+  color: var(--accent);
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+.viewer-related-link:hover { color: var(--accent-light, var(--accent)); }
 
 .viewer-download {
   align-self: flex-start;

@@ -353,5 +353,17 @@
     "socials": {
 
     }
+  },
+  {
+    "id": "HelavisKrew",
+    "name": "HelavisKrew",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780540791/helaviskrew_i4qtoi.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/helaviskrew"
+    }
   }
 ]

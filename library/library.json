@@ -16,7 +16,8 @@
     "characters": [
       "sin"
     ],
-    "wordCount": 12567
+    "wordCount": 12567,
+    "relates_to": []
   },
   {
     "id": 2,
@@ -62,7 +63,8 @@
         "file": "stories/chronicles_of_control_kel_5.md",
         "wordCount": 5874
       }
-    ]
+    ],
+    "relates_to": []
   },
   {
     "id": 3,
@@ -82,7 +84,8 @@
       "becka",
       "bella"
     ],
-    "wordCount": 5946
+    "wordCount": 5946,
+    "relates_to": []
   },
   {
     "id": 4,
@@ -102,7 +105,8 @@
     "characters": [
       "lucy"
     ],
-    "wordCount": 7476
+    "wordCount": 7476,
+    "relates_to": []
   },
   {
     "id": 5,
@@ -117,10 +121,9 @@
     "date": "2021-10",
     "universe_date": 0,
     "canonical": true,
-    "characters": [
-
-    ],
-    "wordCount": 10416
+    "characters": [],
+    "wordCount": 10416,
+    "relates_to": []
   },
   {
     "id": 6,
@@ -139,7 +142,8 @@
     "characters": [
       "contra"
     ],
-    "wordCount": 7572
+    "wordCount": 7572,
+    "relates_to": []
   },
   {
     "id": 7,
@@ -159,7 +163,8 @@
     "characters": [
       "ira"
     ],
-    "wordCount": 8686
+    "wordCount": 8686,
+    "relates_to": []
   },
   {
     "id": 8,
@@ -195,7 +200,8 @@
         "file": "stories/into_the_rabbit_hole_ch3.md",
         "wordCount": 10279
       }
-    ]
+    ],
+    "relates_to": []
   },
   {
     "id": 9,
@@ -215,7 +221,8 @@
     "characters": [
       "ardian"
     ],
-    "wordCount": 13063
+    "wordCount": 13063,
+    "relates_to": []
   },
   {
     "id": 10,
@@ -234,7 +241,8 @@
     "characters": [
       "autumn"
     ],
-    "wordCount": 4594
+    "wordCount": 4594,
+    "relates_to": []
   },
   {
     "id": 11,
@@ -253,7 +261,8 @@
     "characters": [
       "mini"
     ],
-    "wordCount": 4889
+    "wordCount": 4889,
+    "relates_to": []
   },
   {
     "id": 12,
@@ -271,7 +280,8 @@
     "characters": [
       "sandy"
     ],
-    "wordCount": 6037
+    "wordCount": 6037,
+    "relates_to": []
   },
   {
     "id": 13,
@@ -288,7 +298,8 @@
     "characters": [
       "zuzu"
     ],
-    "wordCount": 8234
+    "wordCount": 8234,
+    "relates_to": []
   },
   {
     "id": 14,
@@ -303,10 +314,9 @@
     "date": "2021-08",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 9181
+    "characters": [],
+    "wordCount": 9181,
+    "relates_to": []
   },
   {
     "id": 15,
@@ -326,7 +336,8 @@
     "characters": [
       "jenny"
     ],
-    "wordCount": 14896
+    "wordCount": 14896,
+    "relates_to": []
   },
   {
     "id": 16,
@@ -343,10 +354,9 @@
     "date": "2019-12",
     "universe_date": null,
     "canonical": true,
-    "characters": [
-
-    ],
-    "wordCount": 6911
+    "characters": [],
+    "wordCount": 6911,
+    "relates_to": []
   },
   {
     "id": 17,
@@ -380,7 +390,8 @@
         "file": "stories/dark_desires_2_micro_mockery.md",
         "wordCount": 10882
       }
-    ]
+    ],
+    "relates_to": []
   },
   {
     "id": 18,
@@ -397,10 +408,9 @@
     "date": "2025-10",
     "universe_date": null,
     "canonical": true,
-    "characters": [
-
-    ],
-    "wordCount": 11867
+    "characters": [],
+    "wordCount": 11867,
+    "relates_to": []
   },
   {
     "id": 19,
@@ -423,7 +433,8 @@
       "jay",
       "brandy"
     ],
-    "wordCount": 7627
+    "wordCount": 7627,
+    "relates_to": []
   },
   {
     "id": 20,
@@ -444,7 +455,8 @@
       "anna",
       "brandy"
     ],
-    "wordCount": 13343
+    "wordCount": 13343,
+    "relates_to": []
   },
   {
     "id": 21,
@@ -463,10 +475,9 @@
     "date": "2021-10",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 7588
+    "characters": [],
+    "wordCount": 7588,
+    "relates_to": []
   },
   {
     "id": 22,
@@ -484,7 +495,8 @@
     "characters": [
       "jay"
     ],
-    "wordCount": 3781
+    "wordCount": 3781,
+    "relates_to": []
   },
   {
     "id": 23,
@@ -502,7 +514,8 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
-    "wordCount": 8328
+    "wordCount": 8328,
+    "relates_to": []
   },
   {
     "id": 24,
@@ -523,7 +536,8 @@
     "characters": [
       "zuzu"
     ],
-    "wordCount": 2215
+    "wordCount": 2215,
+    "relates_to": []
   },
   {
     "id": 25,
@@ -539,9 +553,7 @@
     "universe_date": null,
     "canonical": false,
     "complete": true,
-    "characters": [
-      
-    ],
+    "characters": [],
     "chapters": [
       {
         "title": "Chapter 1",
@@ -573,7 +585,8 @@
         "file": "stories/deliver_us_from_sin_chapter_6.md",
         "wordCount": 15853
       }
-    ]
+    ],
+    "relates_to": []
   },
   {
     "id": 26,
@@ -594,7 +607,8 @@
     "characters": [
       "lady"
     ],
-    "wordCount": 10205
+    "wordCount": 10205,
+    "relates_to": []
   },
   {
     "id": 27,
@@ -609,10 +623,9 @@
     "date": "2021-07",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 14633
+    "characters": [],
+    "wordCount": 14633,
+    "relates_to": []
   },
   {
     "id": 28,
@@ -629,10 +642,9 @@
     "date": "2022-07",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 7077
+    "characters": [],
+    "wordCount": 7077,
+    "relates_to": []
   },
   {
     "id": 29,
@@ -649,10 +661,9 @@
     "date": "2022-08",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 3266
+    "characters": [],
+    "wordCount": 3266,
+    "relates_to": []
   },
   {
     "id": 30,
@@ -667,10 +678,9 @@
     "date": "2021-12",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 9325
+    "characters": [],
+    "wordCount": 9325,
+    "relates_to": []
   },
   {
     "id": 31,
@@ -689,10 +699,9 @@
     "date": "2025-10",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-      
-    ],
-    "wordCount": 20909
+    "characters": [],
+    "wordCount": 20909,
+    "relates_to": []
   },
   {
     "id": 32,
@@ -710,7 +719,8 @@
     "characters": [
       "brandy"
     ],
-    "wordCount": 8288
+    "wordCount": 8288,
+    "relates_to": []
   },
   {
     "id": 33,
@@ -725,10 +735,9 @@
     "date": "2023-01",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 15473
+    "characters": [],
+    "wordCount": 15473,
+    "relates_to": []
   },
   {
     "id": 34,
@@ -743,10 +752,9 @@
     "date": "2023-01",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 15941
+    "characters": [],
+    "wordCount": 15941,
+    "relates_to": []
   },
   {
     "id": 35,
@@ -768,7 +776,8 @@
     "characters": [
       "jay"
     ],
-    "wordCount": 10216
+    "wordCount": 10216,
+    "relates_to": []
   },
   {
     "id": 36,
@@ -785,10 +794,9 @@
     "date": "2024-11",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 8355
+    "characters": [],
+    "wordCount": 8355,
+    "relates_to": []
   },
   {
     "id": 37,
@@ -806,7 +814,8 @@
     "characters": [
       "jay"
     ],
-    "wordCount": 1625
+    "wordCount": 1625,
+    "relates_to": []
   },
   {
     "id": 38,
@@ -824,10 +833,9 @@
     "date": "2025-03",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
-    ],
-    "wordCount": 13069
+    "characters": [],
+    "wordCount": 13069,
+    "relates_to": []
   },
   {
     "id": 39,
@@ -842,9 +850,31 @@
     "date": "2024-01",
     "universe_date": null,
     "canonical": false,
-    "characters": [
-
+    "characters": [],
+    "wordCount": 8719,
+    "relates_to": []
+  },
+  {
+    "id": 40,
+    "type": "standalone",
+    "title": "Holly's Health Food",
+    "author": "BadEnds",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "micro",
+      "vore",
+      "gore",
+      "sissification",
+      "watersports"
     ],
-    "wordCount": 8719
+    "file": "stories/hollys_health_food.md",
+    "date": "2026-06",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [],
+    "wordCount": 5844,
+    "relates_to": []
   }
 ]

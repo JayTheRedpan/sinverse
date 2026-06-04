@@ -1,0 +1,38 @@
+[
+  {
+    "id": 1,
+    "kind": "image",
+    "title": "Feeding Time",
+    "creator": "HelavisKrew",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780540547/rocket_terrarium_rcxurp.webp",
+    "tags": [
+      "m/m",
+      "micro",
+      "noncon"
+    ],
+    "date": "2025-01",
+    "blurb": "Rocket serving up Jay his 'Dinner'.",
+    "relates_to": [2]
+  },
+  {
+    "id": 2,
+    "kind": "story",
+    "type": "serial",
+    "title": "Growing Needs",
+    "creator": "Kyrm",
+    "tags": [
+      "m/m",
+      "snuff",
+      "vore",
+      "noncon",
+      "abuse"
+    ],
+    "date": "2024-06",
+    "chapters": [
+      { "title": "Chapter 1 - Growing Needs", "file": "stories/growing_needs_1.md", "wordCount": 9890 },
+      { "title": "Chapter 2 - Killer Part",    "file": "stories/growing_needs_2.md", "wordCount": 10720 }
+      
+    ],
+    "relates_to": []
+  }
+]
