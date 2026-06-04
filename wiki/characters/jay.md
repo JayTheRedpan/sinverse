@@ -8,9 +8,13 @@ He stands 5'7". In the old world, his long frame made him quick on his feet; in 
 
 ## Appearance
 
-Jay is a lithe, athletic red panda with the characteristic rust-and-cream colouration of his species, drawn out over a longer, leaner frame than most. His most distinctive feature is his chest crest: a natural marking of white fur in the unmistakable shape of a pilot's wings.
+Jay is a lithe, athletic red panda with the characteristic rust-and-cream colouration of his species, drawn out over a longer, leaner frame than most. A small tuft of deeper-red fur sits atop his head, and his eyes are a clear, bright blue. Trailing behind him is the long, ringed tail red pandas are famous for — and Jay's runs a fair bit longer than average even for his kind.
+
+His most distinctive feature is his chest crest: a natural marking of white fur in the unmistakable shape of a pilot's wings.
 
 The crest is genuine — not dyed, not styled, not earned from any insignia. Jay was born with it, and he took it as a sign that he was meant to fly.
+
+That long tail, by contrast, has been nothing but trouble. More than once it has been his undoing: a giantess needs only to catch hold of it as he bolts, and the very thing that should help him balance and run instead hands his pursuer a convenient leash. It is a source of constant, exasperated frustration for him — the part of his own body most likely to get him caught.
 
 ## Personality
 
@@ -40,7 +44,7 @@ Jay's body has become, through no ambition of his own, remarkably well suited to
 
 This durability is conspicuous. SinCorp is known to produce enhancements for toys — treatments that rebuild a small body to absorb the relentless, oversized attention of beings two to four times its size without breaking under it. Jay has never been shown undergoing the process, but his resilience under use that should have wrecked him strongly suggests he has, at some point, received some measure of these treatments. It remains one of the open questions of his story.
 
-His old advantages count for little here. The speed that once carried him across runways means nothing against women twice to four times his height, and less than nothing against the advanced toy-hunting equipment the huntresses bring to the chase. Jay can run. The world has simply made sure that running rarely matters — and that when he is caught, he is built to last.
+His old advantages count for little here. The speed that once carried him across runways means nothing against women twice to four times his height, and less than nothing against the advanced toy-hunting equipment the huntresses bring to the chase. His own tail does him no favours either — long and trailing, it has been grabbed out from behind more than once mid-escape, his flight ended by a single closing fist. Jay can run. The world has simply made sure that running rarely matters — and that when he is caught, he is built to last.
 
 {{RELATIONSHIPS}}
 
@@ -57,6 +61,7 @@ His old advantages count for little here. The speed that once carried him across
 - Before TDay he flew a small Cessna on contract, hauling people and cargo as an independent pilot.
 - The most popular theory holds that Jay rode out TDay in the air — and that he only became prey when something far larger finally brought him down. None of it is canon; it is just a story the world likes to tell about him.
 - His durability under use far exceeds what his frame should allow — a detail many attribute to SinCorp toy-enhancement treatments, though no one has ever seen him undergo them.
+- Jay's ringed tail is unusually long even for a red panda — and it has betrayed him more than once, giving a pursuing giantess something to grab as he tries to flee. He finds this endlessly frustrating.
 
 ## Associated Images
 

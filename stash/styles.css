@@ -1,0 +1,859 @@
+/* ==========================================================================
+   Jay's Stash — styles
+   Uses global design tokens from _shared/styles-global.css.
+   ========================================================================== */
+
+/* ── Header ───────────────────────────────────────────────────────────── */
+.stash-header {
+  max-width: 1100px;
+  margin: 0 auto;
+  padding: 2.5rem 1.5rem 1rem;
+  text-align: center;
+}
+.stash-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(2.2rem, 6vw, 3.4rem);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.05;
+}
+.stash-eyebrow {
+  display: block;
+  font-family: var(--font-caps);
+  font-size: 0.66rem;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: var(--accent);
+  margin-top: 0.5rem;
+}
+.stash-intro {
+  max-width: 620px;
+  margin: 1rem auto 0;
+  font-family: var(--font-body);
+  font-size: 0.98rem;
+  color: var(--text-secondary);
+  line-height: 1.6;
+}
+
+/* ── Controls (reuses several global filter classes) ──────────────────── */
+.stash-controls {
+  max-width: 1100px;
+  margin: 1.5rem auto 0;
+  padding: 0 1.5rem;
+}
+
+/* ── Results bar ──────────────────────────────────────────────────────── */
+.results-bar {
+  max-width: 1100px;
+  margin: 1rem auto 0;
+  padding: 0 1.5rem;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+/* ── Unified grid ─────────────────────────────────────────────────────── */
+.stash-grid {
+  max-width: 1100px;
+  margin: 1.25rem auto 0;
+  padding: 0 1.5rem;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 1.25rem;
+}
+.loading-placeholder {
+  grid-column: 1 / -1;
+  text-align: center;
+  padding: 3rem 1rem;
+  color: var(--text-muted);
+  font-style: italic;
+}
+
+/* ── Cards ────────────────────────────────────────────────────────────── */
+.stash-card {
+  background: var(--bg-card);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  cursor: pointer;
+  display: flex;
+  flex-direction: column;
+  transition: border-color 0.15s, transform 0.15s, background 0.15s;
+}
+.stash-card:hover {
+  border-color: var(--accent);
+  background: var(--bg-inset);
+  transform: translateY(-2px);
+}
+
+.stash-card-thumb {
+  aspect-ratio: 3 / 4;
+  background: var(--bg-inset);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+.stash-card-thumb img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+.stash-card-thumb-empty {
+  color: var(--text-muted);
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+}
+
+/* Story "spine" block in place of a thumbnail */
+.stash-card-spine {
+  aspect-ratio: 3 / 4;
+  background:
+    linear-gradient(135deg, var(--bg-panel) 0%, var(--bg-inset) 100%);
+  border-bottom: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  position: relative;
+}
+.stash-card-spine::before {
+  content: '';
+  position: absolute;
+  left: 14px;
+  top: 0;
+  bottom: 0;
+  width: 2px;
+  background: var(--wine);
+  opacity: 0.6;
+}
+.stash-card-kindbadge {
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--accent);
+  border: 1px solid var(--border-mid);
+  padding: 0.25rem 0.7rem;
+  border-radius: 999px;
+}
+.stash-card-words {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  color: var(--text-muted);
+}
+
+.stash-card-body {
+  padding: 0.85rem 0.95rem 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.35rem;
+}
+.stash-card-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.18rem;
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.2;
+}
+.stash-card-creator {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0;
+}
+.stash-card-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.3rem;
+  margin-top: 0.2rem;
+}
+.stash-card-tag {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.12rem 0.4rem;
+}
+
+/* ── Footer ───────────────────────────────────────────────────────────── */
+.stash-footer {
+  max-width: 1100px;
+  margin: 2.5rem auto;
+  padding: 1.5rem;
+  text-align: center;
+  border-top: 1px solid var(--border);
+  color: var(--text-muted);
+  font-size: 0.85rem;
+}
+.footer-home-link { color: var(--accent); text-decoration: none; }
+.footer-home-link:hover { color: var(--accent-light); }
+.footer-sep { margin: 0 0.6rem; color: var(--border-mid); }
+
+/* ── Image lightbox ───────────────────────────────────────────────────── */
+.stash-lightbox {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: rgba(0, 0, 0, 0.9);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 2rem;
+  box-sizing: border-box;
+}
+.stash-lightbox-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 1rem;
+  max-width: 100%;
+  max-height: 100%;
+}
+.stash-lightbox-inner img {
+  max-width: min(92vw, 1000px);
+  max-height: 75vh;
+  object-fit: contain;
+  border-radius: var(--radius);
+  border: 1px solid var(--border-mid);
+}
+.stash-lightbox-meta {
+  text-align: center;
+  max-width: 640px;
+}
+.stash-overlay-close {
+  position: absolute;
+  top: 1.1rem;
+  right: 1.3rem;
+  background: none;
+  border: none;
+  color: var(--text-secondary);
+  font-size: 1.6rem;
+  cursor: pointer;
+  line-height: 1;
+  transition: color 0.15s;
+}
+.stash-overlay-close:hover { color: var(--text-primary); }
+.stash-overlay-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.5rem;
+  color: var(--text-primary);
+  margin: 0;
+}
+.stash-overlay-creator {
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0.3rem 0 0;
+}
+.stash-overlay-tags {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  justify-content: center;
+  margin: 0.7rem 0;
+}
+.stash-overlay-tag {
+  font-family: var(--font-caps);
+  font-size: 0.56rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: 3px;
+  padding: 0.14rem 0.45rem;
+}
+.stash-overlay-blurb {
+  font-family: var(--font-body);
+  color: var(--text-secondary);
+  line-height: 1.55;
+  margin: 0.5rem 0 0;
+}
+
+/* ── Story reader ─────────────────────────────────────────────────────── */
+.stash-reader {
+  position: fixed;
+  inset: 0;
+  z-index: 1000;
+  background: var(--bg);
+  flex-direction: column;
+}
+.stash-reader-bar {
+  flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+  padding: 0.85rem 1.5rem;
+  border-bottom: 1px solid var(--border);
+  background: var(--bg-panel);
+}
+.stash-reader-back {
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  color: var(--accent);
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  padding: 0.45rem 0.9rem;
+  cursor: pointer;
+  transition: border-color 0.15s, color 0.15s;
+}
+.stash-reader-back:hover { border-color: var(--accent); color: var(--accent-light); }
+.stash-reader-bartitle {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.05rem;
+  color: var(--text-secondary);
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+.stash-reader-scroll {
+  flex: 1;
+  overflow-y: auto;
+  padding: 2.5rem 1.5rem 4rem;
+}
+.stash-reader-article {
+  max-width: 720px;
+  margin: 0 auto;
+}
+.stash-reader-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(1.8rem, 5vw, 2.6rem);
+  color: var(--text-primary);
+  margin: 0;
+  line-height: 1.1;
+}
+.stash-reader-creator {
+  font-family: var(--font-caps);
+  font-size: 0.66rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  margin: 0.5rem 0 0;
+}
+.stash-reader-blurb {
+  font-family: var(--font-body);
+  font-style: italic;
+  color: var(--text-secondary);
+  line-height: 1.6;
+  margin: 0.8rem 0 0;
+}
+.stash-reader-rule {
+  border: none;
+  border-top: 1px solid var(--border);
+  margin: 1.6rem 0;
+}
+.stash-reader-content {
+  font-family: var(--font-body);
+  font-size: 1.08rem;
+  line-height: 1.8;
+  color: var(--text-primary);
+}
+.stash-reader-content p { margin: 0 0 1.2rem; }
+.stash-reader-content h1,
+.stash-reader-content h2,
+.stash-reader-content h3 {
+  font-family: var(--font-display);
+  color: var(--text-primary);
+  margin: 2rem 0 0.8rem;
+}
+.stash-reader-content em { font-style: italic; }
+.stash-reader-content hr { border: none; border-top: 1px solid var(--border); margin: 2rem 0; }
+.stash-reader-loading { color: var(--text-muted); font-style: italic; }
+
+/* ── Mobile ───────────────────────────────────────────────────────────── */
+@media (max-width: 600px) {
+  .stash-grid {
+    grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    gap: 0.85rem;
+    padding: 0 1rem;
+  }
+  .stash-reader-scroll { padding: 1.75rem 1.1rem 3rem; }
+}
+@media (max-width: 480px) {
+  .stash-grid {
+    grid-template-columns: 1fr 1fr;
+    gap: 0.7rem;
+    padding: 0 0.85rem;
+  }
+}
+
+/* ==========================================================================
+   Controls / filters / tags — ported from the gallery so the stash's search,
+   filter panel, and tristate tag buttons are styled (stash doesn't load the
+   gallery stylesheet). Tristate selectors target the classes stash.js applies:
+   .tag-filter-btn.include / .exclude (no `.tristate` wrapper).
+   ========================================================================== */
+.search-input {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.6rem 1rem;
+  font-family: var(--font-body);
+  font-size: 1rem;
+  color: var(--text-primary);
+  width: 100%;
+  max-width: 400px;
+  outline: none;
+  transition: border-color 0.25s ease;
+}
+.search-input::placeholder { color: var(--text-muted); font-style: italic; }
+.search-input:focus { border-color: var(--border-mid); }
+
+.search-bar-row {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  max-width: 520px;
+}
+.search-bar-row .search-input { flex: 1; max-width: none; }
+
+.search-clear-btn,
+.filter-toggle-btn {
+  background: none;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.75rem;
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+  white-space: nowrap;
+  flex-shrink: 0;
+}
+.search-clear-btn:hover,
+.filter-toggle-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.filter-panel { display: none; flex-direction: column; gap: 0; }
+.filter-panel.open { display: flex; }
+
+.filter-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 1.5rem;
+  align-items: center;
+  padding: 0.5rem 0;
+}
+.filter-group { display: flex; align-items: center; gap: 0.5rem; flex-wrap: wrap; }
+.filter-group-label {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.16em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  width: 3.5rem;
+}
+.filter-btns { display: flex; gap: 0.35rem; flex-wrap: wrap; }
+.filter-group-tags {
+  width: 100%;
+  flex-direction: column;
+  align-items: flex-start;
+}
+
+.type-toggle-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-caps);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.type-toggle-btn.active { border-color: var(--accent); color: var(--accent); background: var(--bg-panel); }
+.type-toggle-btn:hover:not(.active) { border-color: var(--border-mid); color: var(--text-secondary); }
+
+/* Tag controls + legend */
+.tag-controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: 0.9rem;
+  margin-bottom: 0.35rem;
+}
+.tag-bulk { display: inline-flex; gap: 0.4rem; }
+.tag-bulk-btn {
+  background: transparent;
+  border: 1px dashed var(--border-mid, var(--border));
+  border-radius: 2px;
+  padding: 0.25em 0.6em;
+  font-family: var(--font-caps);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: border-color 0.2s, color 0.2s;
+}
+.tag-bulk-btn:hover { border-color: var(--accent); color: var(--accent); }
+
+.tag-tri-legend {
+  display: inline-flex;
+  flex-wrap: wrap;
+  gap: 0.85rem;
+  align-items: center;
+  font-family: var(--font-caps);
+  font-size: 0.52rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  border: 1px solid var(--border);
+  border-radius: var(--radius, 4px);
+  padding: 0.35em 0.7em;
+  background: var(--bg-inset, transparent);
+}
+.tag-tri-legend-item { display: inline-flex; align-items: center; gap: 0.35em; }
+.tag-tri-chip { border: 1px solid var(--border); border-radius: 2px; padding: 0.12em 0.45em; font-size: 0.52rem; }
+.tag-tri-chip.neutral { color: var(--text-muted); border-color: var(--border); }
+.tag-tri-chip.include { background: rgba(120,180,120,0.14); border-color: #6fae6f; color: #9fd99f; }
+.tag-tri-chip.exclude { background: rgba(190,90,100,0.14); border-color: #c2727c; color: #e2a0a8; }
+
+.tag-mode-hint { font-size: 0.72rem; font-style: italic; color: var(--text-muted); margin-bottom: 0.5rem; }
+
+.tag-filter-row { display: flex; flex-wrap: wrap; gap: 0.35rem; }
+.tag-filter-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-caps);
+  font-size: 0.54rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.3em;
+}
+.tag-filter-btn:hover { border-color: var(--border-mid); color: var(--text-secondary); }
+/* Tristate states — stash.js adds .include / .exclude directly */
+.tag-filter-btn.include { background: rgba(120,180,120,0.14); border-color: #6fae6f; color: #9fd99f; }
+.tag-filter-btn.exclude { background: rgba(190,90,100,0.14); border-color: #c2727c; color: #e2a0a8; text-decoration: line-through; }
+
+.tag-empty { font-size: 0.78rem; font-style: italic; color: var(--text-muted); }
+
+.results-sort { display: flex; align-items: center; gap: 0.5rem; }
+.results-sort-label {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+}
+.sort-select-inline {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.35rem 0.75rem;
+  font-family: var(--font-body);
+  font-size: 0.88rem;
+  color: var(--text-primary);
+  cursor: pointer;
+  outline: none;
+}
+.sort-select-inline:focus { border-color: var(--accent); }
+
+/* ==========================================================================
+   Story cards — mirror the library's look (generated title-card cover, type +
+   word badges, info "i" button) plus the details modal. Ported from
+   library/styles.css so stash stories match the library exactly. The card
+   click and the modal "Read" open the stash's in-page reader.
+   ========================================================================== */
+.lib-card {
+  background: var(--bg-card);
+  display: flex;
+  flex-direction: column;
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  transition: background 0.25s ease, border-color 0.25s ease;
+  position: relative;
+  overflow: hidden;
+}
+.lib-card:hover { background: var(--bg-card-hover); border-color: var(--accent); }
+.lib-card::after {
+  content: '';
+  position: absolute;
+  bottom: 0; left: 0; right: 0;
+  height: 2px;
+  background: linear-gradient(90deg, transparent, var(--accent), transparent);
+  opacity: 0;
+  transition: opacity 0.5s ease;
+}
+.lib-card:hover::after { opacity: 1; }
+.lib-card-cover-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 2/3;
+  overflow: hidden;
+  background: var(--bg-inset);
+  flex-shrink: 0;
+}
+
+/* Generated title card */
+.lib-title-card {
+  width: 100%;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.6rem;
+  padding: 1.25rem 0.85rem;
+  text-align: center;
+  position: relative;
+  box-sizing: border-box;
+}
+.lib-title-card-line { width: 40px; height: 1px; opacity: 0.5; }
+.lib-title-card-text {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: clamp(0.95rem, 2vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.25;
+  word-break: break-word;
+  hyphens: auto;
+}
+.lib-title-card-author {
+  font-family: var(--font-body);
+  font-size: 0.72rem;
+  color: rgba(255,255,255,0.35);
+  font-style: italic;
+  letter-spacing: 0.04em;
+}
+.lib-title-card-type {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: rgba(255,255,255,0.2);
+}
+
+/* Badges on the cover */
+.lib-type-badge {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.2em 0.55em;
+  border-radius: 2px;
+  display: inline-block;
+}
+.lib-card-cover-wrap .lib-type-badge { position: absolute; top: 0.6rem; left: 0.6rem; }
+.lib-type-standalone { background: rgba(30,70,50,0.85); color: #90c8a0; }
+.lib-cover-wordcount {
+  position: absolute;
+  bottom: 0.6rem; right: 0.6rem;
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: #140e0b;
+  border: 1px solid rgba(196,154,120,0.3);
+  border-radius: 1px;
+  padding: 0.15em 0.5em;
+}
+.lib-info-btn {
+  position: absolute;
+  bottom: 0.6rem; left: 0.6rem;
+  width: 22px; height: 22px;
+  border-radius: 50%;
+  border: 1px solid rgba(196,154,120,0.5);
+  background: #140e0b;
+  color: var(--accent);
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 0.8rem;
+  line-height: 1;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: background 0.15s, border-color 0.15s;
+  z-index: 3;
+}
+.lib-info-btn:hover { background: var(--accent); color: var(--bg); border-color: var(--accent); }
+
+/* Story details modal */
+.lib-info-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.7);
+  backdrop-filter: blur(3px);
+  z-index: 1100;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 1.5rem;
+  animation: stashFadeIn 0.15s ease;
+}
+@keyframes stashFadeIn { from { opacity: 0; } to { opacity: 1; } }
+.lib-info-modal {
+  position: relative;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  max-width: 440px;
+  width: 100%;
+  padding: 2rem 1.75rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  max-height: 80vh;
+  overflow-y: auto;
+}
+.lib-info-close {
+  position: absolute;
+  top: 0.75rem; right: 0.85rem;
+  background: none; border: none;
+  color: var(--text-muted);
+  font-size: 1rem;
+  cursor: pointer;
+  transition: color 0.15s;
+}
+.lib-info-close:hover { color: var(--wine); }
+.lib-info-eyebrow {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+.lib-info-title {
+  font-family: var(--font-display);
+  font-style: italic;
+  font-size: 1.6rem;
+  font-weight: 300;
+  color: var(--accent);
+  line-height: 1.2;
+  margin: 0;
+}
+.lib-info-author { font-size: 0.85rem; font-style: italic; color: var(--text-muted); }
+.lib-info-summary { font-size: 0.95rem; line-height: 1.7; color: var(--text-secondary); margin-top: 0.25rem; }
+.lib-info-tags { display: flex; flex-wrap: wrap; gap: 0.35rem; margin-top: 0.25rem; }
+.lib-info-wordcount {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-top: 0.25rem;
+}
+.lib-info-read {
+  align-self: flex-start;
+  margin-top: 0.75rem;
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--accent);
+  text-decoration: none;
+  background: none;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  padding: 0.45rem 1rem;
+  cursor: pointer;
+  transition: background 0.15s, border-color 0.15s;
+}
+.lib-info-read:hover { background: var(--accent-dim); border-color: var(--accent); }
+.content-tag {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--warn);
+  background: var(--warn-dim);
+  padding: 0.15em 0.5em;
+  border-radius: 1px;
+  border: 1px solid rgba(160,112,64,0.2);
+}
+
+/* ── Search-mode toggle buttons ───────────────────────────────────────── */
+.search-mode-toggles { display: flex; gap: 0.25rem; flex-wrap: wrap; }
+.search-mode-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.3rem 0.65rem;
+  font-family: var(--font-caps);
+  font-size: 0.56rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.search-mode-btn.active { border-color: var(--accent); color: var(--accent); background: var(--bg-panel); }
+.search-mode-btn:hover:not(.active) { border-color: var(--border-mid); color: var(--text-secondary); }
+
+/* ── Serial badges (type + chapter count) ─────────────────────────────── */
+.lib-type-serial { background: rgba(50,50,110,0.85); color: #a0a8e0; }
+.lib-chap-badge {
+  position: absolute;
+  top: 0.6rem; left: 4.3rem;
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--accent);
+  background: #140e0b;
+  border: 1px solid rgba(196,154,120,0.3);
+  border-radius: 1px;
+  padding: 0.15em 0.5em;
+}
+
+/* ── Reader chapter list (serials) ────────────────────────────────────── */
+.stash-reader-chapters { margin-top: 1.2rem; }
+.stash-reader-chapters-label {
+  font-family: var(--font-caps);
+  font-size: 0.55rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  margin-bottom: 0.5rem;
+}
+.stash-reader-chapter-list { display: flex; flex-wrap: wrap; gap: 0.4rem; }
+.stash-chapter-btn {
+  background: var(--bg-inset);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 0.4rem 0.8rem;
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all 0.15s;
+}
+.stash-chapter-btn:hover { border-color: var(--border-mid); color: var(--text-primary); }
+.stash-chapter-btn.active { border-color: var(--accent); color: var(--accent); background: var(--bg-panel); }

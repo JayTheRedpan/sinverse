@@ -28,7 +28,8 @@
     "synopsis": "The brief introduction to the Sinverse and how it came to be.",
     "date": "2022-09",
     "universe_date": 0,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 2,
@@ -43,7 +44,8 @@
     "date": "2020-02",
     "universe_date": 1,
     "canonical": true,
-    "synopsis": "Prima bursting into a prison refuge to find some playmates."
+    "synopsis": "Prima bursting into a prison refuge to find some playmates.",
+    "relates_to": []
   },
   {
     "id": 3,
@@ -84,7 +86,8 @@
     "synopsis": "One little red panda has a very interesting journey through the rings of hell...",
     "date": "2018-09",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 4,
@@ -112,7 +115,8 @@
     "synopsis": "How exactly a toy can go from being captured to purchased, and what that life might entail.",
     "date": "2024-01",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 5,
@@ -146,7 +150,8 @@
     "synopsis": "A long form Sinverse comic that was never completed.",
     "date": "2019-05",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 6,
@@ -203,7 +208,8 @@
     "synopsis": "Marian is invited to one of Sin's infamous parties, and fun ensues.",
     "date": "2019-06",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 7,
@@ -232,7 +238,8 @@
     "synopsis": "It seems Sin has new plans for the grand heirarchy of Sinverse and how certain toys might be more useful than other...",
     "date": "2025-10",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 8,
@@ -254,7 +261,8 @@
     "synopsis": "A short comic of one bunny huntress catching an escaped micro in The Wilds",
     "date": "2024-10",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 9,
@@ -282,7 +290,8 @@
     "synopsis": "Even with the Apotheosis Serum, its important that girls maintain their physical fitness.  A lovely Lady goes on her morning run.",
     "date": "2019-01",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 10,
@@ -312,7 +321,8 @@
     "synopsis": "Whats it like when a growing girl gets her first toy?",
     "date": "2024-10",
     "universe_date": null,
-    "canonical": true
+    "canonical": true,
+    "relates_to": []
   },
   {
     "id": 11,
@@ -342,6 +352,7 @@
     "synopsis": null,
     "date": "2024-06",
     "universe_date": null,
-    "canonical": false
+    "canonical": false,
+    "relates_to": []
   }
 ]

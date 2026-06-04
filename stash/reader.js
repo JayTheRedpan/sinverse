@@ -19,18 +19,14 @@ async function init() {
   if (!id) { window.location.href = 'index.html'; return; }
 
   try {
-    var res = await fetch('./library.json');
-    if (!res.ok) throw new Error('Could not load library.json');
-    var items = await res.json();
+    var res = await fetch('./stash.json');
+    if (!res.ok) throw new Error('Could not load stash.json');
+    var raw = await res.json();
+    window._stashAll = raw;
+    var items = raw.filter(function(i){ return i.kind === 'story'; }).map(normalizeStashStory);
     story = items.find(function(i) { return i.id === id; });
     if (!story) throw new Error('Story not found');
-    // Also load the gallery index for related-work links + reciprocity.
-    window._libraryItems = items;
-    try {
-      var galRes = await fetch('../gallery/gallery.json');
-      window._galleryItems = galRes.ok ? await galRes.json() : [];
-    } catch(e) { window._galleryItems = []; }
-    buildRelatedFor(story, 'library', window._galleryItems, window._libraryItems);
+    story._related = buildStashRelated(story, raw);
     chapterIdx = ch;
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
     renderMeta();
@@ -48,9 +44,48 @@ async function init() {
   }
 }
 
+// Map a stash story entry onto the library reader's expected shape:
+// creator -> author, blurb -> summary. Story files in the stash live under
+// stash/stories/, which the relative paths in stash.json already point to.
+function normalizeStashStory(it) {
+  var out = {};
+  for (var k in it) out[k] = it[k];
+  out.author  = it.author  || it.creator || '';
+  out.summary = it.summary || it.blurb   || '';
+  out.type    = it.type || 'standalone';
+  return out;
+}
+
+// Resolve a stash item's related entries WITHIN the stash, with auto-reciprocity.
+// `relates_to` entries may be a bare id (5) or an object ({ "id": 5 }). If item A
+// lists B, B automatically shows A too — declare the link on either side only.
+function buildStashRelated(target, all) {
+  var ids = {}, order = [];
+  function add(id) {
+    id = parseInt(id, 10);
+    if (isNaN(id) || id === target.id || ids[id]) return;
+    ids[id] = true; order.push(id);
+  }
+  function refsOf(it) {
+    return (it.relates_to || []).map(function(r){ return (r && typeof r === 'object') ? r.id : r; });
+  }
+  refsOf(target).forEach(add);
+  (all || []).forEach(function(it){
+    if (refsOf(it).map(Number).indexOf(target.id) !== -1) add(it.id);
+  });
+  return order.map(function(id){
+    var found = (all || []).find(function(x){ return x.id === id; });
+    return found ? { id: id, title: found.title, kind: found.kind } : null;
+  }).filter(Boolean);
+}
+
+// (Cross-module related-links are not used in the stash. buildRelatedFor clears
+// the list; renderReaderRelated hides its container when empty.)
+function buildRelatedFor(target) { if (target) target._related = []; }
+
 // ── META PANEL: title, author, tags, characters, posted date ─────────────
 function renderMeta() {
-  document.title = story.title + ' — Sinverse Library';
+  document.title = story.title + ' — Jay\'s Stash';
   document.getElementById('reader-topbar-title').textContent = story.title;
   document.getElementById('reader-title').textContent        = story.title;
   var raEl = document.getElementById('reader-author');
@@ -92,7 +127,7 @@ function renderMeta() {
 
 // Resolve effective related-works for a story, merging its declared `relates_to`
 // with reciprocal links declared on the other side (single source of truth).
-function buildRelatedFor(target, targetModule, galleryItems, libraryItems) {
+function _unusedBuildRelatedFor2(target, targetModule, galleryItems, libraryItems) {
   var out = [], seen = {};
   function add(module, mid) {
     var key = module + ':' + mid;
@@ -130,22 +165,12 @@ function renderReaderRelated(related) {
 
   var rendered = 0;
   related.forEach(function(r) {
-    var title, href;
-    if (r.module === 'gallery') {
-      var g = (window._galleryItems || []).find(function(x){ return x.id === r.id; });
-      if (!g) return;
-      title = g.title;
-      href  = '../gallery/viewer.html?id=' + r.id;
-    } else {
-      var s = (window._libraryItems || []).find(function(x){ return x.id === r.id; });
-      if (!s) return;
-      title = s.title;
-      href  = 'reader.html?id=' + r.id;
-    }
+    // Within the stash: stories -> reader.html, images -> viewer.html.
+    var href = (r.kind === 'story' ? 'reader.html?id=' : 'viewer.html?id=') + r.id;
     var a = document.createElement('a');
     a.className = 'reader-char-link';
     a.href = href;
-    a.textContent = title;
+    a.textContent = r.title;
     el.appendChild(a);
     rendered++;
   });

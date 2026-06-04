@@ -5,42 +5,38 @@ eyebrow: Help
 faq: true
 ---
 
-## What is the Sinverse?
+## Does the serum affect trans people? What about gender identity?
 
-The Sinverse is an anthropomorphic world — mostly furry species alongside a small human minority — that was permanently reshaped when a bunny named Sin released the Apotheosis Serum across the globe. It is a collaborative adult creative universe where contributors build stories, art, and lore within this shared setting.
+Yes — and inclusively. The Apotheosis Serum responds to a person's true sense of self, not their assigned sex. You are who you say you are, and the serum reacts accordingly: anyone who knows herself to be a woman is transformed. This has been the consistent stance of the setting from the start.
 
-## What is the Apotheosis Serum?
+## Why weren't the giantesses stopped by modern military weapons on or before TDay?
 
-A serum developed in secret by Sin that responds to a person's sense of self — it takes hold in anyone who knows herself to be a woman. Its effects are dramatic and permanent: massive physical growth (typically 9–12ft, with rare macro cases beyond 100ft), a powerful physique, a reshaping of the body into its fully realised transformed form, a strong suppression of empathy, and a sharp surge in libido.
+The serum grants supernatural toughness. Giantesses are effectively immune to personal weapons of any size — including armor-piercing, explosive, and chemical attacks — even the weakest of them. The point is thematic: stripping away the male power fantasy is core to the setting, so no weapon, especially one built to set men over other men, ever avails against a giantess.
 
-## Who is Sin?
+Heavy weapons can still be annoying or painful to them. Narratively that's used to make a giantess *angry*, never to defeat her. (Depictions of exactly how tough they are vary between stories.)
 
-Sin is the bunny research scientist who created the Apotheosis Serum and administered it to herself first, becoming a 12ft giantess. She seized control of her lab, rebranded it as SinCorp, and orchestrated the serum's global release. She now resides in Angora, the most powerful of the mega-cities.
+## What was military technology like before TDay?
 
-## What was TDay (Transformation Day)?
+More advanced than our real-world tech. SinCorp's innovations — especially super-soldier serums — forced militaries to escalate fast, developing power armor and far more powerful personal armaments in response.
 
-TDay was the coordinated global release of the serum. SinCorp weaponised water supplies, air dispersal, and distribution networks simultaneously, and women across the world began to change. The chaos lasted weeks; the transformed world that emerged from it became permanent. Most in-universe dates are measured relative to TDay.
+After TDay these weapons became useless against girls, but boys in the Wilds still scavenge them to hunt food and fend off the weaker mutated wildlife. During the Giantess Renaissance, Sin and others invented novelty weapons for hunting boys — feralizers, pheromone weapons, shrink balls — all less effective than the girls themselves, but they add sport to the capture.
 
-## What are the Mega-Cities?
+## If giantesses no longer have female reproductive systems, how does reproduction work?
 
-Purpose-built city-states designed to accommodate giantess-scale inhabitants and their subordinates. Each is ruled by a Matriarch who sets its culture and laws. The most powerful is Angora, where Sin resides.
+It doesn't — not without help. Eliminating female reproductive organs was done without thought to the consequences, and after TDay toys quickly grew scarce.
 
-## What are the Wilds?
+Sin's solution was to establish vat-growing technology: first tube-grown boys to placate the girls, then a new generation of girls, and eventually modifications that let boys carry pregnancies (for her own amusement). Male pregnancy is treated as an accepted fetish among the girls. These pregnancies mostly produce more toys, occasionally a new girl.
 
-The land between the mega-cities, reclaimed by nature. Macro-scale women — too large for city life, their cognition sometimes affected by their extreme size — roam vast territories here, hunting "toys" for sport and company.
+## Is there underage content in the Sinverse?
 
-## What are "toys"?
+No. Underage content is never part of the setting. The mechanics of maturation and birth are deliberately left undefined — most stories have people emerge from incubation already fully mature, or simply skip past any maturation period entirely.
 
-"Toys" is the derogatory in-world term for males, who are treated as property rather than citizens. Most are kept as slaves or objects within the mega-cities. Some escape into the Wilds, where they become known as Wild Toys.
+## How are giant girls sustainable? Don't they need enormous amounts of food and water?
 
-## What is the Resistance?
+The serum is unapologetic superscience — comic-book supergenius technology that bends or rewrites physics as we understand it. Girls can reach up to 200ft with no biological problems (though the very largest tend toward mental instability). Despite their size, they need far less food and water than you'd expect. They still feel hunger and thirst and would rather satisfy those urges than endure them, but bare survival takes little.
 
-A guerilla coalition of empathy-retaining women and escaped toys. It operates in self-contained cells with no central leadership, working to smuggle males out of the mega-cities.
+## What is "sadism deprivation"?
 
-## Does the serum affect everyone?
+A far greater danger to giantesses than hunger. Cruelty toward boys is a biological need hardcoded by Sin's serum — without boys to abuse, a giantess can't achieve proper sexual release even when orgasming. The resulting tension builds until she degrades into a horny animal; prolonged deprivation can cause permanent insanity and death.
 
-The serum responds to a person's sense of self — it takes hold in those who know themselves to be women, and does not touch those who don't. Not all transformed women lose their empathy to the same degree; those who retain it often end up aligned with the Resistance. Effects also vary in scale, from the common 9–12ft range to rare macro cases.
-
-## What kind of content does the Sinverse contain?
-
-Sinverse is an adult creative universe exploring themes of power, transformation, dominance, and size difference. Works contain mature themes including explicit sexuality, size kink, macro/micro dynamics, and non-consensual scenarios presented in a fantasy context. All characters depicted are adults.
+It's also why the largest girls tend to be unstable: past a certain size, the gap between them and their prey is too great to engage with properly, leaving their cruelty needs unmet. Mass-abuse events can satisfy them, but require more toys than even Renaissance-era production can reliably supply.

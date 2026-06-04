@@ -702,14 +702,8 @@ function render() {
 
   document.getElementById('zoom-label').textContent = Math.round(S.zoomH*100)+'%';
   renderInProgress = false;
-  // Re-apply sandbox positions after render. Hide the figures until they're
-  // pinned so the user never sees them flash at their default flow positions
-  // (the "bounce") or show alt text while images reload.
-  if (sandboxMode) {
-    var _figsEl = document.getElementById('sr-figures');
-    if (_figsEl) _figsEl.style.visibility = 'hidden';
-    applySandboxPositions();
-  }
+  // Re-apply sandbox positions after render
+  if (sandboxMode) applySandboxPositions();
 }
 
 function renderChar(figs, char, slotIdx) {
@@ -910,15 +904,6 @@ function updateRuler() {
   var scrollEl = document.getElementById('sr-scroll');
   var fullH = viewH;
   if (S.zoomH > 1) fullH = Math.max(viewH, Math.round(S.canvasH * S.zoomH));
-  // In sandbox mode the figures container is sized by pin() (it may be taller
-  // than canvasH*zoomH to fit a tall figure's top). The ruler must match THAT
-  // height so its ticks line up with the figures and stay aligned while
-  // scrolling — otherwise the scale "breaks" on scroll.
-  if (sandboxMode) {
-    var figsEl = document.getElementById('sr-figures');
-    var figsH = figsEl ? (parseFloat(figsEl.style.height) || figsEl.getBoundingClientRect().height) : 0;
-    if (figsH > fullH) fullH = Math.round(figsH);
-  }
   inner.style.height = fullH + 'px';
 
   var effPx = S.pxPerIn; // zoom baked in
@@ -4801,14 +4786,16 @@ function applySandboxPositions() {
 
     var ppi = (typeof S !== 'undefined' && S.pxPerIn) ? S.pxPerIn : 1;
 
-    // First pass: compute each figure's target left/top and track the highest
-    // top (which may be ABOVE the container's top edge when zoomed — that's the
-    // part that was being clipped and made unscrollable).
-    var placements = [];
-    var minTop = 0;            // most-negative top across figures (0 if none overflow)
     wraps.forEach(function(wrap, i) {
       var sid = wrap.getAttribute('data-char-key') || wrap.getAttribute('data-slot-idx') || String(i);
       var g = geo[i];
+
+      // If this figure has no stored position yet, capture its current natural
+      // (flex) placement into a SCALE- AND CONTENT-INDEPENDENT coordinate system
+      // NOW, so it stays put on later zoom/resize/reorder. Both axes are stored
+      // in inches via pxPerIn, measured from the container's stable top-left and
+      // bottom — NOT as a fraction of the container, whose width/height changes
+      // whenever any figure is resized (that was the source of the jump).
       if (!sandboxPositions[sid] || sandboxPositions[sid].centerInches === undefined) {
         sandboxPositions[sid] = {
           centerInches: (g.left + g.width / 2) / ppi,
@@ -4816,49 +4803,20 @@ function applySandboxPositions() {
         };
       }
       var pos = sandboxPositions[sid];
+
+      wrap.style.position = 'absolute';
+      wrap.style.width  = g.width + 'px';
       var leftPx = (pos.centerInches * ppi) - (g.width / 2);
       var groundPx = (pos.groundInches || 0) * ppi;
       var topPx = containerH - g.height - groundPx;
-      if (topPx < minTop) minTop = topPx;
-      placements.push({ wrap: wrap, g: g, leftPx: leftPx, topPx: topPx, i: i });
-    });
-
-    // If any figure's top is above the container (minTop < 0), grow the figures
-    // box by that overflow and push everything DOWN by the same amount, so the
-    // ground stays put but the tall tops now live inside a taller, scrollable
-    // container instead of being clipped.
-    var topPad = minTop < 0 ? -minTop : 0;
-    var totalH = containerH + topPad;
-    figs.style.height = totalH + 'px';
-
-    placements.forEach(function(p) {
-      var wrap = p.wrap;
-      wrap.style.position = 'absolute';
-      wrap.style.width  = p.g.width + 'px';
-      wrap.style.left = p.leftPx + 'px';
-      wrap.style.top  = (p.topPx + topPad) + 'px';   // shifted down by the overflow
+      wrap.style.left = leftPx + 'px';
+      wrap.style.top  = topPx + 'px';
       wrap.style.transform = '';
       wrap.style.cursor = '';   // cursor set dynamically on hover (only over opaque pixels)
       wrap.style.userSelect = 'none';
-      wrap.style.zIndex = String(wraps.length - p.i);
+      wrap.style.zIndex = String(wraps.length - i);
       makeDraggable(wrap);
     });
-
-    // Make sure the scroll container can actually reach the (now taller) top.
-    var scrollC = document.getElementById('sr-scroll');
-    var sceneC  = document.getElementById('sr-scene');
-    if (scrollC && sceneC) {
-      if (topPad > 0) {
-        sceneC.style.minHeight = totalH + 'px';
-        scrollC.style.overflowY = 'auto';
-        scrollC.style.alignItems = 'flex-start';
-        sceneC.style.marginTop = 'auto';
-      }
-    }
-    // Rebuild the ruler to match the (possibly expanded) figures container, then
-    // sync it to the current scroll position so the scale stays aligned.
-    if (typeof updateRuler === 'function') updateRuler();
-    if (typeof syncRulerScroll === 'function') syncRulerScroll();
     // Opacity-aware hover cursor: show the grab hand only when the pointer is
     // actually over a grabbable (opaque) part of some figure — not over the
     // transparent regions of a PNG's bounding box.
@@ -4871,8 +4829,6 @@ function applySandboxPositions() {
       });
       figs.addEventListener('mouseleave', function() { figs.style.cursor = ''; });
     }
-    // Positions applied — reveal the figures (hidden during sandbox re-render).
-    figs.style.visibility = '';
   }
 
   // Pin once images have a real laid-out size (so widths/positions are correct),
@@ -5071,24 +5027,20 @@ function makeDraggable(el) {
     e.preventDefault();
     var cx = e.touches ? e.touches[0].clientX : e.clientX;
     var cy = e.touches ? e.touches[0].clientY : e.clientY;
+    var leftPx = baseLeft + (cx - startX);
+    var topPx  = baseTop  + (cy - startY);
+    el.style.left = leftPx + 'px';
+    el.style.top  = topPx + 'px';
+    // Persist in SCALE- AND CONTENT-INDEPENDENT coordinates (inches via pxPerIn),
+    // so the position survives zoom, resize, and reorder without jumping.
     var figs = document.getElementById('sr-figures');
     if (!figs) return;
     var chH = parseFloat(figs.style.height) || figs.getBoundingClientRect().height || 1;
     var w = el.getBoundingClientRect().width;
     var h = el.getBoundingClientRect().height;
-    var leftPx = baseLeft + (cx - startX);
-    var topPx  = baseTop  + (cy - startY);
-    // Clamp so the figure's BOTTOM never goes below the ground line (the bottom
-    // of the figures box). topPx max = chH - h keeps the feet on the floor.
-    var maxTop = chH - h;
-    if (topPx > maxTop) topPx = maxTop;
-    el.style.left = leftPx + 'px';
-    el.style.top  = topPx + 'px';
-    // Persist in SCALE- AND CONTENT-INDEPENDENT coordinates (inches via pxPerIn),
-    // so the position survives zoom, resize, and reorder without jumping.
     var ppi = (typeof S !== 'undefined' && S.pxPerIn) ? S.pxPerIn : 1;
     var centerInches = (leftPx + w / 2) / ppi;
-    var groundInches = Math.max(0, (chH - h - topPx) / ppi);   // never below the floor
+    var groundInches = (chH - h - topPx) / ppi;
     var sid = el.getAttribute('data-char-key') || el.getAttribute('data-slot-idx');
     if (sid !== null) sandboxPositions[sid] = { centerInches: centerInches, groundInches: groundInches };
   }
@@ -5444,16 +5396,14 @@ function doCopyImage() {
       scale: 2,
       onclone: function(doc) {
         // The foot/cm scale is painted manually onto the output canvas (see
-        // drawHeightScaleOnCanvas). Hide the DOM ruler column with VISIBILITY
-        // (not display) so it disappears from the capture but KEEPS its layout
-        // box — otherwise the figures would shift and domCropCanvas (which
-        // measures the live DOM, where the ruler is still present) would crop
-        // the wrong region and clip/overlap the image.
+        // drawHeightScaleOnCanvas) because html2canvas can't reliably render the
+        // DOM ruler. So always hide the DOM ruler column in the clone to avoid a
+        // doubled/!aligned ruler. The length-view ruler is separate and stays.
         var cRulerCol = doc.getElementById('sr-ruler-col');
-        if (cRulerCol) cRulerCol.style.visibility = 'hidden';
+        if (cRulerCol) cRulerCol.style.display = 'none';
         if (!copyWithScale) {
           var cLenRuler = doc.getElementById('sr-length-ruler-wrap');
-          if (cLenRuler) cLenRuler.style.visibility = 'hidden';
+          if (cLenRuler) cLenRuler.style.display = 'none';
         }
         var cScroll = doc.getElementById('sr-scroll');
         if (cScroll && S.gridLines) cScroll.style.backgroundImage = 'none';
@@ -5473,58 +5423,32 @@ function doCopyImage() {
 // canvas pixels. Ticks are drawn from the ground upward.
 function drawHeightScaleOnCanvas(canvas, target, scale, padding) {
   var s = scale || 1;
-  // The ruler column is a FIXED size relative to the export resolution (it does
-  // not grow with zoom — same as the on-screen ruler, which stays ~44px while
-  // only the figures scale). pxPerIn already has zoom baked in, so tick spacing
-  // tracks the figures while the column thickness stays constant.
-  var u = s;
   var pad = (padding || 16) * s;
-  var ppi = (S.pxPerIn || 0) * s;     // canvas px per inch (zoom baked into pxPerIn)
+  var ppi = (S.pxPerIn || 0) * s;     // canvas px per inch (zoom already baked into pxPerIn)
   if (ppi <= 0) return canvas;
 
-  var colW = Math.round(46 * u);      // fixed ruler column width
+  var ctx = canvas.getContext('2d');
   var H = canvas.height;
-  var groundY = H - pad;              // ground line y, measured on the ORIGINAL canvas
+  var groundY = H - pad;              // ground line y in the cropped canvas
 
-  // Build a wider canvas: [ ruler column | original capture ]. This adds the
-  // scale to the SIDE rather than painting over the figures.
-  var out = document.createElement('canvas');
-  out.width = canvas.width + colW;
-  out.height = H;
-  var ctx = out.getContext('2d');
-
-  // 1) Panel-colour background strip + right divider (matches .sr-ruler-col).
-  ctx.fillStyle = '#1a1210';          // --bg-panel
-  ctx.fillRect(0, 0, colW, H);
-  ctx.strokeStyle = 'rgba(122,82,64,0.55)';   // subtle divider (~--border)
-  ctx.lineWidth = Math.max(1, Math.round(1 * u));
-  ctx.beginPath();
-  ctx.moveTo(colW - 0.5, 0);
-  ctx.lineTo(colW - 0.5, H);
-  ctx.stroke();
-
-  // 2) Blit the original capture to the right of the column.
-  ctx.drawImage(canvas, colW, 0);
-
-  // 3) Draw ticks + labels within the column (sized proportionally to zoom).
   ctx.save();
-  ctx.font = Math.round(12 * u) + "px 'Cormorant SC', Georgia, serif";
+  ctx.font = Math.round(11 * s) + "px 'Cormorant SC', Georgia, serif";
   ctx.textBaseline = 'alphabetic';
-  ctx.textAlign = 'right';
-  ctx.lineWidth = Math.max(1, Math.round(1 * u));
+  ctx.textAlign = 'left';
+  ctx.lineWidth = Math.max(1, Math.round(1 * s));
 
   function tickAt(inches, label) {
     var y = groundY - inches * ppi;
     if (y < pad * 0.25 || y > H) return;
-    // tick line along the right edge of the column
-    ctx.strokeStyle = 'rgba(196,168,130,0.6)';
+    // tick line
+    ctx.strokeStyle = 'rgba(196,168,130,0.55)';
     ctx.beginPath();
-    ctx.moveTo(colW - Math.round(11 * u), y);
-    ctx.lineTo(colW, y);
+    ctx.moveTo(0, y);
+    ctx.lineTo(Math.round(10 * s), y);
     ctx.stroke();
-    // label, right-aligned just inside the column
-    ctx.fillStyle = '#c4a882';        // --text-secondary-ish gold
-    ctx.fillText(label, colW - Math.round(13 * u), y - Math.round(3 * u));
+    // label
+    ctx.fillStyle = '#c4a882';
+    ctx.fillText(label, Math.round(13 * s), y - Math.round(2 * s) + Math.round(8 * s));
   }
 
   if (S.metric) {
@@ -5544,7 +5468,7 @@ function drawHeightScaleOnCanvas(canvas, target, scale, padding) {
     }
   }
   ctx.restore();
-  return out;
+  return canvas;
 }
 
 function domCropCanvas(canvas, target, scale, padding) {

@@ -10,11 +10,11 @@
 
   var LINKS = [
     { label: 'Home',         href: '/',              id: 'home' },
-    { label: 'Wiki',         href: '/wiki/',          id: 'wiki' },
     { label: 'Library',      href: '/library/',       id: 'library' },
-    { label: 'CYOA',         href: '/cyoa/',          id: 'cyoa' },
     { label: 'Gallery',      href: '/gallery/',       id: 'gallery' },
     { label: 'Size Ref',     href: '/sizeref/',       id: 'sizeref' },
+    { label: 'CYOA',         href: '/cyoa/',          id: 'cyoa' },
+    { label: 'Wiki',         href: '/wiki/',          id: 'wiki' },
     { label: 'Contributors', href: '/contributors/',  id: 'contributors' },
   ];
 

@@ -1,4 +1,14 @@
 'use strict';
+/* ============================================================================
+   Sinverse — Contributors page
+   ----------------------------------------------------------------------------
+   Profiles from contributors.json. Contribution counts are auto-tallied by
+   scanning gallery.json, library.json, and cyoa.json for each contributor's
+   id (lowercased). A set with N images counts as N artworks; an empty set as 1.
+   Adventure contributions are weighted at 1/5 for SORT ranking only (displayed
+   counts stay true). Supports ?creator=<id> to filter to one contributor
+   (used by gallery/viewer artist links).
+   ========================================================================== */
 
 // ── Social platform config ─────────────────────────────────────
 // Maps known keys to display labels. Any key not listed renders with
@@ -60,7 +70,47 @@ function buildTypes(types, container) {
 }
 
 // ── Build content count links ─────────────────────────────────
-function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, isJay) {
+// Count a creator's PUBLIC contributions (gallery + library + cyoa). Used both
+// for the stat pills and to decide list visibility: a creator with zero public
+// work is hidden from the public list (they only show via a direct ?creator=
+// link from the stash).
+function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
+  var g = galleryItems.reduce(function(sum, i) {
+    if (i.artist !== id) return sum;
+    if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
+    if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
+    return sum + 1;
+  }, 0);
+  var l = libraryItems.reduce(function(sum, i) {
+    if (i.author !== id) return sum;
+    if (i.type === 'serial' && i.chapters && i.chapters.length) return sum + i.chapters.length;
+    return sum + 1;
+  }, 0);
+  var c = adventureNodes.filter(function(n){ return n.author === id; }).length;
+  return g + l + c;
+}
+
+// Count a creator's STASH contributions: images (sets/comics count their pages)
+// and stories (serials count their chapters). Matches stash.json's `creator`
+// field. Stash entries use `creator`; we also accept `artist`/`author` aliases.
+function stashCounts(id, stashItems) {
+  function who(it) { return it.creator || it.artist || it.author || ''; }
+  var images = (stashItems || []).reduce(function(sum, i) {
+    if (i.kind !== 'image' || who(i) !== id) return sum;
+    if (i.pages && i.pages.length)   return sum + i.pages.length;
+    if (i.images && i.images.length) return sum + i.images.length;
+    return sum + 1;
+  }, 0);
+  var stories = (stashItems || []).reduce(function(sum, i) {
+    if (i.kind !== 'story' || who(i) !== id) return sum;
+    if (i.type === 'serial' && i.chapters && i.chapters.length) return sum + i.chapters.length;
+    return sum + 1;
+  }, 0);
+  return { images: images, stories: stories };
+}
+
+// ── Build content count links ─────────────────────────────────
+function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, isJay, stash) {
   var gCount = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length > 0) return sum + i.pages.length;
@@ -74,11 +124,27 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   }, 0);
   var cCount = adventureNodes.filter(function(n){ return n.author === id; }).length;
 
-  var defs = [
-    { n: gCount, label: 'Artworks',   url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
-    { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
-    { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
-  ];
+  var defs;
+  var stashUrl = '../stash/?creator=' + encodeURIComponent(id);
+  var stashTotal = stash ? (stash.images + stash.stories) : 0;
+  // A stash-only creator (no public work) shows ONLY a single "Stash" pill whose
+  // value is the combined total of all their stash contributions.
+  if (stashTotal > 0 && (gCount + lCount + cCount) === 0) {
+    defs = [
+      { n: stashTotal, label: 'Stash', url: stashUrl, link: true }
+    ];
+  } else {
+    defs = [
+      { n: gCount, label: 'Artworks',   url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
+      { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
+      { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
+    ];
+    // A single "Stash" pill (combined total) appended for creators who have BOTH
+    // public and stash work (only on the ?creator= detail view, never the list).
+    if (stashTotal > 0) {
+      defs.push({ n: stashTotal, label: 'Stash', url: stashUrl, link: true });
+    }
+  }
 
   defs.forEach(function(d) {
     if (isJay) {
@@ -135,7 +201,7 @@ function renderJay(jay, chars, galleryItems, libraryItems, adventureNodes) {
 }
 
 // ── Render contributor card ───────────────────────────────────
-function renderCard(contributor, galleryItems, libraryItems, adventureNodes) {
+function renderCard(contributor, galleryItems, libraryItems, adventureNodes, stash) {
   var card = document.createElement('div');
   card.className = 'con-card';
 
@@ -168,7 +234,7 @@ function renderCard(contributor, galleryItems, libraryItems, adventureNodes) {
     '<div class="con-card-counts"></div>';
 
   buildSocials(contributor.socials, card.querySelector('.con-card-socials'));
-  buildCounts(contributor.id, galleryItems, libraryItems, adventureNodes, card.querySelector('.con-card-counts'), false);
+  buildCounts(contributor.id, galleryItems, libraryItems, adventureNodes, card.querySelector('.con-card-counts'), false, stash);
 
   return card;
 }
@@ -219,6 +285,7 @@ async function init() {
       safeFetch(root + 'gallery/gallery.json',     []),
       safeFetch(root + 'library/library.json',     []),
       safeFetch(root + 'cyoa/cyoa.json',           []),
+      safeFetch(root + 'stash/stash.json',         []),
     ]);
 
     var contributors = results[0];
@@ -226,6 +293,7 @@ async function init() {
     var galleryItems = results[2];
     var libraryItems = results[3];
     var cyoaManifest = results[4];
+    var stashItems   = results[5];
 
     // Fetch all adventure nodes from adventures/*.json
     var adventureNodes = [];
@@ -245,10 +313,14 @@ async function init() {
 
     renderJay(jay, chars, galleryItems, libraryItems, adventureNodes);
 
-    // Check for ?creator= param
+    // Check for ?creator= param (direct link, e.g. from the stash).
     var creatorParam = new URLSearchParams(window.location.search).get('creator');
+    var isCreatorLink = false;
     if (creatorParam) {
+      isCreatorLink = true;
       var creatorId = decodeURIComponent(creatorParam).toLowerCase();
+      // Direct link: resolve the creator regardless of where their work lives,
+      // so stash-only creators (hidden from the public list) still get a profile.
       rest = rest.filter(function(c){ return c.id.toLowerCase() === creatorId; });
       // Update heading and show inline view-all link
       var titleEl = document.getElementById('con-section-title');
@@ -262,6 +334,13 @@ async function init() {
       var cleanUrl = new URL(window.location.href);
       cleanUrl.searchParams.delete('creator');
       window.history.replaceState({}, '', cleanUrl);
+    } else {
+      // Public list: hide creators whose ONLY contributions are in the stash
+      // (zero public gallery/library/cyoa work). This keeps the stash secret —
+      // they remain reachable only via a direct ?creator= link from the stash.
+      rest = rest.filter(function(c){
+        return publicWorkCount(c.id, galleryItems, libraryItems, adventureNodes) > 0;
+      });
     }
 
     // Sort rest by weighted contribution score descending.
@@ -295,7 +374,10 @@ async function init() {
       grid.innerHTML = '<div class="con-loading">No additional contributors yet.</div>';
     } else {
       rest.forEach(function(c) {
-        grid.appendChild(renderCard(c, galleryItems, libraryItems, adventureNodes));
+        // Only surface stash stats when this is a direct ?creator= link (i.e.
+        // arrived from the stash) — never on the public list, to keep the secret.
+        var stash = isCreatorLink ? stashCounts(c.id, stashItems) : null;
+        grid.appendChild(renderCard(c, galleryItems, libraryItems, adventureNodes, stash));
       });
     }
 
