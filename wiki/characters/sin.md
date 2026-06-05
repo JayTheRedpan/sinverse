@@ -48,6 +48,12 @@ She is always, without exception, entirely in control of any encounter, and very
 
 {{RELATIONSHIPS}}
 
+## Preferences
+
+*The kinks and dynamics that define this character's encounters.*
+
+Sin is a true sadist, and her tastes run to the deliberate infliction of suffering for its own sake. What sets her apart from the merely cruel is *what* she most wants to ruin: not the body, but the mind. Sin gets far more out of breaking a toy psychologically than physically — the body is just the instrument she plays to get there. Her real craving is to take a whole, willful person and unmake them by degrees: to watch defiance curdle into pleading, pleading into compliance, and compliance into something that no longer remembers it was ever anything else. She savors the exact moment a toy's personality finally gives way — when the wit, the resistance, the sense of self all collapse and leave behind a quivering, hollowed-out husk that flinches at her voice and exists only to be used. A toy reduced to a mindless, broken shell of who they used to be is her masterpiece, and she is endlessly patient in pursuit of it; she would rather spend weeks dismantling one mind completely than indulge a hundred quick cruelties. Every degradation she chooses is aimed at that goal. The physical abuse is real and severe, but to Sin it has always been a means — the point is the person who used to be there, and isn't anymore.
+
 ## Usage Guide
 
 *Notes for content creators working with this character.*

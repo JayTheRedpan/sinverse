@@ -48,6 +48,12 @@ His old advantages count for little here. The speed that once carried him across
 
 {{RELATIONSHIPS}}
 
+## Preferences
+
+*The kinks and dynamics that define this character's encounters.*
+
+Jay's preferences are, by the nature of his situation, largely beside the point — as a toy he rarely has any agency over his encounters, and what happens to him is dictated by whoever holds him at the time rather than by anything he wants. The throughline of his experiences isn't a kink he pursues but a position he occupies: the small, overpowered partner with no say, at the mercy of women many times his size. If anything defines his side of an encounter, it's that helplessness itself and the tail-grab dynamic so often used to control him. The one genuine exception is Libby, with whom his involvement is mutual and wanted — the rare relationship in his life where his preferences are something a partner actually cares to ask about.
+
 ## Usage Guide
 
 *Notes for content creators working with this character.*
