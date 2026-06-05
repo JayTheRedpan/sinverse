@@ -1,0 +1,79 @@
+[
+  {
+    "id": 1,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "A fearful Toy",
+        "nextId": 2
+      },
+      {
+        "text": "A prideful Huntress",
+        "nextId": 3
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "A choice must be made"
+  },
+  {
+    "id": 2,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Timid strength compels, Approach what looks like a cargo wing on the side of the structure.",
+        "nextId": null
+      },
+      {
+        "text": "Swallowing your fear, Approach what could be a main entrance at the back of the monolith tower.",
+        "nextId": null
+      },
+      {
+        "text": "Let your fear win, and run away.",
+        "nextId": 4
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "The toy's venture to darkness"
+  },
+  {
+    "id": 3,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "You won't fail now, you lead charge to what could be the main entrance!",
+        "nextId": null
+      },
+      {
+        "text": "The scent leads you! You approach what could be the cargo wing on the side of the structure.",
+        "nextId": null
+      },
+      {
+        "text": "Fear claims your might for the first time in a decade.. you run away.",
+        "nextId": 5
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "The Huntress' worst find."
+  },
+  {
+    "id": 4,
+    "image": null,
+    "tags": [
+      "abuse"
+    ],
+    "choices": [],
+    "author": "SpearmintMagpie",
+    "title": "A fearful mistake"
+  },
+  {
+    "id": 5,
+    "image": null,
+    "tags": [],
+    "choices": [],
+    "author": "SpearmintMagpie",
+    "title": "Let myths be lost"
+  }
+]
