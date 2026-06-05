@@ -23,11 +23,11 @@
     "choices": [
       {
         "text": "Timid strength compels, Approach what looks like a cargo wing on the side of the structure.",
-        "nextId": null
+        "nextId": 7
       },
       {
         "text": "Swallowing your fear, Approach what could be a main entrance at the back of the monolith tower.",
-        "nextId": null
+        "nextId": 8
       },
       {
         "text": "Let your fear win, and run away.",
@@ -44,7 +44,7 @@
     "choices": [
       {
         "text": "You won't fail now, you lead charge to what could be the main entrance!",
-        "nextId": null
+        "nextId": 9
       },
       {
         "text": "The scent leads you! You approach what could be the cargo wing on the side of the structure.",
@@ -75,5 +75,48 @@
     "choices": [],
     "author": "SpearmintMagpie",
     "title": "Let myths be lost"
+  },
+  {
+    "id": 7,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Getting further away is needed! Hopefully that old elevator works!",
+        "nextId": null
+      },
+      {
+        "text": "Maybe the sign can lead me to somewhere safer! Lets head there.",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Cargo and Shivers"
+  },
+  {
+    "id": 8,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "I don't have a choice, I made it this far! I must continue into this dark complex!",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "The Empty Welcome"
+  },
+  {
+    "id": 9,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "No-one escapes me! If the brat went though these doors, so will I!",
+        "nextId": null
+      }
+    ],
+    "author": "",
+    "title": "Authority Lost to Darkness"
   }
 ]

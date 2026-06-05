@@ -377,5 +377,17 @@
     "socials": {
       "x": "https://x.com/SushiAmazing"
     }
+  },
+  {
+    "id": "SpearmintMagpie",
+    "name": "SpearmintMagpie",
+    "avatar": null,
+    "bio": null,
+    "types": [
+      "CYOA Author"
+    ],
+    "socials": {
+      
+    }
   }
 ]
