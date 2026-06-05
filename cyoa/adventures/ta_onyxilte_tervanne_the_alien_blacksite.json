@@ -23,11 +23,11 @@
     "choices": [
       {
         "text": "Timid strength compels, Approach what looks like a cargo wing on the side of the structure.",
-        "nextId": 7
+        "nextId": 6
       },
       {
         "text": "Swallowing your fear, Approach what could be a main entrance at the back of the monolith tower.",
-        "nextId": 8
+        "nextId": 7
       },
       {
         "text": "Let your fear win, and run away.",
@@ -44,7 +44,7 @@
     "choices": [
       {
         "text": "You won't fail now, you lead charge to what could be the main entrance!",
-        "nextId": 9
+        "nextId": 8
       },
       {
         "text": "The scent leads you! You approach what could be the cargo wing on the side of the structure.",
@@ -77,7 +77,7 @@
     "title": "Let myths be lost"
   },
   {
-    "id": 7,
+    "id": 6,
     "image": null,
     "tags": [],
     "choices": [
@@ -94,7 +94,7 @@
     "title": "Cargo and Shivers"
   },
   {
-    "id": 8,
+    "id": 7,
     "image": null,
     "tags": [],
     "choices": [
@@ -107,7 +107,7 @@
     "title": "The Empty Welcome"
   },
   {
-    "id": 9,
+    "id": 8,
     "image": null,
     "tags": [],
     "choices": [
@@ -116,7 +116,7 @@
         "nextId": null
       }
     ],
-    "author": "",
+    "author": "SpearmintMagpie",
     "title": "Authority Lost to Darkness"
   }
 ]
