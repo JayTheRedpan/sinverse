@@ -38,13 +38,13 @@ Your approach, a powerful stride, wattles down to a shuffle.. till you stop dead
 
 **I hope you fucking death is slow and painful... you pathetic toy**
 
-## 7
+## 6
 
 **"It's so cold... h..how could a...anyone w...work here?! What is this place.. there's s...so many containers here!"**
 
 Your slow approach along the side of the empty what could be the old road path for moving cargo, now silent as the sounds are only disturbed by the dull humming of  something within the depths of this forbidden place, makes you feel more unease about what you are doing. But inside you know the options are here, or in the clutches of 'them', the thought makes you shudder, knowing full well what those girls now do to your kind. You slow, stumbling walk leads you to an low opening along one of the cargo doors, you notice something odd, these are not shutter doors like the old world uses, but some robust heavy blast door, your mind plays more into your fear , but you leave it behind as you walk under this heavy door, you haven't even noticed the door is oversized for its purpose. You peer into the space, its a mess, dim lights barely light the cavernous space, containers are in different arrangements, some neatly piled atop of each other, one or two of them have been opened, like to become shelter for those brave enough to settle is such a bone chilling space, the other side you noticed the containers are more chaotic, some have been moved off their space, but what catches your attention is not the chaotic order on the left side, but the fact the dust that formed around the space has been disturbed, these containers where only recently moved! Your heart begins to race once more, your breath becoming panicked and heavy in the stail air as your mind plays the worst case senario that you lead yourself into a huntress' trap.. you scamper out of this space like your life depends on it, but not out of the hallow space, you scurry into an old corridor, its wide and tall, you can barely see the ceiling due to the dull now red lighting illuminating the space, the space feels calm, hallow like the rest of this complex. You notice some cargo crates in the hall, must have been how they funnelled cargo, you also notice an old elevator down the hall on the left where the cargo was stacked, on the right you can seen the flickering light illuminating what could be a sign board with 2 other paths that could be taken, directions could be useful, but you think to yourself, "where do I go?"
 
-## 8
+## 7
 
 "This... p..place, its so, b..big, b..but cold, was this... a lobby? Maybe there's something.. he..here I can use"
 
@@ -60,7 +60,7 @@ The degraded hologram shuts off without finishing what it was explaining, howeve
 
 The left hallway has collapsed from the decay, the right door looks locked, you are left with one choice in your mind, press forward into this hub the hologram stated.
 
-## 9
+## 8
 
 **"Whoa... this is, outstanding... how did they build this and no-one notice! It's so cool!... grrr stay on track girl.. this a toy that needs taught a painful lesson!**
 
