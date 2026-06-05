@@ -34,5 +34,150 @@
       
     ],
     "relates_to": []
+  },
+  {
+    "id": 3,
+    "kind": "story",
+    "type": "serial",
+    "title": "Pokemon and Pandas",
+    "creator": "Zaun",
+    "tags": [
+      "feral",
+      "snuff",
+      "vore",
+      "noncon",
+      "abuse",
+      "watersports"
+    ],
+    "date": "2022-06",
+    "chapters": [
+      { "title": "Chapter 1 - ???", "file": "stories/pokemon_and_pandas_1.md", "wordCount": 3843 },
+      { "title": "Chapter 2 - ???", "file": "stories/pokemon_and_pandas_2.md", "wordCount": 3971 },
+      { "title": "Chapter 3 - ???", "file": "stories/pokemon_and_pandas_3.md", "wordCount": 4060 },
+      { "title": "Chapter 4 - ???", "file": "stories/pokemon_and_pandas_4.md", "wordCount": 7281 },
+      { "title": "Chapter 5 - ???", "file": "stories/pokemon_and_pandas_5.md", "wordCount": 5065 },
+      { "title": "Chapter 6 - ???", "file": "stories/pokemon_and_pandas_6.md", "wordCount": 5059 },
+      { "title": "Chapter 7 - ???", "file": "stories/pokemon_and_pandas_7.md", "wordCount": 2128 },
+      { "title": "Chapter 8 - ???", "file": "stories/pokemon_and_pandas_8.md", "wordCount": 2897 },
+      { "title": "Chapter 9 - ???", "file": "stories/pokemon_and_pandas_9.md", "wordCount": 3631 }
+    ],
+    "relates_to": [4,5]
+  },
+  {
+    "id": 4,
+    "kind": "image",
+    "title": "Caught Ya!",
+    "creator": "Sushi",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780617265/shade1_bfowv3.webp",
+    "tags": [
+      "feral",
+      "noncon"
+    ],
+    "date": "2022-07",
+    "blurb": "Looks like Shade caught Jay trying to run away!",
+    "relates_to": [3]
+  },
+  {
+    "id": 5,
+    "kind": "image",
+    "title": "Play Time",
+    "creator": "Sushi",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780617267/shade2_hlzhbt.webp",
+    "tags": [
+      "feral",
+      "noncon"
+    ],
+    "date": "2022-07",
+    "blurb": "Shade demanding his daily 'attention' from Jay.",
+    "relates_to": [3]
+  },
+  {
+    "id": 6,
+    "kind": "story",
+    "type": "standalone",
+    "title": "Big Cats Little Panda",
+    "creator": "Zaun",
+    "file": "stories/pokemon_and_pandas_1.md",
+    "wordCount": 6682,
+    "tags": [
+      "m/m",
+      "noncon",
+      "abuse",
+      "watersports",
+      "musk"
+    ],
+    "date": "2024-10",
+    "relates_to": []
+  },
+  {
+    "id": 7,
+    "kind": "story",
+    "type": "standalone",
+    "title": "Big Black Cat Cock",
+    "creator": "Zaun",
+    "file": "stories/blacked_jay.md",
+    "wordCount": 9795,
+    "tags": [
+      "m/m",
+      "noncon",
+      "abuse",
+      "watersports",
+      "musk"
+    ],
+    "date": "2026-05",
+    "relates_to": []
+  },
+  {
+    "id": 8,
+    "kind": "story",
+    "type": "standalone",
+    "title": "Jay's Biggest Fan",
+    "creator": "Zaun",
+    "file": "stories/sushi_biggest_fan.md",
+    "wordCount": 9202,
+    "tags": [
+      "m/m",
+      "noncon",
+      "abuse",
+      "musk"
+    ],
+    "date": "2025-03",
+    "relates_to": []
+  },
+  {
+    "id": 9,
+    "kind": "story",
+    "type": "standalone",
+    "title": "Kobold Runt Reversal",
+    "creator": "Zaun",
+    "file": "stories/runt_reversal_waffle_and_jay.md",
+    "wordCount": 10155,
+    "tags": [
+      "m/m",
+      "noncon",
+      "abuse",
+      "musk",
+      "watersports"
+    ],
+    "date": "2022-08",
+    "relates_to": []
+  },
+  {
+    "id": 10,
+    "kind": "story",
+    "type": "standalone",
+    "title": "Jay Meets Cinder",
+    "creator": "Zaun",
+    "file": "stories/cinder_and_jay.md",
+    "wordCount": 2444,
+    "tags": [
+      "feral",
+      "noncon",
+      "abuse",
+      "musk",
+      "snuff"
+    ],
+    "date": "2023-01",
+    "relates_to": []
   }
 ]

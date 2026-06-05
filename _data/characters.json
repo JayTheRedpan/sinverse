@@ -21,7 +21,8 @@
       "breasts": false,
       "bustSize": null,
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     },
     "relationships": [
       {
@@ -68,7 +69,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     },
     "relationships": [
       {
@@ -100,7 +102,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -125,7 +128,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "canine"
     }
   },
   {
@@ -150,7 +154,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -175,7 +180,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -200,7 +206,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -225,7 +232,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -250,7 +258,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "canine"
     }
   },
   {
@@ -275,7 +284,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "feline"
     }
   },
   {
@@ -300,7 +310,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -325,7 +336,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -350,7 +362,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -375,7 +388,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "canine"
     }
   },
   {
@@ -400,7 +414,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -425,7 +440,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     },
     "relationships": [
       {
@@ -457,7 +473,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -482,7 +499,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -507,7 +525,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "canine"
     }
   },
   {
@@ -532,13 +551,19 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     },
     "relationships": [
       {
         "name": "Jay",
         "type": "Partner",
         "note": "her romantic partner; the toy through whom much of the Sinverse is witnessed"
+      },
+      {
+        "name": "Riley",
+        "type": "Child",
+        "note": "carried by Jay via SinCorp mpreg modifications"
       }
     ]
   },
@@ -564,7 +589,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -589,7 +615,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -614,7 +641,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -639,7 +667,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     },
     "relationships": [
       {
@@ -676,7 +705,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -701,7 +731,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "canine"
     }
   },
   {
@@ -726,7 +757,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -751,7 +783,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -776,7 +809,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -801,7 +835,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -826,7 +861,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -851,7 +887,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -876,7 +913,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -901,7 +939,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -926,7 +965,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -951,7 +991,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -976,7 +1017,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -1001,7 +1043,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -1026,7 +1069,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     }
   },
   {
@@ -1051,7 +1095,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "tentacle"
     }
   },
   {
@@ -1076,7 +1121,8 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "humanoid"
     }
   },
   {
@@ -1101,11 +1147,17 @@
       "breasts": true,
       "bustSize": "d",
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "equine"
     },
     "relationships": [
       {
         "name": "Jay",
+        "type": "Parent",
+        "note": ""
+      },
+      {
+        "name": "Libby",
         "type": "Parent",
         "note": ""
       }
@@ -1133,7 +1185,8 @@
       "breasts": false,
       "bustSize": null,
       "penis": true,
-      "vag": false
+      "vag": false,
+      "penisType": "canine"
     }
   }
 ]
