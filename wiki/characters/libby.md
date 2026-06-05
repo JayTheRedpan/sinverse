@@ -60,6 +60,12 @@ They remain partners. Out of that bond came **Riley** — carried not by Libby, 
 
 {{RELATIONSHIPS}}
 
+## Preferences
+
+*The kinks and dynamics that define this character's encounters.*
+
+For all the raw appetite Libby carries, what truly defines her in the bedroom is **aftercare**. She is one of the Tempered — she never stops seeing her partners as people — and the moment her own need is finally spent, her empathy comes rushing back in full. Where most transformed women lose interest in a toy the instant they're satisfied, Libby's attention only intensifies: she gathers her partner close, checks them over with anxious thoroughness, frets over every mark she left, and lavishes a gentleness on them that can be almost overwhelming after the intensity that preceded it. This is the half of herself she actually likes, and she leans into it hard — soothing, reassuring, and tending to her partners with a tenderness that the new world makes vanishingly rare. For a toy, being cared for by Libby afterward is often the most disarming part of the entire encounter; the giantess who could not fully restrain herself moments ago becomes the one person determined to make sure they're all right.
+
 ## Usage Guide
 
 *Notes for content creators working with this character.*

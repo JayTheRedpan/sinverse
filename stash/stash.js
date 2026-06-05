@@ -263,17 +263,33 @@ function renderGrid(items) {
     var card = document.createElement('div');
     card.className = 'stash-card stash-card-image';
 
+    // Derive the card cover and (for multi-image entries) a count badge — same
+    // precedence the gallery uses: explicit image, else first of a set's
+    // images[], else first of a comic's pages[].
+    var coverSrc = it.image ||
+      (it.images && it.images.length ? it.images[0] : '') ||
+      (it.pages  && it.pages.length  ? it.pages[0]  : '') || '';
+    var countLabel = '';
+    if (it.pages && it.pages.length)        countLabel = it.pages.length + (it.pages.length === 1 ? ' page' : ' pages');
+    else if (it.images && it.images.length) countLabel = it.images.length + (it.images.length === 1 ? ' image' : ' images');
+
     var thumb = document.createElement('div');
     thumb.className = 'stash-card-thumb';
-    if (it.image) {
+    if (coverSrc) {
       var img = document.createElement('img');
-      img.src = it.image;
+      img.src = coverSrc;
       img.alt = it.title || '';
       img.loading = 'lazy';
       thumb.appendChild(img);
     } else {
       thumb.classList.add('stash-card-thumb-empty');
       thumb.textContent = 'No image';
+    }
+    if (countLabel) {
+      var cb = document.createElement('span');
+      cb.className = 'stash-card-count';
+      cb.textContent = countLabel;
+      thumb.appendChild(cb);
     }
     card.appendChild(thumb);
 

@@ -811,7 +811,14 @@
       "penis": true,
       "vag": false,
       "penisType": "humanoid"
-    }
+    },
+    "relationships": [
+      {
+        "name": "Bella",
+        "type": "Sister",
+        "note": "twin; inseparable, shares toys"
+      }
+    ]
   },
   {
     "id": 29,
@@ -837,7 +844,14 @@
       "penis": true,
       "vag": false,
       "penisType": "humanoid"
-    }
+    },
+    "relationships": [
+      {
+        "name": "Becka",
+        "type": "Sister",
+        "note": "twin; inseparable, shares toys"
+      }
+    ]
   },
   {
     "id": 30,

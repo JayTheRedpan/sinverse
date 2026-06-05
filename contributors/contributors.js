@@ -127,11 +127,18 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var defs;
   var stashUrl = '../stash/?creator=' + encodeURIComponent(id);
   var stashTotal = stash ? (stash.images + stash.stories) : 0;
-  // A stash-only creator (no public work) shows ONLY a single "Stash" pill whose
-  // value is the combined total of all their stash contributions.
-  if (stashTotal > 0 && (gCount + lCount + cCount) === 0) {
+  // When the visitor arrived via a direct ?creator= link (stash is non-null),
+  // show the FULL set of stat pills like any other contributor — all three
+  // public counts (even if zero) plus the Stash pill — so a stash-only creator
+  // doesn't collapse to a single number. On a normal page visit (stash is null)
+  // the stash stats are never passed in, so the secret stays hidden.
+  var isLinkView = !!stash;
+  if (isLinkView) {
     defs = [
-      { n: stashTotal, label: 'Stash', url: stashUrl, link: true }
+      { n: gCount, label: 'Artworks',   url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
+      { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
+      { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
+      { n: stashTotal, label: 'Stash',  url: stashUrl, link: stashTotal > 0 },
     ];
   } else {
     defs = [
@@ -139,11 +146,6 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
       { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
       { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
     ];
-    // A single "Stash" pill (combined total) appended for creators who have BOTH
-    // public and stash work (only on the ?creator= detail view, never the list).
-    if (stashTotal > 0) {
-      defs.push({ n: stashTotal, label: 'Stash', url: stashUrl, link: true });
-    }
   }
 
   defs.forEach(function(d) {
