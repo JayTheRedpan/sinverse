@@ -11,8 +11,7 @@ Reference for all JSON data files. Fields marked `*` are required; all others de
   "name": "Jay",                    // * display name
   "species": "Red Panda",           // * species
   "pronouns": "he/him",             // display pronouns
-  "age": null,                      // actual age in years, null if unknown
-  "age_appearance": "adult",        // child | teen | adult | elder
+  "age": null,                      // actual age in years, null if unknown (all characters are adults)
   "height": 67,                     // * height in inches (canonical)
   "height_correction": 1,           // pose multiplier (1 = standing straight)
   "headroom_pct": 0,                // % of image height above head (for silhouette positioning)
