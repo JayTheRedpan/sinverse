@@ -2531,7 +2531,9 @@ function buildForm(slot) {
       '<span class="sep">in</span>' +
     '</div>' +
     '<div class="row" id="hm-'+slot+'" style="display:none">' +
-      '<input id="cm-'+slot+'" class="builder-input numInput" type="number" min="0" max="999" value="'+(ex?Math.round(inToCm(ex.height)):183)+'" />' +
+      '<input id="m-'+slot+'" class="builder-input numInput" type="number" min="0" max="999" value="'+(ex?Math.floor(Math.round(inToCm(ex.height))/100):1)+'" />' +
+      '<span class="sep">m</span>' +
+      '<input id="cm-'+slot+'" class="builder-input numInput" type="number" min="0" max="99" value="'+(ex?Math.round(inToCm(ex.height))%100:83)+'" />' +
       '<span class="sep">cm</span>' +
     '</div>';
   wrap.appendChild(hf);
@@ -2726,9 +2728,9 @@ function buildForm(slot) {
     '</div>' +
     // Calculate panel
     '<div id="lcalc-'+slot+'" style="'+(ex&&ex.length_mode==='calc'?'':'display:none')+'">' +
-      '<div class="cf-hint" style="margin-bottom:.3rem">Length at 6ft — scales linearly to character height</div>' +
+      '<div class="cf-hint" id="lcalc-hint-'+slot+'" style="margin-bottom:.3rem">Length at '+(S.metric?'183cm':'6ft')+' — scales linearly to character height</div>' +
       '<div class="row">' +
-        '<input id="lref-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="'+(ex&&ex.length_calc_ref?ex.length_calc_ref:6)+'" />' +
+        '<input id="lref-'+slot+'" class="builder-input numInput" type="number" min="0" step="1" value="'+(ex&&ex.length_calc_ref?ex.length_calc_ref:(S.metric?Math.round(inToCm(6)):6))+'" />' +
         '<span class="sep" id="lrunit-'+slot+'">'+(!S.metric?'in at 6ft':'cm at 183cm')+'</span>' +
       '</div>' +
       '<div class="wt-est" id="lcres-'+slot+'"></div>' +
@@ -2766,9 +2768,9 @@ function buildForm(slot) {
       '<div class="wt-est" id="best-'+slot+'"></div>' +
     '</div>' +
     '<div id="wc-'+slot+'" style="'+(ex&&ex.weight_mode==='calc'?'':'display:none')+'">'+
-      '<div class="cf-hint" style="margin-bottom:.3rem">Weight at 6ft — scales to character height</div>' +
+      '<div class="cf-hint" id="wcalc-hint-'+slot+'" style="margin-bottom:.3rem">Weight at '+(S.metric?'183cm':'6ft')+' — scales to character height</div>' +
       '<div class="row">' +
-        '<input id="ref-'+slot+'" class="builder-input numInput" type="number" min="0" value="'+(ex&&ex.weight_calc_ref?ex.weight_calc_ref:170)+'" />' +
+        '<input id="ref-'+slot+'" class="builder-input numInput" type="number" min="0" value="'+(ex&&ex.weight_calc_ref?ex.weight_calc_ref:(S.metric?Math.round(lbsToKg(170)):170))+'" />' +
         '<span class="sep" id="runit-'+slot+'">'+(!S.metric?'lbs at 6ft':'kg at 183cm')+'</span>' +
       '</div>' +
       '<div class="wt-est" id="cres-'+slot+'"></div>' +
@@ -2830,6 +2832,15 @@ function buildForm(slot) {
     // Update the visible crop lines to match
     updateLinesP(slot, pfx);
   });
+
+  // Initialise unit-dependent rows to the current unit system. The metric input
+  // values are already populated from the canonical (imperial) stored values, so
+  // this only needs to flip which row is shown — without it, a form built while
+  // in metric mode would render its manual inputs (ft/in, in, lbs) in imperial.
+  if (S.metric) {
+    ['hi','li','wmi'].forEach(function(p){ var e=g(p+'-'+slot); if(e) e.style.display='none'; });
+    ['hm','lmi','wmm'].forEach(function(p){ var e=g(p+'-'+slot); if(e) e.style.display=''; });
+  }
 }
 
 // Build a collapsible section
@@ -3677,7 +3688,7 @@ function wireForm(slot, wrap) {
   });
 
   // Height inputs
-  ['ft-','in-','cm-'].forEach(function(p){
+  ['ft-','in-','cm-','m-'].forEach(function(p){
     var inp2=g(p+slot); if(!inp2) return;
     inp2.addEventListener('input',function(){
       syncH(slot,S.metric); refreshEst(slot); refreshCalc(slot); refreshLengthCalc(slot); refreshLengthPreset(slot); save();
@@ -3949,21 +3960,25 @@ function syncLen(slot, isM) {
 }
 
 function syncH(slot, isM) {
+  var mEl=g('m-'+slot), cmEl=g('cm-'+slot), ftEl=g('ft-'+slot), inEl=g('in-'+slot);
   if (isM) {
-    var cm=parseFloat(g('cm-'+slot).value)||0;
+    var cm=(parseFloat(mEl&&mEl.value)||0)*100 + (parseFloat(cmEl&&cmEl.value)||0);
     var ti=cm/2.54, ft=Math.floor(ti/12), ins=Math.round(ti%12);
     if(ins===12){ft++;ins=0;}
-    g('ft-'+slot).value=cm?ft:''; g('in-'+slot).value=cm?ins:'';
+    if(ftEl) ftEl.value=cm?ft:''; if(inEl) inEl.value=cm?ins:'';
   } else {
-    var ft2=parseFloat(g('ft-'+slot).value)||0;
-    var in2=parseFloat(g('in-'+slot).value)||0;
-    if(in2>=12){ft2+=Math.floor(in2/12);in2=in2%12;g('ft-'+slot).value=ft2;g('in-'+slot).value=in2;}
-    g('cm-'+slot).value=(ft2||in2)?Math.round(inToCm(ft2*12+in2)):'';
+    var ft2=parseFloat(ftEl&&ftEl.value)||0;
+    var in2=parseFloat(inEl&&inEl.value)||0;
+    if(in2>=12){ft2+=Math.floor(in2/12);in2=in2%12;if(ftEl)ftEl.value=ft2;if(inEl)inEl.value=in2;}
+    var totalCm=(ft2||in2)?Math.round(inToCm(ft2*12+in2)):0;
+    if(mEl) mEl.value=totalCm?Math.floor(totalCm/100):'';
+    if(cmEl) cmEl.value=totalCm?totalCm%100:'';
   }
 }
 
 function getHIn(slot) {
-  var cm=parseFloat((g('cm-'+slot)||{}).value)||0; if(cm) return cm/2.54;
+  var cm=(parseFloat((g('m-'+slot)||{}).value)||0)*100 + (parseFloat((g('cm-'+slot)||{}).value)||0);
+  if(cm) return cm/2.54;
   var ft=parseFloat((g('ft-'+slot)||{}).value)||0;
   var ins=parseFloat((g('in-'+slot)||{}).value)||0;
   return ft*12+ins;
@@ -4591,13 +4606,14 @@ function openCustomModal(id) {
     var nameEl = document.getElementById('n'+slot);
     var ftEl   = document.getElementById('ft-'+slot);
     var inEl   = document.getElementById('in-'+slot);
+    var mEl    = document.getElementById('m-'+slot);
     var cmEl   = document.getElementById('cm-'+slot);
     var name   = nameEl ? nameEl.value.trim() : '';
     var heightIn = 0;
     if (ftEl && ftEl.closest && ftEl.closest('[style*="display:none"]') === null && ftEl.offsetParent !== null) {
       heightIn = (parseInt(ftEl.value)||0)*12 + (parseInt(inEl&&inEl.value)||0);
-    } else if (cmEl) {
-      heightIn = (parseFloat(cmEl.value)||0) / 2.54;
+    } else if (mEl || cmEl) {
+      heightIn = ((parseFloat(mEl&&mEl.value)||0)*100 + (parseFloat(cmEl&&cmEl.value)||0)) / 2.54;
     }
     if (!name) {
       nameEl && nameEl.focus();
@@ -4607,7 +4623,7 @@ function openCustomModal(id) {
     }
     if (heightIn <= 0) {
       ftEl && ftEl.focus();
-      [ftEl, inEl, cmEl].forEach(function(el){
+      [ftEl, inEl, mEl, cmEl].forEach(function(el){
         if(el) { el.style.outline = '2px solid var(--wine)'; setTimeout(function(){ el.style.outline=''; },2000); }
       });
       return;
@@ -4782,6 +4798,10 @@ function applyGlobalUnit(isM) {
       lrefEl.value=isM?inToCm(lrv).toFixed(1):(lrv/2.54).toFixed(1);
     }
     if(lruEl)lruEl.textContent=isM?'cm at 183cm':'in at 6ft';
+    var wHint=g('wcalc-hint-'+slot);
+    if(wHint)wHint.textContent='Weight at '+(isM?'183cm':'6ft')+' — scales to character height';
+    var lHint=g('lcalc-hint-'+slot);
+    if(lHint)lHint.textContent='Length at '+(isM?'183cm':'6ft')+' — scales linearly to character height';
     refreshEst(slot);
     refreshCalc(slot);
     refreshLengthCalc(slot);
