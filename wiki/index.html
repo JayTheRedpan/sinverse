@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <script src="../_shared/agegate.js?v=1780460382"></script>
+  <script src="../_shared/stash-unlock.js?v=1780708382"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wiki — Sinverse</title>
@@ -2560,10 +2561,17 @@ function loadCharPage(charId, pushState) {
     var xfLabel = char.transformed_by.split('-').map(function(w){ return w.charAt(0).toUpperCase()+w.slice(1); }).join(' ');
     statRows.push(['Transformed by', xfLabel]);
   }
-  if (char.anatomy && char.anatomy.penis && char.length) {
-    var rawLenIn = char.length * (char.length_correction||1);
-    var lenStr = fLen(rawLenIn);
-    statRows.push(['Length', '<span class="char-stat-val" data-inches="' + rawLenIn + '">' + lenStr + '</span>']);
+  if (char.anatomy && char.anatomy.penis) {
+    var pType = char.anatomy.penisType
+      ? char.anatomy.penisType.charAt(0).toUpperCase() + char.anatomy.penisType.slice(1)
+      : '';
+    var endowment = pType;
+    if (char.length) {
+      var rawLenIn = char.length * (char.length_correction||1);
+      endowment += (pType ? ' &middot; ' : '') +
+        '<span class="char-stat-val" data-inches="' + rawLenIn + '">' + fLen(rawLenIn) + '</span>';
+    }
+    if (endowment) statRows.push(['Endowment', endowment]);
   }
 
   var statTable = '<table class="wiki-stat-table">' +
@@ -2668,6 +2676,8 @@ function loadCharPage(charId, pushState) {
         (usedFeatured ? '' : contentLinks);
 
       renderWikiImages(container);
+      // Easter egg: on Jay's page, mount the hidden entrance to his stash.
+      if (window.SinverseStash) window.SinverseStash.onCharPage(container, char);
       // Wire relationship links to load the related character's page
       container.querySelectorAll('.wiki-rel-link').forEach(function(el) {
         el.addEventListener('click', function() {
@@ -2695,10 +2705,46 @@ function loadCharPage(charId, pushState) {
     });
 }
 
+// ── Hash routing ──────────────────────────────────────────────
+// Navigate to the page named by a URL hash (#char-/#lore-/#cat-/#page-).
+// Returns true if the hash matched a known page and we navigated, else false.
+// All loaders are called with pushState=false because the URL already reflects
+// the target hash by the time this runs.
+function routeFromHash(hash) {
+  if (!hash) return false;
+  var m;
+  if ((m = hash.match(/^#char-(.+)$/))) {
+    var ref = decodeURIComponent(m[1]);
+    var c = characters.find(function(x){ return x.wiki === ref; })
+         || (/^\d+$/.test(ref) ? characters.find(function(x){ return x.id === parseInt(ref); }) : null);
+    if (c) { loadCharPage(c.id, false); return true; }
+    return false;
+  }
+  if ((m = hash.match(/^#lore-(.+)$/))) { loadLorePage(m[1], false); return true; }
+  if ((m = hash.match(/^#cat-(.+)$/))) {
+    var section = decodeURIComponent(m[1].replace(/-/g, ' '));
+    section = section.replace(/\w/g, function(ch){ return ch.toUpperCase(); });
+    showCategory(section, false);
+    return true;
+  }
+  if ((m = hash.match(/^#page-(.+)$/))) {
+    if (m[1] === 'intro') loadLorePage('world-of-sinverse', false);
+    else if (m[1] === 'faq') loadLorePage('faq', false);
+    else showPage(m[1], false);
+    return true;
+  }
+  return false;
+}
+
 // ── Browser history (back/forward) ────────────────────────────
 window.addEventListener('popstate', function(e) {
   var state = e.state;
-  if (!state) { loadLorePage('world-of-sinverse', false); return; }
+  if (!state) {
+    // No saved state (e.g. an entry created by a manual address-bar hash edit):
+    // route by the hash itself, only falling back to the landing if nothing matches.
+    if (!routeFromHash(window.location.hash)) loadLorePage('world-of-sinverse', false);
+    return;
+  }
   if (state.type === 'page') {
     if (state.id === 'intro') loadLorePage('world-of-sinverse', false);
     else if (state.id === 'faq') loadLorePage('faq', false);
@@ -2707,6 +2753,13 @@ window.addEventListener('popstate', function(e) {
   else if (state.type === 'character') loadCharPage(state.id, false);
   else if (state.type === 'lore') loadLorePage(state.id, false);
   else if (state.type === 'category') showCategory(state.id, false);
+});
+
+// Manual address-bar hash edits don't fire popstate, so handle them here.
+// (Skipped until data has loaded; the initial deep link is handled at boot.)
+window.addEventListener('hashchange', function() {
+  if (!characters || !characters.length) return;
+  routeFromHash(window.location.hash);
 });
 
 // Restore from URL hash if returning from gallery/library
