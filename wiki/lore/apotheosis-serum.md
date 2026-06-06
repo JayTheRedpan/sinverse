@@ -11,27 +11,35 @@ The Apotheosis Serum is the agent developed by Sin that permanently transforms a
 
 ## Effects
 
-The Apotheosis Serum produces the following permanent changes in those it transforms:
+The Apotheosis Serum produces a number of permanent changes in those it transforms. Four of them Sin engineered deliberately — the specific traits she built the serum to instill, and the pillars of the world order she meant to raise from it. The rest read as byproducts of the same process.
 
-**Physical growth.** The most visible effect. Most subjects grow to between 9 and 12 feet tall. A small percentage reach what is classified as macro scale — heights exceeding 100 feet. The exact mechanism determining final height is not yet fully understood, though SinCorp researchers have noted correlations with genetic markers they have not publicly disclosed.
+**Massive growth.** The most visible effect, and the first Sin prized. Most subjects grow to between 9 and 12 feet tall; a small fraction reach macro scale, exceeding 100 feet. The mechanism that decides a given subject's final height is not fully understood, though SinCorp researchers have noted correlations with genetic markers they have never disclosed.
 
-**Physiological enhancement.** The serum eliminates existing health conditions and produces a powerfully built, highly resilient physique. Transformed individuals do not age at a normal rate following exposure.
+**Masculine genitalia.** The serum strips away whatever sex the subject began with — any female reproductive anatomy is eliminated outright — and builds a set of masculine genitalia in its place. The form varies: most are humanoid, but equine, canine, and feline shapes are common, with rarer configurations down to the occasional fully tentacular member. The body is remade around it, the new endowment standing as the centerpiece of the Transformed form.
 
-**Anatomical reshaping.** The transformation reshapes the body into a single fully realised Transformed form, identical in its essentials across all subjects regardless of where they began. The implications of this — social, psychological, and practical — vary between individuals and cultures within the mega-cities.
+**Spike in libido.** Sexual drive surges sharply and permanently after transformation. Together with the empathy change below, it accounts for much of the behaviour that defined the Chaos Period and still shapes the treatment of toys in the mega-cities: a near-constant appetite with nothing left to restrain how it is fed.
 
-**Empathy suppression.** The serum dramatically reduces empathic response. The degree varies between individuals; some retain empathy partially or fully, though this is rare. Those who retain full empathy are sometimes referred to as **Empaths** within Resistance circles.
+**Drop in empathy.** Usually first observed as exactly that — a sharp drop in empathy — though the reality is narrower and more deliberate. The serum does not blunt empathy wholesale; Transformed society plainly retains the capacity to care, cooperating, bonding, forming fierce sisterhoods, and running entire mega-cities in concert. What it severs is empathy directed at *males*. A Transformed woman's ability to register a toy's suffering as something that matters is cut at the root, and the void it leaves is wired straight into her sexual reward system — so cruelty toward toys does not merely fail to trouble her, it *gratifies* her, hardening over time from impulse into outright need (the basis of what SinCorp researchers call **sadism deprivation**). She can be tender and loyal to another woman in the same hour she treats a male as livestock, and feel no contradiction in it, because to her remade mind there is none.
 
-**Libido amplification.** Sexual drive increases dramatically post-transformation. This, combined with the suppression of empathy, accounts for a significant portion of the behaviour associated with the Chaos Period and the ongoing treatment of toys in the mega-cities.
+Toward other women the same rewrite runs in reverse, intensifying rather than cutting. Transformed solidarity is fierce and almost proprietary: one who learns of a rare woman spared by TDay's first wave will move with startling urgency to find her and "ascend" her, treating an untransformed sister not as a curiosity but as someone owed a birthright she has yet to claim. The drive to gather every woman into the Transformed fold appears to be the very same circuitry that cancels her regard for males, simply pointed the other way.
+
+**Empaths** are the rare exception in whom this reassignment never fully took hold. They retain empathy across the board — toward toys as much as toward women — and the anguish of feeling for the beings their peers brutalise is much of what drives them into the Resistance. They are estimated at fewer than 1 in 400.
+
+Beyond the four traits she set out to create, the transformation carries further changes that read as consequences of the process rather than its aims:
+
+**Physical resilience.** Transformation rebuilds the body into something far hardier than what it replaced. Existing illnesses, injuries, and chronic conditions are scoured away, leaving a physique powerfully built and extraordinarily durable — tough enough that conventional personal weapons are little more than an irritant even to the smallest Transformed, the single fact that did most to decide the outcome of TDay.
+
+**Extended lifespan.** Ageing all but halts. Transformed individuals do not appear to grow old on any normal timescale, and how long one might ultimately live is simply unknown — none has yet died of anything resembling age, and whether the ceiling is measured in centuries or something longer, no one can say.
 
 ## Macro Threshold
 
-At sizes beyond approximately 100 feet, there is evidence of neurological effects not present at standard Transformed sizes. Cognitive function may be impaired; impulse control diminishes. Whether this is a direct serum effect or a result of the physiological strain of extreme scale is disputed. SinCorp has not commented.
+Reaching truly macro scale rarely comes without cost. Transformed who climb well past the 9-to-12-foot norm — and especially those beyond roughly 100 feet — are observed with striking regularity to suffer mental damage of one kind or another: blunted cognition, collapsing impulse control, obsessive fixations, or a slow slide toward something close to feral instinct. The specific form it takes varies enormously from one giantess to the next, and whether it is a direct effect of the serum at extreme scale or simply the strain of a mind running a body that large is disputed. SinCorp has not commented.
 
 Macro-scale Transformed are typically unable to live within mega-city infrastructure and are found instead in the Wilds.
 
 ## Delivery
 
-Prior to TDay, the serum was synthesised and stockpiled in industrial quantities by SinCorp. On TDay itself it was delivered via water supply contamination, airborne aerosol dispersal, and pre-positioned commercial products. It remains present in trace quantities in the environment in many regions — new exposure events, while rare, still occur.
+How the serum was actually delivered on TDay has never been fully reconstructed. It struck the whole world at once, and the consensus is that there was no single mechanism — Sin had seeded many vectors in the months prior, and which one reached any given person is largely unknowable. The one consistent, telltale signature is a distinctive **pink-tinted gas**: a faintly rose-coloured mist that was, and remains, Sin's preferred means of dispersing the serum. Where that haze drifts, transformations follow. Trace amounts of the agent still linger in the environment in many regions years later, and rare new exposure events are still reported.
 
 ## Related
 

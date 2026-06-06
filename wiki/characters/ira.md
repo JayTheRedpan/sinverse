@@ -30,7 +30,7 @@ When the transformations began rolling across the globe, Ira watched the early r
 
 It was there, cornered and terrified and watching the only good person at that job get pummeled on her behalf, that the apotheosis serum ignited in Ira. The change came fast and overwhelming: heat, weight, and then growth, the alley and the office and the men in it shrinking away beneath her until she sat nude across a four-lane street, taller than the building she'd worked in. The two men who'd been fighting over her froze. The balance of the entire world had inverted in the span of a panic attack, and Ira — for the first time in a decade — held all of it.
 
-*What became of the intern in the chaos that followed is unrecorded.*
+The intern did not outlive the day. In the immediate aftermath of her transformation, Ira lifted him out of the chaos and — feeling no remorse for the one person who had ever shown her kindness — devoured him whole, swallowing him down alive. She framed it to him as a mercy: a gentler end than the drawn-out suffering she had just decided to inflict on the coworker who attacked her. Whatever softness the old Ira had carried for him did not survive her transformation any more than he did.
 
 ### After TDay
 
@@ -54,14 +54,14 @@ Ira's signature is the **constriction** she practices with her prehensile endowm
 
 - Ira's defining engine is **inverted power** — she was prey for a decade and is now the apex. Her cruelty reads as wrath unchained, not motiveless sadism; keep the throughline of "she was on the receiving end first."
 - She is an **indiscriminate predator** post-TDay, not a discerning avenger — don't write her as carefully targeting only the guilty.
-- **The intern** (unnamed) is her one pre-TDay soft spot and his fate is deliberately **unwritten** — leave it open unless coordinated.
+- **The intern** (unnamed here) was the one person who was kind to her before TDay — and she devoured him whole in the aftermath regardless, without remorse, framing it as a mercy. His fate is now **established canon**: swallowed alive. The point of him is that even her one soft spot didn't survive what she became, so don't write him as spared, escaped, or still out there.
 - She has **no faction or allegiance** — she answers to her own appetite.
 
 ## Did You Know
 
 - Ira was hired purely as **"eye candy"** for a sales floor of big cats — her boss considered her harassment part of the office atmosphere.
 - Her transformation triggered **mid-assault**, during a lunch-hour attack by one of her own coworkers.
-- The **one decent person** at her old job was an intern who took a beating defending her — the last thing that happened before she changed.
+- The **one decent person** at her old job was an intern who took a beating defending her moments before she transformed — and whom she then **devoured whole**, calling it a mercy. Her one soft spot did not survive the day.
 - She carries a rare **tentacle-type** endowment, unusual even among the transformed.
 - At roughly **fifty-nine feet**, Ira towers over the low-rise blocks of the mega-cities she hunts.
 
