@@ -338,7 +338,7 @@
       "Artist"
     ],
     "socials": {
-      "furaffinty": "https://www.furaffinity.net/user/waynanimation",
+      "furaffinity": "https://www.furaffinity.net/user/waynanimation",
       "x": "https://x.com/WayNLag"
     }
   },
@@ -388,6 +388,30 @@
     ],
     "socials": {
       
+    }
+  },
+  {
+    "id": "Picturd",
+    "name": "Picturd",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780862528/picturd_ucikgs.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/picturd"
+    }
+  },
+  {
+    "id": "Maou",
+    "name": "Maou",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780863566/maou_t7xz1o.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/zigzagflare"
     }
   }
 ]
