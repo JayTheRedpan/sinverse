@@ -127,11 +127,11 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var defs;
   var stashUrl = '../stash/?creator=' + encodeURIComponent(id);
   var stashTotal = stash ? (stash.images + stash.stories) : 0;
-  // When the visitor arrived via a direct ?creator= link (stash is non-null),
-  // show the FULL set of stat pills like any other contributor — all three
-  // public counts (even if zero) plus the Stash pill — so a stash-only creator
-  // doesn't collapse to a single number. On a normal page visit (stash is null)
-  // the stash stats are never passed in, so the secret stays hidden.
+  // When stash stats are passed in (the visitor arrived from the stash — see
+  // the ?from=stash gate in init), show the FULL set of stat pills: all three
+  // public counts (even if zero) plus the Stash pill, so a stash-only creator
+  // doesn't collapse to a single number. Otherwise stash stats are never passed
+  // in, so the Stash pill — and the secret — stay hidden.
   var isLinkView = !!stash;
   if (isLinkView) {
     defs = [
@@ -315,8 +315,14 @@ async function init() {
 
     renderJay(jay, chars, galleryItems, libraryItems, adventureNodes);
 
-    // Check for ?creator= param (direct link, e.g. from the stash).
-    var creatorParam = new URLSearchParams(window.location.search).get('creator');
+    // Read URL params. ?creator=<id> is a direct link to a single contributor,
+    // used by gallery/library/cyoa/viewer artist links AND by the stash. The
+    // separate ?from=stash marker is added ONLY by links inside the stash, so
+    // it's what tells "arrived from the stash" apart from any other direct link
+    // — and it's the gate for revealing stash contributions further down.
+    var params = new URLSearchParams(window.location.search);
+    var creatorParam = params.get('creator');
+    var fromStash = params.get('from') === 'stash';
     var isCreatorLink = false;
     if (creatorParam) {
       isCreatorLink = true;
@@ -335,6 +341,7 @@ async function init() {
       // Clean URL
       var cleanUrl = new URL(window.location.href);
       cleanUrl.searchParams.delete('creator');
+      cleanUrl.searchParams.delete('from');
       window.history.replaceState({}, '', cleanUrl);
     } else {
       // Public list: hide creators whose ONLY contributions are in the stash
@@ -376,9 +383,12 @@ async function init() {
       grid.innerHTML = '<div class="con-loading">No additional contributors yet.</div>';
     } else {
       rest.forEach(function(c) {
-        // Only surface stash stats when this is a direct ?creator= link (i.e.
-        // arrived from the stash) — never on the public list, to keep the secret.
-        var stash = isCreatorLink ? stashCounts(c.id, stashItems) : null;
+        // Surface stash stats ONLY when the visitor arrived from inside the
+        // stash (?from=stash) AND is viewing this single contributor (?creator=).
+        // A plain ?creator= link from the gallery/library/cyoa does NOT reveal
+        // the stash, and the public list never does — so a contributor's stash
+        // contributions stay hidden unless you clicked their name in the stash.
+        var stash = (fromStash && isCreatorLink) ? stashCounts(c.id, stashItems) : null;
         grid.appendChild(renderCard(c, galleryItems, libraryItems, adventureNodes, stash));
       });
     }

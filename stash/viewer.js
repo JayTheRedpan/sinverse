@@ -282,7 +282,7 @@ function renderComic() {
   // Populate sidebar
   document.getElementById('comic-title-reader').textContent   = item.title;
   var caEl = document.getElementById('comic-artist-reader');
-  if (caEl) caEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (caEl) caEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?from=stash&creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
   document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
   if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
   renderTags('comic-tags-reader', item.tags);
@@ -391,7 +391,7 @@ function renderScene() {
 
   document.getElementById('scene-title').textContent       = item.title;
   var sceneArtistEl = document.getElementById('scene-artist');
-  if (sceneArtistEl) sceneArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (sceneArtistEl) sceneArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?from=stash&creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
   document.getElementById('scene-description').textContent = item.description || '';
 
   if (item.canonical) document.getElementById('scene-canonical').style.display = '';
@@ -418,7 +418,7 @@ function renderCharRef() {
 
   document.getElementById('ref-title').textContent  = item.title;
   var refArtistEl = document.getElementById('ref-artist');
-  if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?from=stash&creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
 
   if (item.canonical) document.getElementById('ref-canonical').style.display = '';
   renderRelatedLinks('ref-related', item._related);
@@ -465,7 +465,7 @@ function renderSet() {
 
   document.getElementById('set-title').textContent = item.title;
   var saEl = document.getElementById('set-artist');
-  if (saEl) saEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (saEl) saEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?from=stash&creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
   document.getElementById('set-synopsis').textContent = item.synopsis || item.description || '';
   document.getElementById('set-count').textContent = setImages.length + (setImages.length === 1 ? ' image' : ' images');
   if (item.canonical) document.getElementById('set-canonical').style.display = '';

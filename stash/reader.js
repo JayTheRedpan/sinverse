@@ -89,7 +89,7 @@ function renderMeta() {
   document.getElementById('reader-topbar-title').textContent = story.title;
   document.getElementById('reader-title').textContent        = story.title;
   var raEl = document.getElementById('reader-author');
-  if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(story.author) + '">' + story.author + '</a>' : '';
+  if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?from=stash&creator=' + encodeURIComponent(story.author) + '">' + story.author + '</a>' : '';
   document.getElementById('reader-summary').textContent      = story.summary || '';
   var canonEl = document.getElementById('reader-canonical');
   if (canonEl) canonEl.style.display = story.canonical ? '' : 'none';
