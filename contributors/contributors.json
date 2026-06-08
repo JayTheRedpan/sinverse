@@ -487,5 +487,53 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/cionstarrion"
     }
+  },
+  {
+    "id": "Magpi",
+    "name": "Magpi",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780927366/magpi_a360zn.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/magpi"
+    }
+  },
+  {
+    "id": "Jzbthx",
+    "name": "Jzbthx",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780932449/jzbthx_kyrulv.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "bluesky": "https://bsky.app/profile/jzbthx.bsky.social"
+    }
+  },
+  {
+    "id": "Bassenji",
+    "name": "Bassenji",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780933580/bassenji_savoon.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/bassenji"
+    }
+  },
+  {
+    "id": "Dmitrys",
+    "name": "Dmitrys",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780934902/dmitrys_k4hlxk.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "personal site": "https://dmitrysart.com/"
+    }
   }
 ]
