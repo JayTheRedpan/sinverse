@@ -413,5 +413,79 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/zigzagflare"
     }
+  },
+  {
+    "id": "JustMeGabeNewell",
+    "name": "JustMeGabeNewell",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780879667/justmegabenewell_qnvsuy.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/justmegabenewell"
+    }
+  },
+  {
+    "id": "Bonk",
+    "name": "Bonk",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780880085/bonk_tyj59x.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "patreon": "https://www.patreon.com/cw/bonk",
+      "furaffinity": "https://www.furaffinity.net/user/bonk",
+      "bluesky": "https://bsky.app/profile/bonksart.bsky.social"
+    }
+  },
+  {
+    "id": "Vex",
+    "name": "Vex",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780882359/vex_s7v6kz.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/alibiwolf"
+    }
+  },
+  {
+    "id": "TamFox",
+    "name": "TamFox",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780882638/tamfox_gztr8j.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/tamfox"
+    }
+  },
+  {
+    "id": "Monds",
+    "name": "Monds",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780883172/monds_e9hxfs.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/monds"
+    }
+  },
+  {
+    "id": "Cyan",
+    "name": "Cyan",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780883360/cyan_n6inc4.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/cionstarrion"
+    }
   }
 ]
