@@ -4,10 +4,10 @@
    ----------------------------------------------------------------------------
    Profiles from contributors.json. Contribution counts are auto-tallied by
    scanning gallery.json, library.json, and cyoa.json for each contributor's
-   id (lowercased). A set with N images counts as N artworks; an empty set as 1.
-   Adventure contributions are weighted at 1/5 for SORT ranking only (displayed
-   counts stay true). Supports ?creator=<id> to filter to one contributor
-   (used by gallery/viewer artist links).
+   id (lowercased). A set counts as 1 artwork regardless of how many images it
+   holds; a comic still counts its pages. Adventure contributions are weighted
+   at 1/5 for SORT ranking only (displayed counts stay true). Supports
+   ?creator=<id> to filter to one contributor (used by gallery/viewer artist links).
    ========================================================================== */
 
 // ── Social platform config ─────────────────────────────────────
@@ -78,7 +78,7 @@ function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
   var g = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
-    if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
+    if (i.type === 'set') return sum + 1;  // a set counts as one point, not per-image
     return sum + 1;
   }, 0);
   var l = libraryItems.reduce(function(sum, i) {
@@ -97,8 +97,8 @@ function stashCounts(id, stashItems) {
   function who(it) { return it.creator || it.artist || it.author || ''; }
   var images = (stashItems || []).reduce(function(sum, i) {
     if (i.kind !== 'image' || who(i) !== id) return sum;
-    if (i.pages && i.pages.length)   return sum + i.pages.length;
-    if (i.images && i.images.length) return sum + i.images.length;
+    if (i.type === 'set' || (i.images && i.images.length)) return sum + 1;  // a set counts as one point
+    if (i.pages && i.pages.length) return sum + i.pages.length;
     return sum + 1;
   }, 0);
   var stories = (stashItems || []).reduce(function(sum, i) {
@@ -114,7 +114,7 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var gCount = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length > 0) return sum + i.pages.length;
-    if (i.type === 'set' && i.images && i.images.length > 0) return sum + i.images.length;
+    if (i.type === 'set') return sum + 1;  // a set counts as one point, not per-image
     return sum + 1;
   }, 0);
   var lCount = libraryItems.reduce(function(sum, i) {
@@ -127,11 +127,11 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var defs;
   var stashUrl = '../stash/?creator=' + encodeURIComponent(id);
   var stashTotal = stash ? (stash.images + stash.stories) : 0;
-  // When stash stats are passed in (the visitor arrived from the stash — see
-  // the ?from=stash gate in init), show the FULL set of stat pills: all three
-  // public counts (even if zero) plus the Stash pill, so a stash-only creator
-  // doesn't collapse to a single number. Otherwise stash stats are never passed
-  // in, so the Stash pill — and the secret — stay hidden.
+  // When the visitor arrived via a direct ?creator= link (stash is non-null),
+  // show the FULL set of stat pills like any other contributor — all three
+  // public counts (even if zero) plus the Stash pill — so a stash-only creator
+  // doesn't collapse to a single number. On a normal page visit (stash is null)
+  // the stash stats are never passed in, so the secret stays hidden.
   var isLinkView = !!stash;
   if (isLinkView) {
     defs = [
@@ -352,26 +352,20 @@ async function init() {
       });
     }
 
-    // Sort rest by weighted contribution score descending.
-    // A single adventure scene is a smaller unit of work than a full image or
-    // story, so it's weighted at 1/5 for ranking purposes only — the displayed
-    // counts elsewhere remain the true, unweighted numbers.
+    // Sort rest by weighted contribution score descending. The base counts use
+    // the same shared tally as the displayed pills (publicWorkCount), so a set
+    // counts as 1 here too — ranking matches what's shown. A single adventure
+    // scene is a smaller unit of work than a full image or story, so adventures
+    // are weighted at 1/5 for ranking purposes only.
     var ADVENTURE_WEIGHT = 0.2;
     rest.sort(function(a, b) {
       function count(id) {
-        var g = galleryItems.reduce(function(sum, i) {
-          if (i.artist !== id) return sum;
-          if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
-          if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
-          return sum + 1;
-        }, 0);
-        var l = libraryItems.reduce(function(sum, i) {
-          if (i.author !== id) return sum;
-          if (i.type === 'serial' && i.chapters && i.chapters.length > 0) return sum + i.chapters.length;
-          return sum + 1;
-        }, 0);
-        var c = adventureNodes.filter(function(n){ return n.author === id; }).length;
-        return g + l + (c * ADVENTURE_WEIGHT);
+        // publicWorkCount already counts a set as 1 and includes adventures at
+        // full weight; subtract the adventure count back out and re-add it at
+        // the reduced ranking weight so sets/images/stories stay at face value.
+        var adv = adventureNodes.filter(function(n){ return n.author === id; }).length;
+        var base = publicWorkCount(id, galleryItems, libraryItems, adventureNodes) - adv;
+        return base + (adv * ADVENTURE_WEIGHT);
       }
       return count(b.id) - count(a.id);
     });
