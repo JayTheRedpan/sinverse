@@ -225,6 +225,7 @@
     "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780209594/ashamedghost_wdckqs.webp",
     "bio": null,
     "types": [
+      "Artist",
       "Writer"
     ],
     "socials": {
@@ -534,6 +535,198 @@
     ],
     "socials": {
       "personal site": "https://dmitrysart.com/"
+    }
+  },
+  {
+    "id": "Ber00",
+    "name": "Ber00",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781013082/ber00_uvhdcj.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "x": "https://x.com/bermasin"
+    }
+  },
+  {
+    "id": "GimmeMySmokes",
+    "name": "GimmeMySmokes",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781013599/gimmemysmokes_ujt1ai.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/gimmemysmokes"
+    }
+  },
+  {
+    "id": "PerruPls",
+    "name": "PerruPls",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781013879/perenthis_kxcuxa.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/perenthis"
+    }
+  },
+  {
+    "id": "WispSings",
+    "name": "WispSings",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781014311/wispsings_z4alsb.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/wispsings"
+    }
+  },
+  {
+    "id": "Akira",
+    "name": "Akira",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781014430/akira_drwufn.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "x": "https://x.com/AkiraDrawsLewds"
+    }
+  },
+  {
+    "id": "Schrade",
+    "name": "Schrade",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781015825/schrade_xojvkd.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/schrade"
+    }
+  },
+  {
+    "id": "PurplePardus",
+    "name": "PurplePardus",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781016289/purplepardus_tzaimm.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/purplepardus"
+    }
+  },
+  {
+    "id": "BakingCookies",
+    "name": "BakingCookies",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781016903/bakingcookies_pidrjm.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/bakingcookies"
+    }
+  },
+  {
+    "id": "Oddsboddikins",
+    "name": "Oddsboddikins",
+    "avatar": null,
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      
+    }
+  },
+  {
+    "id": "MatthewGraves",
+    "name": "MatthewGraves",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781018725/matthewgraves_rjnvnf.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/matthewgraves"
+    }
+  },
+  {
+    "id": "Laralila",
+    "name": "Laralila",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781019101/laralila_bzyo3w.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/laralila"
+    }
+  },
+  {
+    "id": "YutMutt",
+    "name": "YutMutt",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781019593/yutmutt_z4ow8f.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/yutmutt"
+    }
+  },
+  {
+    "id": "MrHappy",
+    "name": "MrHappy",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781020156/mrhappy_z6vgbi.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/mrhappy1987"
+    }
+  },
+  {
+    "id": "Overshia",
+    "name": "Overshia",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781020374/overshia_npuurn.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "deviantart": "https://www.deviantart.com/drunkfu"
+    }
+  },
+  {
+    "id": "Kostos",
+    "name": "Kostos",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781020594/kostos_pw4dqt.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/kostosart"
+    }
+  },
+  {
+    "id": "Makarimorph",
+    "name": "Makarimorph",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781020879/makarimorph_qnkmtg.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/makarimorph"
     }
   }
 ]

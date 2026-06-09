@@ -148,23 +148,52 @@ function err(msg)  { return issue('error', msg); }
 function warn(msg) { return issue('warn',  msg); }
 function info(msg) { return issue('info',  msg); }
 
+// ── Shared integrity helpers ──────────────────────────────────
+// Flags records sharing an id and records missing an id entirely.
+// `label` is what the id collides on (for the message); `nameOf` pulls a
+// human label for each record so the message is readable.
+function checkIds(records, label, nameOf) {
+  const issues = [];
+  const seen = new Map();   // id -> [names]
+  let missing = 0;
+  records.forEach(r => {
+    const id = r && r.id;
+    if (id === undefined || id === null || id === '') { missing++; return; }
+    const key = String(id);
+    if (!seen.has(key)) seen.set(key, []);
+    seen.get(key).push(nameOf ? nameOf(r) : key);
+  });
+  const dupes = [...seen.entries()].filter(([, names]) => names.length > 1);
+  if (dupes.length) {
+    issues.push(err(dupes.length + ' duplicate ' + label + ' id(s): ' +
+      dupes.map(([id, names]) => '<code>' + id + '</code> (' + names.join(', ') + ')').join('; ')));
+  }
+  if (missing) issues.push(err(missing + ' ' + label + ' record(s) missing an id entirely'));
+  return issues;
+}
+
+// The slug the wiki actually fetches for a character: explicit `wiki` field
+// wins, otherwise a name-derived slug. Mirrors loadCharPage in the wiki.
+function charSlug(c) {
+  return c.wiki || (c.name || '').toLowerCase().replace(/\s+/g, '-');
+}
+
 // ── Checks ────────────────────────────────────────────────────
 async function checkCharacters(chars) {
-  const issues = [];
-  const missingImg   = chars.filter(c => !c.image && !c.profile_image);
-  const missingProf  = chars.filter(c =>  c.image && !c.profile_image);
-  const missingLen   = chars.filter(c => c.anatomy && c.anatomy.penis && c.length && !c.length_image);
+  const issues = checkIds(chars, 'character', c => c.name || '(unnamed)');
 
-  if (missingImg.length)  issues.push(warn(missingImg.length + ' character(s) missing both image and profile_image: ' + missingImg.map(c => '<code>' + c.name + '</code>').join(', ')));
-  if (missingProf.length) issues.push(info(missingProf.length + ' character(s) missing profile_image (have height image): ' + missingProf.map(c => '<code>' + c.name + '</code>').join(', ')));
-  if (missingLen.length)  issues.push(info(missingLen.length + ' character(s) with penis+length but no length_image: ' + missingLen.map(c => '<code>' + c.name + '</code>').join(', ')));
+  // Portrait presence: a single clear flag for "no displayable image at all".
+  // (The old build assumed a separate image/profile_image split that the
+  //  current data model no longer enforces, so that sub-check was dropped.)
+  const noPortrait = chars.filter(c => !c.image && !c.profile_image);
+  if (noPortrait.length) issues.push(warn(noPortrait.length + ' character(s) with no image: ' + noPortrait.map(c => '<code>' + c.name + '</code>').join(', ')));
 
-  // Check wiki md files exist
+  // Wiki .md presence — resolved the way the wiki actually resolves it
+  // (char.wiki || name-slug), so a custom `wiki` slug no longer false-flags.
   const missing = [];
   for (const c of chars) {
-    const slug = c.name.toLowerCase().replace(/\s+/g, '-');
-    const ok = await exists('wiki/characters/' + slug + '.md');
-    if (!ok) missing.push(c.name);
+    const ok = await exists('wiki/characters/' + charSlug(c) + '.md');
+    if (!ok) missing.push(c.name + ' → ' + charSlug(c) + '.md');
   }
   if (missing.length) issues.push(warn(missing.length + ' character(s) missing wiki .md file: ' + missing.map(n => '<code>' + n + '</code>').join(', ')));
 
@@ -172,7 +201,7 @@ async function checkCharacters(chars) {
 }
 
 async function checkContributors(contribs, gallery, library, cyoa) {
-  const issues = [];
+  const issues = checkIds(contribs, 'contributor', c => c.name || c.id || '(unnamed)');
   const contribIds = new Set(contribs.map(c => c.id));
 
   // Gallery artists
@@ -195,19 +224,50 @@ async function checkContributors(contribs, gallery, library, cyoa) {
   return issues;
 }
 
-async function checkGallery(gallery) {
+// Validates a record list's relates_to cross-links against the real id sets
+// of both modules. Catches dangling targets (link renders as nothing) and
+// self-links. `selfModule` is this list's own module name.
+function checkRelations(records, selfModule, galleryIds, libraryIds) {
   const issues = [];
-  const noTitle = gallery.filter(g => !g.title);
-  const noImage = gallery.filter(g => g.type !== 'comic' && !g.image);
-  const noPages = gallery.filter(g => g.type === 'comic' && (!g.pages || !g.pages.length));
-  if (noTitle.length) issues.push(warn(noTitle.length + ' gallery item(s) missing title (ids: ' + noTitle.map(g => g.id).join(', ') + ')'));
-  if (noImage.length) issues.push(err(noImage.length + ' non-comic gallery item(s) missing image URL (ids: ' + noImage.map(g => g.id).join(', ') + ')'));
-  if (noPages.length) issues.push(err(noPages.length + ' comic(s) with no pages (ids: ' + noPages.map(g => g.id).join(', ') + ')'));
+  const sets = { gallery: galleryIds, library: libraryIds };
+  records.forEach(r => {
+    (r.relates_to || []).forEach(rel => {
+      if (!rel || !rel.module || rel.id == null) {
+        issues.push(warn('[' + selfModule + '] item <code>' + r.id + '</code> has a malformed relates_to entry'));
+        return;
+      }
+      const tid = parseInt(rel.id, 10);
+      if (rel.module === selfModule && tid === r.id) {
+        issues.push(info('[' + selfModule + '] item <code>' + r.id + '</code> links to itself in relates_to'));
+        return;
+      }
+      const targetSet = sets[rel.module];
+      if (!targetSet) {
+        issues.push(warn('[' + selfModule + '] item <code>' + r.id + '</code> relates_to unknown module <code>' + rel.module + '</code>'));
+      } else if (!targetSet.has(tid)) {
+        issues.push(err('[' + selfModule + '] item <code>' + r.id + '</code> relates_to missing ' + rel.module + ' id <code>' + rel.id + '</code>'));
+      }
+    });
+  });
   return issues;
 }
 
-async function checkLibrary(library) {
-  const issues = [];
+async function checkGallery(gallery, galleryIds, libraryIds) {
+  const issues = checkIds(gallery, 'gallery', g => g.title || ('id ' + g.id));
+  const noTitle = gallery.filter(g => !g.title);
+  const noImage = gallery.filter(g => g.type !== 'comic' && g.type !== 'set' && !g.image);
+  const noPages = gallery.filter(g => g.type === 'comic' && (!g.pages || !g.pages.length));
+  const noSet   = gallery.filter(g => g.type === 'set' && (!g.images || !g.images.length));
+  if (noTitle.length) issues.push(warn(noTitle.length + ' gallery item(s) missing title (ids: ' + noTitle.map(g => g.id).join(', ') + ')'));
+  if (noImage.length) issues.push(err(noImage.length + ' single gallery item(s) missing image URL (ids: ' + noImage.map(g => g.id).join(', ') + ')'));
+  if (noPages.length) issues.push(err(noPages.length + ' comic(s) with no pages (ids: ' + noPages.map(g => g.id).join(', ') + ')'));
+  if (noSet.length)   issues.push(err(noSet.length + ' set(s) with no images (ids: ' + noSet.map(g => g.id).join(', ') + ')'));
+  issues.push(...checkRelations(gallery, 'gallery', galleryIds, libraryIds));
+  return issues;
+}
+
+async function checkLibrary(library, galleryIds, libraryIds) {
+  const issues = checkIds(library, 'library', s => s.title || ('id ' + s.id));
   for (const story of library) {
     if (story.file) {
       const ok = await exists('library/' + story.file);
@@ -222,11 +282,12 @@ async function checkLibrary(library) {
       }
     }
   }
+  issues.push(...checkRelations(library, 'library', galleryIds, libraryIds));
   return issues;
 }
 
 async function checkCYOA(manifest) {
-  const issues = [];
+  const issues = checkIds(manifest, 'cyoa adventure', a => a.title || a.id || '(untitled)');
   let allNodes = [];
 
   for (const adv of manifest) {
@@ -248,6 +309,16 @@ async function checkCYOA(manifest) {
     } else {
       issues.push(err('Adventure markdown not found: <code>cyoa/adventures/' + adv.id + '.md</code>'));
     }
+
+    // Duplicate node ids within this adventure — silently collapsed by the
+    // routing Set, so two nodes sharing an id means one is unreachable.
+    const nodeSeen = new Map();
+    nodes.forEach(n => {
+      const k = String(n.id);
+      nodeSeen.set(k, (nodeSeen.get(k) || 0) + 1);
+    });
+    const dupNodes = [...nodeSeen.entries()].filter(([, n]) => n > 1).map(([id]) => id);
+    if (dupNodes.length) issues.push(err('[' + adv.id + '] duplicate node id(s): ' + dupNodes.map(i => '<code>' + i + '</code>').join(', ')));
 
     const nodeIds = new Set(nodes.map(n => String(n.id)));
 
@@ -297,11 +368,15 @@ async function run() {
   const cyoaResult = await checkCYOA(cyoaManifest);
   const cyoaNodes  = cyoaResult.nodes;
 
+  // id sets used to validate relates_to cross-links between modules
+  const galleryIds = new Set(gallery.map(g => g.id).filter(v => v != null));
+  const libraryIds = new Set(library.map(s => s.id).filter(v => v != null));
+
   const checks = [
     { id: 'characters',   fn: () => checkCharacters(chars) },
     { id: 'contributors', fn: () => checkContributors(contribs, gallery, library, cyoaNodes) },
-    { id: 'gallery',      fn: () => checkGallery(gallery) },
-    { id: 'library',      fn: () => checkLibrary(library) },
+    { id: 'gallery',      fn: () => checkGallery(gallery, galleryIds, libraryIds) },
+    { id: 'library',      fn: () => checkLibrary(library, galleryIds, libraryIds) },
     { id: 'cyoa',         fn: () => Promise.resolve(cyoaResult.issues) },
   ];
 

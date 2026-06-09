@@ -2,6 +2,8 @@
 id: apotheosis-serum
 type: concept
 title: The Apotheosis Serum
+header: https://res.cloudinary.com/dq40xaaux/image/upload/v1780948064/apotheosus_serum_01_otgp2u.webp
+header_caption: A dose of the serum in its liquid form
 tags: [apotheosis-serum, sin, sincorp, science, transformation]
 ---
 
@@ -31,6 +33,16 @@ Beyond the four traits she set out to create, the transformation carries further
 
 **Extended lifespan.** Ageing all but halts. Transformed individuals do not appear to grow old on any normal timescale, and how long one might ultimately live is simply unknown — none has yet died of anything resembling age, and whether the ceiling is measured in centuries or something longer, no one can say.
 
+## Versions
+
+Three distinct formulations of the Apotheosis Serum are known to exist, marking the stages of Sin's work before, during, and after TDay.
+
+**The Prototype.** The first working serum, formulated specifically for Sin's own physiology before she understood how to generalise it. It was a bespoke solution — tuned to one body rather than to womankind at large — and it was this batch she administered to herself, becoming the first person the serum ever transformed. Whether it could safely have transformed anyone else is unknown; Sin never used it on another subject.
+
+**The TDay Variant.** The formulation released on TDay, reworked from the prototype to act on anyone who knows herself to be a woman. It achieved the widest effect by far — remaking the world in a single day — but it was also the most unstable of the three. Its reach came at the price of consistency: it is the variant responsible for the macro outliers, the subjects driven well past the 9-to-12-foot norm, and with them the psychological damage that so often accompanies macro scale. The variance that defines the early Transformed population is, in large part, the signature of this volatile formulation.
+
+**The Stable Solution.** The refined post-TDay formulation, the product of SinCorp continuing to develop the serum once the world had already turned. It trades the TDay variant's explosive reach for control: subjects of the stable solution tend to emerge far closer to the bell-curve averages of the population — reliable heights within the normal Transformed range, with the extreme macro outcomes and their attendant mental toll occurring far less often. It is the formulation behind most deliberate, controlled transformations in the years since TDay.
+
 ## Macro Threshold
 
 Reaching truly macro scale rarely comes without cost. Transformed who climb well past the 9-to-12-foot norm — and especially those beyond roughly 100 feet — are observed with striking regularity to suffer mental damage of one kind or another: blunted cognition, collapsing impulse control, obsessive fixations, or a slow slide toward something close to feral instinct. The specific form it takes varies enormously from one giantess to the next, and whether it is a direct effect of the serum at extreme scale or simply the strain of a mind running a body that large is disputed. SinCorp has not commented.
@@ -39,7 +51,11 @@ Macro-scale Transformed are typically unable to live within mega-city infrastruc
 
 ## Delivery
 
-How the serum was actually delivered on TDay has never been fully reconstructed. It struck the whole world at once, and the consensus is that there was no single mechanism — Sin had seeded many vectors in the months prior, and which one reached any given person is largely unknowable. The one consistent, telltale signature is a distinctive **pink-tinted gas**: a faintly rose-coloured mist that was, and remains, Sin's preferred means of dispersing the serum. Where that haze drifts, transformations follow. Trace amounts of the agent still linger in the environment in many regions years later, and rare new exposure events are still reported.
+How the serum was actually delivered on TDay has never been fully reconstructed. It struck the whole world at once, and the consensus is that there was no single mechanism — Sin had seeded many vectors in the months prior, and which one reached any given person is largely unknowable. The one consistent, telltale signature is a distinctive **hot-pink gas**: a vivid, almost luminous magenta mist that was, and remains, Sin's preferred means of dispersing the serum. Where that haze drifts, transformations follow. Trace amounts of the agent still linger in the environment in many regions years later, and rare new exposure events are still reported.
+
+## Associated Images
+
+![The serum as dispersal gas | The telltale hot-pink mist that signals the serum's release](https://res.cloudinary.com/dq40xaaux/image/upload/v1780948066/apotheosus_serum_02_gamea3.webp)
 
 ## Related
 
@@ -50,9 +66,12 @@ How the serum was actually delivered on TDay has never been fully reconstructed.
 
 ## Did You Know
 
-- Sin administered the first working batch of the Apotheosis Serum to herself. She was the first person it ever transformed.
+- Sin administered the first working batch of the Apotheosis Serum to herself. She was the first person it ever transformed — and that batch, the Prototype, was formulated for her physiology alone.
+- There are three known versions of the serum: the Prototype built for Sin, the unstable TDay Variant that remade the world, and the refined Stable Solution used for controlled transformations since.
+- The macro giants — and much of the psychological damage that comes with macro scale — are largely a legacy of the volatile TDay Variant. The later Stable Solution produces them far more rarely.
 - The serum's name — Apotheosis — means the elevation of a person to divine status. Sin has never publicly commented on the choice.
 - Transformation takes an average of eleven minutes from first exposure to completion. The fastest recorded case is four minutes. No one knows the slowest, because those individuals did not survive to report it.
+- The serum responds to a person's sense of self, not their birth sex — it transforms anyone who knows herself to be a woman, and ignores everyone else.
 - Empaths — Transformed who retain full empathy — are estimated to constitute fewer than 1 in 400 of the transformed population. SinCorp tracks them. The Resistance tries to find them first.
-- Trace quantities of the serum still exist in groundwater in many regions, more than five years after TDay. New transformation events, while rare, are still reported.
+- The telltale sign of a release is a vivid hot-pink mist. Trace quantities of the serum still exist in groundwater in many regions more than five years after TDay, and new transformation events, while rare, are still reported.
 - The macro threshold is not a hard line. Some Transformed at 90 feet show neurological effects; some at 120 feet show none. SinCorp researchers refer to this as "the variance problem" and consider it an open question.
