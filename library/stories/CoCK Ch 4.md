@@ -1,0 +1,1911 @@
+After several more minutes of winding through tight back streets and
+cramped throughways, they eventually came to their destination. The
+alleyway was surprisingly wide, probably wide enough to fit two removal
+trucks in side by side. Even if said trucks were scaled up to match the
+twisted inhabitants of this city. Down each wall of the alley were rows
+and rows of dumpsters, more so than John had ever seen in his lifetime.
+That fact put him on edge more than any other, something didn't feel
+right, as if he was staring into the mouth of an abattoir. He
+squirrelled closer to Kel's calf and hid as best as he could behind her
+imposing frame.
+
+The alley backed onto a loading bay, looking like it serviced quite a
+large shop the other side. Next to the raised loading platform was a
+large red double door, sporting a large threatening sign stating
+"Authorised personnel only." The doorway looked massive to John, but
+annoyingly small for Kel. This area of town looked to be constructed for
+girls who were closer to the average height, around 12 feet tall at a
+maximum, not Kel's monstrous 18+. They made a couple steps down into the
+alley, but as they approached, the red door swung open.
+
+A slightly hunched shadow stepped out into the dim light of the alley.
+
+A large dark paw thudded down in front of John. She was actually nowhere
+near him, but he still wasn't acclimated to the scale of the inhabitants
+of this city. As the paw gently (in the eyes of its owner) contacted the
+ground, John's knees were sent wobbling. His eyes traced up the length
+of her muscular body as she stooped through the 12' doorway and then
+stretched out to reach her full height.
+
+She was tall. Well every damn woman in this city was, but she was taller
+than most at around 14'. Not quite matching the gigantic Kel, but still
+absolutely terrifying to the man a mere fraction of her size.
+
+She spied Kel and a wicked smile crept across the corners of her canine
+snout. Now that she was out in the light John could actually see what he
+was looking at. She had sleek dark grey fur trailing across her arms and
+legs, rounding to a lighter grey across her torso. He struggled to take
+in much more information because his eyes had locked onto one
+particularly terrifying sight.
+
+Her huge neon green horse-like cock.
+
+The tip was flared wide as it dripped a grotesquely thick clump of white
+cum onto the floor, hinting at whatever heinous acts she must have just
+been partaking in, only transpired mere moments ago. Even in its
+apparent slowly deflating state, it still hung down almost to her knees.
+Now John had gotten used to the shape of non-human anatomy, especially
+equine biology, due to his up close and personal 'lessons' with Kel and
+her psychotic daughter. But this one was different; at its root it
+sported a large bulbous bump, not dissimilar from a canine knot. And
+that chilled John to his core. He could imagine not only being impaled
+on the several feet of unholy cock as the wide flare brutalised and
+scraped out your insides, but that the knot would soon follow up and
+lock you into that hell for as long as she damn well pleased.
+
+John was broken out of the trance of her bright green cock dancing
+around his consciousness by Kel's deep tone startling him.
+
+"Hello Vex. Up to mischief again?"
+
+John's eyes finally analysed more of the situation. Most of this Vex's
+body was laced with pure sinewy muscle, highlighted by some neon green
+streaks beginning on her shoulder blades, before curving over and ending
+just above her breasts, with two more streaks trailing around her ribs
+and another two curling over her curvy hips. Every line stood out
+brightly, enhancing her already intimidatingly athletic build, in a way
+John could only describe as venomous colouration. Telling people she
+isn't someone to be fucked with.
+
+"Oh hey Kel, Just taking out the trash." She said with a smirk.
+
+As she replied to Kel, John finally took in her face. She spoke through
+her long snout and fanged teeth. She had a long spikey green hair that
+sprouted out and around her Anubis like ears, before it hung down and
+framed her surprisingly beautiful eyes.
+
+Slung casually underneath one of her arms were two weirdly tangled
+objects. It took him a moment to process the horrors he was witnessing.
+It was two curvy yet masculine rumps, each with assholes gouged out and
+red raw from hours of abuse, before they were plugged with the biggest
+sex toy he'd ever seen. Their arms and legs would have dangled limply
+beneath themselves were it not for being wrapped around each other in
+knots. She must have made them grasp each other tightly so they could
+each feel her brutally big cock bulging and violating the other. Then
+she promptly bloated them both full of her hot virile cum after being
+impaled on that horrific knot.
+
+They didn't look dead, but judging by the garbled mumbling and drooling
+they were both dribbling into each other's faces, she had definitely
+fucked them both into a coma.
+
+Vex casually lifted the lid on one of the dumpsters and threw the
+knotted mass inside; landing with a wet squelch and a pained groan as
+one of the plugs slipped loose and the poor man evacuated several litres
+of white gelatinous ooze into the dumpster. She let gravity once again
+take the lid and it fell shut with an almighty mechanical bang. The two
+men being locked into their darkness, hoping that the bin collection
+would come soon to save them from their swampy tomb.
+
+Now it made sense why John felt so uneasy about this alleyway! His
+intuition had been screaming at him that something wasn't right! Every
+single one of these bins held unknown multitudes of 'spent' men,
+discarded as if they were nothing. But knowing the truth only cemented
+the fear into his mind. Where the hell was Kel leading him?!
+
+"Oooh I see you've got a little one of your own there." Said Vex through
+her teeth in an almost predatory snarl. She reached one hand down to her
+cock and gave it a couple pumps to bring it back to life.
+
+"Not a chance Vex." Said Kel in her usual deep matriarchal tone.
+
+Kel could tell her little Bishop was slowly slinking behind her calf.
+She didn't care what happened to the mite, but he belonged to her.
+
+Vex continued to pump her cock as she stared down at John's trembling
+form. The threat of being her toy was terrifying enough, but something
+else caught his eye. As blood surged into her cock and it rose up, John
+could see something else. Wedged underneath her hanging testicles was
+the head of a Dalmatian man! He seemed to be tied up into her sweaty
+taint, stuck in that musky abyss. His face was smothered into the front
+of her heavy sack while his body was pulled up and tucked trough her
+cotch, leaving his legs up her asscrack like some kind of grotesquely
+debauched thong.
+
+John yelped out and Vex couldn't help but be spurred on.
+
+"Oh don't worry, he likes it." She smiled and licked her lips. "I found
+this little deviant hiding like the rat he is. Playing with some toys of
+his own."
+
+No, he wouldn't. How could any man inflict the pain and suffering of
+this world onto another? John just couldn't comprehend it.
+
+"Oh the micro he callously shoved inside his sheath is still there,
+wriggling around trying to get free. I wonder what it's like to finally
+be basking in the musk of a true alpha. My scent is way stronger than
+anything this pathetic mutt could produce." The last words were spoken
+with venom in her voice as she flicked the Dalmatian's head. But to the
+Dalmatian, it was like being clouted around the head with a
+sledgehammer.
+
+"Anyway," said Vex as she refocused herself, from slightly bent forward
+toying with John's fear, to standing at her full height and addressing
+Kel. "I must be off, places to be, toys to break."
+
+With that she began to walk up the alley and past the other two, her
+huge green cock once again fully erect and standing proudly out in front
+of her. Like a demonic standard bearer preluding a King's arrival.
+
+As she strode by, John's gaze followed, twisting his head to look behind
+himself. His eyes fixating on her actually rather delicious rump, but
+also horrified to see the legs of the still struggling Dalmatian man
+being swallowed up between the two gelatinous cheeks as they jiggled
+hypnotically with each ground shaking step.
+
+Kel, completely unfazed by the meeting, ignored it and confidently
+strode down the alley and up to the red door, pulling it open. She had
+to crouch down to a near crawl to fit through the doorway, but once
+inside she stretched out back to her full height. John, being absolutely
+terrified of being left alone in this alleyway of broken and discarded
+men, promptly followed her through, though to him, the 12 foot doorframe
+was no hindrance. They entered into a colossal warehouse; the high
+ceiling being equivalent to around three scaled-up floors high.
+
+It was very dark in here and he could hear a strange mechanical whirring
+emanating from every direction, he assumed it was just the general hum
+of machines working away in the dark. Upon the stacks of storage shelves
+that made up the core of the warehouse, there were an unfathomable
+amount of different empty cages. John had been worried throughout the
+entire journey, but these cages and the bins outside really made John
+start to worry about where his master was leading him.
+
+A couple of cages had been completely busted open from the outside with
+brute strength alone.
+
+They progressed through the warehouse and came to a curtain made of
+hanging translucent blue thick plastic strips. Kel pushed her way
+through the plastic curtain.
+
+The other side was the complete opposite of the dark alleys they had
+just been traversing. It appeared to be the very smart and clean
+reception area of a shop or hotel.\
+To his right were two large glass doors leading out into a bright and
+clear street; that must be the main front door. And to his left was a
+large wooden counter that was just taller than he was. Kel flicked a
+little bell that was sat atop the counter, and few seconds later a
+rabbit lady emerged from a door behind the counter, presumably some kind
+of back office.
+
+Reference image: <https://www.furaffinity.net/view/28106877/>\
+\
+\"Oh hey there Kel, I didn\'t hear the door go.\" said the rabbit with a
+welcoming smile.\
+\"Sorry Juxta, I came in through the back; too many awkward bridges
+around here. Plus your shop isn't that accommodating anyway."
+
+"I'm sorry about that Kel; it's just a small set up until we can get a
+bigger warehouse. Being around here stops the larger girls from trying
+to claim the stock."
+
+"What about the normal girls?" said Kel with a sly grin. "I did just see
+Vex sneaking out the back."
+
+Juxta's face quickly peaked with surprise that spun into annoyance
+"Again?!" She cursed under her breath, as if this was a far too common
+occurrence. "This isn't her personal playground, she can't just take
+stock before its ready... ahh what do I know, that girl has never played
+by the rules..."
+
+But before she could retort further, Kel interjected to steer the
+conversation back.
+
+"Anyway what did you call me to this side of town for?\" Kel inquired.
+
+\"Well actually, I'm sorry for the inconvenience but Sin has made a
+personal requisition for your new toy. Of course I\'ll refund you
+entirely and give you something extra for the hassle.\"
+
+Kel looked down the little weasel hiding behind her muscular calf.
+\"That\'s a shame; I\'ve grown quite fond of him. He has a surprisingly
+good tongue for human. Plus Sarah has taken a liking to him. You know
+girls and their dolls.\" Just the mere mention of the youngsters name
+was enough to make John\'s abused asshole ache. Kel's usual deep
+matriarchal tone slowly became lightly laced with annoyance. \"I better
+get a couple free disposable ones on top, upon which to vent my
+frustrations.\"\
+\
+Before Juxta could respond, another unknown voice came from out of the
+back office. While Juxta sounded very to the point, this one was much
+more playful and bouncy. \"Alright Jux-y, I\'m heading out again!\"
+
+Out from the back office skipped another giant rabbit lady. From his
+position, the large countertop obscured most of the rabbit's form, but
+John could see her long bunny ears peaking over the top, bouncing with
+every step she took. This one seemed very joyful in contrast to the more
+straight forward one currently talking to Kel; there was a spring in her
+every footstep.\
+\
+\"Probably going to go and see if I can find any people that managed to
+escape last night\'s raid, ooo it\'s going to be so fun!\" She said with
+a giggle and a huge beaming smile. "I'm still so surprised you managed
+to get that big strong 'man' to break and tell us where they were hiding
+so quickly!" she burst out with a truly evil giggle. "That's my little
+Jux-y!"
+
+Suddenly John was filled with anger, he didn\'t know why or what
+triggered it, but it spewed forth from the depths of his very soul. It
+was as if he was hearing the voice of the grim reaper himself. His heart
+started pounding. His hands began to shake. His feet began to twitch,
+preparing himself for fight or flight.\
+\
+"Oh, he was nothing Popo." Replied Juxta in her very matter of fact
+tone. "The species with ornate growths are always so easy to break. Once
+you cut off their horn, antlers or whatever their symbol of masculinity
+is, and shove it up their own sissy ass, it doesn\'t matter how
+decorative the pattern is that they carved into it. He was begging for
+my cock in no time. Quite a shame really, I was looking for a
+challenge."
+
+Popo's giggling intensified "That's so cruel\... I love it! You always
+were the smart one!"
+
+John's mind struggled to grasp the subtler implications of their
+conversation, as his mind had already clouded with anger.\
+\
+The giant rabbit lady walked round the counter and John could now look
+directly into the eye of the creature attached to the voice, the cutesy
+bubbly tone that had filled him with such unfathomable rage. She was a
+bunny the same as Juxta but her coat was darker in colour, with a short
+tuft of hair on the top of her head highlighted with a little red
+streak. She was wearing a skin tight black suit that hugged her every
+curve: huge breasts, wide hips, and a bulging thick boy breaking cock.
+
+Popo reference image: https://www.furaffinity.net/view/28106910/
+
+He didn\'t know why, but just the sight of this bunny filled him with an
+unbridled fury of the likes he\'d never felt before. As if staring into
+the eyes of his lifelong arch enemy. His mind went spinning. He felt
+dizzy and nauseous. His mind started to awaken to deep buried memories;
+time slowed, everything felt hazy and jagged. He was once again stood in
+that beautiful open meadow\....
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~
+
+His wife looked over her shoulder and smiled back at him. His brother,
+Kris, characteristically chatting up the girls in the group; single or
+otherwise. He could imagine having some young kids of his own, giggling
+happily at being able to see the real sky for themselves. Taking marvel
+and delight in all the silly shapes the clouds could drift into. The
+warmth of family and sun. The gentle sound of a fresh stream running
+down the side of the meadow. The rest of the group chattering away as
+they walked on to find safe new land.
+
+Then, the loud thumping. He clasps his heart and realises something is
+coming. He hears a shout. He looks up to see what's happened. The
+thumping stops for a split second, a shadow falls over him. Something
+leaps through the air before impacting him square in the back. Large,
+Powerful. Firm, yet Soft. He is knocked clean to the ground, his head
+slamming face first into the mud. The wind forced out of his lungs. He
+struggles to lift his head, everything above his waist aches. He sees
+the huge shadow pass over his prone form and stride confidently towards
+the group.
+
+For the first time since it happened, the shadow finally takes shape. A
+tall curvy lady. Long protruding rabbit ears. Adorned in a skin tight
+black suit, with 'Sin Corp Hunter' printed down the spine. Wide curvy
+hips and ass swaying hypnotically as she walks away from him, giggling
+manically as she goes.
+
+He hears screams. The group tries to muster up some courage and
+resistance. Jebohdiah stands firm. The shadow lifts one knee and
+gracefully spins on the ball of her paw. She roundhouse kicks down
+diagonally, crashing into the side of his face and brutally slamming him
+down into the ground; the thunderous impact echoes throughout the meadow
+as a huge dust cloud is kicked up into the air. Their strongest party
+member... horrifyingly removed with a single effortless kick. The giant
+bunny giggles as everyone runs away in panic. She is too fast, too
+strong. With just a couple of her large strides she can catch everyone,
+laughing all the time. John is still face down in the grass and dirt,
+his whole body aches and refuses to move. As the rabbit rounds everyone
+up and ties them together, he laid there helpless, lamenting his
+weakness and inability to stop it...
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+
+Once everyone had been rounded up and tied together, Popo finally took a
+second to take a stock check. A lovely bunch of new toys: some common
+nonhumans, a few strong men, and a couple women who if they refused to
+join, would make good breed stock for the toy birthing farms. The strong
+members of the group may cause Juxta some trouble during training, but
+she'd break them; she always did. There were also several people laying
+down, scattered throughout the meadow. Popo often forgot her own
+strength and rarely held back when it came to capturing her prey. In her
+fun and excitement of chasing them around, she always forgot how weak
+and fragile these little toys could be. Some seemed salvageable; but
+others had been accidentally broken beyond repair.
+
+One poor fox boy was crawling through the grass crying for help. His
+legs dragged limply behind him. His bright orange fur was covered in
+dirt and mud. It appeared Popo had kicked him so hard in his attempt to
+flee, that she had actually shattered his lower spine, rendering his
+legs useless. Popo strode over to where he was laying, his pitiful arms
+still dragging the rest of him along. She seemed to inspect the injured
+man, looking him up and down. She reached down and grasped one of his
+limp ankles between her thumb and index. The man cried out "Stop, leave
+me alone, please!"
+
+After 'inspecting' it and pulling him about with a tad too much force,
+she let the useless limb flop unceremoniously to the ground. "Well, it's
+no fun if he can't even feel his ass... what's the point of a toy that
+can't even scream?" said Popo with a pout.
+
+Her great shadow moved over the injured fox. He rolled over onto his
+back and looked up in fright as she leant back onto one heel and lifted
+her other giant foot-paw onto his face. The rough texture of her
+paw-pads pressed down onto his tender snout. The smell of her foot being
+ground directly into his nose at point blank range was intoxicating; he
+quickly learned that arousal only grew enhanced when confused amongst
+fear as his cock grew hard inside his trousers. He squirmed underneath
+her imposing presence and tried to free himself from his humiliating
+position of bunny footstall. But that wasn't what she had planned for
+him. He managed to turn his head to the side, alleviating the immense
+pressure pushing down onto his long sensitive snout, but gravity quickly
+pulled her footpaw right back onto his head; now putting the pressure
+directly onto the side of his skull.
+
+Popo's face quickly changed from her pout to an evil grin. She pushed
+off her back foot's heel and onto her toes. The man cried out in agony
+as he felt barely even half of her tremendous weight being applied to
+his skull. She wiggled her toes as they spread out, engulfing the man's
+head; taking great pleasure in the size difference between her bunny paw
+and his pitiful head. She slowly shifted her weight more and more onto
+his skull, his screaming building and building in terror, until...
+Crunch. Blood and viscera sprayed out into a 5 meter radius of sheer
+horror. Popo burst out giggling as she stumbled forward, her foot stool
+suddenly disappearing beneath her. She giggled even harder as she felt
+the squishy sensations sliding between her toes. "Useless." she laughed
+to herself, watching his body spasm its death throws; the signals only
+travelling halfway down his shattered spine. She chuckled internally
+"God, he couldn't even die correctly."
+
+Immediately the entire group started to panic and scream: some trying in
+futility to tear away their bindings, others just sat there and burst
+into tears, wailing to the heavens. The situation in which they found
+themselves, finally started to sink in. They had been beaten and
+restrained, but now it was abundantly clear, if you weren't helpful...
+you were dead.
+
+She merely wiped her giant paw against a tall-ish patch of grass to
+remove any dirt and then turned toward the rest of the group, seemingly
+reinvigorated.
+
+The giant rabbit licked her lips with a huge grin. "I've worked up quite
+a sweat, rounding up you lot, and that has really set my gears turning.
+How about we blow off some steam!" she exclaimed with a huge beaming
+rabbit toothed grin.
+
+The group seemed to stifle their tears at the sound of her loud voice,
+as they collectively decided to listen to her instruction; as it seemed
+the much better alternative to pissing her off.
+
+"All right! Let's play a game!" her giggle returning. "The loser has to
+help me orgasm until I can barely walk!" at that point her normally
+giggly voice was practically a full blown laugh.
+
+The group looked around thoroughly confused. Did she just say...
+orgasm?! Kris' ears pricked to attention. He had been a fair womanizer
+in his time and he did know his way around the gentler parts of a
+woman's body.
+
+He supposed a woman that big would struggle to find a partner with
+genitals big enough to help her scratch that itch. She must be in
+desperate need of a good fuck.
+
+He couldn't realise just how correct he was. And also that she wasn't
+the one about to get fucked.
+
+Kris let his mind wander for a moment. I guess I'll take one for the
+team. Maybe I can calm her down and she'll let us all go. I wonder what
+giant rabbit pussy would even feel like. Would it be big and loose?
+Would I have to fist her? I wonder if that cute little tail would be a
+sensitive spot for her? Would I be on top? I hope so; those bunny thighs
+look scarily muscular and could crush me if she squat rode me.
+
+He broke out of his train of thought as he saw his giant captor reach up
+to her collar and clasp hold of a single zip. She pulled it down her
+middle, slowly, tantalisingly. With every slow inch, he could see more
+of her lovely soft brown fur.
+
+At first it revealed her angular collar bone; not normally an overly
+arousing sight, but when a girl was stripping in front of him, that's
+where Kris would place his first sensual kisses, before moving up her
+neck or down to her breast. As she reached her huge round mammaries, the
+zipper slowed as it struggled to separate the two halves of material;
+her gargantuan breasts pushing the taut fabric to its absolute limits.
+With a strong tug, her breasts sprung free from their tight confines;
+bouncing out into the sunlight and revealing their true size and heft.
+The zipper continued ever onward, travelling down and revealing Popo's
+ridiculously toned abdominal muscles; they had been crafted over her
+many hunts and her abnormally (and questionably) high statistics of
+'broken prior to capture'. She had power hiding within her body, and it
+seemed she knew how to use it.
+
+And lastly the zipper ran down to her crotch.
+
+Kris's mind stopped in its tracks as the reality of the situation came
+crashing down around him; along with her fat humungous she-cock.
+
+He had thought she was reaching into her skin tight suit to give her
+slick giant pussy a rub, but she was actually fishing her colossal boy
+breaker out of its imprisonment. In her excitement to catch all her fun
+little prey, it had worked its way down and around her inner thigh,
+concealing it from the group. But now it stood out there, in all its
+massive glory. Her toes wriggled around in the grass, remembering the
+pleasant sensations from before; as each toe moved, another surge of
+blood rushed into her cock; each and every throb, steadily hardening it.
+
+"Ah that feels so good to let it breathe! It was getting awfully sweaty
+in there." Even as she said that, the front most people in the group
+didn't need telling.
+
+A full day of her musk being trapped inside, brewed it into the most
+pure and potent alpha pheromones imaginable. The men's cocks stiffened
+and the women's vagina's moistened. Some of the anthros of the group had
+such strong noses they had to cover them for fear of orgasming on the
+spot. Even with their bodies' immediate lustful reactions, their minds
+were still flooded with shock. Her penis was huge! Way bigger than it
+should be, even proportionally. She was clearly feminine so why did she
+even have a penis in the first place?!
+
+"Ok little guys," she said with glee. "The person to catch the most
+wins! Come on, open those mouths!" she sounded like a mix between a
+playful child and a gameshow host.
+
+"As wide as you can!"
+
+The group looked amongst each other for guidance. Most directed their
+gazes towards Jebohdiah, seeking some kind of authoritative reassurance.
+But it was futile, he just sat there, his head hung down in shame. It
+was as if he knew more than he was letting on; as if he already knew the
+true way of the outside world and had still foolishly ignored it,
+leading them all head-strong into their situation. The only emotion they
+could see on his face was regret.
+
+"No no guys, look over at this." She said, waving her cock from side to
+side. "You really have to stretch those tiny little mouths as wide as
+you can!! Stretch those lips wide!" her usual giggle echoing through the
+group, showing that she truly believed that what she was doing wasn't
+evil and was merely part of group playtime.
+
+She began to wave her cock over at the group, watching in glee as all
+her little friends slowly and begrudgingly opened their mouths, letting
+its shadow hover just ever so slightly longer over the ones that
+particularly took her fancy. Kris got worried as she seemed to pause
+over him for slightly too long.
+
+Everyone's mouths were open wide, apart from Jebohdiah, who still hung
+his head. Popo seemed to get into a stance; slightly parted legs and
+then relaxed her shoulders. The group couldn't quite work it out, then
+suddenly...
+
+A bull non-human snapped his wrist restraints and made a bolt for it.
+
+The whole group was stunned! Popo's stance froze up as she processed
+what had happened. Then slowly she started to chuckle at the unexpected
+act of bravery.
+
+"Hehe, if someone didn't want to play! They should have bought a
+doctor's note to class!"
+
+The group looked on with a mix of pride and admiration for the man as he
+broke free, taking his freedom into his own hands.
+
+The bull kept running, his breath ragged being an adrenaline fuelled mix
+of panic and relief. He could hear the sound of the wind rustling past
+his long smooth horns.
+
+Popo's chuckle turned into full on burst out laughing at the man,
+watching his desperate and shaky stride as he bolted, but she made no
+attempts to give chase. The bull didn't know why but he wasn't about to
+question it. He made it halfway across the meadow and could see the
+treeline getting closer and closer. He even allowed himself a brief
+smile of pride.
+
+But that sense of self-fulfilment was quickly and mercilessly ripped out
+from underneath him, along with his right leg.
+
+The world went tumbling over, as his centre of mass was violently
+shifted forward. His snout came brutally slamming down into the dirt
+with the powerful momentum of his momentary sprint. His ears were
+ringing and his vision clouded as he slowly rolled onto his back,
+groaning in pain. He glanced down to see what he had tripped on.
+
+A single piece of rope was wrapped around his ankle, leading all the way
+across the field back to the group. Stupid! He thought to himself. He
+was so preoccupied with his wrists and the giant giggling bunny, he
+hadn't even bothered to check his legs thoroughly after he regained
+consciousness.
+
+The pain of being lurched in both directions at once slowly warmed its
+way through his core. As his hearing slowly stopped ringing, he could
+hear that evil cackle slowly growing in volume. He glanced up to see the
+giant rabbit still stood with the rest of the group. The worst thing was
+he hadn't made it as nearly as far as the adrenaline had him assume; and
+to make it even more insulting that annoyingly cutesy wiggly bunny nose
+was laughing at him in absolute hysterics!
+
+She walked over to the other end of the rope, which was still tied up
+connected to the rest of the group, and bent down to pick it up. She
+thumbed it between her palms for a second before suddenly giving it a
+sharp tug.
+
+The bull yelped as his leg was roughly yanked toward her. She was still
+giggling as she began to place each hand over the other, slowly reeling
+him in toward her, dragging his supine form through the meadow-y
+terrain.
+
+As his ass scraped and bumped along the ground, the bull watched her
+effortlessly pulling him toward her as if he was nothing but a
+pointlessly small fish on the end of a line. What made it worse is that
+with each tug on the line she wiggled her hips playfully, causing her
+humungous soft cock to waggle about bewitchingly in front of him; he
+really did feel like a fish being pulled toward a lure.
+
+He rolled onto his front, facing away from her and tried to halt his
+progress, grabbing onto whatever he could. But all his struggling
+managed to accomplish was ripping chunks of grass from the ground as he
+went; his strong musculature feeling like a mere baby when compared to
+Popo's towering frame.
+
+As he slowly got closer, Popo's giggles twisted into a fake pout,
+obfuscating her true feelings of joy with a false look of sadness and
+betrayal. As if her mum had told that she couldn't play with a lifelong
+friend anymore.
+
+Her voice seemed deeper, sadder, as she spoke through her pouting bottom
+lip. "Hey guys! Someone really didn't want to play our game! That's not
+fair. We should come up with a forfeit."
+
+Once he was only about 15ft away, she stopped pulling and wrapped the
+loose rope around her arm, then raised her large bunny paw and stood
+down onto the slack bit of rope, like a person may stand on a dogs leash
+to stop it from trying to bolt away again. The act was played off in her
+usual boisterous way, but it really helped drive home her darker nature
+to the bull.
+
+She raised her hand up to her chin and started to tap it, mocking a
+great pondering philosopher. Suddenly her face twinged as her body
+called out to her, making her hand rapidly move just above her groin.
+
+She muttered under her breath."oof, god I've held it in too long. Looks
+like it's going to be a solo game instead then."
+
+Her voice broke into her usual bounciness again as she quickly reached
+down and aggressively yanked him the toward her in one powerful tug;
+closing the distance scarily quick.
+
+He was spun along the ground by the sudden jerk on his bindings, causing
+him to tumble into a ball at her feet. He quickly unknotted himself and
+tried to rise to his feet, trying to put some distance between himself
+and the terrifying bunny as fast as possible.
+
+But as he was only halfway up, the sheer fact of her adjusting her
+stance was enough to stagger him with nothing more than her looming
+presence. He felt her cock wave across in front his face, the sheer heat
+emanating of that grotesque organ could be felt from almost a foot away.
+He fell back down onto one knee right in front of her, as a knight may
+honour a king.
+
+She looked down at her prey; he looked oh so small when engulfed by her
+shadow.
+
+"Right, for your disqualification and subsequent forfeit, you're going
+to play the game for the rest of the group! Remember now, open
+wiiiiide!"
+
+She wrapped each of her furred hands around his horns and painfully
+yanked his head around, hurting his neck and wrangling his face right up
+against the tip of her soft cock.
+
+At point blank the smell of her cock was overwhelming. The all-consuming
+aroma of an alpha breeder aggressively filled his senses and punctured
+his mind, causing his consciousness to falter.
+
+Her stance seemed to relax and her shoulders dropped.
+
+"OOOOH this toilet has handles!" she chuckled to herself, but then
+suddenly she burst out laughing as a joke clicked into place within her
+head; she almost bounced around in amusement.
+
+"HAHAHA toy-let! You can be my Toylet!"
+
+WAIT. Did she just say toilet?
+
+He felt a tremendous rumbling emanate from her groin, like the rolling
+thunder of a distant storm-surge careening down a valley. But instead of
+minutes he had mere seconds. Before his brain could process her
+intentions, a huge torrent of musky fluid shot out of her flaccid cock
+and slammed into the back of his throat. It felt like someone had put a
+firehose directly into his mouth.
+
+His body was caught completely unware. Half of him tried to run away,
+while the other half tried to turn his head away from the unrelenting
+assault of fluid. All that he achieved was contorting his body painfully
+as his head stayed firmly in place, held securely within the grip of
+Popo's incredibly muscular arms.
+
+With flight not an option, the adrenaline surging through his veins
+kicked his body's natural reflexes into overdrive. His mouth decided
+that air was the priority and so it had to clear the blockage. It tried
+to swallow, balling up a huge gulpful of the golden fluid and guided it
+toward his oesophagus, but his throat didn't get the memo. His throat
+decided it wasn't going to let any of this unbelievably potent musky
+fluid into his precious stomach, so it did the only thing it could do,
+constricting with such force it caused the bull gagged horribly.
+
+Popo loved the noise of her toylet failing to handle her grandeur with
+grace. She looked down into his panicked eyes with glee, enjoying as
+they rapidly darted about helplessly. She was soon rewarded doubly so as
+his gagging became more vicious and the resulting pressure building up
+within his skull caused her gracious gift to come splashing out of his
+nostrils.
+
+The fluid stung the inside of his nose as it surged through, but what
+humiliated the bull more was the splash back bouncing off Popo and going
+right into his eyes.
+
+Popo roared with laughter at his pathetic struggling. Then took one hand
+off his horns and reached down and pinched his nose, making sure that he
+had no choice but to swallow it.
+
+With its only available exit blocked, Popo's golden 'love' built up very
+rapidly within the tight confines of his palate, quickly bloating his
+cheeks like an overzealous hamster.
+
+With his cheeks painfully at bursting point, the bull had no choice but
+to swallow. He steeled his resolve and commanded his throat to respect
+him. With a couple supressed gags and retches, he finally managed to
+gulp down one mouthful of fluid.
+
+It burnt and stung on its way down his throat, landing with an audible
+splosh into his stomach.
+
+Just that one gulp made it feel like he had just downed an entire pint
+in his local bar, same colour too. He didn't know how he was going to be
+able to keep with up with it. His mouth was already filling up again
+with the never-ending torrent continuously pouring from Popo's squishy
+mushroom tip.
+
+Gulp, gulp, gulp. Several moments went by where the Bull's struggling
+stopped and he focused all of his willpower onto his inner self,
+carefully controlling each and every internal mechanism and motion. He
+fought valiantly against that cruel bunny's alchemical reagent, chugging
+it down with the grace of a professional drinker. But it was beginning
+to prove too much.
+
+With his mind's eye open and the increased awareness of his internal
+composition it provided, he was beginning to become painfully aware of
+every slight detail. Like how his stomach was starting to hurt with the
+sheer volume forced inside it. His throat burned as every trickle of
+fluid slid down the walls of his oesophagus. His nose and eyes still
+stung from unexpected eruption and the resulting splash back, squeezing
+his eyelids shut did nothing to eject the culprit.
+
+The pain in his stomach kept building and building. He slowly raised one
+of his hands to his stomach and could actually feel the swirling surging
+vortices churning around within his gut. The horrible alien sensation
+slowly brought him out of his inward glance and panic began to once
+again overwhelm him.
+
+His legs began to twitch as adrenaline once again primed the powerful
+muscles for action. His whole body twinged with a new level of
+readiness. He tried to yank his head free of Popo's powerful grasp, but
+was quickly reminded of the power difference between them.
+
+With her hand effortlessly using his horn as a handlebar to wrangle his
+head into position, he didn't stand a chance, even if it wasn't for her
+other hand painfully crushing his nose between her two furred fingers.
+
+Popo looked down onto her new little toylet and said in her usual bubbly
+voice "Uh uh uh!" Then rapidly her tone quickly shifted to something
+much more sinister. "I'm not finished yet." She sneered at him.
+
+With her words distracting him, he lost all semblance of control over
+his internal workings. With instinct to fall back on his throat
+immediately went back to needing air, and gagged. Hard.
+
+With his throat on lockdown and his cheeks once again bloating to their
+limits, Popo had a wicked idea. Noticing the power of her piss slowly
+beginning to subside, she grinned wickedly to herself and tensed up her
+core.
+
+Suddenly the torrent slammed into his gullet with renewed vigour. His
+body tired it's hardest but it couldn't stop it. The pressure of the
+fluid weight slamming into his tonsils sent his body reeling. His throat
+gagged and opened at the same time, resulting in him trying to vomit up
+what he had already ingested, but wholly unsuccessfully. The pressure
+rushing into his mouth was way more than his pitiful stomach could fight
+back with. His throat went into an aggressive spasm, opening and closing
+uncontrollably.
+
+He immediately realised his body's mistakes as he felt the first burning
+hot surge of piss scratch at the entrance to his trachea. His brain
+screamed out in sheer horror as the fluid started to surge down the
+wrong hole. He instantly began to fight back, his whole body kicking and
+scratching at the giant ruthless rabbit, doing absolutely anything to
+get her to relent, anything to avoid his now all too obvious fate. But
+it was too late, the seeds had been sown.
+
+He could feel inside himself as more of his body was filled with her
+stench. He could feel every small unsullied nook and cranny as it
+filled, every slight inch as its temperature changed from normal to her
+scorching hot piss. His body began to twitch as he felt the weight of
+the fluid building inside the previously inaccessible part of his body,
+slowly began to drag him toward the floor.
+
+His own knees were no longer being strong enough to support all the
+added extra weight, slowly but surely his legs began to buckle.
+
+Popo let out a huge sigh and leant her head back as the last reminants
+of her urinating induced euphoria tingled up her spin. With a couple
+more powerful contractions of her bladder, injecting the last of her
+liquid love into the poor man, she looked utterly relieved. Her whole
+body shuddered as a post-piss blissful tingle worked its way slowly up
+her spine.
+
+Her head drooped forward under its own weight, as the remaining air in
+her lungs expelled into an almighty sigh; her eyelids hung heavy over
+her eyes as she enjoyed the bliss for just a brief moment.
+
+She thought to herself 'is it just me? Or is every piss the best piss of
+your life...'
+
+And with that, she released her grip on the bull. As he slumped
+unconsciously to the floor, her hands moved together and her fingers
+interlocked, stretching her arms up high into the sky and cracking her
+back.
+
+Completely ignoring her disposable toilet as he spasmed beneath her,
+pathetically drowning on land, a shudder crawled its way up her spine
+and into her cute twitchy bunny nose.
+
+"Ahhhh, that felt sooo good."
+
+"So good in fact..." she looked down to see the first few twitches of
+life surge into her soft cock.
+
+"Hmmm," she mused, scratching her chin as if contemplating her next
+step. An evil smile growing across her face.
+
+"Well, there hasn't been a winner... so who's going to help me with
+this?" her hand moved beneath the fleshy organ and hefted it into her
+palm, demonstrating just how much of a monster it really was.
+
+Let's do this the old fashion way.
+
+Popo reached her free hand forward and scanned it over the group,
+letting her finger linger just a bit longer over the ones that
+particularly took her fancy. after picking out about six or seven, she
+began to chant.
+
+"Eeene meeene miiiny moe." With each elongated syllable she pointed at
+someone who caught her eye.
+
+"Catch a lion by the toe" her hand moved, but her head stayed eerily
+still.
+
+At this point Kris started to freak out. Her gaze was firmly locked onto
+his seated and bound form. Each word she spouted was filled with more
+and more malice. Her face degenerated as hunger flooded through her,
+voracious thoughts filling her consciousness with fun and immoral acts
+she could inflict.
+
+"yooooou areeee toooo beee...." Her words slowed, enjoying how the
+entire group hung on her every word as her pointing finger loomed,
+terrified that she would pick a loved one, or worse, themselves.
+
+"IT!" She jabbed her finger through the air in Kris's direction. She
+practically screeched in excitement; as if it was the wheel of fate that
+had selected that cute boy for her and not her own twisted machinations.
+
+Popo's giggly smile turned wicked. She whispered under her breath with
+an evil happiness. "Bright eyes' it is."
+
+Kris began to struggle against his bindings, managing to wrangle one
+foot underneath himself. "Me? What do you want with me?" Fear permeating
+his voice.
+
+Suddenly she burst into the air, using her natural bunny prowess to leap
+clean over the group. Her impressive form silhouetted momentarily
+against the bright blue sky before she came crashing down, crotch first
+into John's brother's face. He was sent backwards, powerfully slamming
+into the ground with a painful thud. All of the air was immediately
+knocked out of his lungs and his spine released a worrying creak from
+being hit with the force of a small car. She landed with such power,
+that a small quake rumbled underneath the group. The people closest to
+her impressive landing instinctually started to back up, condensing the
+group, trying their hardest to stay away from the giant cock-wielding
+bunny.
+
+"Oh, Did you want to stand? Sorry about that!" her high pitch cutesy
+giggle had returned in full force. It was 'cute', but it was also laced
+with a complete lack of empathy; she just wanted to have fun, and didn't
+care who she hurt in the process. She cocked her head to the side, as if
+sizing him up; her bunny ears swinging about on top.
+
+Kris's brain was rattling about in his head. After several moments of
+seeing stars he managed to prop his elbows underneath his back and push
+himself up into a reclined position. In this position, he could fully
+see what he was dealing with. Stood with her legs astride his feet, her
+imposing and incredibly muscular semi-naked form took up most of his
+vision. His eye's lingered on her huge breasts; the way they just hung
+out of her skin-tight suit was so very alluring.
+
+He tried to sit up fully, but that just brought him face to face with
+the real monster.
+
+Kris sat there stunned. Even given the sheer height difference between
+his seated position and her incredible frame, the tip of her cock still
+hung down to match his eye level; swinging hypnotically before him. It
+was as big as his leg and far thicker too.
+
+Only hanging inches away from his face, it completely engulfed his
+perception. His head instinctually began copying her motion and started
+swaying in tandem, as if being hypnotised by it, solely fixated on that
+fat bulbous tip. Half a second later it hit him; her thick bunny musk
+wafted free and barraged his senses. He wanted to move away, but he
+couldn't stop himself; he breathed deep as her fragrances probed
+directly into his brain.
+
+Kris' mind was blank. All of his thoughts and questions had just gotten
+tangled up in her scent and stuck together, leaving his face lifeless.
+
+"Come on cutie! You don't want to take too long, the others might arrive
+soon and they can get very jealous." she giggled, slowly bobbing her
+cock up and down in front of his face, enjoying the way his head
+mimicked its movements.
+
+She seemed to get impatient with his inaction because as he sat there
+gormlessly, she grabbed a tight hold of her cock and swung it forward,
+slamming it up into his lower jaw. His teeth crashed together loudly and
+the sheer weight of her beast was enough to knock his head backward
+violently.
+
+The impact snapped him out of his daze, the pain surging through his jaw
+made him truly realise just what a bad situation he found himself in. At
+her scale, even her cock could seriously batter him about, its power on
+par with any boxer.
+
+With his arms still bound he had no hope in fighting back, and he had
+already seen first-hand just how fast she was in capturing everyone,
+that poor bull; there was no escape, he would have to do as she
+asked\... or face her giggly wrath.
+
+He leaned in forward. The smell got even stronger as he got closer to
+the warm throbbing monster in front of him; it felt like it was clogging
+against the back of his throat. Her powerful musk flowed into his body,
+and against his will, his own dick started to strain against his
+trousers.
+
+He took a second to ignore it and resolve himself. He mentally pinched
+his nose and leant in, planting a kiss on the crown of her cock. Popo
+giggled at the pitiful attempt and waved her cock about more and more
+trying to entice him in. He had to move his head to keep up with it, but
+he kissed it again. And again, and again, building a rhythm. His brain
+tried to rationalise his actions. Just pleasure this monster and you'll
+all go free. Just make her happy. His body doubled down its efforts, his
+tongue snaking its way out of his mouth and going wild around her
+bulbous tip, licking, rubbing and kissing all over the slowly engorging
+organ.
+
+He was quite impressed with himself; proud that even never having even
+touched another person's cock before, he was kissing this giant thing
+with every ounce of his enthusiasm. He gave himself a congratulatory
+smirk and looked up to see her face of pleasure.
+
+But he was wrong. Her face wasn't writhing in bliss or euphoria. She
+just pouted with pure unbridled boredom.
+
+"Is that it!?" she said, her usually omnipresent giggle absent. She
+suddenly reached down and effortlessly yanked him onto up his knees.
+"Come on do it properly, you need to worship me!" she grabbed the back
+of his head and slammed him face first into her huge testicles. It felt
+like he crashed head brain first into a heavy yet warm sandbag. The
+sudden impact of thudding into those huge cum factories sent his grey
+matter rattling around his skull.
+
+Cute little bunny rabbits had a reputation for one thing: breeding. And
+now cheek to leathery sack, he could tell why. They were practically
+straining with need; full to the point of bursting. Popo may not have
+had the biggest of loads of her friends from the city, but boy could she
+recharge the quickest. And she had the stamina to back it up. She always
+had to find sneaky ways to relieve her ever present need and dump her
+thick potent load into any toy she could get her cheeky little paws on.
+
+"Ok...You're new to this, I get that." She said coldly before her tone
+shifted back into her usual higher pitch. "Normally it's Jux-y's job,
+but I suppose I'll have to teach you instead!" she giggled, half jumping
+with excitement, doing a small cute clap as she did. "Firstly you have
+to thank your patron, for giving you the honour of being their bitch!"
+The word stung into Kris' mind. Bitch. Popo grabbed his head again and
+reaffirmed his position, buried in her nutsack.
+
+She started to grind his face all over her dangling testicles, embedding
+her sweat and musk into his every pore. "You need to make sure you mark
+yourself as their property!" Each testicle was the size of a watermelon
+and far heavier; merely hinting at how thick the potent sludge contained
+within really was. The way they battered around his face, enveloping him
+within the soft sack containing them, was intoxicating yet brutal. Each
+one felt like a soft squishy punch to the face. He tried to squeal, but
+it was near impossible to inhale through the heavy corrupted air hanging
+around her groin; its thickness clogging up his airways.
+
+Grasping his hair tight, she yanked him free of her nutsack. He gasped
+and gulped in air as much as he could. "Once you've been marked as
+someone's bitch, you need to get them ready." She yanked his head to the
+side, and slowly started to slide his partially open mouth up and down
+the underside of her fat human-like shaft. His lips loosely dragged up
+and down the length of that turgid member. "Stick your tongue out." She
+giggled at him "Let's get messy!"
+
+He did as he was told, gingerly sliding his tongue out of his mouth and
+against that warm throbbing meat; saliva immediately started to coat up
+the underside of her cock. His tongue was immediately bathed in the
+incredible heat radiating off of this thick slab of meant. He could also
+feel her urethra hanging down underneath this monster. It bulged and
+surged in thickness, getting ready to start pumping out slimy precum
+into her new fucktoy. Every vein in her cock started to throb against
+his tongue in anticipation as she looked down at his pitiful face.
+
+She became rougher and rougher, pushing his face against her shaft so
+hard his nose hurt. Grinding his wet mouth against her pole by subtly
+thrusting her hips in tandem with her hands.
+
+She suddenly yanked him free; his tongue hanging out in a cock drunk
+ahegao. He now faced directly head on with the tip of her cock. He
+snapped out of his daze and started to panic. There was a lot of meat
+swinging about in front of him, and there was no way his mouth would be
+able to handle it all. He knew what she was after and there was
+absolutely no way it was going to fit.
+
+She then placed one hand on the top of his head holding him in place,
+and reached down with the other, wrapping her hand around under his chin
+and grabbing a tight grip on his lower jaw. with both of her hands full,
+she couldn't grab her dick and line it up with his mouth, so instead she
+wiggled her hips about playfully, letting her cock swing about in front
+of Kris' face. The entire time he kept his mouth clenched as tight as he
+possibly could, fearing the outcome if he opened it even a little bit.
+Eventually her tip caught against his clenched lips and she pushed
+forward, trying to tease her way in.
+
+"Come on, we'll do it together! I believe you can do it!"
+
+Using her thumb and index finger wrapped under his chin together like a
+claw, she pushed her furry digits painfully against the sockets where
+his jaw attached to his skull; audibly grinding the two bones against
+each other. A painful friction spread throughout his cheeks. His eyes
+closed tight, trying to ignore the pain, but it was too much, and much
+to her delight, his jaw was slowly pried open.
+
+She could feel the wetness of his pursed lips, slowly spreading out
+across the tip of her cock as his jaw was gradually forced open. The
+taste of her salty precum immediately flooded into his mouth. He tried
+his hardest to keep his mouth closed, but the way her fingers dug into
+his cheeks was putting excruciating pressure onto his jaw. It felt like
+if it didn't open to her commands, it was going to dislocate.
+
+She kept the squishy bulbous tip of her cock pressed firmly against his
+slowly opening mouth; maintaining a constant pressure so it would borrow
+its way inside as soon as there was space to do so. Kris could feel the
+ever-mounting power building against his teeth, combined with the
+indescribable compression of his jaw. The power exerted onto his skull
+by the giant bunny barely even trying, showed him the true futility of
+resisting against the giggling girl. So instead he decided to slowly
+open his mouth, but also raise his lips of out the way, hoping to get
+his teeth to scrape sharply against her sensitive cock head and dissuade
+her from using his mouth for whatever sick purpose she had envisioned.
+
+But to her massively engorged cock, his puny teeth just tickled her. His
+small teeth felt just as pleasurable as a dominatrix lightly gliding her
+long nails or claws all over your dick. Beautiful electric shivers
+danced all over Popo's spine as she slowly broke her way into bright
+eyes' tight little mouth.
+
+Kris on the other hand was starting to flail about, trying to free
+himself from the inevitable. But no matter how much he kicked his legs,
+his head was still firmly locked in place, clasped between her two giant
+bunny hands. He could feel more of her squishy tip slowly squeezing into
+his mouth, spreading out to fill all of the available space. Her potent
+salty precum dripped out of her cock in thick globules and stuck to the
+back of his throat.
+
+She could feel herself slowly gain purchase within his mouth. The
+excitement was overwhelming her childish impatience, so she pushed a bit
+too hard. In one short thrust, a sickening pop echoed through the group
+as she broke through his tender jaw, dislocating the poor bone and
+slamming her fat meaty cock right against the back of his mouth. The
+feeling of her little toy's bones popping out of place reverberated
+through Popo's fingers and tingled up into her arms. The sudden and
+completely unexpected feeling was euphoric to her twisted mind and it
+caused her whole body to twitch, including an involuntary flex of her
+fat cock; excitedly squirting another fat blob of pre-slime, directly
+into Kris's throat.
+
+Kris' flailing stopped for a second, and for a moment time stood still.
+His eyes bulged out of their sockets at the shock of what he was
+experiencing. The most unimaginable pain, but also pure relief. Relief
+that her fingers were no longer brutally digging into his cheeks. Then
+her cock flexed within his mouth. The power of even a minor spasm of her
+colossal rod felt like someone had grabbed hold of his top jaw and
+yanked his whole face up sharply. It was quickly followed by a huge
+salty mass splashing into the back of his mouth. His body instinctively
+swallowed the lubricating substance and time started moving again.
+
+"Ah that is amazingly tight!" shouted Popo in pure elation. The rest of
+the group looked on in horror as Popo's cute little bunny tail began
+wiggling frantically in excitement, a terrifying contrast to the sight
+of their friend being brutally violated in front of them. Much to Popo's
+shock and joy, Kris started to actually suckle on the tip of her cock,
+as if he was drinking from a baby's bottle.
+
+"That's right! No matter how much it must hurt, focus on giving your
+girl as much pleasure as possible!"
+
+Much to Kris' horror, his mouth was now stuffed with so much cock he
+couldn't suck in air. Every time he tried, his cheeks would suck inward
+and he would end up just sucking more of her rigid meat into his mouth.
+He tried reaching up and punching into the sides of her cock, but it was
+made no difference. Her fat shaft was so engorged and hard she barely
+even noticed it, while he could feel the dull impacts reverberating
+through his own teeth.
+
+"Yes! Yes! Use your hands too! You're really getting the hang of this!"
+she giggled with such delight, she hadn't properly trained anyone
+before, it was always Juxta's job; but maybe she was secretly a natural
+at it! Her playful innocence just couldn't comprehend that these weren't
+efforts to please her; they were frantic attempts to get her to stop.
+
+She used her now free hand to grab his hand that was smacking at the
+side of her turgid cock and began to drag it up and down the side of her
+giant rod of meat; enjoying the sensations as she jacked herself off
+using his dainty hand.
+
+"Not slap slap, you silly! Stroke it, up and down, up and down, there
+you're getting it!"
+
+Popo looked into Kris' panicked eyes. With her childish innocence she
+mistook his desperate fear for life, as sadness. Aww he is probably just
+worried about how well he is doing for his first time.
+
+She decided to encourage him for how well he was doing so far.
+
+"Aww baby look up here." Cooed Popo with a seductive tone. Kris slowly
+looked up her giant intimidating form until he locked gaze with her
+large emerald eyes.
+
+"I know what will cheer you up\..." she said as she let go of his head
+and slowly traced both of her hands up the sides of her incredibly
+curvaceous frame, before grasping each hand onto her huge squishy
+breasts; her fingers practically sinking into the amazingly soft flesh.
+"I saw you staring at these babies earlier." She pushed her elbows
+together, squeezing her huge mammaries together until they bulged out
+forward; Wowing everyone in the group. Even if she was at a more normal
+human scale, her tits would still be huge, but right now as a 9ft hunk
+of bunny, they were absolutely gargantuan. If a person curled up into a
+ball they could easily be completely engulfed by the cavernous valley of
+her cleavage. Her cute and clearly excited pink nipples stood proudly
+out of her grey fur. Her chest seemed oh so warm and inviting.
+
+She took the opportunity of Kris' mesmerisation and shook them from side
+to side, allowing their jiggle to show off their true weight and power;
+drawing him in further. Air was starting to become a commodity for Kris
+and a haze started to cloud over his mind. "That's right just watch
+these beautiful puppies." She giggled at him.
+
+Popo decided that little bright eyes had been suitably rewarded with her
+little show; she was very proud of her breasts and she had just given
+him the view of a lifetime. But that was enough training, now she had
+(mis)read how well behaved he could be, she had to make the most of him
+before the others arrived and it was now time for her to feel those soft
+lips wrapping around the base of her shaft. And she was craving a good
+facefucking.
+
+It had been a while since she'd had the pleasure. Most toys she managed
+to sneakily get her hands on belonged to other people. So she always had
+to be extra careful to leave them alive. That normally revolved around
+stretching out their sweet delectable buttholes and leaving them a
+lethargic bloated mess... but still breathing. It had been quite a while
+since she had gotten hold of someone and been able to go balls deep
+inside such a cute face. A craving which Kris was about to take the full
+brunt of.
+
+With his gaze firmly locked onto those hypnotic bunny udders, he didn't
+notice as she slowly brought her stance closer and closer to him. With
+her cock in his mouth, each step she took pushed him back down towards
+to floor. She was now almost standing directly over him and once again
+reaching down for his head.
+
+At this point Kris' mind was fading out, everything was proving too
+much. The mesmerising tits. The pain in his jaw. The lack of air. The
+overwhelming sexual aromas. His hands dropped limply to his sides. His
+eyelids hung low across his eyes, just barely allowing him to see the
+now blurry outline of the annoyingly cute bunny.
+
+He felt her large furred hands wrap around the back of his skull as his
+mind fluttered into darkness.
+
+Popo smirked wickedly. She planted her feet into the ground and then
+slowly pulled Kris' head towards her. The pressure pushing on the sides
+of her cock immediately went from firm, to downright amazing as the fat
+tip of her cock started to push against the entrance of Kris' unsullied
+throat. With her little cock sucker unconscious, there was absolutely no
+resistance as she slowly forced his tight little throat to stretch wide
+around the end of her cock.
+
+Only a couple inches into his throat and she was already feeling the
+blissful sensations wrapping around her shaft and tingling their way up
+her spine. She threw back her head and blankly stared into the clear
+blue sky, savouring the feelings flowing through her; knowing full well
+that her toys didn't stay this tight for long.
+
+From her current angle she couldn't fit any more of her cock into his
+mouth, without an awkward bend. She needed to tilt his head back and get
+a better alignment into that tight euphoric hole. The giant bun moved
+another step closer; if her cock hadn't pushed his head backward as she
+moved forward, her nuts would have slapped against his chin. She placed
+her oversized footpaws right next to his hips and continued to pull his
+head towards her; forcing more of her girthy shaft down into his gullet.
+If he had been conscious, there would be a cacophony of noises as she
+forced herself inside his unwilling throat; muffled gags and screams,
+coughing, spluttering, all noises that Popo thoroughly enjoyed. But he
+was silent, his body limp and lifeless... no resistance to be found.
+
+Now with about a foot of her cock buried in his tight throat, you could
+clearly see the gargantuan bulge from the outside, stretching his neck
+to its absolute limits. With a clear path established, she could
+actually begin to utilise her curvy bunny hips.
+
+She locked his head in place using her giant hands. Then using only her
+hips, she slowly pulled her cock out, leaving only the bulbous tip to
+rest inside the man's warm wet mouth. She then pushed her hips forward,
+once again enjoying the feelings of his small throat being forced to
+part for something far larger than it was ever meant too. She did this a
+couple more times, agonisingly slow in, and equally agonisingly slow
+out. If Kris were still conscious, this would have been torturous.
+
+Now with a routine in place, she slowly built up into a steady rhythm;
+each gentle thrust gaining another inch of unconquered territory deep
+within the boy's body. At this point, Popo felt the tightness of his
+throat alleviate around the tip of her cock, revealing she had slowly
+made her way into his much more expansive chest cavity. Her motions, for
+the moment, were gentle yet purposeful, calm and precise. With each slow
+push she could feel her cock carefully push his organs aside, making
+them part to let her mammoth trunk through. With about two foot of her
+cock pushed into his small mouth and down his gullet, she started to
+feel her first signs of resistance: his stomach. Everything else under
+his throat had been moved aside by her unbelievable girth, but this was
+the first organ that didn't have the option of moving, it was directly
+attached to the tube she was violating and it had to take the full brunt
+of whatever this over eager bunny was about to do to it.
+
+Each gentle push of her hips would press her cock right up against this
+delectably squishy mass. Popo's cock was now throbbing so hard from all
+of her gentle teasing, it had started to steal all of the blood it could
+from her body. Her brain, her sense of reason, was starting to fade. Her
+bunny rabbit physiology was starting to show through.
+
+The bunny decided with a giggle that something as trivial as a small
+fleshy lump wouldn't get in the way of those soft boy lips wrapping
+themselves around the root of her cock. And so she started to change the
+force which she applied to her thrusts. Her rhythm was still the same,
+but now it was slow and methodical out, fast and brutal in. slamming her
+battering ram down into his small body; causing all of his organs to
+jostle about from the recoil. Even unconscious, Kris' throat started to
+let out some very unnerving guttural noises. Gags and splutters were
+forced out of the boy, along with any air that remained inside his now
+compressed lungs.
+
+The group stayed silent. They no longer knew what to do. Most just
+huddled up and averted their gazes; trying their best to avoid
+witnessing the brutality of what was occurring right next to them. A
+couple of the men, even though terrified of the giant bunny, still
+couldn't take their eyes off her giant tits; the way they shifted and
+jiggled with each powerful thrust, caused their own cocks to further
+strain against their pants.
+
+Popo seemed to enjoy the new noises her toy was making and started to
+pound against the soft mass inside him even harder; slowly pushing it
+down into his body and away from where it should be.
+
+She finally had about 80 percent of her fat rabbit breed-pole shoved
+down inside his chest; but it still wasn't enough.
+
+She stopped her thrusting and reaffirmed her grip on the back on his
+head, then slowly but surely, dragged his face closer and closer to her
+pubis. Combining the power of her muscular arms and her unbelievably
+curvy bunny hips, to push further than she had thought possible. She
+could feel even more of his insides being pushed aside, as her oversized
+snake burrowed its way down and settled in between them. Inch by inch
+she slowly gained entry to new uncharted depths within her little toy.
+At the same time his soft warm lips dragged themselves along her
+unlubricated section of bunny shaft, sending tingles up through her
+nerves.
+
+With only a couple inches of cock remaining outside him, she thrust
+forward with all of her might; slamming her rock hard pubis against his
+delicate nose. *CRUNCH.*
+
+Oh it was blissful, euphoric! Finally having all of her shaft buried
+within a toys mouth. The way his warm saliva tingled around the root of
+her cock. Oh it was just so beautiful. Her little bunny tail wiggled in
+pure joy, as one of her legs twitched, thumping against the ground
+loudly. A small warm patch grew against her pelvis just above her cock
+as blood dripped out of his now broken nose.
+
+She felt the base of her cock throb and she had to control her thoughts
+to stop herself from just dumping a load into him right now.
+
+As her senses slowly came back to her; she decided to make this more
+interesting.
+
+She brought her twitching leg under control and reached across to her
+right leg. Wrapped around her thick muscular thigh was a small strap,
+holding a little pouch on the side. She unzipped the pouch and reached
+inside. After some rummaging, she pulled out a small syringe, with a
+strange orange liquid inside it.
+
+The label on the side said 'Mammalian Cyclic Rebreather'. Popo found
+that name far too science-y and boring, so she called it 'Last breath'
+because well, it always ended up that way. It was one of Sin Corp's
+latest trial drugs, handed out to the hunter paws for testing on their
+patrols. It allowed the taker to hold their breath for almost an hour,
+recycling the oxygen present in the blood with alarming efficiency. It
+was designed so the hunters could continue their hunts no matter the
+terrain their prey tried to escape in.
+
+It had previously allowed Popo to raid an entire underwater family of
+sharks that had remained hidden for years. Popo had such fun on that
+assignment, only a couple made it back to be trained. The rest were
+found lifelessly floating with their gills clogged up with chunky clumps
+of unending bunny lust. No matter how many rows of razor sharp teeth
+they had, they just didn't stand a chance against Popo's brutal and
+insatiable breeding prowess.
+
+Kris was sat in empty darkness; there was no light, no up, nor down.
+Just a weird hollow sense of self.
+
+He felt a sharp scratch on the side of his neck.
+
+Feeling started to flood back to his body. First starting at the
+scratch, but then slowly flowing outward. Spreading up and into his
+head, slowly pushing back the heavy fog clouding his mind. It spread
+down into his shoulder; at first feeling numb, but then as his muscles
+twitched back into life, it moved. He rolled his shoulder, feeling the
+weight of his still limp arm hanging beneath it. The tingling surge
+spread down his bicep and into his elbow. It forked down the two bones
+in his forearm; crashing into his hand and arcing out into his fingers.
+He clenched his hand into a fist, and then relaxed it. He did this a
+couple more times until the feeling of static dissipated from his
+fingertips. He felt the wave of sensation wash down his chest; causing
+his organs to burst back into the song of life. His heart clawed its way
+back from a slow limp squeeze, to a thunderous beat, that resounded
+throughout his body. The sensations coursed their way through his hips,
+left leg, right leg; spreading throughout the long limbs, rolling and
+bouncing its way throughout them.
+
+Now his body was slowly waking up like a computer coming out of a boot
+loop; his mind began to slowly process the world around him. His organs
+were working, but his inner core felt strange, very...stiff? Rigid?
+Maybe it just hadn't woken up fully. His legs twitched at the knee, but
+no movement. There was a weight upon them. He must be kneeling.
+
+His jaw was not responding to his commands. A sudden pain flashed its
+way through his lower mandible. It must be dislocated. A new pain caused
+him to wince. His nose felt very, very tender. Something had brushed
+against it, causing him to wince at the sudden sharp sensation.
+
+He blinked his eyes awake. It took a couple of attempts, just to get his
+eyes to roll forward and try to focus. The movements of his eyelids felt
+slow and forced, but they also felt unusual. His eyelashes tickled every
+time they moved; as if they were brushing against a blindfold that had
+been put on too tight.
+
+Popo looked down at her little cock sucking protégé. She could feel his
+heart beat steadily begin to thump against the side of her cock, slowly
+regaining its strength. His lungs re-inflated, once again putting a
+delectable pressure against the sides of her shaft. After a couple more
+moments his eyes blinked back into consciousness and fluttered up to
+look at her.
+
+Kris realised his eye lashes were tickling against a large grey-brown
+furry carpet. He must have fallen asleep around a friend's house. It was
+all just a bad dream.
+
+Then he heard a giggle... and it all came flooding back to him. It
+wasn't a soft mat, it was her furred pubis! He had to strain very hard
+to look up the full tower of bunny stood before him; and that just got
+Popo even more excited. He glanced up at her just as she threw aside a
+strange looking syringe. He tried to inhale desperately but he just
+couldn't, something wouldn't let him.
+
+She couldn't resist those fearful puppy dog eyes. It sent her mind
+reeling in ecstasy.
+
+She grabbed the sides of his head and started to pump her cock into his
+throat. Only ever pulling out a fifth of her gargantuan rod, before
+hastily shoving it back in.
+
+Kris could now tell exactly why his core had felt so stiff before. She
+had somehow impossibly managed to get all of her fat bunny meat inside
+him. He couldn't believe it, he had seen how big her monstrosity was
+when it bounced in front of his face; there was no way it would have
+fit! But this horny little bunny had done it! He shakily moved his hand
+to his abdomen and he could immediately feel the fat bulbous head moving
+about inside him; forcing his guts aside and bulging out his stomach
+every time her hips smacked into his face.
+
+He should still be unconscious from being choked out on this telegraph
+pole of bunny dick. How was he conscious? With the pain rapidly
+returning to his injured face he quickly wished he was still
+unconscious! The pain was agony. He could feel his shredded vocal cords
+become sorer and sorer as that turgid meat brutally scraped against
+them.
+
+Her pace increased rapidly, sliding out more and more toy breaker with
+each desperate thrust. Soon her curvy bunny hips were in full swing,
+slicing great arcs through the air while she continued sliding about a
+two feet of fat cock in and out of the small pitiful man beneath her.
+
+He started to groan and ache beneath her, and it was music to those
+sadistic rabbit ears. It was exactly what she wanted. As more of his
+body gradually woke up, his throat started to fight back; much to *his*
+dismay and *her* delight. It twisted and gagged against the intruder,
+trying to remove the imbedded blockage. But all it succeeded in doing
+was giving her the guttural gags and splutters her mind craved.
+
+It wasn't long until he could feel her entire body slowly start to tense
+up. Her hip movements became more jerky and uncontrolled. Her hands
+instinctually grasped his tiny head harder and harder; nature's way of
+not letting her rape-prey escape her intended breeding. He could tell
+what was coming.
+
+With an almighty roar she threw her head back and crashed her pelvis
+exceptionally hard against his tender face; bottoming out deep inside
+him.
+
+He recoiled from the pain as her furred hips slammed into his nose. But
+through the pain he heard the loud churning gurgle rumble through her
+loins as her giant testicles lifted and contracted; squeezing her fat
+virile load out and into her extra-long plumbing. He could feel the
+first shot surge down the fat cum pipe hanging underneath her shaft;
+inch by inch it stretched its way downward. He could feel the exact path
+it took through his body as her cock bulged slightly, flowing down the
+entire length of her shaft before dumping it somewhere deep within his
+bowels.
+
+Kris suddenly felt like a water main had burst inside him. The pressure
+erupting from the tip of her cock was immense. It crashed and bubbled
+around inside him like a white water rapid spewing out of her rod. Her
+cock throbbed in time with each fat deposit, stretching ever so slightly
+wider each time a big chunky clump flowed past his dislocated jaw.
+
+Within seconds Kris felt awful. His gut started to bloat as his stomach
+took the brunt of her load. He could feel the fat clumpy lumps sloshing
+about within him.
+
+It felt like it rolled on for an eternity. Her hips twitched constantly
+as they rocked back and forth, dragging her cock up and down his throat,
+milking every ounce of blissful orgasm out of her over stimulated cock.
+
+With the last dregs of her orgasm subsiding, Popo released her grip on
+Kris' head and took a shaky thunderous step backward; her body wobbly
+from how good that felt. A last couple spurts surged out of her cock and
+wetly slapped against her little toy's face; even the small remnants of
+jizz were enough to absolutely coat him in her white juice. She was
+panting heavily and her body still twitched as the last vestiges of her
+orgasm flushed through her trembling limbs.
+
+Kris sat there for half a second, his mind completely frozen in how
+utterly defiled and wrong his body felt. Then his eyes bulged wide as
+her cum came rapidly surging up his throat. He quickly lurched forward
+onto all fours as he violently threw up thick globules of white cream;
+coughing and hacking as it splashed out into a disgusting mess
+underneath him.
+
+The giant bunny stood there, staring at her cum filled toy. Her eyes
+hung half lidded, blankly letting the pleasure gently dissipate from her
+mind; her fluffy little tail twitching periodically. She felt her dick
+throb. She slowly looked down to see it throb again. She wrapped one of
+her paws around the base and stroked it slowly. Each slow purposeful
+stroke squeezing blood back into her overstimulated shaft, throbbing it
+into life once again. The sight of that toy covered in cum spurring her
+mind into a darker place.
+
+There was no more Popo, no more cute giggles, no more silly games.
+
+Only one thing remained; her constant, aching, throbbing, biological
+need. The one thing rabbits are known for... The need to Breed.
+
+She lumbered forward. The rumble of her giant footsteps caused Kris to
+look away from his puddle of cum and up her terrifyingly imposing form;
+her cock steadily throbbing to attention once again. He panickedly
+shuffled backwards, but it was no use. She reached down and grabbed a
+hold of him once again. He tried to protest but his dislocated jaw
+hindered his pleas "...ut you ..finished!". It was useless; he could see
+the light in her eyes had gone. She was now working purely off animal
+instinct. He fearfully started tugging against her grip, trying
+desperately to get free.
+
+He didn't know what the drug she had injected him with was, but he felt
+a renewed strength course through him as every muscle in his body was
+flooded with the oxygen it needed.
+
+He yanked and pulled, kicking and screaming against the towering hunk of
+bunny. He no longer cared if pleasing her would save the rest of the
+group; she was going to kill him! He tried calling out to the rest of
+the group in fear "..lease! ...Help!"
+
+But no-one answered.
+
+She grabbed her thick girthy cock and once again forced it into his
+mouth. His panicked screams caused vibrations to wash over her
+oversensitive tip in blissful waves. With only one small movement, she
+once again lodged her oversized tip into that sweet tight throat. She
+tortuously eased herself forward, slowly pushing more of her engorged
+cock deep into his throat. The feeling of those tight folds wrapping
+themselves around her fat veiny shaft again was utter bliss. Her tongue
+lolled out of her mouth as her face scrunched up in pleasure.
+
+She reaffirmed her grip and with a feral grunt, she slammed her hips
+forward; burrowing her cock deep within Kris' tiny body. The awe
+inspiring power contained within those hips meant that her single ground
+shaking thrust sent the air around her spiralling through the group;
+mighty gusts dishevelling their scared forms further.
+
+Kris felt completely helpless, even with his refound strength he was
+nothing compared to the horny mass of muscle that was Popo. He gagged
+and spluttered each time her fat cock stretched his throat far wider
+than it was ever meant to. No matter how much she had done it before, he
+still wasn't acclimated to the feeling of her musky cock meat plunging
+into his tight throat and crushing his organs from the inside. Even her
+gentle thrusts were enough to batter them about until they could barely
+function.
+
+Suddenly she placed her large hand against his forehead and violently
+pushed him backwards. As his head suddenly whipped backwards, her fat
+cock made a wet 'schluck' and freed itself from his sore aching throat.
+He was pushed so hard he landed straight back onto his ass. He quickly
+scrambled to put his arms out behind him so he wouldn't fall over fully.
+with the adrenaline pumping through his veins he quickly whipped his
+head forward again to try and see why she would have stopped so early
+and aggressively... but she was gone.
+
+He sighed relief hoping that maybe something had scared her enough to
+make her run away. Whatever could do that such a ravenous woman would be
+a whole new problem, but whatever it was, had just allowed him to live
+for a couple moments more. He went to raise his hand to his sore throat.
+
+But suddenly she ran her giant furred paw through his thick hair and
+yanked his head sharply backwards. The relief in his heart sank... She
+had only walked around behind him to get a better angle. She stepped
+over him, her large feet placing either side of his pelvis, and her huge
+frame blocking the sunlight from his face.
+
+From his strained new angle being bent right backward in between her
+legs, he could see directly up behind her. All he could do was stare at
+the underside of her pert round ass and her cute fluffy bunny tail
+wiggling in excitement. He could feel her fat cock head probe his mouth
+once again. Then her ass clenched... he could see the fibrous muscle
+constrict a split second before she suddenly dropped her weight directly
+onto his face; splitting his throat wide once again. A fraction of a
+second later, her heavy nutsack crashed into his face. Even though she
+had just dumped a fat load deep within him, those heavy churning cum
+factories were already back to capacity; and he sure felt it. With the
+weight behind those engorged throbbing organs, it was less of a slap and
+more of a sudden beating by two heavyweight boxing gloves.
+
+Even though he had been choking on her musky rod for a while now, those
+heavy gurgling cum sacks were splayed out across his nose, whipping up
+her potent breeder pheromones and injecting them directly into his mind.
+
+With a grin showing her satisfaction at her new angle of attack, she
+began her assault anew. She would stretch her long lagomorph legs,
+almost pulling her cock all the way out, before violently dropping right
+back down again. Slam fucking his face with every fibre of muscle her
+body possessed.
+
+With his head now facing up into the underside of her crotch, she rammed
+her cock back down into that tight mouth of his, over and over again.
+Smashing her pelvis right into his face. This time there was no pretend
+gentle nature to her actions.
+
+Because she was now thrusting directly downward, every time her crotch
+pounded into his face, it bared the full weight of her entire giant
+curvaceous frame. Fresh agony screamed into his body as his still tender
+nose was brutalised again and again.
+
+But it was more than just that.
+
+In time with each grunt escaping her snarling lips, her thrusts were
+particularly uncontrolled and savage. The sounds emanating from her
+brutal copulation were no longer just that of, deep saliva spewing gut
+wrenching gags, and flesh colliding with flesh. There were faint
+unmistakable crunching pops.
+
+Kris tried to scream out past the unrelenting rod of flesh ravaging his
+poor throat. A new pain was flashing through his tender face... small
+relentless sharp pops. Every bone is his face crying out as they scraped
+against each other under the immense weight and strength of this
+uncontrollable bunny.
+
+She wrapped her furred hands around the back of his head and began
+pulling his face up into her pelvis as her knees dropped her body down;
+increasing the strain on his fragile face exponentially. The new levels
+of brutality displayed by Popo's feral mating put fear into the rest of
+the group. Smash, smash, smash, smash! She grunted in time with each
+thrust, pummelling his face with reckless abandon.
+
+The rest of the group could feel the escalating power of those violently
+destructive thrusts. Each swing of her giant muscled hips sliced through
+the air, whipping up currents that flowed around their bodies, violating
+them all simultaneously.
+
+Kris could hear the deafening noise of his own facial bones popping out
+of place, as the blood curdling sounds reverberated around inside his
+own skull. The pain was overwhelming, but because of that damned drug
+she had stuck him with, he just couldn't drift into the sweet embrace of
+unconsciousness; even with the god awful musky cock of hers obliterating
+his throat and compressing his lungs from the inside. He begged for
+relief to come soon, as he contemplated the harshness of his reality;
+tears streaming down his saliva and sweaty musk smeared face.
+
+Her balls continued to swing down into his forehead like two great
+wrecking balls, trying their absolute hardest to cave in his skull.
+
+He could feel her thrusts getting more jerky and deeper, gouging out
+more and more of his body to fit the shape of her fat toy breaker. Her
+steady rhythm breaking down into short sharp judders, her body's way of
+milking every last fraction of pleasure out of her toy.
+
+He knew what that meant.
+
+He steeled his stomach and tensed what remained of his abs, ready to
+hold strong against her torrent of incredibly fertile bunny lust.
+Tensing his abs was much harder than he anticipated; her constant and
+unending assault pounding against them from the inside had turned the
+once taught muscles into mush. He focused his mind and this time his
+body responded.
+
+Popo was in her own feral rhythm. The sudden new feeling of her toy's
+innards clenching helplessly, massaging around the end of her cock was
+absolutely blissful. She let out a mighty roar and allowed her legs to
+give way under the pleasure, dropping her knees into the mud. The poor
+guy was almost folded back in half, crushing his already compressed body
+beneath her.
+
+Kris' eyes bulged wide as her entire body weight was speared down into
+him. Her cock felt deeper than it ever had been before. His whole body
+was contorted backward into her crotch and he could feel her cock strain
+up against his belly. If he could see round to his front, he would be
+able to see her cock clearly distending his stomach from the inside,
+pulling the skin to its absolute limits. Then he felt those giant balls
+splayed out across his face tense up as she roared in deep feral
+victory.
+
+A huge surge of heavy dense cockslop erupted violently out of the end of
+her toy breaker, slamming deep into his fucked-to-jelly guts. Rope after
+fat rope frothed out into his internal cavity, flooding it with sickly
+white cream. She gently rocked back and forth, coaxing every last drop
+out of her giantess sized shaft.
+
+Kris' gut bloated to ridiculous proportions as her cum flowed through
+him. Filling every last nock and cranny it could sludge its way into.
+
+Popo gingerly rocked her hips a couple more times, savouring the
+oversensitive feeling as a shudder crawled up her spine. Panting
+heavily, she fell forward onto her hands, her weight causing a small
+quake to rumble through the ground. Her long bunny ears flopped forward
+as she craned her neck to look down underneath herself. Her cute bunny
+nose twitched side to side, indicating her lust based frenzy was
+starting to dissipate. Her huge breasts hung down blocking her view, so
+she reached an arm up under herself to squish them up out of the way.
+
+She felt her cock twitch its last couple drops into her obscenely
+bloated toy. What were small spasms for her, were magnified through her
+massive scale and it felt like a hard gut wrenching yank to poor Kris,
+still impaled on this ungodly musky cock. Her entire gloopy payload
+sloshing about within him.
+
+She looked at the unholy mess and felt satisfied. It had been a very
+long time since she had given someone such a good oral dicking. Finally
+she felt freed of her constant overbearing lust. She was finally
+satiated, and oddly proud that her toy had withheld throughout the
+abuse.
+
+Kris lay there limply. Popo's rock hard cock was still pierced through
+his core and kept him about a foot from the ground. His body ached and
+twitched, small spasms surging down his limbs almost like a creature in
+its death throes. But he still wouldn't receive such blissful grace. His
+innards throbbed as the gloopy cum inside massaged around them, somehow
+both soothing and exacerbating the pain coming from them; the 9 foot
+giant hadn't been gentle with him.
+
+Popo wiped the sweat from her brow and swept her long ears backward,
+then sat up onto her haunches. Her snug cock warmer was dragged along as
+she moved back. She wrapped her hand around one of his sides and slowly
+slid him off her shaft. Every slight bump and fold inside him tingled
+against her oversensitive tip, making her twitch and wiggle sharply in
+response; causing even the relief of withdrawal to be a slow and
+agonising affair for Kris.
+
+As soon as his mouth was free from that ungodly tree trunk of a cock,
+the liquid inside him was free to burst forth. The pressure was immense
+as her clumpy cream dramatically erupted out of his mouth and ran down
+his still upside down face, flooding his nose and his half-lidded eyes.
+
+Popo looked down at her cum covered mess of a toy. She gingerly caressed
+her spent cock, electric tingles dancing up her spine every time her
+fingers lightly glided over her swollen and tender crown.
+
+She continued her light teasing with one hand and reached down with the
+other. She fumbled around inside her small thigh pouch and then pulled
+out a small communicator.
+
+She glanced down at the small item and muttered, "I've still got a
+little bit of time." Her voice was hoarse and shaky from the two back to
+back orgasms. She stowed the device and reached both hands down to her
+hanging testicles. She began to massage and caress the two handful sized
+organs, trying to muster up one last load.
+
+Her shakiness started to subside as her cock throbbed back into life,
+her body pumping blood back into the relentless sledgehammer of an
+organ. Her smile began to reappear; this was no longer about overbearing
+feral lust. Rationality was returning to her post-orgasm clear state of
+mind, this was about fun. And fun was what Popo lived for.
+
+Staring down proudly at her equipment, she wrapped one of her hands
+around it and began to pump it in time with each surge of blood. She
+looked at Kris, he had managed to shakily flip himself over and rise up
+to his fours. He was coughing and hacking as cum poured out of his mouth
+in great wet chunks. His body was trying to remove as much of the
+foreign substance as possible, while also doing it as slowly as possible
+to avoid any further traumas. His arms and legs looked a light breeze
+away from crumbling from beneath him, shaking and wobbling, doing their
+best to withstand his usual body weight in addition to all that extra
+heavy fluid she had brutally dumped inside him.
+
+Popo was absently stroking herself while staring at her defiled toy, she
+was impressed. This new drug had surprised her, not only was it a great
+hunting tool, but it shocked her how durable a toy could be when their
+muscles had all the oxygen they needed, plus they had the added benefit
+of being able to fight back for longer, and that just made her inner
+bun-bun scream with excitement. She made a note to steal an extra couple
+of doses next time her and Jux-y were taking inventory.
+
+She continued absent-mindedly stroking her slowly engorging cock while
+thinking about other potential uses for this new wonderful equipment,
+when she noticed something perculiar. A small wet patch was starting to
+appear on the rear end of her toy, dibbling down his inner thigh. Popo
+burst out laughing! Her ears flopped about as she finally rose to her
+feet, her shadow once again looming over the thoroughly abused boy.
+
+She put on a little baby voice and patronisingly brought her hands to
+her cheeks "Aww! My little toy has sprung a leak! Was I too rwough with
+you?"
+
+She strode over towards him, giggling out of her buck tooth grin; her
+thunderous steps rumbling through the floor, threating to knock his
+wobbly limbs from under him.
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+
+John had started to regain consciousness. As his senses caught up to
+him, all he could taste was dirt and blood. But that was good, that
+meant he was alive. He groggily pulled his face out of the mud and
+looked around bleary eyed. It took him a while, but he slowly made out
+the shapes of people huddling in the distance. That was the rest of the
+group, most of them were ok! He tried to focus his eyes more, but he
+couldn't see his wife or brother anywhere. All he could see was the
+silhouette of a rather shapely Rabbit non-human. Disorientated, she
+appeared much closer to him than the rest of the group and she was
+standing over something small on the floor.
+
+No wait... It was Kris! She wasn't closer, she was much, much taller!
+Maybe she was here to help?
+
+No sooner than the thought had crossed his mind, before was it
+thoroughly shattered.
+
+\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\-\--
+
+Popo very slowly raised one leg and placed it down on Kris' back. She
+carried on giggling at him as she slowly saw her malicious thoughts
+coming to reality.
+
+Kris felt her large furred paw spread out across the entirety of his
+back. At this scale it made him feel like nothing more than a small
+pebble beneath her mighty foot. He felt her weight shift forward as she
+slowly pushed down onto his back, gradually building up to a point where
+his arms would no longer be able to hold himself. He pushed back against
+the looming giantess, but it didn't help much. His arms slowly began to
+buckle under the strain, wobbling like mad, and then he an unusual
+sensation that chilled him to his very core. His bloated and bruised
+stomach, stretched to its absolute limits by her vile and unending cum,
+brushed lightly against the floor.
+
+It all clicked into place in his mind. But it was too late.
+
+Suddenly, Popo shifted all of her weight forward ontop of him, slamming
+him into the dirt. Her weight crushed that mass of cum inside him,
+sending it violently erupting out of him. His throat hitched and his ass
+clenched, but it was no use. Half a second later it burst forth, that
+small leak from before, turned into a massive torrent as cum surged out
+of his ruptured anus and flooded out into the field before him. covering
+a down right shocking amount of area in her seemingly infinite
+cocksludge.
+
+Popo felt a glorious crunch under her toes as he brutally slammed into
+the ground. His head savagely bouncing off the floor as she laughed in a
+way that was evil and barbaric, yet laced with twisted excitement.
+
+John witnessed the living jizz volcano that this devil bunny had
+maliciously crafted his brother into. His mind was sent spinning, he
+didn't know what to do, what to think. Finally his body acted on his
+behalf and screamed as loud as it could muster. He screamed so hard his
+throat tore, but that didn't stop him. He carried as if he wanted the
+gods themselves to hear it, until eventually he became breathless, and
+faded out, his face once again flopping into the mud before him.
+
+\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~\~
+
+Suddenly he was back in the shop. Snapped out of his waking nightmare
+and back to reality. He finally understood his feelings of rage and
+vengeance towards this horrifyingly cute and twisted bunny.
+
+His feet were moving on their own, running toward the rabbit that had
+taken so much from him. His eyes were filled with pure rage. He inhaled
+loudly to let his lungs fill with air and then he let out an almighty
+battle cry.\
+\
+Within two steps, it was already too late. This bunny was faster,
+stronger and better than him in every way. She stomped her footpaw down
+atop him, swatting him to the floor, like a run-away piece of rubbish
+caught in a breeze. He lay there on his back, dazed and stunned, her
+large paw pressing down upon his legs. He didn't know what to think,
+underneath the giant foot of this psycho, painfully stepped upon like
+his brother before him, the sudden resurgence of trauma from the past,
+the futility of this whole fucked up world. He just laid there\...a
+broken man.\
+\
+Popo grinned wickedly at her pitiful new footstool and shifted her
+weight forward, pressing down onto the fragile man\'s knees. She had
+forgotten all about her escapades that occurred only about a week ago
+and didn't recognise the angry man at all. Being as childish and
+excitable as she was, Popo didn't have a very good attention span; she
+only cared about what toy she could find and defile next. \"Not very
+well behaved is he!\" She pushed her foot down harder until she felt a
+satisfying crunch vibrate into her paw pads and up through her calves;
+as one of John\'s knees sharply popped out of place.\
+He screamed out in agony.\
+\
+Juxta shouted \"Stop Popo! Sin wants this one alive.\" After half a
+second of scowling at the spoilsport of a rabbit, Popo begrudgingly
+lifted her foot off him and took a step back. Her giggly menace quickly
+turned into a pout as she folded her arms like a scolded child.
+
+With John flat out on the floor and Juxta once again in control of the
+situation, Kel coughed herself into composure. In the sudden flash of
+action, she realised she had instinctively bared her teeth at Popo
+toying with her property. Once she regained her composure and stared
+intimidatingly down at the small 9 foot rabbit, she quietly contemplated
+Bishops actions.\
+Kel was confused; he was a fresh toy, not familiar to their sex fuelled
+world when she had bought him. And yet he\'d been nothing but docile,
+never showing any kind of anger, always putting his all into her
+commands. She couldn\'t understand what had caused such volatile
+behaviour.
+
+John then threw his arm over his eyes as he began to sob. "You killed my
+family..." tears began streaming down his face as he just laid there on
+his back. The emotional pain overwhelming the physical pain surging up
+from his knee.
+
+Now that made more sense; Kel would have literally torn anyone in half
+with her bare hands if they dare hurt her little girl. Although she
+understood, she would be lying to herself to say she wasn't enjoying the
+sight of him crying on the floor. The thoughts of toying with his weak
+and fragile emotions while he begged beneath her foot, slowly caused her
+cock to twitch and pulse, ready to surge to full erection with merely
+the slightest of coaxing.
+
+That said, her gazed still bore down upon Popo for intervening and
+breaking her toy without her permission. And Popo could feel it. Kel was
+almost twice her height and to have that presence pressing down on her
+quickly wiped that pout of her face as her shoulders sunk in a display
+of intimidation and regret. Better that, than piss her off and become
+her next cum urinal.
+
+Kel then broke her stare and let out a long sigh. After all, with her
+sadistic nature, she probably would have eventually killed him anyway.
+That is, if Sarah didn't "accidentally" overstep her bounds and break
+him first. It was just shame that she didn't get to keep him for longer.
+
+Juxta shot Popo a glare of anger as she processed what the toy had said.
+\"Popo, you never filed any 'damages in transit'. You failed to mention
+of any others you may have used. How many times do I have to tell you to
+do your bloody job and bring them back alive!\"
+
+Popo's face shifted from her intimidated sulking to a guilty nervous
+grin as she looked up at Juxta and quickly tried to formulate her next
+great excuse. "umm well... you seeee....I'm ... Going to go! Toodles!"
+And in a flash, she spun on the ball of her paw and quickly darted out
+of the shop, skipping down the street as she went.\
+\
+Juxta shook her head and sighed, before once again addressing herself up
+towards the much larger Kel.\
+"I'm sorry about that. It's Sin's orders for the toy, but we\'ll take
+him from here. I'll have your refund and the free disposables sent to
+your building." Juxta then rounded the counter and looked down at the
+broken man. She assessed him for a moment then decided to just carry him
+instead of making him walk. She knew full well her over-excitable sister
+had probably shattered his knee. She scooped him up in her arms. She
+nodded goodbye to Kel and then carried him back through the curtain of
+hanging thick plastic strips.
+
+As she walked through the curtain she pulled down a giant heavy light
+switch, and with a loud mechanical clunk, row by row of large overhead
+lights lit up the entire warehouse. John, with tears still clouding his
+eyes, could now see everything in the previously blackened room. Every
+cage that he had walked by moments before was actually occupied. In each
+cage were men of all shapes and sizes, all gagged and sorted into
+categories. Each shelf had been labelled.
+
+'Fresh', on this shelf there were lots of men that were unconscious,
+probably drugged until it was their time to be processed. Next was the
+largest rack of shelving, it was labelled 'Processing'. On this section
+all of the occupants were tied up to weird machines. Now he could see
+where the mechanical whirring noise had come from before. A couple were
+tied onto a metallic rack which spread their legs wide, as a mechanical
+dildo violated them; stretching their poor tail-holes obscenely wide.
+Each cage had a percentage on the front of it, the higher the
+percentage, the girthier the dildo seemed to be. Some even got big
+enough to match the sledgehammers the girls that ran this city called
+cocks.
+
+A bit further down he was shocked as he saw a face he recognised. It was
+Jebohdiah! The strongest man in bastion. Even naked and captured the man
+was fighting back! He was doing squats, working out and keeping strong
+in the face of adversity, it almost filled John with hope and courage
+until he read the sign on the shelving unit Jebohdiah's cage was placed
+on: 'Broken'.
+
+John then realised the implications of the conversation the girls were
+having earlier. His horn had been cut off at the base. And with each
+naked squat his cock bounced with rock hard joy. He wasn't squatting to
+work out, each time he plunged low, his arse was stretched wide by his
+prior pride and joy; which had now been fashioned into the most ornate
+of dildos and secured to the floor beneath him. John's mind blanked out,
+he had already closed himself off to any more traumas, so just as his
+mind was about to crack, he just looked past the depraved sight and
+stared blankly into the middle distance.
+
+Then finally they came to an empty cage, Juxta threw him unceremoniously
+into the unoccupied metal cage and closed the door on him; the cold
+metal lashing at his skin in stark contrast to the gentle warmth of the
+large rabbit lady's fur. Then before he could even sit upright, a large
+syringe was pushed through the gap in between the bars and poked into
+his arm. Suddenly, a brilliant heat spread throughout his body and his
+knee no longer felt painful; whatever it was, the injection was doing
+wonders. Then the world started to spin and before he knew which way was
+up, he fell forwards, drifting off into a dreamless sleep.

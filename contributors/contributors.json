@@ -764,5 +764,101 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/arztin"
     }
+  },
+  {
+    "id": "Yo-lander",
+    "name": "Yo-lander",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781030180/yo-lander_xbuahj.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/yo-lander"
+    }
+  },
+  {
+    "id": "BlueVanilla",
+    "name": "BlueVanilla",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781030858/bluevanilla_masxgd.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/bluevanilla"
+    }
+  },
+  {
+    "id": "BlueVanilla",
+    "name": "BlueVanilla",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781030858/bluevanilla_masxgd.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/bluevanilla"
+    }
+  },
+  {
+    "id": "EluciferMagnus",
+    "name": "EluciferMagnus",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781031523/elucifermagnus_rlx0yj.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/elucifermagnus"
+    }
+  },
+  {
+    "id": "Nyara",
+    "name": "Nyara",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781036295/nyara_mp7tnw.jpg",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "x": "https://x.com/voraciousNyara"
+    }
+  },
+  {
+    "id": "Zerky",
+    "name": "Zerky",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781037059/zerky_sfxzm5.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "x": "https://x.com/Zerkain"
+    }
+  },
+  {
+    "id": "Automonochrome",
+    "name": "Automonochrome",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781037591/automonochrome_bgriug.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "deviantart": "https://www.deviantart.com/automonochrome"
+    }
+  },
+  {
+    "id": "Egun",
+    "name": "Egun",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781037840/egun_txrjnw.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/xc404"
+    }
   }
 ]
