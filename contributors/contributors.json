@@ -728,5 +728,41 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/makarimorph"
     }
+  },
+  {
+    "id": "Kokidius",
+    "name": "Kokidius",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781021156/kokidius_rzky8n.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/kokidius"
+    }
+  },
+  {
+    "id": "HornyKeyler",
+    "name": "HornyKeyler",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781021473/hornykeyler_qmkcqq.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/letueurchaud"
+    }
+  },
+  {
+    "id": "ArtinTess",
+    "name": "ArtinTess",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781021969/arztin_bnjkft.gif",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/arztin"
+    }
   }
 ]
