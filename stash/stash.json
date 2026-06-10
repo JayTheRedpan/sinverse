@@ -230,5 +230,38 @@
     "date": "2024-10",
     "blurb": null,
     "relates_to": [2]
+  },
+  {
+    "id": 14,
+    "kind": "story",
+    "type": "standalone",
+    "title": "Tales of Suplex City - Pride Pomp and Circumstance",
+    "creator": "Jazz",
+    "file": "stories/tales_of_suplex_city-pride_pomp_and_circumstance.md",
+    "wordCount": 3917,
+    "tags": [
+      "m/m",
+      "noncon",
+      "sissification",
+      "abuse"
+    ],
+    "date": "2024-12",
+    "relates_to": []
+  },
+  {
+    "id": 14,
+    "kind": "story",
+    "type": "standalone",
+    "title": "Red Panda Breeding Season",
+    "creator": "Jazz",
+    "file": "stories/breeding_season.md",
+    "wordCount": 3849,
+    "tags": [
+      "noncon",
+      "transformation",
+      "abuse"
+    ],
+    "date": "2021-10",
+    "relates_to": []
   }
 ]
