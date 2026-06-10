@@ -190,8 +190,14 @@
     (cfg.fields || []).forEach(function (f) {
       var row = el('label', 'community-field');
       row.appendChild(el('span', 'community-field-label', esc(f.label)));
-      var input = el('input');
-      input.type = f.type || 'text';
+      var input;
+      if (f.type === 'textarea') {
+        input = el('textarea');
+        input.rows = 3;
+      } else {
+        input = el('input');
+        input.type = f.type || 'text';
+      }
       input.name = f.name;
       input.placeholder = f.placeholder || '';
       input.className = 'community-input';
@@ -231,48 +237,41 @@
       note.className = 'community-form-note';
       note.textContent = 'Sending\u2026';
 
-      if (cfg.endpoint) {
-        fetch(cfg.endpoint, {
-          method: cfg.method || 'POST',
-          headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
-          body: JSON.stringify(values)
-        }).then(function (r) {
-          if (r.ok) {
-            form.reset();
-            note.className = 'community-form-note ok';
-            note.textContent = 'Thank you \u2014 we\u2019ve got your details.';
-          } else { throw new Error('HTTP ' + r.status); }
-        }).catch(function () {
-          btn.disabled = false;
-          mailtoFallback(cfg, values, note, true);
-        });
-      } else {
+      // Post to the Google Form the same way the CYOA system does: a FormData
+      // POST to the form's /formResponse URL with mode:'no-cors'. Each field is
+      // mapped to its Google Form entry.<id> via the `entry` key in the config.
+      // no-cors hides the response, so success is assumed if nothing throws.
+      var body = new FormData();
+      (cfg.fields || []).forEach(function (f) {
+        if (f.entry && values[f.name]) body.append(f.entry, values[f.name]);
+      });
+
+      if (!cfg.google_form_action) {
         btn.disabled = false;
-        mailtoFallback(cfg, values, note, false);
+        note.className = 'community-form-note err';
+        note.textContent = 'The form isn\u2019t connected yet \u2014 check back soon.';
+        return;
       }
+
+      fetch(cfg.google_form_action, { method: 'POST', mode: 'no-cors', body: body })
+        .then(function () {
+          form.reset();
+          note.className = 'community-form-note ok';
+          note.textContent = 'Thank you \u2014 Jay\u2019s got your details. Talk soon!';
+          setTimeout(function () {
+            var ov = document.getElementById('community-modal');
+            if (ov) ov.classList.remove('open');
+            btn.disabled = false;
+          }, 1600);
+        })
+        .catch(function () {
+          btn.disabled = false;
+          note.className = 'community-form-note err';
+          note.textContent = 'Something went wrong sending that \u2014 please try again.';
+        });
     });
 
     return form;
-  }
-
-  function mailtoFallback(cfg, values, note, afterError) {
-    var to = cfg.fallback_email || '';
-    if (!to) {
-      note.className = 'community-form-note err';
-      note.textContent = afterError
-        ? 'Submission failed and no fallback email is set.'
-        : 'Contact submission isn\u2019t configured yet.';
-      return;
-    }
-    var lines = Object.keys(values).map(function (k) { return k + ': ' + values[k]; });
-    var href = 'mailto:' + to +
-      '?subject=' + encodeURIComponent('Sinverse community contact') +
-      '&body=' + encodeURIComponent(lines.join('\n'));
-    window.location.href = href;
-    note.className = 'community-form-note ok';
-    note.textContent = afterError
-      ? 'Couldn\u2019t reach the server \u2014 opening your email app to send instead.'
-      : 'Opening your email app to send your details\u2026';
   }
 
   // ── Init ─────────────────────────────────────────────────────
