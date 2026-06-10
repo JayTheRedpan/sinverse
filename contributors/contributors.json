@@ -790,18 +790,6 @@
     }
   },
   {
-    "id": "BlueVanilla",
-    "name": "BlueVanilla",
-    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781030858/bluevanilla_masxgd.gif",
-    "bio": null,
-    "types": [
-      "Artist"
-    ],
-    "socials": {
-      "furaffinity": "https://www.furaffinity.net/user/bluevanilla"
-    }
-  },
-  {
     "id": "EluciferMagnus",
     "name": "EluciferMagnus",
     "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781031523/elucifermagnus_rlx0yj.gif",

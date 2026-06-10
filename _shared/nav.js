@@ -6,7 +6,9 @@
 'use strict';
 
 (function() {
-  var DISCORD = 'https://discord.gg/FFWPJmcUDg';  // replace with real invite
+  // Fallback invite used only if community.json can't be read. The live URL
+  // and status come from community.json so there's a single source of truth.
+  var DISCORD_FALLBACK = 'https://discord.gg/FFWPJmcUDg';
 
   var LINKS = [
     { label: 'Home',         href: '/',              id: 'home' },
@@ -16,6 +18,7 @@
     { label: 'CYOA',         href: '/cyoa/',          id: 'cyoa' },
     { label: 'Wiki',         href: '/wiki/',          id: 'wiki' },
     { label: 'Contributors', href: '/contributors/',  id: 'contributors' },
+    { label: 'Community',    href: '/community/',     id: 'community' },
   ];
 
   function buildNav(activePage) {
@@ -44,14 +47,35 @@
       links.appendChild(a);
     });
 
-    // Discord button
+    // Discord button — URL + status pulled from community.json.
     var discord = document.createElement('a');
-    discord.href      = DISCORD;
+    discord.href      = DISCORD_FALLBACK;
     discord.target    = '_blank';
     discord.rel       = 'noopener noreferrer';
     discord.className = 'global-nav-discord';
     discord.textContent = 'Discord';
     links.appendChild(discord);
+
+    // Resolve the real Discord link/status from community.json. Path is
+    // root-relative so it works from any sub-site. If it can't load, the
+    // fallback invite above stays in place.
+    fetch('/community/community.json')
+      .then(function(r) { return r.ok ? r.json() : null; })
+      .then(function(data) {
+        if (!data || !data.platforms) return;
+        var d = data.platforms.filter(function(p) { return p.id === 'discord'; })[0];
+        if (!d) return;
+        if (d.url) discord.href = d.url;
+        var status = (d.status || 'up').toLowerCase();
+        if (status === 'down') {
+          discord.classList.add('is-down');
+          discord.title = 'Discord is currently unavailable';
+        } else if (status === 'standby') {
+          discord.classList.add('is-standby');
+          discord.title = 'Discord is up but not yet open';
+        }
+      })
+      .catch(function() {});
 
     nav.appendChild(links);
 

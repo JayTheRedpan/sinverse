@@ -1,0 +1,145 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../_shared/agegate.js?v=1780460382"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Community — Sinverse</title>
+  <!-- Social preview (Open Graph / Discord / Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Sinverse" />
+  <meta property="og:title" content="Sinverse" />
+  <meta property="og:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta property="og:image" content="https://sinverse.net/images/logo.png" />
+  <meta property="og:image:width" content="598" />
+  <meta property="og:image:height" content="598" />
+  <meta property="og:url" content="https://sinverse.net/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sinverse" />
+  <meta name="twitter:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta name="twitter:image" content="https://sinverse.net/images/logo.png" />
+  <meta name="theme-color" content="#c49a78" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
+  <style>
+    .com-header { text-align: center; padding: 2.5rem 1.5rem 1rem; }
+    .com-title { display: block; font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 1.6rem; letter-spacing: 0.2em; color: var(--accent, #c49a78); }
+    .com-subtitle { display: block; font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.7rem; letter-spacing: 0.15em; color: var(--text-muted, #7a6a5a); margin-top: 0.4rem; text-transform: uppercase; }
+
+    .com-wrap { max-width: 760px; margin: 0 auto; padding: 1rem 1.5rem 3rem; }
+    .com-section { margin-top: 2.5rem; }
+    .com-section-title { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.7rem; letter-spacing: 0.16em; text-transform: uppercase; color: var(--text-secondary, #b8a898); border-bottom: 1px solid var(--border, rgba(196,154,120,0.12)); padding-bottom: 0.5rem; margin-bottom: 1.25rem; }
+    .community-empty { font-style: italic; color: var(--text-muted, #7a6a5a); font-size: 0.9rem; }
+
+    /* Alert banner (primary platform down) */
+    .community-alert-box { background: rgba(122,34,51,0.18); border: 1px solid var(--wine, #7a2233); border-radius: var(--radius, 4px); padding: 0.85rem 1rem; margin-bottom: 1.25rem; color: var(--text-primary, #f0e8df); font-size: 0.92rem; line-height: 1.5; }
+    .community-alert-box strong { color: var(--accent, #c49a78); font-weight: 400; }
+
+    /* Announcements */
+    .community-announce { background: var(--bg-card, #201810); border: 1px solid var(--border, rgba(196,154,120,0.12)); border-left-width: 3px; border-radius: var(--radius, 4px); padding: 0.85rem 1.1rem; margin-bottom: 0.85rem; }
+    .community-announce.lvl-info     { border-left-color: var(--accent, #c49a78); }
+    .community-announce.lvl-important { border-left-color: var(--amber, #c4963a); }
+    .community-announce.lvl-critical { border-left-color: var(--wine, #7a2233); }
+    .community-announce-meta { margin-bottom: 0.3rem; }
+    .community-announce-date { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.8rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--accent, #c49a78); font-weight: 600; }
+    .community-announce-title { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 1rem; letter-spacing: 0.04em; color: var(--text-primary, #f0e8df); margin-bottom: 0.3rem; }
+    .community-announce-body { color: var(--text-secondary, #b8a898); font-size: 0.92rem; line-height: 1.55; }
+
+    /* Platform signpost */
+    .community-platforms { display: grid; grid-template-columns: 1fr 1fr; gap: 0.85rem; }
+    @media (max-width: 560px) { .community-platforms { grid-template-columns: 1fr; } }
+    .community-platform { display: block; text-decoration: none; background: var(--bg-card, #201810); border: 1px solid var(--border-mid, rgba(196,154,120,0.25)); border-radius: var(--radius, 4px); padding: 1rem 1.1rem; transition: border-color 0.15s, background 0.15s; }
+    .community-platform:hover { border-color: var(--accent, #c49a78); background: rgba(196,154,120,0.06); }
+    .community-platform.is-emphasis { border-color: var(--accent, #c49a78); box-shadow: 0 0 0 1px rgba(196,154,120,0.25); }
+    .community-platform.is-down { opacity: 0.6; cursor: not-allowed; }
+    .community-platform.is-down:hover { border-color: var(--border-mid, rgba(196,154,120,0.25)); background: var(--bg-card, #201810); }
+    .community-platform.is-inert { cursor: default; }
+    .community-platform.is-inert:hover { border-color: var(--border-mid, rgba(196,154,120,0.25)); background: var(--bg-card, #201810); }
+    .community-platform.is-standby.is-inert:hover { border-color: rgba(196,150,58,0.4); }
+    .community-platform-head { display: flex; align-items: center; gap: 0.5rem; margin-bottom: 0.4rem; }
+    .community-platform-name { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.95rem; letter-spacing: 0.06em; color: var(--text-primary, #f0e8df); flex: 1; }
+    .community-platform-status { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.5rem; letter-spacing: 0.1em; text-transform: uppercase; padding: 0.15rem 0.45rem; border-radius: 2px; }
+    .community-platform-status.up { color: var(--green, #5a9a6a); border: 1px solid rgba(90,154,106,0.4); }
+    .community-platform-status.standby { color: var(--amber, #c4963a); border: 1px solid rgba(196,150,58,0.5); }
+    .community-platform-status.down { color: var(--wine, #7a2233); border: 1px solid rgba(122,34,51,0.5); }
+    .community-platform.is-standby { border-color: rgba(196,150,58,0.4); }
+    .community-platform.is-standby:hover { border-color: var(--amber, #c4963a); }
+    .community-platform-blurb { color: var(--text-secondary, #b8a898); font-size: 0.85rem; line-height: 1.45; margin-bottom: 0.6rem; }
+    .community-platform-cta { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.6rem; letter-spacing: 0.12em; text-transform: uppercase; color: var(--accent, #c49a78); }
+    .community-platform-cta.muted { color: var(--text-muted, #7a6a5a); }
+
+    /* Contact form */
+    .community-contact-intro { color: var(--text-secondary, #b8a898); font-size: 0.92rem; line-height: 1.55; margin-bottom: 1.25rem; }
+    .community-form { display: flex; flex-direction: column; gap: 0.85rem; max-width: 460px; }
+    .community-field { display: flex; flex-direction: column; gap: 0.3rem; }
+    .community-field-label { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.6rem; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-muted, #7a6a5a); }
+    .community-input { background: var(--bg-panel, #1a1410); border: 1px solid var(--border-mid, rgba(196,154,120,0.25)); border-radius: var(--radius, 4px); padding: 0.55rem 0.7rem; color: var(--text-primary, #f0e8df); font-family: var(--font-body, 'EB Garamond', serif); font-size: 0.95rem; }
+    .community-input:focus { outline: none; border-color: var(--accent, #c49a78); }
+    .community-submit { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.65rem; letter-spacing: 0.14em; text-transform: uppercase; background: none; border: 1px solid var(--border-mid, rgba(196,154,120,0.25)); border-radius: var(--radius, 4px); color: var(--accent, #c49a78); padding: 0.55rem 1.25rem; cursor: pointer; transition: all 0.15s; align-self: flex-start; }
+    .community-submit:hover { border-color: var(--accent, #c49a78); background: rgba(196,154,120,0.08); }
+    .community-submit:disabled { opacity: 0.5; cursor: default; }
+    .community-form-note { font-size: 0.85rem; min-height: 1.2em; margin: 0; }
+    .community-form-note.ok  { color: var(--green, #5a9a6a); }
+    .community-form-note.err { color: var(--wine, #7a2233); }
+
+    /* Open-form trigger button */
+    .community-open-form { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 0.7rem; letter-spacing: 0.14em; text-transform: uppercase; background: none; border: 1px solid var(--accent, #c49a78); border-radius: var(--radius, 4px); color: var(--accent, #c49a78); padding: 0.65rem 1.5rem; cursor: pointer; transition: all 0.15s; }
+    .community-open-form:hover { background: rgba(196,154,120,0.1); }
+
+    /* Modal */
+    .community-modal-overlay { display: none; position: fixed; inset: 0; z-index: 1000; background: rgba(8,5,4,0.82); align-items: center; justify-content: center; padding: 1.5rem; }
+    .community-modal-overlay.open { display: flex; }
+    .community-modal { position: relative; background: var(--bg-panel, #1a1410); border: 1px solid var(--border-mid, rgba(196,154,120,0.25)); border-radius: var(--radius, 4px); max-width: 520px; width: 100%; max-height: 88vh; overflow-y: auto; padding: 1.75rem 1.5rem 1.5rem; box-shadow: 0 12px 40px rgba(0,0,0,0.5); }
+    .community-modal-close { position: absolute; top: 0.5rem; right: 0.6rem; background: none; border: none; color: var(--text-muted, #7a6a5a); font-size: 1.6rem; line-height: 1; cursor: pointer; padding: 0.2rem 0.4rem; transition: color 0.15s; }
+    .community-modal-close:hover { color: var(--accent, #c49a78); }
+    .community-modal-title { font-family: var(--font-caps, 'Cormorant SC', serif); font-size: 1.1rem; letter-spacing: 0.08em; color: var(--accent, #c49a78); margin-bottom: 1.1rem; padding-right: 1.5rem; }
+    .community-gform { width: 100%; height: 70vh; border: none; background: #fff; border-radius: var(--radius, 4px); }
+
+    .com-footer { text-align: center; padding: 2rem 1rem 3rem; }
+  </style>
+</head>
+<body>
+
+  <header class="com-header">
+    <span class="com-title">Community</span>
+    <span class="com-subtitle">Status, where to find us, and how to stay reachable</span>
+  </header>
+
+  <div class="com-wrap" id="community-main">
+
+    <div id="community-alert"></div>
+
+    <section class="com-section">
+      <h2 class="com-section-title">Where to find us</h2>
+      <div class="community-platforms" id="community-platforms">
+        <div class="community-empty">Loading…</div>
+      </div>
+    </section>
+
+    <section class="com-section">
+      <h2 class="com-section-title">Announcements</h2>
+      <div id="community-announcements">
+        <div class="community-empty">Loading…</div>
+      </div>
+    </section>
+
+    <section class="com-section">
+      <h2 class="com-section-title">Stay reachable</h2>
+      <div id="community-contact"></div>
+    </section>
+
+  </div>
+
+  <footer class="com-footer">
+    <a href="../" class="footer-home-link">← Sinverse Home</a>
+  </footer>
+
+  <script src="community.js?v=1780960000"></script>
+  <script src="../_shared/nav.js?v=1780533713"></script>
+  <script>if (window.initNav) initNav('community');</script>
+</body>
+</html>

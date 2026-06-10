@@ -239,6 +239,9 @@ a:hover { color: var(--accent-light); }
   transition: opacity 0.2s;
 }
 .global-nav-discord:hover { opacity: 0.85; color: #fff; }
+/* Status-reflecting states, driven by community.json via nav.js */
+.global-nav-discord.is-standby { background: #c4963a; }
+.global-nav-discord.is-down { background: #5a5048; color: #d8ccc0; }
 
 /* Offset page content for the fixed global nav (52px tall).
    Normal-flow pages get body padding; full-height app layouts
