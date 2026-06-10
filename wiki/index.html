@@ -842,7 +842,9 @@
       align-items: flex-start;
     }
     .wiki-char-hero {
-      width: 220px;
+      height: 420px;          /* fixed height so pages stay aligned */
+      width: auto;            /* width follows the image's aspect ratio */
+      max-width: 520px;       /* but cap it so a very wide image can't blow out the row */
       flex-shrink: 0;
       border-radius: var(--radius);
       border: 1px solid var(--border-mid);
@@ -850,13 +852,15 @@
       background: var(--bg-inset);
     }
     .wiki-char-hero img {
-      width: 100%;
-      height: auto;
+      height: 100%;           /* fill the fixed height */
+      width: auto;            /* let width grow as needed — no side cropping */
+      max-width: 100%;        /* if it hits the cap, contain instead of crop */
+      object-fit: contain;
       display: block;
     }
     .wiki-char-hero-placeholder {
-      width: 100%;
-      height: 280px;
+      width: 240px;
+      height: 420px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -864,30 +868,6 @@
       font-style: italic;
       font-size: 0.85rem;
       color: var(--text-secondary);
-    }
-    /* Optional lore-entry header image — framed like a character portrait,
-       display-only (not clickable). Floated so body text wraps beside it. */
-    .wiki-lore-header {
-      width: 220px;
-      float: right;
-      margin: 0 0 1.25rem 1.5rem;
-      border-radius: var(--radius);
-      border: 1px solid var(--border-mid);
-      overflow: hidden;
-      background: var(--bg-inset);
-    }
-    .wiki-lore-header img {
-      width: 100%;
-      height: auto;
-      display: block;
-    }
-    .wiki-lore-header-cap {
-      padding: 0.5rem 0.65rem;
-      font-family: var(--font-display);
-      font-style: italic;
-      font-size: 0.8rem;
-      color: var(--text-secondary);
-      border-top: 1px solid var(--border-mid);
     }
     .wiki-char-meta { flex: 1; }
     .wiki-char-meta-name {
@@ -947,26 +927,10 @@
     /* Wrap consecutive figures in a grid via JS — see renderWikiImages() */
     .wiki-img-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1px;
       background: var(--border);
       margin: 1rem 0 1.5rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .wiki-img-grid.is-single {
-      grid-template-columns: 1fr;
-      max-width: 420px;
-    }
-    .wiki-img-grid.is-pair {
-      grid-template-columns: 1fr 1fr;
-    }
-    .wiki-img-grid.is-single .wiki-img {
-      height: auto;
-      max-height: 460px;
-      object-fit: contain;
-      background: var(--bg-inset);
     }
     .wiki-img-grid .wiki-img-figure {
       background: var(--bg-panel);
@@ -1323,8 +1287,8 @@
       .wiki-lore-cards { grid-template-columns: 1fr; }
       .wiki-intro-title { font-size: 2rem; }
       .wiki-char-header { flex-direction: column; }
-      .wiki-char-hero, .wiki-char-hero-placeholder { width: 100%; height: auto; }
-      .wiki-lore-header { float: none; width: 100%; margin: 0 0 1.25rem 0; }
+      .wiki-char-hero { width: auto; max-width: 100%; height: 360px; margin: 0 auto; }
+      .wiki-char-hero-placeholder { width: 100%; height: 360px; }
       .wiki-stat-table { font-size: 0.85rem; }
       .wiki-char-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
       /* ── Wiki image gallery ── */
@@ -1342,26 +1306,10 @@
     /* Wrap consecutive figures in a grid via JS — see renderWikiImages() */
     .wiki-img-grid {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
       gap: 1px;
       background: var(--border);
       margin: 1rem 0 1.5rem;
-      border: 1px solid var(--border);
-      border-radius: var(--radius);
-      overflow: hidden;
-    }
-    .wiki-img-grid.is-single {
-      grid-template-columns: 1fr;
-      max-width: 420px;
-    }
-    .wiki-img-grid.is-pair {
-      grid-template-columns: 1fr 1fr;
-    }
-    .wiki-img-grid.is-single .wiki-img {
-      height: auto;
-      max-height: 460px;
-      object-fit: contain;
-      background: var(--bg-inset);
     }
     .wiki-img-grid .wiki-img-figure {
       background: var(--bg-panel);
@@ -1580,12 +1528,6 @@ function renderWikiImages(container) {
   groups.forEach(function(group) {
     var grid = document.createElement('div');
     grid.className = 'wiki-img-grid';
-    // Record how many figures are in this group so the layout can adapt:
-    // a lone image presents as a single framed figure (not a stranded card),
-    // two share the row evenly, and three-or-more fall into the gallery grid.
-    grid.setAttribute('data-count', group.length);
-    if (group.length === 1) grid.classList.add('is-single');
-    else if (group.length === 2) grid.classList.add('is-pair');
     group[0].parentElement.insertBefore(grid, group[0]);
     group.forEach(function(fig) { grid.appendChild(fig); });
   });
@@ -1950,16 +1892,12 @@ function loadLorePage(id, pushState) {
         container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic">No page found.</p>';
         return;
       }
-      // Strip frontmatter, extract title + eyebrow + faq flag + optional header image
+      // Strip frontmatter, extract title + eyebrow + faq flag
       var titleMatch   = md.match(new RegExp('^title: *(.+)$', 'm'));
       var eyebrowMatch = md.match(new RegExp('^eyebrow: *(.+)$', 'm'));
-      var headerMatch  = md.match(new RegExp('^header: *(.+)$', 'm'));
-      var headerCapMatch = md.match(new RegExp('^header_caption: *(.+)$', 'm'));
       var isFaq        = /^faq: *true *$/m.test(md);
       var title   = titleMatch ? titleMatch[1].trim() : lp.label;
       var eyebrow = eyebrowMatch ? eyebrowMatch[1].trim() : (lp.section || 'Lore');
-      var headerSrc = headerMatch ? headerMatch[1].trim() : '';
-      var headerCap = headerCapMatch ? headerCapMatch[1].trim() : '';
       var stripped = md.replace(new RegExp('^---[^]*?---\n'), '');
 
       var body;
@@ -1969,18 +1907,9 @@ function loadLorePage(id, pushState) {
         // marked renderer handles [link](id) → wiki-lore-link spans
         body = '<div class="wiki-md-content">' + marked.parse(stripped) + '</div>';
       }
-      // Optional header image: framed like a character portrait, display-only
-      // (no lightbox), and omitted entirely when no header is set in frontmatter.
-      var headerHtml = headerSrc
-        ? '<div class="wiki-lore-header">' +
-            '<img src="' + headerSrc + '" alt="' + title + '" loading="lazy" />' +
-            (headerCap ? '<div class="wiki-lore-header-cap">' + headerCap + '</div>' : '') +
-          '</div>'
-        : '';
       container.innerHTML =
         '<div class="wiki-intro-eyebrow">' + eyebrow + '</div>' +
         '<h1 class="wiki-intro-title">' + title + '</h1>' +
-        headerHtml +
         body;
       renderWikiImages(container);
       // Wire lore links
@@ -2646,7 +2575,7 @@ function loadCharPage(charId, pushState) {
     statRows.map(function(r){ return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') +
     '</table>';
 
-  var heroSrc = char.profile_image || char.image || '';
+  var heroSrc = char.image || char.profile_image || '';
   var heroHtml = heroSrc
     ? '<div class="wiki-char-hero"><img src="' + heroSrc + '" alt="' + char.name + '" /></div>'
     : '<div class="wiki-char-hero"><div class="wiki-char-hero-placeholder">No image yet</div></div>';
