@@ -9,7 +9,9 @@
 (function () {
   'use strict';
 
-  var DATA_URL = 'community.json';
+  // Cache-bust the data fetch so announcements/status changes appear without a
+  // hard refresh. The file is tiny, so skipping its cache on each load is fine.
+  var DATA_URL = 'community.json?v=' + Date.now();
 
   function el(tag, cls, html) {
     var e = document.createElement(tag);
