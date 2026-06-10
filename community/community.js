@@ -139,7 +139,7 @@
     if (cfg.intro) wrap.appendChild(el('p', 'community-contact-intro', esc(cfg.intro)));
 
     // Trigger button — the form itself lives in a modal.
-    var openBtn = el('button', 'community-open-form', 'Leave your contacts &rarr;');
+    var openBtn = el('button', 'community-open-form', 'Stay In Touch &rarr;');
     openBtn.type = 'button';
     wrap.appendChild(openBtn);
 
