@@ -1,0 +1,110 @@
+{
+  "_comment": "Community failsafe config. Edit this file and push to update. See community/README.md for the field guide.",
+
+  "announcements": [
+    {
+      "id": 1,
+      "date": "2026-06-05",
+      "level": "info",
+      "title": "Community hub is live",
+      "body": "This page is the official, always-current home for Sinverse community status. If our chat platform ever goes down, check here for where to find us."
+    }
+  ],
+
+  "platforms": [
+    {
+      "id": "discord",
+      "label": "Discord",
+      "role": "primary",
+      "status": "up",
+      "url": "https://discord.gg/FFWPJmcUDg",
+      "blurb": "Our main community hub \u2014 chat, share, and hang out."
+    },
+    {
+      "id": "telegram",
+      "label": "Telegram",
+      "role": "fallback",
+      "status": "standby",
+      "url": "https://t.me/REPLACE_ME",
+      "blurb": "Backup community. If Discord is unavailable, we gather here."
+    }
+  ],
+
+  "contact": {
+    "enabled": true,
+    "google_form_action": "https://docs.google.com/forms/d/e/1FAIpQLSf0a1N909ykFCLFdoi5ZIUT0WOSqUDXvfWA1mrUqEkk5ehdpA/formResponse",
+    "intro": "Hey — it's Jay. Discord's great right up until it isn't, and I'd hate to lose touch with everyone if it ever went down for good. So if you'd like to stay in touch with the redpan, leave me whatever ways you're happy to be reached on — all optional, share only what you want. It comes straight to me, and I'll only ever use it to find you again if we lose touch. Thanks for being my friends and a part of this silly little world. <3",
+    "fields": [
+      {
+        "name": "email",
+        "label": "Email",
+        "type": "email",
+        "placeholder": "you@example.com",
+        "entry": "entry.973339409"
+      },
+      {
+        "name": "phone",
+        "label": "Phone",
+        "type": "text",
+        "placeholder": "???-???-????",
+        "entry": "entry.1243317127"
+      },
+      {
+        "name": "discord",
+        "label": "Discord",
+        "type": "text",
+        "placeholder": "username",
+        "entry": "entry.1726880869"
+      },
+      {
+        "name": "telegram",
+        "label": "Telegram",
+        "type": "text",
+        "placeholder": "@handle",
+        "entry": "entry.671231534"
+      },
+      {
+        "name": "twitter",
+        "label": "X / Twitter",
+        "type": "text",
+        "placeholder": "@handle",
+        "entry": "entry.2079959359"
+      },
+      {
+        "name": "bluesky",
+        "label": "Bluesky",
+        "type": "text",
+        "placeholder": "handle.bsky.social",
+        "entry": "entry.426411773"
+      },
+      {
+        "name": "vrchat",
+        "label": "VRChat",
+        "type": "text",
+        "placeholder": "display name",
+        "entry": "entry.1827701222"
+      },
+      {
+        "name": "steam",
+        "label": "Steam",
+        "type": "text",
+        "placeholder": "profile URL or friend code",
+        "entry": "entry.306559439"
+      },
+      {
+        "name": "other",
+        "label": "Anywhere else",
+        "type": "text",
+        "placeholder": "FurAffinity, Weasyl, Mastodon…",
+        "entry": "entry.393976551"
+      },
+      {
+        "name": "notes",
+        "label": "Notes for Jay",
+        "type": "textarea",
+        "placeholder": "anything you'd like to say",
+        "entry": "entry.447398964"
+      }
+    ]
+  }
+}
