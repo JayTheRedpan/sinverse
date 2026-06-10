@@ -36,6 +36,13 @@
     "intro": "Hey — it's Jay. Discord's great right up until it isn't, and I'd hate to lose touch with everyone if it ever went down for good. So if you'd like to stay in touch with the redpan, leave me whatever ways you're happy to be reached on — all optional, share only what you want. It comes straight to me, and I'll only ever use it to find you again if we lose touch. Thanks for being my friends and a part of this silly little world. <3",
     "fields": [
       {
+        "name": "name",
+        "label": "Character Name",
+        "type": "text",
+        "placeholder": "Jay The Redpan",
+        "entry": "entry.2023154020"
+      },
+      {
         "name": "email",
         "label": "Email",
         "type": "email",
