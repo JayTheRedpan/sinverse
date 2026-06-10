@@ -54,11 +54,11 @@
     "choices": [
       {
         "text": "Getting further away is needed! Hopefully that old elevator works!",
-        "nextId": null
+        "nextId": 6
       },
       {
         "text": "Maybe the sign can lead me to somewhere safer! Lets head there.",
-        "nextId": null
+        "nextId": 7
       }
     ],
     "author": "SpearmintMagpie",
@@ -76,5 +76,30 @@
     ],
     "author": "SpearmintMagpie",
     "title": "The Empty Welcome"
+  },
+  {
+    "id": 6,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "The depths hold more secrets now than what laid above, what is hiding behind that door?",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "The Decent"
+  },
+  {
+    "id": 7,
+    "image": null,
+    "tags": [
+      "abuse",
+      "noncon"
+    ],
+    "isEnding": true,
+    "choices": [],
+    "author": "SpearmintMagpie",
+    "title": "Lost in Translation"
   }
 ]

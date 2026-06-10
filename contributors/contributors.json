@@ -848,5 +848,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/xc404"
     }
+  },
+  {
+    "id": "Jazz",
+    "name": "Jazz",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781094764/jazz_rpnjmh.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/java0727"
+    }
   }
 ]
