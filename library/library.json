@@ -16,6 +16,7 @@
     "characters": [
       "sin"
     ],
+    "lore": ["tday", "apotheosis-serum"],
     "wordCount": 12567,
     "relates_to": []
   },
@@ -875,6 +876,28 @@
     "canonical": false,
     "characters": [],
     "wordCount": 5844,
+    "relates_to": []
+  },
+  {
+    "id": 41,
+    "type": "standalone",
+    "title": "Day Full Of Cat",
+    "author": "Peppermint",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "micro",
+      "vore",
+      "gore",
+      "watersports"
+    ],
+    "file": "stories/day_full_of_cat.md",
+    "date": "2023-09",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [],
+    "wordCount": 11560,
     "relates_to": []
   }
 ]

@@ -27,6 +27,7 @@ async function init() {
     story = items.find(function(i) { return i.id === id; });
     if (!story) throw new Error('Story not found');
     story._related = buildStashRelated(story, raw);
+    await resolveExternalTitles(story._related);
     chapterIdx = ch;
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
     renderMeta();
@@ -66,22 +67,74 @@ function buildStashRelated(target, all) {
     if (isNaN(id) || id === target.id || ids[id]) return;
     ids[id] = true; order.push(id);
   }
+  // In-stash refs only: skip entries that name an external module (gallery/
+  // library) — those are resolved separately as cross-links below.
+  function isExternal(r) { return r && typeof r === 'object' && r.module; }
   function refsOf(it) {
-    return (it.relates_to || []).map(function(r){ return (r && typeof r === 'object') ? r.id : r; });
+    return (it.relates_to || [])
+      .filter(function(r){ return !isExternal(r); })
+      .map(function(r){ return (r && typeof r === 'object') ? r.id : r; });
   }
   refsOf(target).forEach(add);
   (all || []).forEach(function(it){
     if (refsOf(it).map(Number).indexOf(target.id) !== -1) add(it.id);
   });
-  return order.map(function(id){
+  var inStash = order.map(function(id){
     var found = (all || []).find(function(x){ return x.id === id; });
     return found ? { id: id, title: found.title, kind: found.kind } : null;
   }).filter(Boolean);
+
+  // External cross-links out to the main gallery/library. The stash doesn't
+  // load that data, so each entry carries its own title; module decides the
+  // destination and id the target item.
+  var external = (target.relates_to || []).filter(isExternal).map(function(r){
+    var mod = r.module;
+    return {
+      id: r.id,
+      module: mod,
+      kind: mod === 'library' ? 'story' : 'image',
+      title: r.title || ''   // resolved from the module JSON later (resolveExternalTitles)
+    };
+  });
+
+  return inStash.concat(external);
 }
 
 // (Cross-module related-links are not used in the stash. buildRelatedFor clears
 // the list; renderReaderRelated hides its container when empty.)
 function buildRelatedFor(target) { if (target) target._related = []; }
+
+// External cross-links carry a module + id but no title; this fetches the
+// source module's JSON (once, cached) and fills each title in by id. Only the
+// modules actually referenced get loaded, so a stash item with no external
+// links costs no extra requests.
+var _moduleCache = {};
+function moduleDataPath(mod) {
+  if (mod === 'gallery') return '../gallery/gallery.json';
+  if (mod === 'library') return '../library/library.json';
+  return null;
+}
+async function resolveExternalTitles(related) {
+  var external = (related || []).filter(function(r){ return r.module; });
+  if (!external.length) return;
+  var mods = external.map(function(r){ return r.module; })
+    .filter(function(m, i, a){ return a.indexOf(m) === i; });
+  await Promise.all(mods.map(async function(mod){
+    if (_moduleCache[mod]) return;
+    var path = moduleDataPath(mod);
+    if (!path) return;
+    try {
+      var res = await fetch(path);
+      _moduleCache[mod] = res.ok ? await res.json() : [];
+    } catch (e) { _moduleCache[mod] = []; }
+  }));
+  external.forEach(function(r){
+    var list = _moduleCache[r.module] || [];
+    var found = list.find(function(x){ return x.id === r.id; });
+    r.title = (found && found.title) ||
+      (r.module === 'library' ? 'Library story #' + r.id : 'Gallery image #' + r.id);
+  });
+}
 
 // ── META PANEL: title, author, tags, characters, posted date ─────────────
 function renderMeta() {
@@ -89,7 +142,7 @@ function renderMeta() {
   document.getElementById('reader-topbar-title').textContent = story.title;
   document.getElementById('reader-title').textContent        = story.title;
   var raEl = document.getElementById('reader-author');
-  if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?from=stash&creator=' + encodeURIComponent(story.author) + '">' + story.author + '</a>' : '';
+  if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(story.author) + '">' + story.author + '</a>' : '';
   document.getElementById('reader-summary').textContent      = story.summary || '';
   var canonEl = document.getElementById('reader-canonical');
   if (canonEl) canonEl.style.display = story.canonical ? '' : 'none';
@@ -165,8 +218,12 @@ function renderReaderRelated(related) {
 
   var rendered = 0;
   related.forEach(function(r) {
-    // Within the stash: stories -> reader.html, images -> viewer.html.
-    var href = (r.kind === 'story' ? 'reader.html?id=' : 'viewer.html?id=') + r.id;
+    // External cross-links go out to the main gallery/library; in-stash links
+    // stay local (stories -> reader.html, images -> viewer.html).
+    var href;
+    if (r.module === 'gallery')      href = '../gallery/viewer.html?id=' + r.id;
+    else if (r.module === 'library') href = '../library/reader.html?id=' + r.id;
+    else href = (r.kind === 'story' ? 'reader.html?id=' : 'viewer.html?id=') + r.id;
     var a = document.createElement('a');
     a.className = 'reader-char-link';
     a.href = href;

@@ -250,6 +250,7 @@ function renderComic() {
   renderTags('comic-tags-reader', item.tags);
   renderDates('comic-dates', item);
   renderCharacterLinks('comic-characters-reader', item.characters);
+  renderLoreLinks('comic-lore-reader', item.lore);
   renderRelatedLinks('comic-related', item._related);
 
   // Start on page 0
@@ -361,6 +362,7 @@ function renderScene() {
   renderTags('scene-tags', item.tags);
   renderDates('scene-dates', item);
   renderCharacterLinks('scene-characters', item.characters);
+  renderLoreLinks('scene-lore', item.lore);
   renderRelatedLinks('scene-related', item._related);
 
   var dl = document.getElementById('scene-download');
@@ -434,6 +436,7 @@ function renderSet() {
   renderTags('set-tags', item.tags);
   renderDates('set-dates', item);
   renderCharacterLinks('set-characters', item.characters);
+  renderLoreLinks('set-lore', item.lore);
   renderRelatedLinks('set-related', item._related);
 
   // Build the image grid
@@ -584,6 +587,45 @@ function renderCharacterLinks(containerId, characters) {
     a.href = '../wiki/?character=' + encodeURIComponent(displayName.toLowerCase());
     el.appendChild(a);
     if (i < characters.length - 1) el.appendChild(document.createTextNode(', '));
+  });
+}
+
+// Lore links: maps each lore id to its label from wiki/lore.json (fetched once,
+// cached) and links to the wiki lore page via its #lore-<id> hash. Mirrors the
+// character row's styling. Async so labels resolve after the JSON loads.
+var _loreLabels = null;
+function loadLoreLabels() {
+  if (_loreLabels) return Promise.resolve(_loreLabels);
+  return fetch('../wiki/lore.json')
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(list){
+      _loreLabels = {};
+      (list || []).forEach(function(p){ _loreLabels[p.id] = p.label; });
+      return _loreLabels;
+    })
+    .catch(function(){ _loreLabels = {}; return _loreLabels; });
+}
+function prettyLoreId(id) {
+  return String(id).replace(/-/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+}
+function renderLoreLinks(containerId, lore) {
+  var el = document.getElementById(containerId);
+  if (!el || !lore || !lore.length) { if (el) el.style.display = 'none'; return; }
+  loadLoreLabels().then(function(labels) {
+    el.innerHTML = '';
+    el.style.display = '';
+    var label = document.createElement('span');
+    label.className   = 'viewer-chars-label';
+    label.textContent = 'Related Lore: ';
+    el.appendChild(label);
+    lore.forEach(function(id, i) {
+      var a = document.createElement('a');
+      a.href      = '../wiki/#lore-' + id;
+      a.className = 'viewer-char-link';
+      a.textContent = labels[id] || prettyLoreId(id);
+      el.appendChild(a);
+      if (i < lore.length - 1) el.appendChild(document.createTextNode(', '));
+    });
   });
 }
 

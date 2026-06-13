@@ -229,7 +229,7 @@
     ],
     "date": "2024-10",
     "blurb": null,
-    "relates_to": [2]
+    "relates_to": []
   },
   {
     "id": 14,
@@ -249,7 +249,7 @@
     "relates_to": []
   },
   {
-    "id": 14,
+    "id": 15,
     "kind": "story",
     "type": "standalone",
     "title": "Red Panda Breeding Season",
@@ -262,6 +262,22 @@
       "abuse"
     ],
     "date": "2021-10",
-    "relates_to": []
+    "relates_to": [{ "module": "gallery", "id": 68}]
+  },
+  {
+    "id": 16,
+    "kind": "story",
+    "type": "standalone",
+    "title": "BBHC Cuck The Panda",
+    "creator": "Zaun",
+    "file": "stories/tasha_zara_jay.md",
+    "wordCount": 6536,
+    "tags": [
+      "noncon",
+      "raceplay",
+      "abuse"
+    ],
+    "date": "2026-06",
+    "relates_to": [{ "module": "gallery", "id": 63}]
   }
 ]
