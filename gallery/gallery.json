@@ -25,6 +25,7 @@
     "tags": [
       "noncon"
     ],
+    "lore": ["tday", "apotheosis-serum"],
     "synopsis": "The brief introduction to the Sinverse and how it came to be.",
     "date": "2022-09",
     "universe_date": 0,
@@ -50,7 +51,7 @@
   {
     "id": 3,
     "type": "comic",
-    "title": "Jay's Inerno",
+    "title": "Jay's Inferno",
     "artist": "FastTrack",
     "coverImage": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780368642/00_b8l86s.webp",
     "pages": [

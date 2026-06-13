@@ -860,5 +860,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/java0727"
     }
+  },
+  {
+    "id": "Peppermint",
+    "name": "Peppermint",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1781277957/peppermint_pwsek0.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/sylviec/"
+    }
   }
 ]

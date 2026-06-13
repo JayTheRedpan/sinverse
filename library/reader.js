@@ -70,6 +70,7 @@ function renderMeta() {
 
   // Characters featured in this story (mirrors the gallery viewer)
   renderReaderCharacters(story.characters);
+  renderReaderLore(story.lore);
 
   // Related works (cross-links to gallery art / other stories)
   renderReaderRelated(story._related);
@@ -178,6 +179,49 @@ function renderReaderCharacters(characters) {
     list.appendChild(a);
   });
   el.appendChild(list);
+}
+
+// Lore links in the reader meta panel: maps each lore id to its label from
+// wiki/lore.json (fetched once, cached) and links to the lore page via its
+// #lore-<id> hash. Mirrors the Characters block's styling.
+var _loreLabels = null;
+function loadLoreLabels() {
+  if (_loreLabels) return Promise.resolve(_loreLabels);
+  return fetch('../wiki/lore.json')
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(list){
+      _loreLabels = {};
+      (list || []).forEach(function(p){ _loreLabels[p.id] = p.label; });
+      return _loreLabels;
+    })
+    .catch(function(){ _loreLabels = {}; return _loreLabels; });
+}
+function prettyLoreId(id) {
+  return String(id).replace(/-/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
+}
+function renderReaderLore(lore) {
+  var el = document.getElementById('reader-lore');
+  if (!el) return;
+  el.innerHTML = '';
+  if (!lore || !lore.length) { el.style.display = 'none'; return; }
+  loadLoreLabels().then(function(labels) {
+    el.innerHTML = '';
+    el.style.display = '';
+    var label = document.createElement('div');
+    label.className   = 'reader-characters-label';
+    label.textContent = 'Related Lore';
+    el.appendChild(label);
+    var list = document.createElement('div');
+    list.className = 'reader-characters-list';
+    lore.forEach(function(id) {
+      var a = document.createElement('a');
+      a.className   = 'reader-char-link';
+      a.href        = '../wiki/#lore-' + id;
+      a.textContent = labels[id] || prettyLoreId(id);
+      list.appendChild(a);
+    });
+    el.appendChild(list);
+  });
 }
 
 // Format a "2025-05" style posted date into "May 2025"

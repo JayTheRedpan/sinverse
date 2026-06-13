@@ -252,7 +252,24 @@ function checkRelations(records, selfModule, galleryIds, libraryIds) {
   return issues;
 }
 
-async function checkGallery(gallery, galleryIds, libraryIds) {
+// Validates each record's `lore` tags against the set of real lore-page ids
+// from wiki/lore.json. A tag that doesn't resolve renders as a dead wiki link,
+// so flag it. `loreIds` is the Set of valid ids.
+function checkLore(records, selfModule, loreIds) {
+  const issues = [];
+  (records || []).forEach(r => {
+    (r.lore || []).forEach(id => {
+      if (typeof id !== 'string' || !id) {
+        issues.push(warn('[' + selfModule + '] item <code>' + r.id + '</code> has a malformed lore tag'));
+      } else if (!loreIds.has(id)) {
+        issues.push(err('[' + selfModule + '] item <code>' + r.id + '</code> lore tag <code>' + id + '</code> has no matching page in lore.json'));
+      }
+    });
+  });
+  return issues;
+}
+
+async function checkGallery(gallery, galleryIds, libraryIds, loreIds) {
   const issues = checkIds(gallery, 'gallery', g => g.title || ('id ' + g.id));
   const noTitle = gallery.filter(g => !g.title);
   const noImage = gallery.filter(g => g.type !== 'comic' && g.type !== 'set' && !g.image);
@@ -263,10 +280,11 @@ async function checkGallery(gallery, galleryIds, libraryIds) {
   if (noPages.length) issues.push(err(noPages.length + ' comic(s) with no pages (ids: ' + noPages.map(g => g.id).join(', ') + ')'));
   if (noSet.length)   issues.push(err(noSet.length + ' set(s) with no images (ids: ' + noSet.map(g => g.id).join(', ') + ')'));
   issues.push(...checkRelations(gallery, 'gallery', galleryIds, libraryIds));
+  issues.push(...checkLore(gallery, 'gallery', loreIds));
   return issues;
 }
 
-async function checkLibrary(library, galleryIds, libraryIds) {
+async function checkLibrary(library, galleryIds, libraryIds, loreIds) {
   const issues = checkIds(library, 'library', s => s.title || ('id ' + s.id));
   for (const story of library) {
     if (story.file) {
@@ -283,6 +301,7 @@ async function checkLibrary(library, galleryIds, libraryIds) {
     }
   }
   issues.push(...checkRelations(library, 'library', galleryIds, libraryIds));
+  issues.push(...checkLore(library, 'library', loreIds));
   return issues;
 }
 
@@ -344,6 +363,156 @@ async function checkCYOA(manifest) {
   return { issues, nodes: allNodes };
 }
 
+// ── Stash ─────────────────────────────────────────────────────
+// Self-contained module (stash/stash.json). Validates ids, basic content, and
+// relates_to integrity: in-stash targets must exist; external {module,id}
+// cross-links must point at gallery/library and resolve there.
+function checkStash(stash, galleryIds, libraryIds) {
+  const issues = checkIds(stash, 'stash', s => s.title || ('id ' + s.id));
+  const stashIds = new Set(stash.map(s => s.id).filter(v => v != null));
+  const noTitle = stash.filter(s => !s.title);
+  if (noTitle.length) issues.push(warn(noTitle.length + ' stash item(s) missing title (ids: ' + noTitle.map(s => s.id).join(', ') + ')'));
+  // Stash images come in three shapes, mirroring the gallery: a comic (pages[]),
+  // a set (images[]), or a single image (image). Flag each only for its own
+  // missing content, not for lacking a single `image` field it never uses.
+  const imgItems = stash.filter(s => s.kind === 'image');
+  const noSingle = imgItems.filter(s => !(s.pages && s.pages.length) && !(s.images && s.images.length) && !s.image);
+  const emptyComic = imgItems.filter(s => s.pages && !s.pages.length);
+  const emptySet   = imgItems.filter(s => s.images && !s.images.length);
+  if (noSingle.length)   issues.push(err(noSingle.length + ' stash image(s) missing image URL (ids: ' + noSingle.map(s => s.id).join(', ') + ')'));
+  if (emptyComic.length) issues.push(err(emptyComic.length + ' stash comic(s) with no pages (ids: ' + emptyComic.map(s => s.id).join(', ') + ')'));
+  if (emptySet.length)   issues.push(err(emptySet.length + ' stash set(s) with no images (ids: ' + emptySet.map(s => s.id).join(', ') + ')'));
+
+  stash.forEach(s => {
+    (s.relates_to || []).forEach(rel => {
+      // External cross-link: { module: 'gallery'|'library', id }
+      if (rel && typeof rel === 'object' && rel.module) {
+        const sets = { gallery: galleryIds, library: libraryIds };
+        const set = sets[rel.module];
+        const tid = parseInt(rel.id, 10);
+        if (!set) issues.push(warn('[stash] item <code>' + s.id + '</code> relates_to unknown module <code>' + rel.module + '</code>'));
+        else if (!set.has(tid)) issues.push(err('[stash] item <code>' + s.id + '</code> relates_to missing ' + rel.module + ' id <code>' + rel.id + '</code>'));
+      } else {
+        // In-stash reference: bare id or { id }
+        const tid = parseInt((rel && typeof rel === 'object') ? rel.id : rel, 10);
+        if (isNaN(tid)) issues.push(warn('[stash] item <code>' + s.id + '</code> has a malformed relates_to entry'));
+        else if (!stashIds.has(tid)) issues.push(err('[stash] item <code>' + s.id + '</code> relates_to missing stash id <code>' + tid + '</code>'));
+      }
+    });
+  });
+  return issues;
+}
+
+// ── Wiki ──────────────────────────────────────────────────────
+// Validates the three wiki data files together: lore.json (page manifest),
+// eras.json, and timeline.json. Checks ids, that each lore page has a .md
+// file, and that every timeline entry's era resolves to a real era.
+async function checkWiki(lorePages, eras, timeline) {
+  const issues = [];
+  issues.push(...checkIds(lorePages, 'lore page', p => p.label || p.id));
+  issues.push(...checkIds(eras, 'era', e => e.name || e.id));
+  issues.push(...checkIds(timeline, 'timeline event', t => t.title || t.id));
+
+  // Each lore page should have a backing markdown file.
+  for (const p of lorePages) {
+    if (p.aliasOf) continue; // alias entries reuse another page's file
+    const ok = await exists('wiki/lore/' + p.id + '.md');
+    if (!ok) issues.push(warn('Lore page <code>' + p.id + '</code> has no markdown file (wiki/lore/' + p.id + '.md)'));
+  }
+
+  // Timeline events reference eras; flag any era id that doesn't exist.
+  const eraIds = new Set((eras || []).map(e => e.id).filter(Boolean));
+  // eras.json ids are like "pre-sin"; timeline uses an `era` key — only flag
+  // when it clearly doesn't match any known era id or era-name slug.
+  const eraSlugs = new Set([...eraIds]);
+  (eras || []).forEach(e => { if (e.name) eraSlugs.add(String(e.name).toLowerCase().replace(/\s+/g, '-')); });
+  (timeline || []).forEach(t => {
+    if (t.era && !eraIds.has(t.era) && !eraSlugs.has(String(t.era).toLowerCase())) {
+      issues.push(warn('Timeline event <code>' + (t.id || t.title) + '</code> references unknown era <code>' + t.era + '</code>'));
+    }
+  });
+  return issues;
+}
+
+// ── Size Ref ──────────────────────────────────────────────────
+// Validates the size-reference data: objects.json (props) and the silhouette
+// list in defaults.json. Checks ids and required display fields.
+function checkSizeref(objects, defaults) {
+  const issues = checkIds(objects, 'sizeref object', o => o.label || o.id);
+  objects.forEach(o => {
+    if (!o.label) issues.push(warn('Sizeref object <code>' + o.id + '</code> missing label'));
+    if (o.height == null) issues.push(err('Sizeref object <code>' + o.id + '</code> missing height'));
+    if (!o.image) issues.push(warn('Sizeref object <code>' + o.id + '</code> missing image'));
+  });
+  const sils = (defaults && defaults.height_silhouettes) || [];
+  issues.push(...checkIds(sils, 'silhouette', s => s.label || s.id));
+  sils.forEach(s => {
+    if (!s.url) issues.push(warn('Silhouette <code>' + s.id + '</code> missing url'));
+  });
+  return issues;
+}
+
+// ── Community ─────────────────────────────────────────────────
+// Validates community.json: announcements, the platform signpost, and the
+// contact form's Google Form wiring.
+function checkCommunity(data) {
+  const issues = [];
+  if (!data || !Object.keys(data).length) {
+    issues.push(warn('community.json is empty or missing'));
+    return issues;
+  }
+  const ann = data.announcements || [];
+  issues.push(...checkIds(ann, 'announcement', a => a.title || ('id ' + a.id)));
+  const okLevels = ['info', 'important', 'critical'];
+  ann.forEach(a => {
+    if (a.level && okLevels.indexOf(String(a.level).toLowerCase()) === -1) {
+      issues.push(warn('Announcement <code>' + (a.id || a.title) + '</code> has unknown level <code>' + a.level + '</code>'));
+    }
+    if (!a.date) issues.push(warn('Announcement <code>' + (a.id || a.title) + '</code> has no date'));
+  });
+
+  const platforms = data.platforms || [];
+  // Platform ids are strings; checkIds handles dup/missing on the id field.
+  issues.push(...checkIds(platforms, 'platform', p => p.label || p.id));
+  const okStatus = ['up', 'standby', 'down'];
+  const okRoles  = ['primary', 'fallback', 'beacon'];
+  platforms.forEach(p => {
+    if (p.status && okStatus.indexOf(String(p.status).toLowerCase()) === -1) {
+      issues.push(err('Platform <code>' + p.id + '</code> has invalid status <code>' + p.status + '</code> (expected up/standby/down)'));
+    }
+    if (p.role && okRoles.indexOf(String(p.role).toLowerCase()) === -1) {
+      issues.push(warn('Platform <code>' + p.id + '</code> has unknown role <code>' + p.role + '</code>'));
+    }
+    if (!p.url || /REPLACE_ME/.test(p.url)) {
+      issues.push(warn('Platform <code>' + p.id + '</code> has a missing or placeholder URL'));
+    }
+  });
+  const primaries = platforms.filter(p => p.role === 'primary').length;
+  if (platforms.length && primaries === 0) issues.push(warn('No platform is marked role "primary"'));
+  if (primaries > 1) issues.push(warn(primaries + ' platforms marked "primary" (expected one)'));
+
+  // Contact form: if a Google Form action is set, every field needs an entry id.
+  const contact = data.contact || {};
+  if (contact.enabled !== false) {
+    const action = contact.google_form_action || '';
+    if (!action) {
+      issues.push(warn('Contact form has no google_form_action set'));
+    } else if (!/\/formResponse$/.test(action) || /REPLACE/.test(action)) {
+      issues.push(err('Contact google_form_action looks wrong (should end in /formResponse and contain no placeholder)'));
+    }
+    const fields = contact.fields || [];
+    const noEntry = fields.filter(f => !f.entry || /REPLACE/.test(f.entry));
+    if (action && noEntry.length) {
+      issues.push(err(noEntry.length + ' contact field(s) missing a Google Form entry id: ' + noEntry.map(f => '<code>' + f.name + '</code>').join(', ')));
+    }
+    // Duplicate entry ids would send two answers to one question.
+    const seen = {}, dupes = [];
+    fields.forEach(f => { if (f.entry) { if (seen[f.entry]) dupes.push(f.entry); seen[f.entry] = true; } });
+    if (dupes.length) issues.push(err('Duplicate contact entry id(s): ' + dupes.map(d => '<code>' + d + '</code>').join(', ')));
+  }
+  return issues;
+}
+
 // ── Main runner ────────────────────────────────────────────────
 async function run() {
   document.getElementById('run-btn').disabled = true;
@@ -357,12 +526,19 @@ async function run() {
   let totalErrors = 0, totalWarnings = 0, totalOk = 0;
 
   // Load core data
-  const [chars, contribs, gallery, library, cyoaManifest] = await Promise.all([
+  const [chars, contribs, gallery, library, cyoaManifest, lorePages, eras, timeline, stash, srObjects, srDefaults, community] = await Promise.all([
     fetchJSON('_data/characters.json').catch(() => []),
     fetchJSON('contributors/contributors.json').catch(() => []),
     fetchJSON('gallery/gallery.json').catch(() => []),
     fetchJSON('library/library.json').catch(() => []),
     fetchJSON('cyoa/cyoa.json').catch(() => []),
+    fetchJSON('wiki/lore.json').catch(() => []),
+    fetchJSON('wiki/eras.json').catch(() => []),
+    fetchJSON('wiki/timeline.json').catch(() => []),
+    fetchJSON('stash/stash.json').catch(() => []),
+    fetchJSON('sizeref/objects.json').catch(() => []),
+    fetchJSON('sizeref/defaults.json').catch(() => ({})),
+    fetchJSON('community/community.json').catch(() => ({})),
   ]);
 
   const cyoaResult = await checkCYOA(cyoaManifest);
@@ -371,13 +547,19 @@ async function run() {
   // id sets used to validate relates_to cross-links between modules
   const galleryIds = new Set(gallery.map(g => g.id).filter(v => v != null));
   const libraryIds = new Set(library.map(s => s.id).filter(v => v != null));
+  // valid lore-page ids, for validating gallery/library `lore` tags
+  const loreIds = new Set((lorePages || []).map(p => p.id).filter(Boolean));
 
   const checks = [
     { id: 'characters',   fn: () => checkCharacters(chars) },
     { id: 'contributors', fn: () => checkContributors(contribs, gallery, library, cyoaNodes) },
-    { id: 'gallery',      fn: () => checkGallery(gallery, galleryIds, libraryIds) },
-    { id: 'library',      fn: () => checkLibrary(library, galleryIds, libraryIds) },
+    { id: 'gallery',      fn: () => checkGallery(gallery, galleryIds, libraryIds, loreIds) },
+    { id: 'library',      fn: () => checkLibrary(library, galleryIds, libraryIds, loreIds) },
     { id: 'cyoa',         fn: () => Promise.resolve(cyoaResult.issues) },
+    { id: 'wiki',         fn: () => checkWiki(lorePages, eras, timeline) },
+    { id: 'stash',        fn: () => checkStash(stash, galleryIds, libraryIds) },
+    { id: 'sizeref',      fn: () => checkSizeref(srObjects, srDefaults) },
+    { id: 'community',    fn: () => Promise.resolve(checkCommunity(community)) },
   ];
 
   for (const c of checks) {
@@ -409,6 +591,10 @@ const MODULES = [
   { id: 'gallery',      label: 'Gallery' },
   { id: 'library',      label: 'Library' },
   { id: 'cyoa',         label: 'CYOA' },
+  { id: 'wiki',         label: 'Wiki' },
+  { id: 'stash',        label: 'Stash' },
+  { id: 'sizeref',      label: 'Size Ref' },
+  { id: 'community',    label: 'Community' },
 ];
 
 const container = document.getElementById('modules');
