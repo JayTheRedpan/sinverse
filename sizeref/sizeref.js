@@ -1349,12 +1349,27 @@ var BUST_REFS = [
   {id:'a',     label:'A Cup',      volL:0.18, cmp:'a lemon'},
   {id:'b',     label:'B Cup',      volL:0.27, cmp:'an orange'},
   {id:'c',     label:'C Cup',      volL:0.42, cmp:'a grapefruit'},
-  {id:'d',     label:'D Cup',      volL:0.60, cmp:'a large grapefruit'},
-  {id:'dd',    label:'DD / E Cup', volL:0.85, cmp:'a softball'},
-  {id:'f',     label:'F Cup',      volL:1.20, cmp:'a small melon'},
-  {id:'g',     label:'G Cup',      volL:1.65, cmp:'a cantaloupe'},
-  {id:'h',     label:'H Cup',      volL:2.30, cmp:'a honeydew melon'},
-  {id:'j',     label:'J Cup',      volL:3.20, cmp:'a small soccer ball'},
+  {id:'d',     label:'D Cup',      volL:0.60, cmp:'a coconut'},
+  {id:'dd',    label:'DD / E Cup', volL:0.85, cmp:'a cantaloupe'},
+  {id:'f',     label:'F Cup',      volL:1.20, cmp:'a honeydew melon'},
+  {id:'g',     label:'G Cup',      volL:1.65, cmp:'a pineapple'},
+  {id:'h',     label:'H Cup',      volL:2.30, cmp:'a soccer ball'},
+  {id:'j',     label:'J Cup',      volL:3.20, cmp:'a basketball'},
+  {id:'k',     label:'K Cup',      volL:4.40, cmp:'a watermelon'},
+  {id:'l',     label:'L Cup',      volL:6.00, cmp:'a pumpkin'},
+  {id:'m',     label:'M Cup',      volL:8.00, cmp:'a beach ball'},
+  {id:'n',     label:'N Cup',      volL:11.0, cmp:'a microwave'},
+  {id:'p',     label:'P Cup',      volL:15.0, cmp:'a water cooler jug'},
+  {id:'r',     label:'R Cup',      volL:21.0, cmp:'a beer keg'},
+  {id:'t',     label:'T Cup',      volL:30.0, cmp:'a kitchen trash can'},
+  {id:'v',     label:'V Cup',      volL:45.0, cmp:'a mini-fridge'},
+  {id:'z',     label:'Z Cup',      volL:70.0, cmp:'a dishwasher'},
+  // Beyond standard lettering — named "extreme" tiers for the setting.
+  {id:'titan', label:'Titanic',    volL:120,  cmp:'a washing machine'},
+  {id:'colossal', label:'Colossal', volL:220, cmp:'an oil drum'},
+  {id:'monstrous', label:'Monstrous', volL:400, cmp:'a chest freezer'},
+  {id:'ruinous', label:'Ruinous',  volL:750,  cmp:'a refrigerator'},
+  {id:'apocalyptic', label:'Apocalyptic', volL:1400, cmp:'a hot tub'},
 ];
 
 function calcBreasts(char, slotIdx) {
@@ -1367,8 +1382,15 @@ function calcBreasts(char, slotIdx) {
   // Weight: breast tissue density ~0.9 kg/L, convert to lbs
   var weightLbs = volL * 0.9 * 2.20462;
   // Projection and width scale linearly with hR
-  var REF_PROJ = [0.5, 1.8, 2.3, 2.9, 3.5, 4.2, 5.0, 5.8, 6.8, 8.0];
-  var REF_WID  = [1.5, 3.5, 4.2, 5.0, 5.8, 6.5, 7.2, 8.0, 9.0,10.0];
+  // Projection and width scale linearly with hR. One entry per BUST_REFS row,
+  // continuing the growth through the extreme tiers so large busts get
+  // proportionate projection/width rather than the small-cup fallback.
+  var REF_PROJ = [0.5, 1.8, 2.3, 2.9, 3.5, 4.2, 5.0, 5.8, 6.8, 8.0,
+                  9.2, 10.6, 12.2, 14.0, 16.2, 18.8, 21.6, 25.0, 29.0,
+                  34, 42, 54, 70, 92];
+  var REF_WID  = [1.5, 3.5, 4.2, 5.0, 5.8, 6.5, 7.2, 8.0, 9.0, 10.0,
+                  11.4, 13.0, 14.8, 16.8, 19.2, 22.0, 25.0, 28.5, 32.5,
+                  38, 47, 60, 78, 102];
   var idx = BUST_REFS.indexOf(ref);
   var projIn   = (REF_PROJ[idx] || 3.5) * hR;
   var widIn    = (REF_WID[idx]  || 5.0) * hR;
