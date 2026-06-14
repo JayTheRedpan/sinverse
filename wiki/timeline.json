@@ -2,6 +2,7 @@
   {
     "id": "sin-discovery",
     "date": -3,
+    "era": "pre",
     "title": "The Discovery",
     "summary": "Sin, a research scientist at an unnamed bio-research lab, synthesises the first successful batch of what she will later name the Apotheosis Serum. She administers it to herself, transforming into a 12ft giantess.",
     "tags": [
@@ -13,6 +14,7 @@
   {
     "id": "sincorp-formed",
     "date": -2,
+    "era": "pre",
     "title": "SinCorp Founded",
     "summary": "Working in the shadows, Sin manoeuvres herself into control of the bio-research lab and restructures it under her own name. SinCorp begins quietly mass-producing the Apotheosis Serum and planning its global release.",
     "tags": [
@@ -23,6 +25,7 @@
   {
     "id": "tday",
     "date": 0,
+    "era": "anchor",
     "title": "TDay — Transformation Day",
     "summary": "Sin triggers the planned cataclysm. The Apotheosis Serum is released into the world simultaneously through water supplies, airborne dispersal, and SinCorp's global distribution network. Women across the world begin transforming — growing, changing, and losing their empathy. The old world collapses within weeks.",
     "tags": [
@@ -35,6 +38,7 @@
   {
     "id": "mega-cities",
     "date": 3,
+    "era": "post",
     "title": "Rise of the Mega-Cities",
     "summary": "The first mega-cities begin to take shape as the Transformed consolidate power. Enormous infrastructure is constructed to accommodate giantess-scale inhabitants. Angora, under Sin's direct rule, emerges as the most powerful of these new city-states.",
     "tags": [
@@ -46,6 +50,7 @@
   {
     "id": "wild-toys",
     "date": 4,
+    "era": "post",
     "title": "The Wilds Claimed",
     "summary": "The land between mega-cities — now called the Wilds — is formally abandoned by the new matriarchal governments. Male survivors who refused to submit to the cities scatter into this reclaimed wilderness, becoming known as Wild Toys. Macro-level women, too large to live in the cities, begin staking territories in the Wilds.",
     "tags": [
@@ -57,6 +62,7 @@
   {
     "id": "resistance-cells",
     "date": 5,
+    "era": "post",
     "title": "The Resistance Organises",
     "summary": "The first known Resistance cell forms — a loose coalition of empathy-retaining women and rescued toys working to smuggle males out of the mega-cities. Structured around self-contained guerilla cells with no central leadership, the Resistance operates in secret across multiple cities.",
     "tags": [
@@ -66,8 +72,9 @@
   {
     "id": "project-sylph",
     "date": null,
+    "era": "post",
     "title": "Project Sylph",
-    "summary": "Details classified. A SinCorp initiative operating in the present day of the Sinverse timeline.",
+    "summary": "Sin's initiative to create a lieutenant class between giantesses and toys, using a serum keyed off femininity rather than womanhood. Marks the transition into a new era.",
     "tags": [
       "sincorp",
       "project-sylph"
