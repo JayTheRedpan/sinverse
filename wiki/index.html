@@ -783,6 +783,90 @@
     .wiki-tl-detail-close:hover { border-color: var(--accent); color: var(--accent); }
 
     /* ── Character index ── */
+    .wiki-char-filters {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 0.6rem;
+      margin-bottom: 0.75rem;
+    }
+    .wiki-char-filter-toggle {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      background: none;
+      border: 1px solid var(--border-mid, rgba(196,154,120,0.25));
+      border-radius: var(--radius, 4px);
+      color: var(--text-secondary, #b8a898);
+      font-family: var(--font-caps, 'Cormorant SC', serif);
+      font-size: 0.6rem;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.9rem;
+      cursor: pointer;
+      transition: all 0.15s;
+      margin-bottom: 0.75rem;
+    }
+    .wiki-char-filter-toggle:hover { border-color: var(--accent, #c49a78); color: var(--accent, #c49a78); }
+    .wiki-char-filter-toggle-caret { display: inline-block; transition: transform 0.18s; font-size: 0.7em; }
+    .wiki-char-filter-toggle[aria-expanded="true"] .wiki-char-filter-toggle-caret { transform: rotate(90deg); }
+    .wiki-char-filter-active {
+      color: var(--accent, #c49a78);
+      font-size: 0.9em;
+      letter-spacing: 0.05em;
+    }
+    .wiki-char-filters-panel {
+      overflow: hidden;
+      max-height: 0;
+      transition: max-height 0.22s ease;
+    }
+    .wiki-char-filters-panel.open { max-height: 320px; }
+    .wiki-char-filter {
+      display: flex;
+      flex-direction: column;
+      gap: 0.25rem;
+    }
+    .wiki-char-filter-label {
+      font-family: var(--font-caps, 'Cormorant SC', serif);
+      font-size: 0.5rem;
+      letter-spacing: 0.12em;
+      text-transform: uppercase;
+      color: var(--text-muted, #7a6a5a);
+    }
+    .wiki-char-filter select {
+      background: var(--bg-inset, #1a1410);
+      border: 1px solid var(--border-mid, rgba(196,154,120,0.25));
+      border-radius: var(--radius, 4px);
+      color: var(--text-primary, #f0e8df);
+      font-family: var(--font-body, 'EB Garamond', serif);
+      font-size: 0.85rem;
+      padding: 0.35rem 0.5rem;
+      cursor: pointer;
+      min-width: 9rem;
+    }
+    .wiki-char-filter select:focus { outline: none; border-color: var(--accent, #c49a78); }
+    .wiki-char-filter-reset {
+      align-self: flex-end;
+      background: none;
+      border: 1px solid var(--border-mid, rgba(196,154,120,0.25));
+      border-radius: var(--radius, 4px);
+      color: var(--text-muted, #7a6a5a);
+      font-family: var(--font-caps, 'Cormorant SC', serif);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      padding: 0.45rem 0.8rem;
+      cursor: pointer;
+      transition: all 0.15s;
+    }
+    .wiki-char-filter-reset:hover { border-color: var(--accent, #c49a78); color: var(--accent, #c49a78); }
+    .wiki-char-count {
+      font-family: var(--font-caps, 'Cormorant SC', serif);
+      font-size: 0.55rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--text-muted, #7a6a5a);
+      margin-bottom: 1rem;
+    }
     .wiki-char-grid {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(160px, 1fr));
@@ -842,7 +926,9 @@
       align-items: flex-start;
     }
     .wiki-char-hero {
-      width: 220px;
+      height: 420px;          /* fixed height so every character page lines up */
+      width: auto;            /* width follows the image's aspect ratio */
+      max-width: 520px;       /* cap so a very wide image can't blow out the row */
       flex-shrink: 0;
       border-radius: var(--radius);
       border: 1px solid var(--border-mid);
@@ -850,13 +936,15 @@
       background: var(--bg-inset);
     }
     .wiki-char-hero img {
-      width: 100%;
-      height: auto;
+      height: 100%;           /* fill the fixed height */
+      width: auto;            /* width fits the character image's scale — no cropping */
+      max-width: 100%;        /* if it hits the cap, contain instead of crop */
+      object-fit: contain;
       display: block;
     }
     .wiki-char-hero-placeholder {
-      width: 100%;
-      height: 280px;
+      width: 240px;
+      height: 420px;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -1283,7 +1371,8 @@
       .wiki-lore-cards { grid-template-columns: 1fr; }
       .wiki-intro-title { font-size: 2rem; }
       .wiki-char-header { flex-direction: column; }
-      .wiki-char-hero, .wiki-char-hero-placeholder { width: 100%; height: auto; }
+      .wiki-char-hero { width: auto; max-width: 100%; height: 360px; margin: 0 auto; }
+      .wiki-char-hero-placeholder { width: 100%; height: 360px; }
       .wiki-stat-table { font-size: 0.85rem; }
       .wiki-char-grid { grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); }
       /* ── Wiki image gallery ── */
@@ -1468,6 +1557,14 @@
     <section class="wiki-page" id="page-characters">
       <div class="wiki-intro-eyebrow">Sinverse</div>
       <h1 class="wiki-intro-title">Characters</h1>
+      <button type="button" class="wiki-char-filter-toggle" id="char-filter-toggle" aria-expanded="false">
+        <span class="wiki-char-filter-toggle-caret">&#9656;</span> Filters
+        <span class="wiki-char-filter-active" id="char-filter-active"></span>
+      </button>
+      <div class="wiki-char-filters-panel" id="char-filters-panel">
+        <div class="wiki-char-filters" id="char-filters"></div>
+      </div>
+      <div class="wiki-char-count" id="char-count"></div>
       <div class="wiki-char-grid" id="char-grid"></div>
     </section>
 
@@ -1736,7 +1833,8 @@ Promise.all([
   fetch('../gallery/gallery.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
   fetch('../library/library.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
   fetch('eras.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
-  fetch('lore/faq.md').then(function(r){ return r.text(); }).catch(function(){ return ''; })
+  fetch('lore/faq.md').then(function(r){ return r.text(); }).catch(function(){ return ''; }),
+  fetch('size-classes.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
 ]).then(function(results) {
   characters = results[0];
   timelineEvents = results[1];
@@ -1745,6 +1843,7 @@ Promise.all([
   libraryItems = results[4];
   erasData = results[5] || [];
   buildFaqIndex(results[6] || '');
+  SIZE_BUCKETS = results[7] || [];
   buildLoreSidebar();
   buildTimeline();
   initTimelineZoom();
@@ -1951,6 +2050,10 @@ if (sidebarToggle && wikiApp) {
     // Update any visible height/length values in place
     document.querySelectorAll('.char-stat-val[data-inches]').forEach(function(el) {
       el.textContent = fH(parseFloat(el.getAttribute('data-inches')));
+    });
+    // ...and weight values, which convert from raw pounds
+    document.querySelectorAll('.char-stat-val[data-lbs]').forEach(function(el) {
+      el.textContent = fW(parseFloat(el.getAttribute('data-lbs')));
     });
   }
   applyWikiUnit();
@@ -2491,13 +2594,155 @@ function initTimelineZoom() {
 }
 
 // ── Character grid ────────────────────────────────────────────
+// Characters page: filter state + the full list it filters from.
+var _charAll = [];
+var SIZE_BUCKETS = [];   // loaded from size-classes.json (ordered, smallest first)
+var _charFilters = { faction: '', role: '', species: '', size_class: '', tdayStatus: '' };
+
+// Computes a character's size-class label from its height using the buckets
+// defined in size-classes.json. Each bucket has a `max` (exclusive upper bound
+// in inches); a null/absent max is the open-ended top bucket. Because this is
+// derived live, renaming or re-bucketing in that one file updates every
+// character automatically — nothing is stored on the character.
+function sizeClassFor(heightIn) {
+  if (heightIn == null) return '';
+  for (var i = 0; i < SIZE_BUCKETS.length; i++) {
+    var b = SIZE_BUCKETS[i];
+    if (b.max == null || heightIn < b.max) return b.label;
+  }
+  return SIZE_BUCKETS.length ? SIZE_BUCKETS[SIZE_BUCKETS.length - 1].label : '';
+}
+
+// Filter definitions. `arr` = field is an array (match if selected is in it).
+// `compute` = derive the match value from the character (used for size_class).
+// `options` = supply ordered option labels instead of scanning the data.
+var CHAR_FILTER_DEFS = [
+  { key: 'faction',    label: 'Faction',    arr: true  },
+  { key: 'role',       label: 'Role',       arr: true  },
+  { key: 'species',    label: 'Species',    arr: true  },
+  { key: 'size_class', label: 'Size',       arr: false,
+    compute: function(c){ return sizeClassFor(c.height); },
+    options: function(){ return SIZE_BUCKETS.map(function(b){ return b.label; }); } },
+  { key: 'tdayStatus', label: 'TDay Status', arr: false, fmt: function(v){ return v.charAt(0).toUpperCase() + v.slice(1); } }
+];
+
 function buildCharGrid(chars) {
-  chars = chars.slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
+  _charAll = chars.slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
+  buildCharFilters();
+  applyCharFilters();
+}
+
+function buildCharFilters() {
+  var wrap = document.getElementById('char-filters');
+  if (!wrap) return;
+  wrap.innerHTML = '';
+
+  CHAR_FILTER_DEFS.forEach(function(def) {
+    var opts;
+    if (def.options) {
+      // Supplied, ordered options (e.g. size buckets in config order).
+      opts = def.options();
+    } else {
+      // Collect the distinct values present across all characters.
+      var values = {};
+      _charAll.forEach(function(c) {
+        var v = c[def.key];
+        if (def.arr) { (v || []).forEach(function(x){ if (x) values[x] = true; }); }
+        else if (v) { values[v] = true; }
+      });
+      opts = Object.keys(values).sort();
+    }
+    if (!opts.length) return;   // skip a filter with no values/data yet
+
+    var field = document.createElement('div');
+    field.className = 'wiki-char-filter';
+    var lab = document.createElement('span');
+    lab.className = 'wiki-char-filter-label';
+    lab.textContent = def.label;
+    field.appendChild(lab);
+
+    var sel = document.createElement('select');
+    sel.setAttribute('data-key', def.key);
+    var allOpt = document.createElement('option');
+    allOpt.value = '';
+    allOpt.textContent = '--All--';
+    sel.appendChild(allOpt);
+    opts.forEach(function(o) {
+      var op = document.createElement('option');
+      op.value = o;
+      op.textContent = def.fmt ? def.fmt(o) : o;
+      sel.appendChild(op);
+    });
+    sel.value = _charFilters[def.key] || '';
+    sel.addEventListener('change', function() {
+      _charFilters[def.key] = sel.value;
+      applyCharFilters();
+    });
+    field.appendChild(sel);
+    wrap.appendChild(field);
+  });
+
+  // Reset button
+  var reset = document.createElement('button');
+  reset.type = 'button';
+  reset.className = 'wiki-char-filter-reset';
+  reset.textContent = 'Reset';
+  reset.addEventListener('click', function() {
+    Object.keys(_charFilters).forEach(function(k){ _charFilters[k] = ''; });
+    wrap.querySelectorAll('select').forEach(function(s){ s.value = ''; });
+    applyCharFilters();
+  });
+  wrap.appendChild(reset);
+
+  // Wire the collapsible toggle once. Panel starts collapsed.
+  var toggle = document.getElementById('char-filter-toggle');
+  var panel  = document.getElementById('char-filters-panel');
+  if (toggle && panel && !toggle._wired) {
+    toggle._wired = true;
+    toggle.addEventListener('click', function() {
+      var open = panel.classList.toggle('open');
+      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+    });
+  }
+}
+
+function charMatchesFilters(c) {
+  return CHAR_FILTER_DEFS.every(function(def) {
+    var sel = _charFilters[def.key];
+    if (!sel) return true;                       // "All" — no constraint
+    if (def.compute) return def.compute(c) === sel;
+    if (def.arr) return (c[def.key] || []).indexOf(sel) !== -1;
+    return c[def.key] === sel;
+  });
+}
+
+function applyCharFilters() {
+  var list = _charAll.filter(charMatchesFilters);
+  renderCharCards(list);
+  var activeCount = Object.keys(_charFilters).filter(function(k){ return _charFilters[k]; }).length;
+  var count = document.getElementById('char-count');
+  if (count) {
+    count.textContent = activeCount
+      ? (list.length + ' of ' + _charAll.length + ' characters')
+      : (_charAll.length + ' characters');
+  }
+  // Reflect active filters on the collapsed toggle so it's clear they're set.
+  var active = document.getElementById('char-filter-active');
+  if (active) active.textContent = activeCount ? '(' + activeCount + ' active)' : '';
+}
+
+function renderCharCards(chars) {
   var grid = document.getElementById('char-grid');
   grid.innerHTML = '';
 
-  // Tags
-  var allTags = {};
+  if (!chars.length) {
+    var empty = document.createElement('div');
+    empty.className = 'community-empty';
+    empty.style.cssText = 'padding:2rem 0;font-style:italic;color:var(--text-secondary)';
+    empty.textContent = 'No characters match those filters.';
+    grid.appendChild(empty);
+    return;
+  }
 
   chars.forEach(function(c) {
     var card = document.createElement('a');
@@ -2510,7 +2755,6 @@ function buildCharGrid(chars) {
     imgEl.alt = c.name;
     if (!c.profile_image && !c.image) {
       imgEl.style.filter = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
-      // Use headshot silhouette placeholder
       imgEl.src = 'https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png';
     }
 
@@ -2520,16 +2764,18 @@ function buildCharGrid(chars) {
 
     var species = document.createElement('div');
     species.className = 'wiki-char-species';
-    species.textContent = c.species || '';
+    species.textContent = (c.species && c.species.length) ? c.species.join(' / ') : '';
 
     card.appendChild(imgEl);
     card.appendChild(name);
     card.appendChild(species);
 
-    if (c.faction) {
+    // Faction tag (faction is now an array — show the first, if any).
+    var fac = (c.faction && c.faction.length) ? c.faction[0] : '';
+    if (fac) {
       var tag = document.createElement('div');
       tag.className = 'wiki-char-tag';
-      tag.textContent = c.faction;
+      tag.textContent = fac;
       card.appendChild(tag);
     }
 
@@ -2550,13 +2796,18 @@ function loadCharPage(charId, pushState) {
   if (pushState !== false) history.pushState({ type: 'character', id: charId, slug: slug }, '', '#char-' + slug);
 
   // Build stat block from JSON
+  var factionStr = (char.faction && char.faction.length) ? char.faction.join(', ') : '—';
   var statRows = [
-    ['Species',    char.species || '—'],
+    ['Species',    (char.species && char.species.length) ? char.species.join(' / ') : '—'],
     ['Pronouns',   char.pronouns || '—'],
     ['Height',     '<span class="char-stat-val" data-inches="' + char.height + '">' + fH(char.height) + '</span>'],
-    ['Weight',     char.weight ? fW(char.weight) : '—'],
-    ['Faction',    char.faction || '—'],
+    ['Weight',     char.weight ? '<span class="char-stat-val" data-lbs="' + char.weight + '">' + fW(char.weight) + '</span>' : '—'],
+    ['Faction',    factionStr],
   ];
+  if (char.role && char.role.length) statRows.push(['Role', char.role.join(', ')]);
+  var sizeClass = sizeClassFor(char.height);
+  if (sizeClass) statRows.push(['Size class', sizeClass]);
+  if (char.tdayStatus) statRows.push(['TDay status', char.tdayStatus.charAt(0).toUpperCase() + char.tdayStatus.slice(1)]);
   if (char.transformed_by) {
     var xfLabel = char.transformed_by.split('-').map(function(w){ return w.charAt(0).toUpperCase()+w.slice(1); }).join(' ');
     statRows.push(['Transformed by', xfLabel]);
@@ -2571,7 +2822,7 @@ function loadCharPage(charId, pushState) {
     statRows.map(function(r){ return '<tr><td>' + r[0] + '</td><td>' + r[1] + '</td></tr>'; }).join('') +
     '</table>';
 
-  var heroSrc = char.profile_image || char.image || '';
+  var heroSrc = char.image || char.profile_image || '';
   var heroHtml = heroSrc
     ? '<div class="wiki-char-hero"><img src="' + heroSrc + '" alt="' + char.name + '" /></div>'
     : '<div class="wiki-char-hero"><div class="wiki-char-hero-placeholder">No image yet</div></div>';
@@ -2580,7 +2831,6 @@ function loadCharPage(charId, pushState) {
     heroHtml +
     '<div class="wiki-char-meta">' +
       '<div class="wiki-char-meta-name">' + char.name + '</div>' +
-      '<div class="wiki-char-meta-sub">' + (char.faction || '') + '</div>' +
       statTable +
     '</div>' +
   '</div>';
@@ -2753,7 +3003,7 @@ function runSearch(q) {
     if (score) results.push({
       type: 'character', score: score,
       label: c.name,
-      sub: c.species + (c.faction ? ' · ' + c.faction : ''),
+      sub: ((c.species && c.species.length) ? c.species.join(' / ') : '') + ((c.faction && c.faction.length) ? ' · ' + c.faction.join(', ') : ''),
       img: c.profile_image || c.image || '',
       action: function(id){ return function(){ loadCharPage(id); }; }(c.id)
     });

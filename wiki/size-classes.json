@@ -1,0 +1,6 @@
+[
+  { "label": "Runt",      "max": 96 },
+  { "label": "Giantess",  "max": 360 },
+  { "label": "Macro",     "max": 960 },
+  { "label": "Titan",     "max": null }
+]
