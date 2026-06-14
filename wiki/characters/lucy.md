@@ -46,9 +46,7 @@ Lucy's signature is **condom entrapment** — sealing a toy inside a confined, f
 
 - Lucy's defining hook is that she **kept her mind** — she is calculating and self-aware, never feral. Write her as cold and deliberate, not instinct-driven.
 - Her origin is **self-made size** — she forced her own re-transformation rather than receiving it. Her power is something she schemed for and is proud of.
-- Her **biology professor** is backstory and should remain **nameless** — reference the dynamic (prize student turned on her mentor), not the individual.
 - Her **condom-entrapment** kink — sealing and drowning a toy in her own fluids — is her signature; lean on the confinement, the rising fluid, and the doomed struggle.
-- She has **no faction** — her only allegiance is to her own power.
 
 ## Did You Know
 

@@ -16,7 +16,10 @@
     "characters": [
       "sin"
     ],
-    "lore": ["tday", "apotheosis-serum"],
+    "lore": [
+      "tday",
+      "apotheosis-serum"
+    ],
     "wordCount": 12567,
     "relates_to": []
   },
@@ -37,6 +40,9 @@
     "complete": false,
     "characters": [
       "kel"
+    ],
+    "lore": [
+      
     ],
     "chapters": [
       {
@@ -85,6 +91,9 @@
       "becka",
       "bella"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 5946,
     "relates_to": []
   },
@@ -106,6 +115,9 @@
     "characters": [
       "lucy"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 7476,
     "relates_to": []
   },
@@ -123,6 +135,9 @@
     "universe_date": 0,
     "canonical": true,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 10416,
     "relates_to": []
   },
@@ -142,6 +157,9 @@
     "canonical": true,
     "characters": [
       "contra"
+    ],
+    "lore": [
+      
     ],
     "wordCount": 7572,
     "relates_to": []
@@ -164,6 +182,9 @@
     "characters": [
       "ira"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 8686,
     "relates_to": []
   },
@@ -184,6 +205,9 @@
     "complete": false,
     "characters": [
       "jay"
+    ],
+    "lore": [
+      
     ],
     "chapters": [
       {
@@ -222,6 +246,9 @@
     "characters": [
       "ardian"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 13063,
     "relates_to": []
   },
@@ -241,6 +268,9 @@
     "canonical": false,
     "characters": [
       "autumn"
+    ],
+    "lore": [
+      
     ],
     "wordCount": 4594,
     "relates_to": []
@@ -262,6 +292,9 @@
     "characters": [
       "mini"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 4889,
     "relates_to": []
   },
@@ -281,6 +314,9 @@
     "characters": [
       "sandy"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 6037,
     "relates_to": []
   },
@@ -299,6 +335,9 @@
     "characters": [
       "zuzu"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 8234,
     "relates_to": []
   },
@@ -316,6 +355,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 9181,
     "relates_to": []
   },
@@ -337,6 +379,9 @@
     "characters": [
       "jenny"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 14896,
     "relates_to": []
   },
@@ -356,6 +401,9 @@
     "universe_date": null,
     "canonical": true,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 6911,
     "relates_to": []
   },
@@ -379,6 +427,9 @@
     "complete": false,
     "characters": [
       "jay"
+    ],
+    "lore": [
+      
     ],
     "chapters": [
       {
@@ -410,6 +461,9 @@
     "universe_date": null,
     "canonical": true,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 11867,
     "relates_to": []
   },
@@ -434,6 +488,9 @@
       "jay",
       "brandy"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 7627,
     "relates_to": []
   },
@@ -456,6 +513,9 @@
       "anna",
       "brandy"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 13343,
     "relates_to": []
   },
@@ -477,6 +537,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 7588,
     "relates_to": []
   },
@@ -495,6 +558,9 @@
     "canonical": false,
     "characters": [
       "jay"
+    ],
+    "lore": [
+      
     ],
     "wordCount": 3781,
     "relates_to": []
@@ -515,6 +581,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 8328,
     "relates_to": []
   },
@@ -537,6 +606,9 @@
     "characters": [
       "zuzu"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 2215,
     "relates_to": []
   },
@@ -555,6 +627,9 @@
     "canonical": false,
     "complete": true,
     "characters": [],
+    "lore": [
+      
+    ],
     "chapters": [
       {
         "title": "Chapter 1",
@@ -608,6 +683,9 @@
     "characters": [
       "lady"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 10205,
     "relates_to": []
   },
@@ -625,6 +703,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 14633,
     "relates_to": []
   },
@@ -644,6 +725,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 7077,
     "relates_to": []
   },
@@ -663,6 +747,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 3266,
     "relates_to": []
   },
@@ -680,6 +767,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 9325,
     "relates_to": []
   },
@@ -701,6 +791,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 20909,
     "relates_to": []
   },
@@ -720,6 +813,9 @@
     "characters": [
       "brandy"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 8288,
     "relates_to": []
   },
@@ -737,6 +833,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 15473,
     "relates_to": []
   },
@@ -754,6 +853,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 15941,
     "relates_to": []
   },
@@ -777,6 +879,9 @@
     "characters": [
       "jay"
     ],
+    "lore": [
+      
+    ],
     "wordCount": 10216,
     "relates_to": []
   },
@@ -796,6 +901,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 8355,
     "relates_to": []
   },
@@ -814,6 +922,9 @@
     "canonical": false,
     "characters": [
       "jay"
+    ],
+    "lore": [
+      
     ],
     "wordCount": 1625,
     "relates_to": []
@@ -835,6 +946,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 13069,
     "relates_to": []
   },
@@ -852,6 +966,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 8719,
     "relates_to": []
   },
@@ -875,6 +992,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 5844,
     "relates_to": []
   },
@@ -897,6 +1017,9 @@
     "universe_date": null,
     "canonical": false,
     "characters": [],
+    "lore": [
+      
+    ],
     "wordCount": 11560,
     "relates_to": []
   }
