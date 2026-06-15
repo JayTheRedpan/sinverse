@@ -20,4 +20,4 @@
 
 ## Did You Know
 
-- Xena is a T-Rex standing 43'4" tall.
+- Xena is a T-Rex standing 49'4" tall.

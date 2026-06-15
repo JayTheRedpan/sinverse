@@ -20,4 +20,4 @@
 
 ## Did You Know
 
-- Brandy is a Golden Retriever standing 11'0" tall.
+- Brandy is a Golden Retriever standing 15'0" tall.

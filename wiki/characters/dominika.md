@@ -20,4 +20,4 @@
 
 ## Did You Know
 
-- Dominika is a Black Bear standing 18'8" tall.
+- Dominika is a Black Bear standing 23'8" tall.

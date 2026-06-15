@@ -1,9 +1,11 @@
 ---
+id: project-sylph
+type: concept
 title: Project Sylph
-section: Concepts
+tags: [project-sylph, sin, sincorp, toys, transformation]
 ---
 
-# Project Sylph
+## Overview
 
 **Project Sylph** is a SinCorp initiative headed personally by **Sin** — and the event that marks the Sinverse's transition into a new era. Where the Apotheosis Serum remade the world in a single uncontrolled surge, Sylph is deliberate: a directed program to engineer an entirely new class of being, sitting between the towering giantesses and the toys who serve them.
 
@@ -19,7 +21,7 @@ The project's breakthrough is a serum **modified from the Apotheosis Serum**. Th
 
 The effects are **similar to the Apotheosis Serum, but weaker** — a deliberate, controlled echo rather than the full bloom:
 
-- **Increased size**, typically growing the recipient to somewhere between **9 and 12 feet** — large enough to stand apart from the toys, but well short of the giantesses they answer to.
+- **Increased size**, typically growing the recipient to somewhere between **9 and 15 feet** — most cluster toward the lower end of that range, large enough to stand apart from the toys but well short of the giantesses they answer to. A rare few reach the upper edge.
 - **Increased organ size**, scaled to their new stature.
 - **Heightened libido**, in keeping with their intended role.
 
@@ -51,5 +53,5 @@ If the Apotheosis Serum was the event that ended the old world, Project Sylph is
 
 - Project Sylph is headed **personally by Sin**, and its launch marks the boundary into a new era of the timeline.
 - The Sylph Serum's key innovation is keying off of **femininity** rather than **womanhood** — the one barrier the original Apotheosis Serum could never cross.
-- Sylphs typically stand **9–12 feet** tall: above the toys, but far beneath the giantesses they serve.
+- Sylphs typically stand **9–15 feet** tall — most toward the lower end — placing them above the toys but far beneath the giantesses they serve.
 - The name evokes the **sylph**, an air elemental — a lighter, refined counterpart to the overwhelming force of the original serum.
