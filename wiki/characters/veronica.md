@@ -20,4 +20,4 @@
 
 ## Did You Know
 
-- Veronica is a Cheetah standing 9'2" tall.
+- Veronica is a Cheetah standing 13'2" tall.

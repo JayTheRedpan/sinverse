@@ -20,4 +20,4 @@
 
 ## Did You Know
 
-- Hannah is a Kangaroo standing 22'2" tall.
+- Hannah is a Kangaroo standing 33'2" tall.

@@ -1677,7 +1677,17 @@ if (typeof marked !== 'undefined') {
     if (href && (href.indexOf('http') === 0 || href.indexOf('mailto') === 0)) {
       return '<a href="' + href + '" target="_blank" rel="noopener">' + text + '</a>';
     }
-    return '<span class="wiki-lore-link" data-target="' + href + '">' + text + '</span>';
+    // Normalize relative link paths to a bare id. Body markdown across the wiki
+    // links to lore/characters inconsistently — `../lore/x`, `../x`, or bare `x` —
+    // but the click resolver matches data-target exactly against a lore id or
+    // character slug. Strip the relative prefixes (and any .md) so every style
+    // resolves the same way.
+    var target = href
+      .replace(/^\.\.\/lore\//, '')
+      .replace(/^\.\.\/characters\//, '')
+      .replace(/^\.\.\//, '')
+      .replace(/\.md$/, '');
+    return '<span class="wiki-lore-link" data-target="' + target + '">' + text + '</span>';
   };
   marked.use({ renderer: renderer });
 }
@@ -2597,7 +2607,7 @@ function initTimelineZoom() {
 // Characters page: filter state + the full list it filters from.
 var _charAll = [];
 var SIZE_BUCKETS = [];   // loaded from size-classes.json (ordered, smallest first)
-var _charFilters = { faction: '', role: '', species: '', size_class: '', tdayStatus: '' };
+var _charFilters = { faction: '', role: '', species: '', size_class: '', 'class': '' };
 
 // Computes a character's size-class label from its height using the buckets
 // defined in size-classes.json. Each bucket has a `max` (exclusive upper bound
@@ -2623,7 +2633,7 @@ var CHAR_FILTER_DEFS = [
   { key: 'size_class', label: 'Size',       arr: false,
     compute: function(c){ return sizeClassFor(c.height); },
     options: function(){ return SIZE_BUCKETS.map(function(b){ return b.label; }); } },
-  { key: 'tdayStatus', label: 'TDay Status', arr: false, fmt: function(v){ return v.charAt(0).toUpperCase() + v.slice(1); } }
+  { key: 'class', label: 'Class', arr: false }
 ];
 
 function buildCharGrid(chars) {
@@ -2807,7 +2817,7 @@ function loadCharPage(charId, pushState) {
   if (char.role && char.role.length) statRows.push(['Role', char.role.join(', ')]);
   var sizeClass = sizeClassFor(char.height);
   if (sizeClass) statRows.push(['Size class', sizeClass]);
-  if (char.tdayStatus) statRows.push(['TDay status', char.tdayStatus.charAt(0).toUpperCase() + char.tdayStatus.slice(1)]);
+  if (char['class']) statRows.push(['Class', char['class']]);
   if (char.transformed_by) {
     var xfLabel = char.transformed_by.split('-').map(function(w){ return w.charAt(0).toUpperCase()+w.slice(1); }).join(' ');
     statRows.push(['Transformed by', xfLabel]);

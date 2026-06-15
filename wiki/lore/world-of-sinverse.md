@@ -8,7 +8,7 @@ Sinverse is an anthropomorphic world — populated primarily by furry species al
 
 ## The Apotheosis Serum
 
-Developed in secret by Sin during her time as a research scientist, the [Apotheosis Serum](apotheosis-serum) responds to a person's sense of self — it takes hold in anyone who knows herself to be a woman. Its effects are dramatic and permanent: exponential physical growth (typically 9–12ft, with rare cases reaching macro scale beyond 100ft), a powerful and healthy physique, a reshaping of the body into its fully realised transformed form, a dramatic suppression of empathy, and an equally dramatic surge in libido. Sin administered it to herself first, emerging as a 12ft giantess — and saw only potential.
+Developed in secret by Sin during her time as a research scientist, the [Apotheosis Serum](apotheosis-serum) responds to a person's sense of self — it takes hold in anyone who knows herself to be a woman. Its effects are dramatic and permanent: exponential physical growth (typically 9–12ft, with rare cases reaching macro scale beyond 100ft), a powerful and healthy physique, a reshaping of the body into its fully realised transformed form, a dramatic suppression of empathy, and an equally dramatic surge in libido. Sin administered it to herself first, emerging as a 13ft giantess — and saw only potential.
 
 ## TDay — Transformation Day
 

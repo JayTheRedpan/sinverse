@@ -25,7 +25,7 @@ The Apotheosis Serum produces a number of permanent changes in those it transfor
 
 Toward other women the same rewrite runs in reverse, intensifying rather than cutting. Transformed solidarity is fierce and almost proprietary: one who learns of a rare woman spared by TDay's first wave will move with startling urgency to find her and "ascend" her, treating an untransformed sister not as a curiosity but as someone owed a birthright she has yet to claim. The drive to gather every woman into the Transformed fold appears to be the very same circuitry that cancels her regard for males, simply pointed the other way.
 
-**Empaths** are the rare exception in whom this reassignment never fully took hold. They retain empathy across the board — toward toys as much as toward women — and the anguish of feeling for the beings their peers brutalise is much of what drives them into the Resistance. They are estimated at fewer than 1 in 400.
+**The Tempered** are the rare exception in whom this reassignment never fully took hold. They retain empathy across the board — toward toys as much as toward women — and the anguish of feeling for the beings their peers brutalise is much of what drives them into the Resistance. They are estimated at fewer than 1 in 400. *Tempered* is the name that has stuck; in the first years after TDay they were more often called **Empaths**, a word now fading from use.
 
 Beyond the four traits she set out to create, the transformation carries further changes that read as consequences of the process rather than its aims:
 
@@ -72,6 +72,6 @@ How the serum was actually delivered on TDay has never been fully reconstructed.
 - The serum's name — Apotheosis — means the elevation of a person to divine status. Sin has never publicly commented on the choice.
 - Transformation takes an average of eleven minutes from first exposure to completion. The fastest recorded case is four minutes. No one knows the slowest, because those individuals did not survive to report it.
 - The serum responds to a person's sense of self, not their birth sex — it transforms anyone who knows herself to be a woman, and ignores everyone else.
-- Empaths — Transformed who retain full empathy — are estimated to constitute fewer than 1 in 400 of the transformed population. SinCorp tracks them. The Resistance tries to find them first.
-- The telltale sign of a release is a vivid hot-pink mist. Trace quantities of the serum still exist in groundwater in many regions more than five years after TDay, and new transformation events, while rare, are still reported.
+- The Tempered — Transformed who retain full empathy, once known as Empaths — are estimated to constitute fewer than 1 in 400 of the transformed population. SinCorp tracks them. The Resistance tries to find them first.
+- The telltale sign of a release is a vivid hot-pink mist. Trace quantities of the serum still exist in groundwater in many regions years after TDay, and new transformation events, while rare, are still reported.
 - The macro threshold is not a hard line. Some Transformed at 90 feet show neurological effects; some at 120 feet show none. SinCorp researchers refer to this as "the variance problem" and consider it an open question.

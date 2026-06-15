@@ -49,7 +49,7 @@
       }
     ],
     "role": [],
-    "tdayStatus": "toy"
+    "class": "Toy"
   },
   {
     "id": 1,
@@ -71,7 +71,7 @@
     "faction": [
       "SinCorp"
     ],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (Prototype)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -90,7 +90,7 @@
     "role": [
       "First Matriarch"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 2,
@@ -110,7 +110,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779908113/Kel_Ref_w8musd.png",
     "wiki": "kel",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -120,7 +120,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 3,
@@ -140,7 +140,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999646/profile_missy_q2jdfx.webp",
     "wiki": "missy",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -150,7 +150,7 @@
       "penisType": "canine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 4,
@@ -170,7 +170,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999213/profile_sandy_t7rkfd.webp",
     "wiki": "sandy",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -182,7 +182,7 @@
     "role": [
       "Barrista"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 5,
@@ -202,7 +202,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999577/profile_lucile_j2wrdf.webp",
     "wiki": "lucile",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -212,7 +212,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 6,
@@ -232,7 +232,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999660/profile_popo_suoqjd.webp",
     "wiki": "popo",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -244,7 +244,7 @@
     "role": [
       "Huntress"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 7,
@@ -264,7 +264,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999529/profile_juxta_pnnfl4.webp",
     "wiki": "juxta",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -277,7 +277,7 @@
       "Toy Trainer",
       "Toy Seller"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 8,
@@ -297,7 +297,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999475/profile_hydey_ucyusq.webp",
     "wiki": "hydey",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -309,7 +309,7 @@
     "role": [
       "Toy Pound Keeper"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 9,
@@ -332,7 +332,7 @@
     "faction": [
       "SinCorp"
     ],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -344,7 +344,7 @@
     "role": [
       "Bodyguard"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 10,
@@ -364,7 +364,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999463/profile_hazel_zygchn.webp",
     "wiki": "hazel",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -374,7 +374,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 11,
@@ -396,7 +396,7 @@
     "faction": [
       "SinCorp"
     ],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -408,7 +408,7 @@
     "role": [
       "Secretary"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 12,
@@ -428,7 +428,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999225/profile_sisi_empnby.webp",
     "wiki": "sisi",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -438,7 +438,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 13,
@@ -458,7 +458,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999375/profile_brandy_zzufaj.webp",
     "wiki": "brandy",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -470,7 +470,7 @@
     "role": [
       "Influencer"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 14,
@@ -490,7 +490,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999687/profile_rhonda_ektg6j.webp",
     "wiki": "rhonda",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -500,7 +500,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 15,
@@ -543,7 +543,7 @@
       }
     ],
     "role": [],
-    "tdayStatus": "untransformed"
+    "class": "Giantess"
   },
   {
     "id": 16,
@@ -563,7 +563,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779998963/profile_anna_aoe3f0.webp",
     "wiki": "anna",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -573,7 +573,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 17,
@@ -593,7 +593,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999329/profile_bailey_hzwkdl.webp",
     "wiki": "bailly",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -610,7 +610,7 @@
       }
     ],
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 18,
@@ -630,7 +630,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999541/profile_lady_p8jymm.webp",
     "wiki": "lady",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -640,7 +640,7 @@
       "penisType": "canine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 19,
@@ -663,7 +663,7 @@
       "The Resistence",
       "SinCorp"
     ],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -688,7 +688,7 @@
       "Security Guard",
       "Double-Agent"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 20,
@@ -708,7 +708,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999426/profile_fera_we5naq.webp",
     "wiki": "fera",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -718,7 +718,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 21,
@@ -738,7 +738,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999238/profile_tita_aejpv2.webp",
     "wiki": "tita",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -748,7 +748,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 22,
@@ -768,7 +768,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999387/profile_contra_zhopjm.webp",
     "wiki": "contra",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -778,7 +778,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 23,
@@ -826,7 +826,7 @@
       "Clone",
       "Breeder"
     ],
-    "tdayStatus": "untransformed"
+    "class": "Giantess"
   },
   {
     "id": 24,
@@ -846,7 +846,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999276/profile_veronica_htxglh.webp",
     "wiki": "veronica",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -856,7 +856,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 25,
@@ -878,7 +878,7 @@
     "faction": [
       "The Wilds"
     ],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -888,7 +888,7 @@
       "penisType": "canine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 26,
@@ -908,7 +908,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999618/profile_meg_ndr9dr.webp",
     "wiki": "meg",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -918,7 +918,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 27,
@@ -938,7 +938,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999411/profile_dominka_mnqrrq.webp",
     "wiki": "dominika",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -948,7 +948,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 28,
@@ -968,7 +968,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999341/profile_becka_cseoql.webp",
     "wiki": "becka",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -985,7 +985,7 @@
       }
     ],
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 29,
@@ -1005,7 +1005,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999356/profile_bella_hgh20s.webp",
     "wiki": "bella",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1022,7 +1022,7 @@
       }
     ],
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 30,
@@ -1042,7 +1042,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999451/profile_hannah_pa4nfo.webp",
     "wiki": "hannah",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1052,7 +1052,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 31,
@@ -1072,7 +1072,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999399/profile_daisy_oappdd.webp",
     "wiki": "daisy",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1082,7 +1082,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 32,
@@ -1102,7 +1102,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999250/profile_tonya_ejgrts.webp",
     "wiki": "tonya",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1112,7 +1112,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 33,
@@ -1132,7 +1132,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1780002524/profile_autumn_l7imtm.webp",
     "wiki": "autumn",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1142,7 +1142,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 34,
@@ -1162,7 +1162,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999632/profile_mini_jhb99h.webp",
     "wiki": "mini",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1172,7 +1172,7 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 35,
@@ -1192,7 +1192,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999263/profile_usiku_vhxugr.webp",
     "wiki": "usiku",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1204,7 +1204,7 @@
     "role": [
       "Designer"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 36,
@@ -1224,7 +1224,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999591/profile_lucy_omi8if.webp",
     "wiki": "lucy",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1236,7 +1236,7 @@
     "role": [
       "Chemist"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 37,
@@ -1256,7 +1256,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999438/profile_gina_qyyyxy.webp",
     "wiki": "gina",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1266,7 +1266,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 38,
@@ -1286,7 +1286,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999289/profile_xena_qpy9cb.webp",
     "wiki": "xena",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1296,7 +1296,7 @@
       "penisType": "equine"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 39,
@@ -1316,7 +1316,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999487/profile_ira_aa3flg.webp",
     "wiki": "ira",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1326,7 +1326,7 @@
       "penisType": "tentacle"
     },
     "role": [],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 40,
@@ -1346,7 +1346,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999675/profile_prima_ltscdv.webp",
     "wiki": "prima",
     "faction": [],
-    "transformed_by": "apotheosis-serum",
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
       "breasts": true,
@@ -1358,7 +1358,7 @@
     "role": [
       "'Goddess'"
     ],
-    "tdayStatus": "transformed"
+    "class": "Giantess"
   },
   {
     "id": 41,
@@ -1401,7 +1401,7 @@
       }
     ],
     "role": [],
-    "tdayStatus": "untransformed"
+    "class": "Giantess"
   },
   {
     "id": 42,
@@ -1423,7 +1423,7 @@
     "faction": [
       "SinCorp"
     ],
-    "transformed_by": "project-sylph",
+    "transformed_by": "Project Sylph",
     "canonical": true,
     "anatomy": {
       "breasts": false,
@@ -1433,8 +1433,8 @@
       "penisType": "canine"
     },
     "role": [
-      "Sylph"
+      
     ],
-    "tdayStatus": "transformed"
+    "class": "Sylph"
   }
 ]
