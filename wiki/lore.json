@@ -20,8 +20,18 @@
     "section": "Organizations"
   },
   {
+    "id": "the-paws",
+    "label": "The Huntresses (The Paws)",
+    "section": "Organizations"
+  },
+  {
     "id": "angora",
     "label": "Angora",
+    "section": "Locations"
+  },
+  {
+    "id": "alea-panthera",
+    "label": "Alea Panthera",
     "section": "Locations"
   },
   {
@@ -30,13 +40,28 @@
     "section": "Locations"
   },
   {
+    "id": "matriarchs",
+    "label": "The Matriarchs",
+    "section": "Concepts"
+  },
+  {
     "id": "the-wilds",
     "label": "The Wilds",
     "section": "Locations"
   },
   {
+    "id": "bastion",
+    "label": "Bastion",
+    "section": "Locations"
+  },
+  {
     "id": "toys",
     "label": "Toys",
+    "section": "Concepts"
+  },
+  {
+    "id": "life-of-a-toy",
+    "label": "Life of a Toy in the Cities",
     "section": "Concepts"
   },
   {
@@ -47,6 +72,11 @@
   {
     "id": "project-sylph",
     "label": "Project Sylph",
+    "section": "Concepts"
+  },
+  {
+    "id": "tempered",
+    "label": "The Tempered",
     "section": "Concepts"
   },
   {
