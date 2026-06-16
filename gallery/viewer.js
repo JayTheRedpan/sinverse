@@ -233,7 +233,19 @@ function render() {
 
   if (item.type === 'comic')   renderComic();
   if (item.type === 'scene')   renderScene();
-  if (item.type === 'charref') renderCharRef();
+  if (item.type === 'charref') {
+    // A charref with multiple versions (clothed/unclothed, etc.) reuses the
+    // comic reader's polished page-by-page layout. Single-image references keep
+    // their purpose-built reference page.
+    var refImgs = (item.images && item.images.length) ? item.images
+                : (item.image ? [item.image] : []);
+    if (refImgs.length > 1) {
+      item.pages = refImgs;   // feed the versions to the comic reader as pages
+      renderComic();
+    } else {
+      renderCharRef();
+    }
+  }
   if (item.type === 'set')     renderSet();
 }
 
@@ -376,8 +388,15 @@ function renderScene() {
 function renderCharRef() {
   document.getElementById('view-charref').style.display = '';
 
+  // A charref may carry a single `image` or an `images` array (e.g. clothed /
+  // unclothed versions). Normalise to a list, and pick the first as the primary.
+  var refImages = (item.images && item.images.length) ? item.images.slice()
+                : (item.image ? [item.image] : []);
+  var primary = refImages[0] || '';
+  var refThumbs = document.getElementById('ref-version-thumbs');
+
   var img = document.getElementById('ref-img');
-  img.src = item.image || '';
+  img.src = primary;
   img.alt = item.title;
 
   document.getElementById('ref-title').textContent  = item.title;
@@ -413,10 +432,17 @@ function renderCharRef() {
   }
 
   var dl = document.getElementById('ref-download');
-  dl.href     = item.image || '#';
+  dl.href     = primary || '#';
   dl.download = item.title.replace(/\s+/g, '_') + '_ref.jpg';
 
   setupImageZoom('ref-img', 'ref-zoom-out', 'ref-zoom-reset', 'ref-zoom-in', 'ref-zoom-width', 'ref-zoom-pct');
+
+  // Multi-version references (clothed/unclothed, etc.) are routed to the comic
+  // reader in renderItem() for a clean page-by-page layout, so this function
+  // only ever handles a single image. Hide any leftover version controls.
+  if (refThumbs) refThumbs.style.display = 'none';
+  var leftoverNav = document.getElementById('ref-version-nav');
+  if (leftoverNav) leftoverNav.style.display = 'none';
 }
 
 // -- Set (a bundle of related images shown as a browsable grid)

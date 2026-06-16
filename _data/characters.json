@@ -241,6 +241,13 @@
       "vag": false,
       "penisType": "humanoid"
     },
+    "relationships": [
+      {
+        "name": "Juxta",
+        "type": "Business Partner",
+        "note": "Inseparable companions; the two are widely called sisters, though they share no blood"
+      }
+    ],
     "role": [
       "Huntress"
     ],
@@ -273,6 +280,13 @@
       "vag": false,
       "penisType": "humanoid"
     },
+    "relationships": [
+      {
+        "name": "Popo",
+        "type": "Business Partner",
+        "note": "Inseparable companions; the two are widely called sisters, though they share no blood"
+      }
+    ],
     "role": [
       "Toy Trainer",
       "Toy Seller"
@@ -660,7 +674,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999565/profile_libby_kutows.webp",
     "wiki": "libby",
     "faction": [
-      "The Resistence",
+      "The Resistance",
       "SinCorp"
     ],
     "transformed_by": "Apotheosis Serum (TDay Variant)",
@@ -799,7 +813,7 @@
     "wiki": "joy",
     "faction": [
       "SinCorp",
-      "The Resistence"
+      "The Resistance"
     ],
     "transformed_by": null,
     "canonical": true,

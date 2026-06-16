@@ -26,13 +26,13 @@ She is unbothered by the suffering she presides over. More than unbothered — s
 
 Before TDay, Sin was a researcher at a bio-sciences and genetics laboratory. It was there, working with a mind that outstripped everyone around her, that she synthesised the first working batch of the serum she would come to call Apotheosis — and administered it to herself, the first test subject in history. What walked out of that lab was no longer what had walked in.
 
-She did not announce herself. She worked from the shadows, founding her own research operation — SinCorp — where she perfected the serum and laid the groundwork for TDay. She funded the work through government and military contracts, selling early precursors to what would later become toy-durability treatments under a more palatable name: *soldier durability treatments.* The military paid for the very science that would one day be used to keep their kind alive under the women who replaced them.
+She did not announce herself. She took control of the laboratory where she'd made her discovery and remade it, in the shadows, into SinCorp — where she perfected the serum and laid the groundwork for TDay. She funded the work through government and military contracts, selling early precursors to what would later become toy-durability treatments under a more palatable name: *soldier durability treatments.* The military paid for the very science that would one day be used to keep their kind alive under the women who replaced them.
 
 A number of the men in Sin's life did not survive her ascent. Her old boss, for one, simply disappeared — as did others who had known her before. No bodies, no explanations. By the time anyone thought to wonder, the world had bigger changes to reckon with.
 
 ### After TDay
 
-Once the Chaos subsided and the mega-cities reformed, SinCorp reformed with them — every mega-city now hosts its own SinCorp laboratory, each pursuing its own branch of devious and frequently unsettling research at any given time. Sin sits at the centre of it all as the Matriarch of Angora, the unofficial capital.
+Once the Chaos subsided and the mega-cities reformed, SinCorp reformed with them — every mega-city now hosts its own SinCorp laboratory, each pursuing its own branch of devious and frequently unsettling research at any given time. Sin sits at the centre of it all as the Matriarch of Angora, the unofficial capital. As the progenitor of the new world she is styled the **First Matriarch** — the one authority whose word overrides any other Matriarch within her own city, though she exercises it so rarely that its weight comes almost entirely from the certainty that she still can.
 
 She is largely uninterested in the responsibilities of running a city. Governance bores her; she would far rather be at work on her next creation. What she does not neglect is the architecture of the society itself — she continues, personally and deliberately, to ensure the world remains one in which toys are treated as sexual livestock. The cruelty of the world is not an accident she tolerates. It is a design she maintains.
 
@@ -80,6 +80,7 @@ Sin is a true sadist, and her tastes run to the deliberate infliction of sufferi
 
 - [SinCorp](sincorp) — her organization, and the engine of the setting's science
 - [Angora](angora) — the capital she rules, when she bothers to
+- [The Matriarchs](matriarchs) — the city-rulers she stands first among, as First Matriarch
 - [The Apotheosis Serum](apotheosis-serum) — her discovery
 - [TDay](tday) — her masterwork
 - [Project Sylph](project-sylph) — among her ongoing research

@@ -56,36 +56,38 @@ async function init() {
     var tagsData = await tagsRes.json();
     buildTagFilters(tagsData.gallery || []);
 
-    // Apply URL params on load
-    var urlParams = new URLSearchParams(window.location.search);
-    var charParam   = urlParams.get('character');
-    var searchParam = urlParams.get('search');
-    var modeParam   = urlParams.get('mode');
+    // Seed filter state from the URL (shareable links + restore-on-return).
+    var hadUrlState = readURLState();
 
-    if (charParam) {
-      var charName = decodeURIComponent(charParam);
+    // Reflect search modes onto the toggle buttons.
+    if (state._urlModes) {
+      document.querySelectorAll('.search-mode-btn').forEach(function(b){
+        b.classList.toggle('active', state._urlModes.indexOf(b.getAttribute('data-mode')) > -1);
+      });
+    }
+    // Reflect the seeded query into the search box.
+    if (state.query) {
       var inp = document.getElementById('search-input');
-      if (inp) inp.value = charName;
-      state.query = charName.toLowerCase();
-      document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.remove('active'); });
-      var charModeBtn = document.querySelector('.search-mode-btn[data-mode="character"]');
-      if (charModeBtn) charModeBtn.classList.add('active');
-      var url = new URL(window.location.href);
-      url.searchParams.delete('character');
-      window.history.replaceState({}, '', url);
-    } else if (searchParam) {
-      var sVal = decodeURIComponent(searchParam);
-      var inp2 = document.getElementById('search-input');
-      if (inp2) inp2.value = sVal;
-      state.query = sVal.toLowerCase();
-      document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.remove('active'); });
-      var targetMode = modeParam || 'artist';
-      var modeBtn = document.querySelector('.search-mode-btn[data-mode="' + targetMode + '"]');
-      if (modeBtn) modeBtn.classList.add('active');
-      var url2 = new URL(window.location.href);
-      url2.searchParams.delete('search');
-      url2.searchParams.delete('mode');
-      window.history.replaceState({}, '', url2);
+      if (inp) inp.value = state.query;
+    }
+    // Reflect type toggles, canon button, sort select, and tag buttons.
+    document.querySelectorAll('#type-filters .type-toggle-btn').forEach(function(b){
+      var t = b.getAttribute('data-type');
+      if (t in state.typeFilter) b.classList.toggle('active', state.typeFilter[t]);
+    });
+    var canonBtn = document.getElementById('canon-filter-btn');
+    if (canonBtn) canonBtn.classList.toggle('active', state.canonOnly);
+    var sortSel = document.getElementById('sort-select');
+    if (sortSel && state.sortOrder) sortSel.value = state.sortOrder;
+    if (typeof reflectTagButtons === 'function') reflectTagButtons();
+    if (typeof updateTagModeHint === 'function') updateTagModeHint();
+
+
+    // Clean up any legacy entry params now that they've been folded into state.
+    if (hadUrlState) {
+      var cleanUrl = new URL(window.location.href);
+      ['character', 'search', 'mode'].forEach(function(k){ cleanUrl.searchParams.delete(k); });
+      window.history.replaceState({}, '', cleanUrl);
     } else {
       resetSearch();
     }
@@ -242,6 +244,104 @@ function applyFilters() {
   });
 
   renderGrid();
+  syncURL();
+}
+
+// ── URL STATE ─────────────────────────────────────────────────────────────
+// The URL query string is a mirror of the current filter state. This gives us
+// two things for free: navigating into an item and back restores the view (the
+// browser keeps the URL), and the URL is shareable. It does NOT touch the
+// in-memory filter/sort path — applyFilters() still runs entirely client-side
+// at the same speed; this only reads/writes the address bar.
+//
+// Params (all optional, omitted when at their default):
+//   q     search query text
+//   modes comma list of active search modes (title/artist/character)
+//   types comma list of ENABLED types, only when not all four are on
+//   tags  comma list of tag filters, each prefixed + (include) or - (exclude)
+//   canon "1" when canon-only is active
+//   sort  sort order, only when not the default "newest"
+var _syncingURL = false;
+function syncURL() {
+  if (_syncingURL) return;
+  var p = new URLSearchParams();
+
+  if (state.query) p.set('q', state.query);
+
+  var modes = getActiveModes();
+  // Only record modes if they differ from "all active" (the default).
+  var allModes = ['title', 'artist', 'character'];
+  if (modes.length && modes.length !== allModes.length) p.set('modes', modes.join(','));
+
+  var enabledTypes = Object.keys(state.typeFilter).filter(function(t){ return state.typeFilter[t]; });
+  var totalTypes = Object.keys(state.typeFilter).length;
+  if (enabledTypes.length !== totalTypes) p.set('types', enabledTypes.join(','));
+
+  var tagBits = [];
+  Object.keys(state.tagStates || {}).forEach(function(k){
+    if (state.tagStates[k] === 'include') tagBits.push('+' + k);
+    else if (state.tagStates[k] === 'exclude') tagBits.push('-' + k);
+  });
+  if (tagBits.length) p.set('tags', tagBits.join(','));
+
+  if (state.canonOnly) p.set('canon', '1');
+  if (state.sortOrder && state.sortOrder !== 'newest') p.set('sort', state.sortOrder);
+
+  var qs = p.toString();
+  var newUrl = window.location.pathname + (qs ? '?' + qs : '');
+  // replaceState (not pushState): filtering shouldn't spam the back button.
+  window.history.replaceState({}, '', newUrl);
+}
+
+// Seed state from the URL on load. Returns true if any filter param was found,
+// so init() knows whether to skip its default resetSearch().
+function readURLState() {
+  var p = new URLSearchParams(window.location.search);
+  var found = false;
+
+  // Back-compat: the old entry params (character / search / mode) still work.
+  var legacyChar = p.get('character');
+  var legacySearch = p.get('search');
+  if (legacyChar) {
+    state.query = decodeURIComponent(legacyChar).toLowerCase();
+    p.set('q', state.query);
+    p.set('modes', 'character');
+    found = true;
+  } else if (legacySearch) {
+    state.query = decodeURIComponent(legacySearch).toLowerCase();
+    p.set('q', state.query);
+    if (p.get('mode')) p.set('modes', p.get('mode'));
+    found = true;
+  }
+
+  if (p.has('q')) { state.query = decodeURIComponent(p.get('q')); found = true; }
+
+  if (p.has('types')) {
+    found = true;
+    var on = p.get('types').split(',').filter(Boolean);
+    Object.keys(state.typeFilter).forEach(function(t){ state.typeFilter[t] = on.indexOf(t) > -1; });
+  }
+
+  if (p.has('tags')) {
+    found = true;
+    state.tagStates = {};
+    p.get('tags').split(',').filter(Boolean).forEach(function(bit){
+      var sign = bit.charAt(0);
+      var key = bit.slice(1);
+      if (sign === '+') state.tagStates[key] = 'include';
+      else if (sign === '-') state.tagStates[key] = 'exclude';
+    });
+  }
+
+  if (p.get('canon') === '1') { state.canonOnly = true; found = true; }
+  if (p.has('sort')) { state.sortOrder = p.get('sort'); found = true; }
+
+  // Stash desired modes so init() can reflect them onto the buttons after the
+  // DOM is ready (the buttons exist, but we centralize the reflect in init).
+  state._urlModes = p.has('modes') ? p.get('modes').split(',').filter(Boolean) : null;
+  if (state._urlModes) found = true;
+
+  return found;
 }
 
 // ── RENDER GRID ───────────────────────────────────────────────────────────

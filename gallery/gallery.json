@@ -2343,5 +2343,892 @@
     "universe_date": null,
     "canonical": false,
     "relates_to": []
+  },
+  {
+    "id": 97,
+    "type": "charref",
+    "title": "Anna Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635211/ref_anna_jy6lkc.webp"
+    ],
+    "characters": [
+      "anna"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Anna.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 98,
+    "type": "charref",
+    "title": "Ardian Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635212/ref_ardian_01_xum03l.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635212/ref_ardian_02_c6w9hy.webp"
+    ],
+    "characters": [
+      "ardian"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Ardian. (goes by Ardy)",
+    "date": "2023-03",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 99,
+    "type": "charref",
+    "title": "Autumn Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635213/ref_autumn_qu5ls5.webp"
+    ],
+    "characters": [
+      "autumn"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Autumn.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 100,
+    "type": "charref",
+    "title": "Bailly Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635214/ref_bailly_i93ijx.webp"
+    ],
+    "characters": [
+      "bailly",
+      "jay"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Bailly.",
+    "date": "2019-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 101,
+    "type": "charref",
+    "title": "Bella and Becka Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635215/ref_bella_and_becka_c8wlwa.webp"
+    ],
+    "characters": [
+      "becka",
+      "bella"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Becka.",
+    "date": "2018-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 102,
+    "type": "charref",
+    "title": "Zuzu Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635546/ref_zuzu_cjj6hf.webp"
+    ],
+    "characters": [
+      "zuzu"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Zuzu.",
+    "date": "2018-12",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 103,
+    "type": "charref",
+    "title": "Brandy Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635216/ref_brandy_iqzrod.webp"
+    ],
+    "characters": [
+      "brandy"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Brandy.",
+    "date": "2019-03",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 104,
+    "type": "charref",
+    "title": "Contra Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635217/ref_contra_xy3rej.webp"
+    ],
+    "characters": [
+      "contra"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Contra.",
+    "date": "2018-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 105,
+    "type": "charref",
+    "title": "Daisy Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635218/ref_daisy_qfoibi.webp"
+    ],
+    "characters": [
+      "daisy"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Daisy.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 106,
+    "type": "charref",
+    "title": "Dominika Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635219/ref_dominika_ghvn69.webp"
+    ],
+    "characters": [
+      "dominika"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Dominika.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 107,
+    "type": "charref",
+    "title": "Fera Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635220/ref_fera_wpj9mh.webp"
+    ],
+    "characters": [
+      "fera"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Fera.",
+    "date": "2018-08",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 108,
+    "type": "charref",
+    "title": "Gina Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635222/ref_gina_he07hc.webp"
+    ],
+    "characters": [
+      "gina"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Gina.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 109,
+    "type": "charref",
+    "title": "Hannah Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635224/ref_hannah_ztvvp2.webp"
+    ],
+    "characters": [
+      "hannah"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Hannah.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 110,
+    "type": "charref",
+    "title": "Hazel Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635224/ref_hazel_fh1ytu.webp"
+    ],
+    "characters": [
+      "hazel"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Hazel.",
+    "date": "2018-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 111,
+    "type": "charref",
+    "title": "Hydey Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635226/ref_hydey_quib6z.webp"
+    ],
+    "characters": [
+      "hydey"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Hydey.",
+    "date": "2019-06",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 112,
+    "type": "charref",
+    "title": "Ira Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635228/ref_ira_ngjpvb.webp"
+    ],
+    "characters": [
+      "ira"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Ira.",
+    "date": "2019-11",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 113,
+    "type": "charref",
+    "title": "Jay Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635229/ref_jay_rro4ak.webp"
+    ],
+    "characters": [
+      "jay"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Jay.",
+    "date": "2018-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 114,
+    "type": "charref",
+    "title": "Jenny Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635233/ref_jenny_01_tkwz3u.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635231/ref_jenny_02_jsbswe.webp"
+    ],
+    "characters": [
+      "jenny"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Jenny.",
+    "date": "2023-01",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 115,
+    "type": "charref",
+    "title": "Joy Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635234/ref_joy_zcxhmr.webp"
+    ],
+    "characters": [
+      "joy"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Joy.",
+    "date": "2022-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 116,
+    "type": "charref",
+    "title": "Juxta Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635325/ref_juxta_gjdppt.webp"
+    ],
+    "characters": [
+      "juxta"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Juxta.",
+    "date": "2018-07",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 117,
+    "type": "charref",
+    "title": "Kel Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635442/ref_kel_rwhaat.webp"
+    ],
+    "characters": [
+      "kel"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Kel.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 118,
+    "type": "charref",
+    "title": "Lady Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635491/ref_lady_tzk2cy.webp"
+    ],
+    "characters": [
+      "lady"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Lady.",
+    "date": "2018-12",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 119,
+    "type": "charref",
+    "title": "Leona Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635492/ref_leona_f2ff5m.webp"
+    ],
+    "characters": [
+      "leona"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Leona.",
+    "date": "2019-07",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 120,
+    "type": "charref",
+    "title": "Libby Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635499/ref_libby_gwspyc.webp"
+    ],
+    "characters": [
+      "libby"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Libby.",
+    "date": "2018-19",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 121,
+    "type": "charref",
+    "title": "Lucile Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635505/ref_lucile_lze2mf.webp"
+    ],
+    "characters": [
+      "lucile"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Lucile.",
+    "date": "2018-12",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 122,
+    "type": "charref",
+    "title": "Lucy Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635506/ref_lucy_ijyhwg.webp"
+    ],
+    "characters": [
+      "lucy"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Lucy.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 123,
+    "type": "charref",
+    "title": "Marian Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635506/ref_marian_fumzor.webp"
+    ],
+    "characters": [
+      "marian"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Marian.",
+    "date": "2019-02",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 124,
+    "type": "charref",
+    "title": "Meg Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635511/ref_meg_vsv4ge.webp"
+    ],
+    "characters": [
+      "meg"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Meg.",
+    "date": "2019-11",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 125,
+    "type": "charref",
+    "title": "Mini —eference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635512/ref_mini_ue2wgn.webp"
+    ],
+    "characters": [
+      "mini"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Mini.",
+    "date": "2018-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 126,
+    "type": "charref",
+    "title": "Missy Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635512/ref_missy_io4giv.webp"
+    ],
+    "characters": [
+      "missy"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Missy.",
+    "date": "2018-11",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 127,
+    "type": "charref",
+    "title": "Popo Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635516/ref_popo_oomoex.webp"
+    ],
+    "characters": [
+      "popo"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Popo.",
+    "date": "2018-07",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 128,
+    "type": "charref",
+    "title": "Prima Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635517/ref_prima_wkrcyt.webp"
+    ],
+    "characters": [
+      "prima"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Prima.",
+    "date": "2018-11",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 129,
+    "type": "charref",
+    "title": "Rhonda Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635519/ref_rhonda_qipdpj.webp"
+    ],
+    "characters": [
+      "rhonda"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Rhonda.",
+    "date": "2019-02",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 130,
+    "type": "charref",
+    "title": "Riley Reference",
+    "artist": "Vex",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635524/ref_riley_01_li2xrp.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635524/ref_riley_02_t9lqn0.webp"
+    ],
+    "characters": [
+      "riley"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Riley.",
+    "date": "2024-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 131,
+    "type": "charref",
+    "title": "Sandy Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635526/ref_sandy_z911rs.webp"
+    ],
+    "characters": [
+      "sandy"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Sandy.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 132,
+    "type": "charref",
+    "title": "Sin Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635531/ref_sin_kt11io.webp"
+    ],
+    "characters": [
+      "sin"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Sin.",
+    "date": "2018-08",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 133,
+    "type": "charref",
+    "title": "Sisi Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635532/ref_sisi_oe4nzp.webp"
+    ],
+    "characters": [
+      "sisi"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Sisi.",
+    "date": "2018-11",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 134,
+    "type": "charref",
+    "title": "Tita Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635537/ref_tita_e6adw7.webp"
+    ],
+    "characters": [
+      "tita"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Tita.",
+    "date": "2018-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 135,
+    "type": "charref",
+    "title": "Tonya Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635538/ref_tonya_jaqsum.webp"
+    ],
+    "characters": [
+      "tonya"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Tonya.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 136,
+    "type": "charref",
+    "title": "Usiku Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635542/ref_usiku_l2hxye.webp"
+    ],
+    "characters": [
+      "usiku"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Usiku.",
+    "date": "2018-10",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 137,
+    "type": "charref",
+    "title": "Veronica Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635545/ref_veronica_jwx4sh.webp"
+    ],
+    "characters": [
+      "veronica"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Veronica.",
+    "date": "2018-11",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
+  },
+  {
+    "id": 138,
+    "type": "charref",
+    "title": "Xena Reference",
+    "artist": "FastTrack",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1781635546/ref_xena_tlyjz5.webp"
+    ],
+    "characters": [
+      "xena"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Xena.",
+    "date": "2018-12",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
   }
 ]

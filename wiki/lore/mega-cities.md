@@ -56,7 +56,6 @@ Most mega-cities are ruled by a single Matriarch with total autonomy. A minority
 
 - **[Angora](angora)** — the first mega-city, the most powerful, and the unofficial capital. Seat of Sin's authority and SinCorp's headquarters, ruled by Sin as **First Matriarch**.
 
-*An estimated 12 to 15 mega-cities exist worldwide; the others are still being documented.*
 
 ## Related
 
@@ -72,6 +71,5 @@ Most mega-cities are ruled by a single Matriarch with total autonomy. A minority
 - The term "mega-city" was not coined by any governing body — it emerged from informal usage in the months after TDay and was eventually adopted by SinCorp documentation without comment.
 - A standard door in a mega-city is approximately 14 feet tall. Pre-TDay buildings that were not demolished had their doors and ceilings rebuilt first, before any other renovation work began.
 - No two mega-cities have the same laws regarding toys. What is a minor infraction in one city may be the basis for a toy's confiscation in another.
-- There are an estimated 12 to 15 established mega-cities worldwide. SinCorp has not released an official count.
 - The smallest known mega-city has a Transformed population of approximately 800. The largest — Angora — has never officially published its population figures.
 - The vast distances of Wilds between cities mean the mega-cities have never gone to war with one another. There is simply nothing to fight over, and a great deal of dangerous country in the way.
