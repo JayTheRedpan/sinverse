@@ -4,10 +4,10 @@
    ----------------------------------------------------------------------------
    Profiles from contributors.json. Contribution counts are auto-tallied by
    scanning gallery.json, library.json, and cyoa.json for each contributor's
-   id (lowercased). A set counts as 1 artwork regardless of how many images it
-   holds; a comic still counts its pages. Adventure contributions are weighted
-   at 1/5 for SORT ranking only (displayed counts stay true). Supports
-   ?creator=<id> to filter to one contributor (used by gallery/viewer artist links).
+   id (lowercased). A set with N images counts as N artworks; an empty set as 1.
+   Adventure contributions are weighted at 1/5 for SORT ranking only (displayed
+   counts stay true). Supports ?creator=<id> to filter to one contributor
+   (used by gallery/viewer artist links).
    ========================================================================== */
 
 // ── Social platform config ─────────────────────────────────────
@@ -78,7 +78,7 @@ function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
   var g = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
-    if (i.type === 'set') return sum + 1;  // a set counts as one point, not per-image
+    if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var l = libraryItems.reduce(function(sum, i) {
@@ -97,8 +97,8 @@ function stashCounts(id, stashItems) {
   function who(it) { return it.creator || it.artist || it.author || ''; }
   var images = (stashItems || []).reduce(function(sum, i) {
     if (i.kind !== 'image' || who(i) !== id) return sum;
-    if (i.type === 'set' || (i.images && i.images.length)) return sum + 1;  // a set counts as one point
-    if (i.pages && i.pages.length) return sum + i.pages.length;
+    if (i.pages && i.pages.length)   return sum + i.pages.length;
+    if (i.images && i.images.length) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var stories = (stashItems || []).reduce(function(sum, i) {
@@ -114,7 +114,7 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
   var gCount = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length > 0) return sum + i.pages.length;
-    if (i.type === 'set') return sum + 1;  // a set counts as one point, not per-image
+    if (i.type === 'set' && i.images && i.images.length > 0) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var lCount = libraryItems.reduce(function(sum, i) {
@@ -265,6 +265,145 @@ function renderAnon(galleryItems, libraryItems, adventureNodes) {
 }
 
 // ── Init ──────────────────────────────────────────────────────
+// ── Grid render + search ────────────────────────────────────────────────────
+// renderContributorGrid draws a given subset of the public contributor list.
+// Pulled out so the search box can re-filter in memory without re-fetching or
+// re-tallying contribution counts.
+function renderContributorGrid(list) {
+  var ctx = window._conRenderCtx || {};
+  var grid = document.getElementById('con-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+
+  if (!list.length) {
+    grid.innerHTML = '<div class="con-loading">No contributors match your search.</div>';
+  } else {
+    list.forEach(function(c) {
+      // Only surface stash stats on a direct ?creator= link — never the public
+      // list — to keep the stash secret.
+      var stash = ctx.isCreatorLink ? stashCounts(c.id, ctx.stashItems || []) : null;
+      grid.appendChild(renderCard(c, ctx.galleryItems || [], ctx.libraryItems || [], ctx.adventureNodes || [], stash));
+    });
+  }
+
+  var countEl = document.getElementById('con-result-count');
+  if (countEl) {
+    var total = (ctx.list || list).length;
+    countEl.textContent = (list.length === total)
+      ? total + (total === 1 ? ' contributor' : ' contributors')
+      : list.length + ' of ' + total + ' contributors';
+  }
+}
+
+// A clean contributor finder: a name-only search box plus a row of toggle
+// buttons for contribution types (Writer, Artist, etc.), built from the types
+// actually present in the loaded list. All client-side; no re-fetching.
+function initContributorSearch() {
+  var ctx = window._conRenderCtx;
+  if (!ctx || !ctx.list) return;
+
+  // Collect the distinct types present, ordered by frequency (most common first).
+  var typeCounts = {};
+  ctx.list.forEach(function(c) {
+    (c.types || []).forEach(function(t) { typeCounts[t] = (typeCounts[t] || 0) + 1; });
+  });
+  var types = Object.keys(typeCounts).sort(function(a, b) {
+    return typeCounts[b] - typeCounts[a] || a.localeCompare(b);
+  });
+
+  var activeTypes = {};   // type -> true when that filter is engaged
+  var nameQuery = '';
+
+  // Build the control bar (created in JS, so no HTML change needed).
+  var bar = document.getElementById('con-search-bar');
+  if (!bar) {
+    var titleRow = document.querySelector('.con-section-title-row');
+    var grid = document.getElementById('con-grid');
+    var anchor = (titleRow && titleRow.parentNode) ? titleRow : (grid || null);
+    if (!anchor || !anchor.parentNode) return;
+
+    bar = document.createElement('div');
+    bar.id = 'con-search-bar';
+    bar.className = 'con-search-bar';
+
+    var typeBtns = types.map(function(t) {
+      return '<button type="button" class="con-type-toggle" data-type="' +
+        t.replace(/"/g, '&quot;') + '">' + t + '</button>';
+    }).join('');
+
+    bar.innerHTML =
+      '<div class="con-search-row">' +
+        '<div class="con-search-field">' +
+          '<svg class="con-search-icon" viewBox="0 0 16 16" width="14" height="14" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="7" cy="7" r="4.5"/><path d="M10.5 10.5L14 14"/></svg>' +
+          '<input type="search" id="con-search-input" class="con-search-input" ' +
+            'placeholder="Search by name\u2026" autocomplete="off" aria-label="Search contributors by name" />' +
+        '</div>' +
+        '<span id="con-result-count" class="con-result-count"></span>' +
+        '<button type="button" id="con-clear-filters" class="con-clear-filters" style="display:none">Clear</button>' +
+      '</div>' +
+      (types.length ? '<div class="con-type-filters" id="con-type-filters">' + typeBtns + '</div>' : '');
+
+    anchor.parentNode.insertBefore(bar, anchor.nextSibling);
+  }
+
+  var input = document.getElementById('con-search-input');
+
+  function runSearch() {
+    var q = nameQuery;
+    var activeList = Object.keys(activeTypes).filter(function(t){ return activeTypes[t]; });
+    var filtered = ctx.list.filter(function(c) {
+      // Name-only text match.
+      if (q && (c.name || '').toLowerCase().indexOf(q) === -1) return false;
+      // Type filter: a contributor must carry EVERY selected type (AND).
+      if (activeList.length) {
+        var has = (c.types || []);
+        if (!activeList.every(function(t){ return has.indexOf(t) > -1; })) return false;
+      }
+      return true;
+    });
+    renderContributorGrid(filtered);
+
+    // Show the Clear button only when something is actually filtering.
+    var clearBtn = document.getElementById('con-clear-filters');
+    if (clearBtn) clearBtn.style.display = (q || activeList.length) ? '' : 'none';
+  }
+
+  function clearAll() {
+    nameQuery = '';
+    if (input) input.value = '';
+    Object.keys(activeTypes).forEach(function(t){ activeTypes[t] = false; });
+    var tf = document.getElementById('con-type-filters');
+    if (tf) tf.querySelectorAll('.con-type-toggle.active').forEach(function(b){ b.classList.remove('active'); });
+    runSearch();
+  }
+
+  if (input) {
+    input.addEventListener('input', function() { nameQuery = this.value.trim().toLowerCase(); runSearch(); });
+    input.addEventListener('keydown', function(e) {
+      if (e.key === 'Escape') { clearAll(); }
+    });
+  }
+
+  var clearBtn = document.getElementById('con-clear-filters');
+  if (clearBtn) clearBtn.addEventListener('click', clearAll);
+
+  var typeFilters = document.getElementById('con-type-filters');
+  if (typeFilters) {
+    typeFilters.addEventListener('click', function(e) {
+      var btn = e.target.closest('.con-type-toggle');
+      if (!btn) return;
+      var t = btn.getAttribute('data-type');
+      activeTypes[t] = !activeTypes[t];
+      btn.classList.toggle('active', activeTypes[t]);
+      runSearch();
+    });
+  }
+
+  // Initialize the result count for the full list.
+  renderContributorGrid(ctx.list);
+}
+
+// ── Boot render ──────────────────────────────────────────────────────────────
 async function init() {
   try {
     function safeFetch(url, fallback) {
@@ -315,14 +454,8 @@ async function init() {
 
     renderJay(jay, chars, galleryItems, libraryItems, adventureNodes);
 
-    // Read URL params. ?creator=<id> is a direct link to a single contributor,
-    // used by gallery/library/cyoa/viewer artist links AND by the stash. The
-    // separate ?from=stash marker is added ONLY by links inside the stash, so
-    // it's what tells "arrived from the stash" apart from any other direct link
-    // — and it's the gate for revealing stash contributions further down.
-    var params = new URLSearchParams(window.location.search);
-    var creatorParam = params.get('creator');
-    var fromStash = params.get('from') === 'stash';
+    // Check for ?creator= param (direct link, e.g. from the stash).
+    var creatorParam = new URLSearchParams(window.location.search).get('creator');
     var isCreatorLink = false;
     if (creatorParam) {
       isCreatorLink = true;
@@ -341,7 +474,6 @@ async function init() {
       // Clean URL
       var cleanUrl = new URL(window.location.href);
       cleanUrl.searchParams.delete('creator');
-      cleanUrl.searchParams.delete('from');
       window.history.replaceState({}, '', cleanUrl);
     } else {
       // Public list: hide creators whose ONLY contributions are in the stash
@@ -352,20 +484,26 @@ async function init() {
       });
     }
 
-    // Sort rest by weighted contribution score descending. The base counts use
-    // the same shared tally as the displayed pills (publicWorkCount), so a set
-    // counts as 1 here too — ranking matches what's shown. A single adventure
-    // scene is a smaller unit of work than a full image or story, so adventures
-    // are weighted at 1/5 for ranking purposes only.
+    // Sort rest by weighted contribution score descending.
+    // A single adventure scene is a smaller unit of work than a full image or
+    // story, so it's weighted at 1/5 for ranking purposes only — the displayed
+    // counts elsewhere remain the true, unweighted numbers.
     var ADVENTURE_WEIGHT = 0.2;
     rest.sort(function(a, b) {
       function count(id) {
-        // publicWorkCount already counts a set as 1 and includes adventures at
-        // full weight; subtract the adventure count back out and re-add it at
-        // the reduced ranking weight so sets/images/stories stay at face value.
-        var adv = adventureNodes.filter(function(n){ return n.author === id; }).length;
-        var base = publicWorkCount(id, galleryItems, libraryItems, adventureNodes) - adv;
-        return base + (adv * ADVENTURE_WEIGHT);
+        var g = galleryItems.reduce(function(sum, i) {
+          if (i.artist !== id) return sum;
+          if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
+          if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
+          return sum + 1;
+        }, 0);
+        var l = libraryItems.reduce(function(sum, i) {
+          if (i.author !== id) return sum;
+          if (i.type === 'serial' && i.chapters && i.chapters.length > 0) return sum + i.chapters.length;
+          return sum + 1;
+        }, 0);
+        var c = adventureNodes.filter(function(n){ return n.author === id; }).length;
+        return g + l + (c * ADVENTURE_WEIGHT);
       }
       return count(b.id) - count(a.id);
     });
@@ -373,19 +511,20 @@ async function init() {
     var grid = document.getElementById('con-grid');
     grid.innerHTML = '';
 
-    if (!rest.length) {
-      grid.innerHTML = '<div class="con-loading">No additional contributors yet.</div>';
-    } else {
-      rest.forEach(function(c) {
-        // Surface stash stats ONLY when the visitor arrived from inside the
-        // stash (?from=stash) AND is viewing this single contributor (?creator=).
-        // A plain ?creator= link from the gallery/library/cyoa does NOT reveal
-        // the stash, and the public list never does — so a contributor's stash
-        // contributions stay hidden unless you clicked their name in the stash.
-        var stash = (fromStash && isCreatorLink) ? stashCounts(c.id, stashItems) : null;
-        grid.appendChild(renderCard(c, galleryItems, libraryItems, adventureNodes, stash));
-      });
-    }
+    // Keep what we need to re-render on search, without re-fetching/re-tallying.
+    window._conRenderCtx = {
+      list: rest.slice(),
+      galleryItems: galleryItems,
+      libraryItems: libraryItems,
+      adventureNodes: adventureNodes,
+      stashItems: stashItems,
+      isCreatorLink: isCreatorLink
+    };
+
+    renderContributorGrid(rest);
+
+    // Wire the search box (only on the public, non-deep-link list).
+    if (!isCreatorLink) initContributorSearch();
 
     renderAnon(galleryItems, libraryItems, adventureNodes);
 

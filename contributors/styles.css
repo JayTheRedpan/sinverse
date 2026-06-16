@@ -439,3 +439,107 @@ a.count-link:hover .count-label {
   transition: opacity 0.15s;
 }
 .con-view-all-link:hover { opacity: 0.75; }
+
+/* ── Contributor finder: search box + type-filter toggles ─────────────────── */
+.con-search-bar {
+  margin: 0.25rem 0 1.5rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.85rem;
+}
+.con-search-row {
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+}
+.con-search-field {
+  position: relative;
+  flex: 1 1 260px;
+  max-width: 360px;
+  display: flex;
+  align-items: center;
+}
+.con-search-icon {
+  position: absolute;
+  left: 0.8rem;
+  color: var(--text-muted);
+  pointer-events: none;
+}
+.con-search-input {
+  width: 100%;
+  font-family: var(--font-body);
+  font-size: 0.9rem;
+  color: var(--text-primary);
+  background: var(--bg-inset);
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  padding: 0.6rem 0.9rem 0.6rem 2.3rem;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.con-search-input::placeholder { color: var(--text-muted); }
+.con-search-input:focus {
+  outline: none;
+  border-color: var(--accent);
+  box-shadow: 0 0 0 2px var(--accent-dim);
+}
+/* Hide the native clear control for a cleaner look (Escape still clears). */
+.con-search-input::-webkit-search-cancel-button { -webkit-appearance: none; }
+.con-result-count {
+  font-family: var(--font-caps);
+  font-size: 0.6rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  white-space: nowrap;
+}
+.con-type-filters {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.45rem;
+}
+.con-type-toggle {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  padding: 0.32rem 0.75rem;
+  cursor: pointer;
+  transition: color 0.15s, border-color 0.15s, background 0.15s;
+}
+.con-type-toggle:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}
+.con-type-toggle.active {
+  color: var(--bg-panel);
+  background: var(--accent);
+  border-color: var(--accent);
+}
+@media (max-width: 600px) {
+  .con-search-field { max-width: none; }
+}
+
+/* Clear-filters button (appears only when a filter is active). */
+.con-clear-filters {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: 0.13em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  background: transparent;
+  border: 1px solid var(--border-mid);
+  border-radius: var(--radius);
+  padding: 0.32rem 0.7rem;
+  cursor: pointer;
+  white-space: nowrap;
+  transition: color 0.15s, border-color 0.15s;
+}
+.con-clear-filters:hover {
+  color: var(--accent);
+  border-color: var(--accent-dim);
+}

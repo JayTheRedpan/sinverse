@@ -31,23 +31,36 @@ async function init() {
   loadTagState();
   buildTagFilters();
   wireControls();
-  // URL param: ?creator=NAME prefills the search to that creator (creator-only
-  // search mode), so the contributors "Stash" card can deep-link into a creator's
-  // stash work.
-  var creatorParam = new URLSearchParams(window.location.search).get('creator');
-  if (creatorParam) {
-    var name = decodeURIComponent(creatorParam);
-    state.search = name.toLowerCase();
-    state.searchModes = { title: false, creator: true };
-    var si = document.getElementById('stash-search'); if (si) si.value = name;
-    document.querySelectorAll('.search-mode-btn').forEach(function (b) {
-      var on = b.getAttribute('data-mode') === 'creator';
-      b.classList.toggle('active', on);
-    });
-    var url = new URL(window.location.href);
-    url.searchParams.delete('creator');
-    window.history.replaceState({}, '', url);
+  // Seed filter state from the URL (shareable links + restore-on-return).
+  var hadUrlState = readURLState();
+
+  // Reflect the seeded state onto the controls.
+  var si = document.getElementById('stash-search');
+  if (si && state.search) si.value = state.search;
+
+  document.querySelectorAll('.search-mode-btn').forEach(function (b) {
+    var m = b.getAttribute('data-mode');
+    if (m in state.searchModes) b.classList.toggle('active', state.searchModes[m]);
+  });
+  document.querySelectorAll('#stash-kind-filters .type-toggle-btn').forEach(function (b) {
+    var k = b.getAttribute('data-kind') || b.getAttribute('data-type');
+    if (k && k in state.kinds) b.classList.toggle('active', state.kinds[k]);
+  });
+  var so = document.getElementById('stash-sort');
+  if (so && state.sort) so.value = state.sort;
+  if (typeof reflectTagButtons === 'function') reflectTagButtons();
+  else document.querySelectorAll('#stash-tag-filters .tag-filter-btn').forEach(function (btn) {
+    if (typeof paintTagButton === 'function') paintTagButton(btn, btn.getAttribute('data-tag'));
+  });
+  if (typeof updateTagHint === 'function') updateTagHint();
+
+  // Clean up the legacy ?creator= param now that it's folded into state.
+  if (hadUrlState) {
+    var clean = new URL(window.location.href);
+    clean.searchParams.delete('creator');
+    window.history.replaceState({}, '', clean);
   }
+
   applyFilters();
 }
 
@@ -243,6 +256,95 @@ function applyFilters() {
   });
 
   renderGrid(items);
+  syncURL();
+}
+
+// ── URL STATE ─────────────────────────────────────────────────────────────
+// The URL query string mirrors the current filter state, so navigating into an
+// item and back restores the view (the browser keeps the URL) and the URL is
+// shareable. This does NOT touch the in-memory filter/sort path — applyFilters()
+// still runs entirely client-side at the same speed; this only reads/writes the
+// address bar.
+//
+// Params (all optional, omitted when at their default):
+//   q     search query text
+//   modes comma list of active search modes (title/creator), only if not all on
+//   kinds comma list of ENABLED kinds, only when not all are on
+//   tags  comma list of tag filters, each prefixed + (include) or - (exclude)
+//   sort  sort order, only when not the default "newest"
+function syncURL() {
+  var p = new URLSearchParams();
+
+  if (state.search) p.set('q', state.search);
+
+  var modeKeys = Object.keys(state.searchModes);
+  var activeModes = modeKeys.filter(function (m) { return state.searchModes[m]; });
+  if (activeModes.length && activeModes.length !== modeKeys.length) p.set('modes', activeModes.join(','));
+
+  var kindKeys = Object.keys(state.kinds);
+  var activeKinds = kindKeys.filter(function (k) { return state.kinds[k]; });
+  if (activeKinds.length !== kindKeys.length) p.set('kinds', activeKinds.join(','));
+
+  var tagBits = [];
+  Object.keys(state.tagStates || {}).forEach(function (k) {
+    if (state.tagStates[k] === 'include') tagBits.push('+' + k);
+    else if (state.tagStates[k] === 'exclude') tagBits.push('-' + k);
+  });
+  if (tagBits.length) p.set('tags', tagBits.join(','));
+
+  if (state.sort && state.sort !== 'newest') p.set('sort', state.sort);
+
+  var qs = p.toString();
+  var newUrl = window.location.pathname + (qs ? '?' + qs : '');
+  window.history.replaceState({}, '', newUrl);
+}
+
+// Seed state from the URL on load. Returns true if any filter param was found,
+// so init() knows whether to skip its defaults.
+function readURLState() {
+  var p = new URLSearchParams(window.location.search);
+  var found = false;
+
+  // Back-compat: the old ?creator=NAME deep-link still works.
+  var legacyCreator = p.get('creator');
+  if (legacyCreator) {
+    state.search = decodeURIComponent(legacyCreator).toLowerCase();
+    p.set('q', state.search);
+    p.set('modes', 'creator');
+    found = true;
+  }
+
+  if (p.has('q')) { state.search = decodeURIComponent(p.get('q')).toLowerCase(); found = true; }
+
+  if (p.has('modes')) {
+    found = true;
+    var on = p.get('modes').split(',').filter(Boolean);
+    Object.keys(state.searchModes).forEach(function (m) { state.searchModes[m] = on.indexOf(m) > -1; });
+    // Never leave zero modes active (would match nothing on a non-empty query).
+    if (!Object.keys(state.searchModes).some(function (m) { return state.searchModes[m]; })) {
+      Object.keys(state.searchModes).forEach(function (m) { state.searchModes[m] = true; });
+    }
+  }
+
+  if (p.has('kinds')) {
+    found = true;
+    var onK = p.get('kinds').split(',').filter(Boolean);
+    Object.keys(state.kinds).forEach(function (k) { state.kinds[k] = onK.indexOf(k) > -1; });
+  }
+
+  if (p.has('tags')) {
+    found = true;
+    state.tagStates = {};
+    p.get('tags').split(',').filter(Boolean).forEach(function (bit) {
+      var sign = bit.charAt(0), key = bit.slice(1);
+      if (sign === '+') state.tagStates[key] = 'include';
+      else if (sign === '-') state.tagStates[key] = 'exclude';
+    });
+  }
+
+  if (p.has('sort')) { state.sort = p.get('sort'); found = true; }
+
+  return found;
 }
 
 // ── Grid render ─────────────────────────────────────────────────────────────
