@@ -514,6 +514,19 @@
 
   <script>
     var KEY = 'sinverse_age_ok';
+    var MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // keep in sync with agegate.js
+
+    // True if a non-expired confirmation exists. Stored in localStorage (shared
+    // across tabs / persists across visits) as a timestamp.
+    function isConfirmed() {
+      try {
+        var raw = localStorage.getItem(KEY);
+        if (!raw) return false;
+        if (raw === '1') return true; // back-compat with old flag
+        var ts = parseInt(raw, 10);
+        return !isNaN(ts) && (Date.now() - ts) < MAX_AGE_MS;
+      } catch (e) { return false; }
+    }
 
     // If the visitor was deep-linking to a module, remember where to send
     // them back to once they confirm their age.
@@ -534,14 +547,14 @@
     }
 
     function enter() {
-      sessionStorage.setItem(KEY, '1');
+      try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {}
       var back = getReturnUrl();
       if (back) { window.location.replace(back); return; }
       showLanding();
     }
 
-    // Already confirmed this session
-    if (sessionStorage.getItem(KEY) === '1') {
+    // Already confirmed (and not expired)
+    if (isConfirmed()) {
       // If they arrived here via a deep-link redirect, bounce them onward.
       var back = getReturnUrl();
       if (back) { window.location.replace(back); }

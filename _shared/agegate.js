@@ -8,6 +8,7 @@
 
 (function () {
   var KEY = 'sinverse_age_ok';
+  var MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000; // re-confirm after 30 days
 
   // Bot/screenshot bypass: automated image-capture requests (e.g. the Discord
   // bot hitting ?screenshot=1) are not a human browsing the gated content, so
@@ -16,8 +17,21 @@
     if (/[?&]screenshot=1(?:&|$)/.test(window.location.search)) return;
   } catch (e) {}
 
+  // Confirmation is stored in localStorage (shared across all tabs and persists
+  // across visits) as a timestamp, so opening a link in a NEW TAB no longer
+  // re-triggers the gate. The timestamp lets us expire it after MAX_AGE_MS.
   try {
-    if (sessionStorage.getItem(KEY) === '1') return; // already confirmed
+    var raw = localStorage.getItem(KEY);
+    if (raw) {
+      // Back-compat: an old value of '1' (no timestamp) counts as confirmed.
+      var ts = (raw === '1') ? Date.now() : parseInt(raw, 10);
+      if (raw === '1' || (!isNaN(ts) && (Date.now() - ts) < MAX_AGE_MS)) {
+        if (raw === '1') { try { localStorage.setItem(KEY, String(Date.now())); } catch (e) {} }
+        return; // already confirmed and not expired
+      }
+      // Expired — drop it and fall through to the gate.
+      try { localStorage.removeItem(KEY); } catch (e) {}
+    }
   } catch (e) {
     return; // storage blocked — fail open rather than trapping the user
   }
