@@ -1514,20 +1514,20 @@
     </div>
     <hr class="wiki-nav-divider" style="margin-top:0" />
     <div class="wiki-nav-section">
-      <a class="wiki-nav-link active" data-lore="world-of-sinverse">World of Sinverse</a>
-      <a class="wiki-nav-link" data-page="timeline">Timeline</a>
+      <a class="wiki-nav-link active" data-lore="world-of-sinverse" href="#lore-world-of-sinverse">World of Sinverse</a>
+      <a class="wiki-nav-link" data-page="timeline" href="#page-timeline">Timeline</a>
     </div>
     <hr class="wiki-nav-divider" />
     <div class="wiki-nav-section">
       <div class="wiki-nav-heading">Browse by Category</div>
-      <a class="wiki-nav-link" data-page="characters">Characters</a>
+      <a class="wiki-nav-link" data-page="characters" href="#page-characters">Characters</a>
       <div id="sidebar-lore-cats"></div>
     </div>
     <hr class="wiki-nav-divider" />
     <div class="wiki-nav-section">
       <div class="wiki-nav-heading">Help</div>
-      <a class="wiki-nav-link" data-lore="faq">FAQ</a>
-      <a class="wiki-nav-link" data-lore="contributor-guidelines">Contributor Guidelines</a>
+      <a class="wiki-nav-link" data-lore="faq" href="#lore-faq">FAQ</a>
+      <a class="wiki-nav-link" data-lore="contributor-guidelines" href="#lore-contributor-guidelines">Contributor Guidelines</a>
     </div>
   </nav>
 
@@ -1687,7 +1687,21 @@ if (typeof marked !== 'undefined') {
       .replace(/^\.\.\/characters\//, '')
       .replace(/^\.\.\//, '')
       .replace(/\.md$/, '');
-    return '<span class="wiki-lore-link" data-target="' + target + '">' + text + '</span>';
+    // Render a REAL anchor with a resolvable deep-link href, so middle-click and
+    // right-click "open in new tab" work natively. data-target is kept for the
+    // fast in-page click path (see the #wiki-main click handler). Resolve the
+    // target's type now (data is loaded before any body markdown is parsed) so
+    // the href deep-links correctly on a fresh load.
+    var deepHref = '#' + target; // safe fallback
+    var asLore = LORE_PAGES.find(function(p){ return p.id === target; });
+    if (asLore) {
+      deepHref = '#lore-' + target;
+    } else {
+      var asChar = characters.find(function(c){ return c.name.toLowerCase() === target.toLowerCase(); })
+                || characters.find(function(c){ return (c.wiki || '') === target; });
+      if (asChar) deepHref = '#char-' + (asChar.wiki || asChar.id);
+    }
+    return '<a class="wiki-lore-link" href="' + deepHref + '" data-target="' + target + '">' + text + '</a>';
   };
   marked.use({ renderer: renderer });
 }
@@ -1759,6 +1773,10 @@ document.getElementById('wiki-main').addEventListener('click', function(e) {
   if (card) { window.location.href = card.getAttribute('data-href'); return; }
   var loreLink = e.target.closest('.wiki-lore-link[data-target]');
   if (loreLink) {
+    // Let the browser handle new-tab/new-window intents natively (the anchor has
+    // a real href): modified clicks and any non-left button fall through.
+    if (e.defaultPrevented || e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+    e.preventDefault(); // plain left-click → fast in-page navigation
     var t = loreLink.getAttribute('data-target');
     var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
     if (isLore) { loadLorePage(t); return; }
@@ -1770,6 +1788,9 @@ document.getElementById('wiki-main').addEventListener('click', function(e) {
 document.querySelector('.wiki-sidebar').addEventListener('click', function(e) {
   var link = e.target.closest('.wiki-nav-link');
   if (!link) return;
+  // Let the browser handle new-tab/new-window intents natively.
+  if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
+  e.preventDefault();
   document.querySelectorAll('.wiki-nav-link').forEach(function(l){ l.classList.remove('active'); });
   link.classList.add('active');
 
@@ -1875,10 +1896,18 @@ Promise.all([
     }
     else if (loreMatch) { loadLorePage(loreMatch[1], false); }
     else if (catMatch) {
-      var section = decodeURIComponent(catMatch[1].replace(/-/g, ' '));
-      // Capitalise each word to match section names
-      section = section.replace(/\w/g, function(c){ return c.toUpperCase(); });
-      showCategory(section, false);
+      // Resolve the slug back to a REAL section name by slugifying each known
+      // section and comparing - reconstructing the name from the slug is fragile
+      // (capitalisation, multi-word, ampersands) and breaks the exact-match
+      // filter in showCategory. Matching against actual data is reliable.
+      var catSlug = decodeURIComponent(catMatch[1]).toLowerCase();
+      var catSections = [];
+      LORE_PAGES.forEach(function(lp){ if (catSections.indexOf(lp.section) === -1) catSections.push(lp.section); });
+      var section = catSections.find(function(s){
+        return s.toLowerCase().replace(/\s+/g, '-') === catSlug;
+      });
+      if (section) showCategory(section, false);
+      else showPage('not-found', false);
     } else if (pageMatch) { showPage(pageMatch[1], false); }
     return; // skip ?character= param handling below
   }
@@ -1918,9 +1947,29 @@ function buildLoreSidebar() {
     var a = document.createElement('a');
     a.className = 'wiki-nav-link';
     a.setAttribute('data-category', sec);
+    a.href = '#cat-' + sec.toLowerCase().replace(/\s+/g, '-');
     a.textContent = sec;
     container.appendChild(a);
   });
+}
+
+// Derive the deep-link hash for a nav element from its data-* attributes, so
+// every nav link/card can carry a real href (enables middle/right-click → new
+// tab) while plain left-clicks still use fast in-page navigation.
+function navHashFor(el) {
+  if (!el) return null;
+  var charId = el.getAttribute('data-char-id');
+  var lore   = el.getAttribute('data-lore');
+  var cat    = el.getAttribute('data-category');
+  var page   = el.getAttribute('data-page');
+  if (charId) {
+    var c = characters.find(function(x){ return x.id === parseInt(charId); });
+    return '#char-' + (c ? (c.wiki || c.id) : charId);
+  }
+  if (lore) return '#lore-' + lore;
+  if (cat)  return '#cat-' + cat.toLowerCase().replace(/\s+/g, '-');
+  if (page) return '#page-' + page;
+  return null;
 }
 
 function showCategory(section, pushState) {
@@ -1934,12 +1983,17 @@ function showCategory(section, pushState) {
   var list = document.createElement('div');
   list.style.cssText = 'display:flex;flex-direction:column;gap:1px;background:var(--border);';
   items.forEach(function(lp) {
-    var card = document.createElement('div');
-    card.style.cssText = 'background:var(--bg-panel);padding:1.1rem 1.5rem;cursor:pointer;transition:background 0.15s;';
+    var card = document.createElement('a');
+    card.href = '#lore-' + lp.id;
+    card.style.cssText = 'display:block;text-decoration:none;background:var(--bg-panel);padding:1.1rem 1.5rem;cursor:pointer;transition:background 0.15s;';
     card.innerHTML = '<div style="font-family:var(--font-display);font-style:italic;font-size:1.15rem;color:var(--text-primary);margin-bottom:0.25rem">' + lp.label + '</div>';
     card.addEventListener('mouseenter', function(){ this.style.background='var(--bg-inset)'; });
     card.addEventListener('mouseleave', function(){ this.style.background='var(--bg-panel)'; });
-    card.addEventListener('click', function(){ loadLorePage(lp.id); });
+    card.addEventListener('click', function(e){
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+      e.preventDefault();
+      loadLorePage(lp.id);
+    });
     list.appendChild(card);
   });
   grid.appendChild(list);
@@ -2020,7 +2074,9 @@ function loadLorePage(id, pushState) {
       // Wire lore links
       container.querySelectorAll('.wiki-lore-link').forEach(function(el) {
         el.style.cssText = 'color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--border-mid);';
-        el.addEventListener('click', function() {
+        el.addEventListener('click', function(e) {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+          e.preventDefault();
           var t = this.getAttribute('data-target');
           var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
           if (isLore) loadLorePage(t);
@@ -2321,6 +2377,8 @@ function buildTimeline() {
       });
       detail.querySelectorAll('.wiki-lore-link').forEach(function(el) {
         el.addEventListener('click', function(e) {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+          e.preventDefault();
           e.stopPropagation();
           var t = this.getAttribute('data-target');
           var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
@@ -2627,7 +2685,7 @@ function sizeClassFor(heightIn) {
 // `compute` = derive the match value from the character (used for size_class).
 // `options` = supply ordered option labels instead of scanning the data.
 var CHAR_FILTER_DEFS = [
-  { key: 'faction',    label: 'Faction',    arr: true  },
+  { key: 'faction',    label: 'Organizations', arr: true  },
   { key: 'role',       label: 'Role',       arr: true  },
   { key: 'species',    label: 'Species',    arr: true  },
   { key: 'size_class', label: 'Size',       arr: false,
@@ -2757,7 +2815,7 @@ function renderCharCards(chars) {
   chars.forEach(function(c) {
     var card = document.createElement('a');
     card.className = 'wiki-char-card';
-    card.href = 'javascript:void(0)';
+    card.href = '#char-' + (c.wiki || c.id);
 
     var imgEl = document.createElement('img');
     imgEl.className = 'wiki-char-portrait';
@@ -2789,7 +2847,11 @@ function renderCharCards(chars) {
       card.appendChild(tag);
     }
 
-    card.addEventListener('click', function() { loadCharPage(c.id); });
+    card.addEventListener('click', function(e) {
+      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+      e.preventDefault();
+      loadCharPage(c.id);
+    });
     grid.appendChild(card);
   });
 }
@@ -2812,7 +2874,7 @@ function loadCharPage(charId, pushState) {
     ['Pronouns',   char.pronouns || '—'],
     ['Height',     '<span class="char-stat-val" data-inches="' + char.height + '">' + fH(char.height) + '</span>'],
     ['Weight',     char.weight ? '<span class="char-stat-val" data-lbs="' + char.weight + '">' + fW(char.weight) + '</span>' : '—'],
-    ['Faction',    factionStr],
+    ['Organizations', factionStr],
   ];
   if (char.role && char.role.length) statRows.push(['Role', char.role.join(', ')]);
   var sizeClass = sizeClassFor(char.height);
@@ -2875,20 +2937,20 @@ function loadCharPage(charId, pushState) {
         '<div class="wiki-char-content-links">' +
           '<div class="wiki-section-h">Featured Content</div>' +
           '<div class="wiki-char-content-row">' +
-            '<div class="wiki-char-content-card" data-href="' + gUrl + '">' +
+            '<a class="wiki-char-content-card" href="' + gUrl + '">' +
               '<div class="wiki-char-content-card-count">' + galleryCount + '</div>' +
               '<div>' +
                 '<div class="wiki-char-content-card-label">Gallery</div>' +
                 '<div class="wiki-char-content-card-sub">' + gSub + '</div>' +
               '</div>' +
-            '</div>' +
-            '<div class="wiki-char-content-card" data-href="' + lUrl + '">' +
+            '</a>' +
+            '<a class="wiki-char-content-card" href="' + lUrl + '">' +
               '<div class="wiki-char-content-card-count">' + libraryCount + '</div>' +
               '<div>' +
                 '<div class="wiki-char-content-card-label">Library</div>' +
                 '<div class="wiki-char-content-card-sub">' + lSub + '</div>' +
               '</div>' +
-            '</div>' +
+            '</a>' +
           '</div>' +
         '</div>';
       // Relationships — auto-rendered from characters.json (single source of
@@ -2898,7 +2960,7 @@ function loadCharPage(charId, pushState) {
         var relRows = char.relationships.map(function(rel) {
           var target = characters.find(function(c){ return c.name.toLowerCase() === String(rel.name).toLowerCase(); });
           var nameHtml = target
-            ? '<span class="wiki-rel-link" data-target="' + target.name.toLowerCase() + '">' + rel.name + '</span>'
+            ? '<a class="wiki-rel-link" href="#char-' + (target.wiki || target.id) + '" data-target="' + target.name.toLowerCase() + '">' + rel.name + '</a>'
             : rel.name;
           var noteHtml = rel.note ? ' <span class="wiki-rel-note">— ' + rel.note + '</span>' : '';
           return '<li><span class="wiki-rel-type">' + (rel.type || 'Connection') + '</span> ' + nameHtml + noteHtml + '</li>';
@@ -2931,7 +2993,9 @@ function loadCharPage(charId, pushState) {
       renderWikiImages(container);
       // Wire relationship links to load the related character's page
       container.querySelectorAll('.wiki-rel-link').forEach(function(el) {
-        el.addEventListener('click', function() {
+        el.addEventListener('click', function(e) {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+          e.preventDefault();
           var t = this.getAttribute('data-target');
           var cId = characters.find(function(c){ return c.name.toLowerCase() === t.toLowerCase(); });
           if (cId) loadCharPage(cId.id);
@@ -2940,7 +3004,9 @@ function loadCharPage(charId, pushState) {
       // Wire internal wiki links in character markdown
       container.querySelectorAll('.wiki-lore-link').forEach(function(el) {
         el.style.cssText = 'color:var(--accent);cursor:pointer;text-decoration:underline;text-decoration-color:var(--border-mid);';
-        el.addEventListener('click', function() {
+        el.addEventListener('click', function(e) {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+          e.preventDefault();
           var t = this.getAttribute('data-target');
           var isLore = LORE_PAGES.find(function(p){ return p.id === t; });
           if (isLore) loadLorePage(t);
