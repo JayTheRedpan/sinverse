@@ -35,7 +35,7 @@
       },
       {
         "text": "Set yourself to your role. It's not worth five minutes, in exchange for what could happen to you if you fail again.",
-        "nextId": null
+        "nextId": 10
       },
       {
         "text": "Wake her, but normally. She'll just ask you to get to work if she wants it. But maybe she won't.",
@@ -182,5 +182,115 @@
         "nextId": null
       }
     ]
+  },
+  {
+    "id": 10,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Mouth.",
+        "nextId": 11
+      },
+      {
+        "text": "Ass.",
+        "nextId": null
+      },
+      {
+        "text": "Please don't?",
+        "nextId": null
+      }
+    ],
+    "author": "Phrenics",
+    "title": "F - This is your role."
+  },
+  {
+    "id": 11,
+    "image": null,
+    "tags": [
+      "abuse"
+    ],
+    "choices": [
+      {
+        "text": "Scream.",
+        "nextId": 12
+      },
+      {
+        "text": "Cry.",
+        "nextId": 12
+      }
+    ],
+    "author": "Phrenics",
+    "title": "F - Mouth."
+  },
+  {
+    "id": 12,
+    "image": null,
+    "tags": [
+      "abuse"
+    ],
+    "choices": [
+      {
+        "text": "You're never ready for how much there is, though.",
+        "nextId": 13
+      }
+    ],
+    "author": "Phrenics",
+    "title": "F - Suffer."
+  },
+  {
+    "id": 13,
+    "image": null,
+    "tags": [
+      "abuse",
+      "musk"
+    ],
+    "choices": [
+      {
+        "text": "Pass out.",
+        "nextId": 14
+      }
+    ],
+    "author": "Phrenics",
+    "title": "F - Too much."
+  },
+  {
+    "id": 14,
+    "image": null,
+    "tags": [
+      "abuse",
+      "musk"
+    ],
+    "choices": [
+      {
+        "text": "Clean her.",
+        "nextId": 15
+      }
+    ],
+    "author": "Phrenics",
+    "title": "F - Awaken."
+  },
+  {
+    "id": 15,
+    "image": null,
+    "tags": [
+      "abuse"
+    ],
+    "choices": [
+      {
+        "text": "\"... our little playdate.\"",
+        "nextId": null
+      },
+      {
+        "text": "\"... our appointment for your procedure.\"",
+        "nextId": null
+      },
+      {
+        "text": "\"... our time with the girls.\"",
+        "nextId": null
+      }
+    ],
+    "author": "Phrenics",
+    "title": "F - Clean."
   }
 ]
