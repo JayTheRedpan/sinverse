@@ -697,6 +697,15 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   .zoom-btn { width: 24px; height: 24px; font-size: .85rem; }
   .zoom-label { min-width: 30px; font-size: .56rem; }
   .zoom-reset-btn { padding: 0 .35rem; font-size: .54rem; }
+  /* Background-picker popover: stay fully on-screen on phones. Right-anchored
+     and allowed to wrap its swatches so it fits any narrow width. */
+  .sr-bg-pop { right: 0; left: auto; }
+  .sr-bg-pop-row {
+    grid-template-columns: repeat(auto-fit, 24px);
+    justify-content: flex-end;
+    max-width: 100%;
+  }
+  .sr-bg-preset { width: 24px; height: 24px; }  /* slightly larger tap target */
 }
 
 /* Headshot counter-zoom — inverse scale applied by JS to cancel out parent zoom */
@@ -2041,10 +2050,12 @@ body.sandbox-active .sr-img-wrap img { cursor: inherit; }
 
 /* Popover */
 .sr-bg-pop {
-  position:absolute; top:calc(100% + 6px); left:0; z-index:200;
+  position:absolute; top:calc(100% + 6px); right:0; z-index:200;
   background:var(--bg-panel); border:1px solid var(--border-mid); border-radius:var(--radius);
   padding:10px; box-shadow:0 8px 24px rgba(0,0,0,0.45);
   display:flex; flex-direction:column; gap:9px;
+  max-width:calc(100vw - 24px);   /* never wider than the viewport (mobile safety) */
+  box-sizing:border-box;
 }
 .sr-bg-pop-row { display:grid; grid-template-columns:repeat(7, 22px); gap:6px; }
 .sr-bg-preset {
