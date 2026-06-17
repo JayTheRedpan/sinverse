@@ -2,6 +2,7 @@
 <html lang="en">
 <head>
   <script src="../_shared/agegate.js?v=1780460382"></script>
+  <script src="../_shared/stash-unlock.js?v=1780460382"></script>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Wiki — Sinverse</title>
@@ -3016,6 +3017,10 @@ function loadCharPage(charId, pushState) {
           }
         });
       });
+
+      // "Jay's Secret Stash" easter-egg entrance: mounts the hidden wincing-Jay
+      // sticker at the bottom of Jay's page (no-op for every other character).
+      if (window.SinverseStash) window.SinverseStash.onCharPage(container, char);
     })
     .catch(function() {
       container.innerHTML = header + '<p style="color:var(--text-secondary);font-style:italic">No wiki page written yet for this character.</p>';
