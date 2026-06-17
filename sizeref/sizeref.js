@@ -40,6 +40,7 @@ var sandboxPositions = {}; // slot index → {tx, ty}, persists across renders
 var S = {
   heightOverrides: {},  // charId -> override inches (session only)
   gridLines:    false,  // show scale grid lines across viewer
+  bgColor:      '',     // user-chosen scene background ('' = default theme bg). View-only; never affects copy/export.
   perspActive:  {},     // slotIdx -> active perspective tab index
   chars:       [],
   objects:     [],
@@ -271,6 +272,12 @@ function applyURLParams() {
             allowTaint: false,
             scale: 2,
             onclone: function(doc) {
+              // Custom scene background is view-only — clear the scroll
+              // background so bot/screenshot captures match the default state.
+              ['sr-scroll', 'sr-length-scroll'].forEach(function(id) {
+                var e = doc.getElementById(id);
+                if (e) e.style.background = '';
+              });
               var cloneImgs = Array.from(doc.querySelectorAll('img.sr-char-img:not(.sr-img-real), img.sr-sil-filter'));
               cloneImgs.forEach(function(img, i) {
                 if (bakedUrls[i]) { img.src = bakedUrls[i]; img.style.filter = 'none'; }
@@ -1978,29 +1985,42 @@ function renderStatsView() {
 function updateGridOverlay() {
   updateHeightGrid();
   updateLengthGrid();
-  // Also clear length scroll if grid turned off
-  if (!S.gridLines) {
-    var ls = document.getElementById('sr-length-scroll');
-    if (ls) ls.style.backgroundImage = 'none';
-    var sc = document.getElementById('sr-scroll');
-    if (sc) sc.style.backgroundImage = 'none';
-  }
+}
+
+// Pick a grid-line colour that reads well against the current scene background.
+// On the default (no custom colour) keep the original rose-gold tint; on a
+// custom colour, use dark lines over light backgrounds and light lines over
+// dark ones, scaled by luminance for nice but subtle contrast.
+function gridLineColor() {
+  var c = S.bgColor || '';
+  if (!c || !/^#[0-9a-fA-F]{6}$/.test(c)) return 'rgba(196,154,120,0.15)';
+  var r = parseInt(c.slice(1,3),16), g = parseInt(c.slice(3,5),16), b = parseInt(c.slice(5,7),16);
+  var lum = (0.299*r + 0.587*g + 0.114*b) / 255; // 0=dark, 1=light
+  return lum > 0.5
+    ? 'rgba(0,0,0,0.22)'      // dark lines on a light background
+    : 'rgba(255,255,255,0.22)'; // light lines on a dark background
 }
 
 function updateHeightGrid() {
   var scrollEl = document.getElementById('sr-scroll');
   var sceneEl  = document.getElementById('sr-scene');
-  // Paint the grid on the scroll VIEWPORT (fixed), not the scrollable scene, so
-  // it stays aligned with the ruler — which is also fixed to the viewport bottom
-  // and does not scroll. (Both anchor lines to the bottom / ground line.) Clear
-  // any paint left on the scene from an earlier approach.
+  var bg = S.bgColor || '';
   if (sceneEl) { sceneEl.style.backgroundImage = 'none'; }
   if (!scrollEl) return;
+
+  // Grid off: paint only the custom colour (if any), else clear.
   if (!S.gridLines || S.pxPerIn <= 0) {
-    scrollEl.style.backgroundImage = 'none';
+    if (bg) {
+      scrollEl.style.backgroundImage = 'none';
+      scrollEl.style.background = bg;
+    } else {
+      scrollEl.style.background = '';
+      scrollEl.style.backgroundImage = 'none';
+    }
     return;
   }
-  var lineColor = 'rgba(196,154,120,0.15)';
+
+  var lineColor = gridLineColor();
   var stepPx;
   if (S.metric) {
     var pxPerCm = S.pxPerIn / 2.54;
@@ -2012,25 +2032,62 @@ function updateHeightGrid() {
     stepPx = pxPerFt * step2;
   }
   if (stepPx < 1) return;
-  // repeating-linear-gradient draws horizontal lines from the bottom
-  scrollEl.style.backgroundImage =
-    'repeating-linear-gradient(to top, ' + lineColor + ' 0px, ' + lineColor + ' 1px, transparent 1px, transparent ' + stepPx + 'px)';
-  scrollEl.style.backgroundSize = '100% 100%';
-  scrollEl.style.backgroundPosition = 'bottom';
-  // Scroll the grid WITH the content (local), so lines track the figures. The
-  // ruler is scroll-synced to match (see syncRulerScroll), keeping the two aligned.
-  scrollEl.style.backgroundAttachment = 'local';
-  scrollEl.style.backgroundAttachment = 'local';
+  // Grid lines from the bottom, over the custom colour (a solid colour layer
+  // listed AFTER the lines = behind them). When no custom colour, the second
+  // layer is omitted so the scroll's normal background shows through.
+  var lines = 'repeating-linear-gradient(to top, ' + lineColor + ' 0px, ' + lineColor + ' 1px, transparent 1px, transparent ' + stepPx + 'px)';
+  if (bg) {
+    scrollEl.style.backgroundImage = lines + ', linear-gradient(' + bg + ', ' + bg + ')';
+    scrollEl.style.backgroundSize = '100% 100%, 100% 100%';
+    scrollEl.style.backgroundPosition = 'bottom, top';
+    scrollEl.style.backgroundRepeat = 'repeat, no-repeat';
+    scrollEl.style.backgroundAttachment = 'local, scroll';
+  } else {
+    scrollEl.style.backgroundImage = lines;
+    scrollEl.style.backgroundSize = '100% 100%';
+    scrollEl.style.backgroundPosition = 'bottom';
+    scrollEl.style.backgroundRepeat = 'repeat';
+    scrollEl.style.backgroundAttachment = 'local';
+  }
 }
 
 function updateLengthGrid() {
   var scrollEl = document.getElementById('sr-length-scroll');
   if (!scrollEl) return;
+
+  var bg = S.bgColor || '';  // custom scene colour (length-view bars area)
+
+  // Compute the bar origin (length = 0) in content space — the left edge of the
+  // bars, i.e. the right edge of the headshot column. Used to keep the custom
+  // colour (and the grid) out of the headshot column.
+  function computeViewOffset() {
+    var sx = scrollEl.scrollLeft || 0;
+    var scrollRect = scrollEl.getBoundingClientRect();
+    var bar = scrollEl.querySelector('.sr-length-img-wrap');
+    var originContent = bar
+      ? (bar.getBoundingClientRect().left - scrollRect.left) + sx
+      : (90 + 24); // fallback: HEADSHOT_W + padding
+    return originContent - sx;
+  }
+
+  // No grid lines: paint only the custom colour (if any) into the bars region.
   if (!S.gridLines || S.pxPerInLen <= 0) {
-    scrollEl.style.backgroundImage = 'none';
+    if (bg) {
+      var vo0 = computeViewOffset();
+      // Transparent over the headshot column, custom colour from the bar origin
+      // rightward — fills the full viewport height, sits behind the rows.
+      scrollEl.style.backgroundImage =
+        'linear-gradient(to right, transparent ' + vo0 + 'px, ' + bg + ' ' + vo0 + 'px)';
+      scrollEl.style.backgroundSize = '100% 100%';
+      scrollEl.style.backgroundPosition = '0 0';
+      scrollEl.style.backgroundRepeat = 'no-repeat';
+    } else {
+      scrollEl.style.backgroundImage = 'none';
+    }
     return;
   }
-  var lineColor = 'rgba(196,154,120,0.15)';
+
+  var lineColor = gridLineColor();
   var stepPx;
   if (S.metric) {
     var pxPerCm = S.pxPerInLen / 2.54;
@@ -2045,31 +2102,20 @@ function updateLengthGrid() {
     stepPx = S.pxPerInLen * step2;
   }
   if (stepPx < 1) return;
-  // The length bars share a left origin (length = 0). Find that origin in the
-  // scroll container's CONTENT space (independent of scroll): it's the left edge
-  // of a length bar. Use the first row's bar; fall back to headshot width.
-  var sx = scrollEl.scrollLeft || 0;
-  var scrollRect = scrollEl.getBoundingClientRect();
-  var bar = scrollEl.querySelector('.sr-length-img-wrap');
-  var originContent;
-  if (bar) {
-    var br = bar.getBoundingClientRect();
-    originContent = (br.left - scrollRect.left) + sx;   // content-space x of length 0
-  } else {
-    originContent = 90 + 24; // fallback: HEADSHOT_W + padding
-  }
-  // The background is attached to the (non-scrolling) container, so to make the
-  // lines track the content we offset the position by -scrollLeft. This keeps
-  // the grid aligned with both the bars and the ruler (which also shifts by
-  // -scrollLeft).
-  var viewOffset = originContent - sx;
-  var blockColor = 'var(--bg)';  // same as viewer background
+  var viewOffset = computeViewOffset();
+  // Headshot-column mask: default viewer colour from 0 to the bar origin so the
+  // grid (and any custom colour) never reaches the headshot column.
+  var blockColor = 'var(--bg)';
+  // Bars-area fill: the custom colour if set, else the default viewer colour
+  // (so the grid lines read against the same backing as before).
+  var barsFill = bg || 'var(--bg)';
   scrollEl.style.backgroundImage =
     'linear-gradient(to right, ' + blockColor + ' ' + viewOffset + 'px, transparent ' + viewOffset + 'px), ' +
-    'repeating-linear-gradient(to right, ' + lineColor + ' 0px, ' + lineColor + ' 1px, transparent 1px, transparent ' + stepPx + 'px)';
-  scrollEl.style.backgroundSize = '100% 100%, ' + stepPx + 'px 100%';
-  scrollEl.style.backgroundPosition = '0 0, ' + viewOffset + 'px 0';
-  scrollEl.style.backgroundRepeat = 'no-repeat, repeat-x';
+    'repeating-linear-gradient(to right, ' + lineColor + ' 0px, ' + lineColor + ' 1px, transparent 1px, transparent ' + stepPx + 'px), ' +
+    'linear-gradient(to right, transparent ' + viewOffset + 'px, ' + barsFill + ' ' + viewOffset + 'px)';
+  scrollEl.style.backgroundSize = '100% 100%, ' + stepPx + 'px 100%, 100% 100%';
+  scrollEl.style.backgroundPosition = '0 0, ' + viewOffset + 'px 0, 0 0';
+  scrollEl.style.backgroundRepeat = 'no-repeat, repeat-x, no-repeat';
 }
 
 // ── View switching ────────────────────────────────────────────
@@ -4835,6 +4881,125 @@ if (gridBtn) gridBtn.addEventListener('click', function() {
   updateGridOverlay();
 });
 
+// ── Scene background colour ────────────────────────────────────────────────
+// Lets the user lighten/darken the scene so dark characters read with better
+// contrast. CRITICAL: this colour is applied only to the visible scroll
+// viewports (#sr-scroll / #sr-length-scroll), which are ANCESTORS of the copy
+// capture targets (#sr-zoom / #sr-length-zoom). Since doCopyImage() captures
+// those inner targets with backgroundColor:null, the chosen colour shows on
+// screen but is never baked into the copied/exported image in either view.
+var SR_BG_KEY = 'sinverse_sizeref_bg';
+function applySceneBg() {
+  var c = S.bgColor || '';
+
+  // Both views composite the custom colour INTO their grid background (via
+  // updateHeightGrid / updateLengthGrid) rather than setting `background`
+  // directly — setting the shorthand would wipe the grid's background-image.
+  // Clear any stale inline background first so the grid functions fully own it.
+  var hScroll = document.getElementById('sr-scroll');
+  if (hScroll) hScroll.style.background = '';
+  var lScroll = document.getElementById('sr-length-scroll');
+  if (lScroll) lScroll.style.background = '';
+  if (typeof updateHeightGrid === 'function') updateHeightGrid();
+  if (typeof updateLengthGrid === 'function') updateLengthGrid();
+
+  // Reflect onto the controls.
+  var sw = document.getElementById('sr-bg-swatch');
+  if (sw) sw.style.background = c || 'var(--bg-panel)';
+  var chip = document.getElementById('sr-bg-custom-chip');
+  if (chip) chip.style.background = c || 'var(--bg-panel)';
+  var inp = document.getElementById('sr-bg-input');
+  if (inp && c && /^#[0-9a-fA-F]{6}$/.test(c)) inp.value = c;
+  // Highlight the active preset (or Default when no custom colour).
+  document.querySelectorAll('.sr-bg-preset').forEach(function(b) {
+    b.classList.toggle('active', (b.getAttribute('data-color') || '') === (c || ''));
+  });
+}
+function setSceneBg(c) {
+  S.bgColor = c || '';
+  try { c ? localStorage.setItem(SR_BG_KEY, c) : localStorage.removeItem(SR_BG_KEY); } catch (e) {}
+  applySceneBg();
+}
+// Restore any saved preference.
+try {
+  var savedBg = localStorage.getItem(SR_BG_KEY);
+  if (savedBg) S.bgColor = savedBg;
+} catch (e) {}
+// Build the control and insert it into the toolbar (next to the Grid button),
+// so no HTML edit is required.
+(function buildBgControl() {
+  var gridBtnEl = document.getElementById('btn-grid-lines');
+  if (!gridBtnEl || !gridBtnEl.parentNode) return;
+  if (document.getElementById('sr-bg-control')) return;
+
+  // Curated, on-brand presets chosen to give dark characters good contrast.
+  // '' = reset to the default theme background.
+  var PRESETS = [
+    { c: '',        name: 'Default' },
+    { c: '#e9e4dc', name: 'Cream'   },
+    { c: '#f4f4f5', name: 'Light'   },
+    { c: '#9aa0a6', name: 'Slate'   },
+    { c: '#6b7280', name: 'Gray'    },
+    { c: '#a89683', name: 'Taupe'   },
+    { c: '#8ba3b8', name: 'Sky'     }
+  ];
+
+  var wrap = document.createElement('span');
+  wrap.id = 'sr-bg-control';
+  wrap.className = 'sr-bg-control';
+
+  var swatchBtns = PRESETS.map(function(p) {
+    var isDefault = (p.c === '');
+    return '<button type="button" class="sr-bg-preset' + (isDefault ? ' sr-bg-preset-default' : '') +
+      '" data-color="' + p.c + '" title="' + p.name + '" aria-label="' + p.name + '"' +
+      (isDefault ? '' : ' style="background:' + p.c + '"') + '>' +
+      (isDefault ? '&#10005;' : '') + '</button>';
+  }).join('');
+
+  wrap.innerHTML =
+    '<button type="button" id="sr-bg-toggle" class="sr-bg-toggle" title="Scene background colour (does not affect copied images)">' +
+      '<span id="sr-bg-swatch" class="sr-bg-swatch"></span>' +
+      '<span class="sr-bg-text">BG</span>' +
+    '</button>' +
+    '<div id="sr-bg-pop" class="sr-bg-pop" style="display:none">' +
+      '<div class="sr-bg-pop-row">' + swatchBtns + '</div>' +
+      '<label class="sr-bg-custom-row" title="Pick a custom colour">' +
+        '<span class="sr-bg-custom-label">Custom</span>' +
+        '<span class="sr-bg-custom-chip" id="sr-bg-custom-chip"></span>' +
+        '<input id="sr-bg-input" type="color" class="sr-bg-input" value="#9aa0a6" aria-label="Custom scene background colour" />' +
+      '</label>' +
+    '</div>';
+  gridBtnEl.parentNode.insertBefore(wrap, gridBtnEl.nextSibling);
+
+  var toggle = document.getElementById('sr-bg-toggle');
+  var pop = document.getElementById('sr-bg-pop');
+
+  function openPop(open) {
+    pop.style.display = open ? '' : 'none';
+    toggle.classList.toggle('active', open);
+  }
+  toggle.addEventListener('click', function(e) {
+    e.stopPropagation();
+    openPop(pop.style.display === 'none');
+  });
+  // Click-away closes the popover.
+  document.addEventListener('click', function(e) {
+    if (pop.style.display !== 'none' && !wrap.contains(e.target)) openPop(false);
+  });
+
+  // Preset swatch click.
+  pop.querySelectorAll('.sr-bg-preset').forEach(function(b) {
+    b.addEventListener('click', function() {
+      setSceneBg(this.getAttribute('data-color'));
+      openPop(false);
+    });
+  });
+  // Custom native picker.
+  document.getElementById('sr-bg-input').addEventListener('input', function() { setSceneBg(this.value); });
+
+  applySceneBg(); // apply restored preference (or clear)
+})();
+
 // Copy viewer to clipboard
 var copyWithScale = false; // default: scale hidden in copy
 function syncScaleButtons() {
@@ -5645,6 +5810,13 @@ function doCopyImage() {
       scrollX: 0,
       scrollY: 0,
       onclone: function(doc) {
+        // Custom scene background is view-only and lives on sr-length-scroll's
+        // background (an ancestor of the length capture target, so it's already
+        // outside the clipboard copy). Clear it defensively anyway.
+        ['sr-scroll', 'sr-length-scroll'].forEach(function(id) {
+          var e = doc.getElementById(id);
+          if (e) e.style.background = '';
+        });
         // Length view: un-clip the area + scroll IN THE CLONE so the full rows
         // and the scale ruler render (no live DOM change, so no flash).
         if (S.view === 'length') {
