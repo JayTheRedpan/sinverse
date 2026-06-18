@@ -10,6 +10,31 @@
 var story       = null;
 var chapterIdx  = 0;
 
+// ── Author helpers (support single string OR array, for collabs) ─────────────
+// `story.author` may be a string or an array (co-written). Normalize to an array
+// and build a "by <links>" string where EACH author links to their contributor
+// page. (Mirrors the stash module's creator handling.)
+function authorList(story) {
+  if (!story) return [];
+  var a = story.author;
+  if (Array.isArray(a)) return a.filter(function (n) { return n && String(n).trim(); }).map(String);
+  if (a && String(a).trim()) return [String(a)];
+  return [];
+}
+function authorLinksHtml(story) {
+  var list = authorList(story);
+  if (!list.length) return '';
+  var links = list.map(function (name) {
+    return '<a class="viewer-artist-link" href="../contributors/?creator=' +
+      encodeURIComponent(name) + '">' + name + '</a>';
+  });
+  var joined;
+  if (links.length === 1) joined = links[0];
+  else if (links.length === 2) joined = links[0] + ' & ' + links[1];
+  else joined = links.slice(0, -1).join(', ') + ' & ' + links[links.length - 1];
+  return 'by ' + joined;
+}
+
 // ── INIT: read ?story= param, load manifest entry, render meta + chapters ─
 async function init() {
   var params = new URLSearchParams(window.location.search);
@@ -54,7 +79,7 @@ function renderMeta() {
   document.getElementById('reader-topbar-title').textContent = story.title;
   document.getElementById('reader-title').textContent        = story.title;
   var raEl = document.getElementById('reader-author');
-  if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(story.author) + '">' + story.author + '</a>' : '';
+  if (raEl) raEl.innerHTML = authorLinksHtml(story);
   document.getElementById('reader-summary').textContent      = story.summary || '';
   var canonEl = document.getElementById('reader-canonical');
   if (canonEl) canonEl.style.display = story.canonical ? '' : 'none';

@@ -1,4 +1,22 @@
 'use strict';
+
+// Render a "by ..." byline where each creator (single value or array, for
+// collabs) links to their contributor profile (marked &from=stash so the stash
+// value is allowed to show). Returns '' when there are no creators.
+function stashArtistByline(value) {
+  var list = Array.isArray(value)
+    ? value.filter(function(n){ return n && String(n).trim(); }).map(String)
+    : (value && String(value).trim() ? [String(value)] : []);
+  if (!list.length) return '';
+  var links = list.map(function(name) {
+    return '<a class="viewer-artist-link" href="../contributors/?creator=' +
+      encodeURIComponent(name) + '&from=stash">' + name + '</a>';
+  });
+  var joined = links.length === 1 ? links[0]
+    : links.length === 2 ? links[0] + ' &amp; ' + links[1]
+    : links.slice(0, -1).join(', ') + ' &amp; ' + links[links.length - 1];
+  return 'by ' + joined;
+}
 /* ============================================================================
    Sinverse — Gallery viewer (single item view: viewer.html?id=N)
    ----------------------------------------------------------------------------
@@ -223,7 +241,8 @@ function buildStashRelated(target, all) {
 function normalizeStashImage(it) {
   var out = {};
   for (var k in it) out[k] = it[k];
-  out.artist   = it.artist || it.creator || '';
+  // Preserve array form when present (collabs); fall back to single value.
+  out.artist   = (it.artist != null ? it.artist : (it.creator != null ? it.creator : ''));
   out.synopsis = it.synopsis || it.blurb || '';
   if (!out.type || out.type === 'image') {
     if (it.pages && it.pages.length)       out.type = 'comic';
@@ -282,7 +301,7 @@ function renderComic() {
   // Populate sidebar
   document.getElementById('comic-title-reader').textContent   = item.title;
   var caEl = document.getElementById('comic-artist-reader');
-  if (caEl) caEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
+  if (caEl) caEl.innerHTML = stashArtistByline(item.artist);
   document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
   if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
   renderTags('comic-tags-reader', item.tags);
@@ -391,7 +410,7 @@ function renderScene() {
 
   document.getElementById('scene-title').textContent       = item.title;
   var sceneArtistEl = document.getElementById('scene-artist');
-  if (sceneArtistEl) sceneArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
+  if (sceneArtistEl) sceneArtistEl.innerHTML = stashArtistByline(item.artist);
   document.getElementById('scene-description').textContent = item.description || '';
 
   if (item.canonical) document.getElementById('scene-canonical').style.display = '';
@@ -418,7 +437,7 @@ function renderCharRef() {
 
   document.getElementById('ref-title').textContent  = item.title;
   var refArtistEl = document.getElementById('ref-artist');
-  if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
+  if (refArtistEl) refArtistEl.innerHTML = stashArtistByline(item.artist);
 
   if (item.canonical) document.getElementById('ref-canonical').style.display = '';
   renderRelatedLinks('ref-related', item._related);
@@ -465,7 +484,7 @@ function renderSet() {
 
   document.getElementById('set-title').textContent = item.title;
   var saEl = document.getElementById('set-artist');
-  if (saEl) saEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
+  if (saEl) saEl.innerHTML = stashArtistByline(item.artist);
   document.getElementById('set-synopsis').textContent = item.synopsis || item.description || '';
   document.getElementById('set-count').textContent = setImages.length + (setImages.length === 1 ? ' image' : ' images');
   if (item.canonical) document.getElementById('set-canonical').style.display = '';

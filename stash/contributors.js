@@ -105,23 +105,15 @@ function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
 // and stories (serials count their chapters). Matches stash.json's `creator`
 // field. Stash entries use `creator`; we also accept `artist`/`author` aliases.
 function stashCounts(id, stashItems) {
-  // An item's creator may be a string or an array (collab). Match the contributor
-  // against ANY listed creator, so collab works count toward each collaborator
-  // and an array value never crashes a .toLowerCase() call (which would throw and
-  // fail the whole page load).
+  function who(it) { return (it.creator || it.artist || it.author || '').toLowerCase(); }
   var key = (id || '').toLowerCase();
-  function isBy(it) {
-    var c = it.creator != null ? it.creator : (it.artist != null ? it.artist : it.author);
-    var list = Array.isArray(c) ? c : (c != null ? [c] : []);
-    return list.some(function(n){ return String(n).toLowerCase() === key; });
-  }
   var images = (stashItems || []).reduce(function(sum, i) {
-    if (i.kind !== 'image' || !isBy(i)) return sum;
+    if (i.kind !== 'image' || who(i) !== key) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
     return sum + 1; // a set counts as one entry
   }, 0);
   var stories = (stashItems || []).reduce(function(sum, i) {
-    if (i.kind !== 'story' || !isBy(i)) return sum;
+    if (i.kind !== 'story' || who(i) !== key) return sum;
     if (i.type === 'serial' && i.chapters && i.chapters.length) return sum + i.chapters.length;
     return sum + 1;
   }, 0);

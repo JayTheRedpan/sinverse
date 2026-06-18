@@ -26,6 +26,26 @@ var state = {
   tab:        'stories',   // 'stories' or 'collections'
 };
 
+// ── Author helpers (support single string OR array, for collabs) ─────────────
+// A story's `author` may be a string ("RonaSerena") or an array of names for
+// co-written work. These normalize both to a clean array and a display string,
+// so the rest of the module never has to care which form the data is in.
+// (Mirrors the stash module's creatorList/creatorText.)
+function authorList(item) {
+  if (!item) return [];
+  var a = item.author;
+  if (Array.isArray(a)) return a.filter(function (n) { return n && String(n).trim(); }).map(String);
+  if (a && String(a).trim()) return [String(a)];
+  return [];
+}
+function authorText(item) {
+  var list = authorList(item);
+  if (!list.length) return '';
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return list[0] + ' & ' + list[1];
+  return list.slice(0, -1).join(', ') + ' & ' + list[list.length - 1];
+}
+
 var TYPE_LABELS = {
   standalone: 'Story',
   serial:     'Serial',
@@ -259,7 +279,7 @@ function applyFilters() {
     if (q) {
       var modes = getActiveModes();
       var inTitle  = modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q);
-      var inAuthor = modes.indexOf('author')    > -1 && (item.author || '').toLowerCase().includes(q);
+      var inAuthor = modes.indexOf('author')    > -1 && authorList(item).join(' ').toLowerCase().includes(q);
       var inChar   = modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); });
       var inTag    = modes.indexOf('tag')       > -1 && (item.tags || []).some(function(t){ return t.toLowerCase().includes(q); });
       if (!inTitle && !inAuthor && !inChar && !inTag) return false;
@@ -271,7 +291,7 @@ function applyFilters() {
     if (state.sortOrder === 'newest')    return (b.date || '').localeCompare(a.date || '');
     if (state.sortOrder === 'oldest')    return (a.date || '').localeCompare(b.date || '');
     if (state.sortOrder === 'title')     return (a.title || '').localeCompare(b.title || '');
-    if (state.sortOrder === 'author')    return (a.author || '').localeCompare(b.author || '');
+    if (state.sortOrder === 'author')    return authorText(a).localeCompare(authorText(b));
     if (state.sortOrder === 'wordcount') return totalWords(b) - totalWords(a);
     return 0;
   });
@@ -474,7 +494,7 @@ function openCollectionOverlay(col, members) {
       row.innerHTML =
         '<div class="csr-info">' +
           '<div class="csr-title">' + item.title + '</div>' +
-          (item.author ? '<div class="csr-author">by ' + item.author + '</div>' : '') +
+          (authorText(item) ? '<div class="csr-author">by ' + authorText(item) + '</div>' : '') +
           (tagHtml ? '<div class="csr-tags">' + tagHtml + '</div>' : '') +
         '</div>' +
         '<div class="csr-meta">' +
@@ -529,7 +549,7 @@ function openInfoModal(item, words) {
       '<div class="lib-info-eyebrow">' + (TYPE_LABELS[item.type] || item.type) +
         (item.canonical ? ' &middot; \u2726 Canon' : '') + '</div>' +
       '<h2 class="lib-info-title">' + item.title + '</h2>' +
-      (item.author ? '<div class="lib-info-author">by ' + item.author + '</div>' : '') +
+      (authorText(item) ? '<div class="lib-info-author">by ' + authorText(item) + '</div>' : '') +
       (item.summary ? '<p class="lib-info-summary">' + item.summary + '</p>' : '') +
       (tagHtml ? '<div class="lib-info-tags">' + tagHtml + '</div>' : '') +
       (words ? '<div class="lib-info-wordcount">' + fmtWords(words) + ' words</div>' : '') +
@@ -576,7 +596,7 @@ function renderListView(items) {
           '<span class="lib-type-badge lib-type-' + item.type + '">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
           (item.canonical ? '<span class="lib-canonical-star">&#10022;</span>' : '') +
         '</div>' +
-        (item.author ? '<div class="lib-row-author">by ' + item.author + '</div>' : '') +
+        (authorText(item) ? '<div class="lib-row-author">by ' + authorText(item) + '</div>' : '') +
         '<p class="lib-row-summary">' + (item.summary || '') + '</p>' +
         '<div class="lib-row-tags">' +
           (item.tags || []).map(function(t) { return '<span class="content-tag">' + t + '</span>'; }).join('') +
@@ -623,7 +643,7 @@ function renderGridView(items) {
       '<div class="lib-title-card" style="background:' + pal.bg + ';border-top:3px solid ' + pal.line + '">' +
         '<div class="lib-title-card-line" style="background:' + pal.line + '"></div>' +
         '<div class="lib-title-card-text" style="color:' + pal.accent + '">' + item.title + '</div>' +
-        (item.author ? '<div class="lib-title-card-author">by ' + item.author + '</div>' : '') +
+        (authorText(item) ? '<div class="lib-title-card-author">by ' + authorText(item) + '</div>' : '') +
         '<div class="lib-title-card-line" style="background:' + pal.line + '"></div>' +
         '<div class="lib-title-card-type">' + (TYPE_LABELS[item.type] || item.type) + '</div>' +
       '</div>';

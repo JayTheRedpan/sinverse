@@ -44,12 +44,13 @@ Reference for all JSON data files. Fields marked `*` are required; all others de
 ```json
 {
   "id": 1,                          // * integer, unique
-  "type": "scene",                  // * comic | scene | charref
+  "type": "scene",                  // * comic | scene | charref | set
   "title": "...",                   // * display title
-  "artist": "FastTrack",            // contributor id (matches contributors.json)
-  "image": "https://...",           // * main image URL (scene/charref)
+  "artist": "FastTrack",            // contributor id — OR an array for collabs: ["Vex","FastTrack"]
+  "image": "https://...",           // single image URL — required for scene; charref may use this OR images[]
+  "images": ["https://..."],        // image array — required for set; optional for charref (multiple ref views)
   "pages": ["https://..."],         // comic pages array (comics only)
-  "coverImage": "https://...",      // comic cover (optional — defaults to pages[0])
+  "coverImage": "https://...",      // comic/set cover (optional — defaults to pages[0] / images[0])
   "synopsis": "...",                // description shown in viewer
   "characters": ["jay", "sin"],     // character names (lowercase, matches characters.json name)
   "tags": ["explicit"],             // content tags (matches tags.json gallery array)
@@ -68,7 +69,7 @@ Reference for all JSON data files. Fields marked `*` are required; all others de
   "id": 1,                          // * integer, unique
   "type": "standalone",             // * standalone | serial
   "title": "...",                   // * display title
-  "author": "RonaSerena",           // contributor id (matches contributors.json)
+  "author": "RonaSerena",           // contributor id — OR an array for co-written work: ["RonaSerena","Sushi"]
   "synopsis": "...",                // blurb shown in grid card
   "characters": ["jay"],            // character names (lowercase)
   "tags": ["explicit"],             // content tags (matches tags.json story array)
@@ -232,6 +233,8 @@ The `id` field in `contributors.json` is the **single source of truth** for cred
 - `cyoa/adventures/*.json` → `author`
 
 Use `"Anonymous"` (capital A) for uncredited contributions — the contributors page counts these for the anonymous total.
+
+**Collaborations:** `gallery.json` `artist` and `library.json` `author` (like `stash.json` `creator`) may be a **single id** *or* an **array of ids** — e.g. `["Vex", "FastTrack"]`. Collaborations display as "by Vex & FastTrack" and are counted toward **each** listed contributor (so a collab shows up on every collaborator's profile and in their work totals). A single contributor may still be written as a plain string. CYOA adventure nodes remain single-author.
 
 ---
 
