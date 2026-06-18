@@ -33,9 +33,9 @@ The gamble runs all the way down. A girl betting her last on a cheap black-marke
 
 ## The Matriarch
 
-Alea is the personal empire of its [Matriarch](matriarchs) — a giantess who ran the city's underworld long before she ever transformed. In the old world she was a creature of the underground: rackets, fronts, and the quiet web of operations beneath a legitimate face. She is one still, simply at a scale the old world could never have given her.
+Alea is the personal empire of its [Matriarch](matriarchs), [Meg](meg) — a great white shark giantess who ran the city's underworld long before she ever transformed. In the old world she was a creature of the underground: rackets, fronts, and the quiet web of operations beneath a legitimate face. She is one still, simply at a scale the old world could never have given her. Notably small for a Matriarch, she has never needed size; she rules through nerve, cunning, and the predator's instinct that never lets her stop circling.
 
-She came through TDay with her wits intact long enough to claw her way to the top of the city she had always worked beneath, and she has ruled it ever since by doing exactly what she always did — running the rackets, working the angles, keeping the operations turning, and growing richer than she ever was before. Alea under her rule is less a city governed than a business empire run: gambling, toy-trafficking, and the lucrative black markets beneath, all of it hers. She holds the city through the [power to command](matriarchs) it and the will to keep it firmly within the new order, and like any Matriarch she answers to no one above her save Sin.
+She came through TDay with her wits intact long enough to claw her way to the top of the city she had always worked beneath, and she has ruled it ever since by doing exactly what she always did — running the rackets, working the angles, keeping the operations turning, and growing richer than she ever was before. Alea under Meg's rule is less a city governed than a business empire run: gambling, toy-trafficking, and the lucrative black markets beneath, all of it hers. She holds the city through the [power to command](matriarchs) it and the will to keep it firmly within the new order, and like any Matriarch she answers to no one above her save Sin.
 
 ## Traitors: The Owned Hunters
 
@@ -51,6 +51,7 @@ For all its scheming, Alea is not a city of giantesses turning on one another. T
 
 ## Related
 
+- [Meg](meg) — the Matriarch who rules Alea Panthera
 - [The Mega-Cities](mega-cities) — the city-states Alea is one of
 - [The Matriarchs](matriarchs) — the role the city's ruler fills
 - [Toys](toys) — the city's commodity, currency, and crisis

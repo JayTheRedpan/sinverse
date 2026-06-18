@@ -201,7 +201,9 @@
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999577/profile_lucile_j2wrdf.webp",
     "wiki": "lucile",
-    "faction": [],
+    "faction": [
+      "The Paws"
+    ],
     "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
@@ -643,7 +645,9 @@
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988230/CanineCock_length_jbhbva.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999541/profile_lady_p8jymm.webp",
     "wiki": "lady",
-    "faction": [],
+    "faction": [
+      "The Paws"
+    ],
     "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
@@ -653,7 +657,9 @@
       "vag": false,
       "penisType": "canine"
     },
-    "role": [],
+    "role": [
+      "Huntress"
+    ],
     "class": "Giantess"
   },
   {
@@ -931,7 +937,9 @@
       "vag": false,
       "penisType": "equine"
     },
-    "role": [],
+    "role": [
+      "Matriarch"
+    ],
     "class": "Giantess"
   },
   {
@@ -1065,7 +1073,9 @@
       "vag": false,
       "penisType": "equine"
     },
-    "role": [],
+    "role": [
+      "Matriarch"
+    ],
     "class": "Giantess"
   },
   {

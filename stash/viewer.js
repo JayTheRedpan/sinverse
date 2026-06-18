@@ -182,43 +182,11 @@ async function init() {
     item = items.find(function(i) { return i.id === id; });
     if (!item) throw new Error('Item not found: ' + id);
     item._related = buildStashRelated(item, raw);
-    await resolveExternalTitles(item._related);
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
     render();
   } catch(e) {
     document.body.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-muted)">' + e.message + '</div>';
   }
-}
-
-// External cross-links carry a module + id but no title; this fetches the
-// source module's JSON (once, cached) and fills each title in by id. Only the
-// modules actually referenced get loaded.
-var _moduleCache = {};
-function moduleDataPath(mod) {
-  if (mod === 'gallery') return '../gallery/gallery.json';
-  if (mod === 'library') return '../library/library.json';
-  return null;
-}
-async function resolveExternalTitles(related) {
-  var external = (related || []).filter(function(r){ return r.module; });
-  if (!external.length) return;
-  var mods = external.map(function(r){ return r.module; })
-    .filter(function(m, i, a){ return a.indexOf(m) === i; });
-  await Promise.all(mods.map(async function(mod){
-    if (_moduleCache[mod]) return;
-    var path = moduleDataPath(mod);
-    if (!path) return;
-    try {
-      var res = await fetch(path);
-      _moduleCache[mod] = res.ok ? await res.json() : [];
-    } catch (e) { _moduleCache[mod] = []; }
-  }));
-  external.forEach(function(r){
-    var list = _moduleCache[r.module] || [];
-    var found = list.find(function(x){ return x.id === r.id; });
-    r.title = (found && found.title) ||
-      (r.module === 'library' ? 'Library story #' + r.id : 'Gallery image #' + r.id);
-  });
 }
 
 // Resolve a stash item's related entries WITHIN the stash, with auto-reciprocity.
@@ -231,13 +199,8 @@ function buildStashRelated(target, all) {
     if (isNaN(id) || id === target.id || ids[id]) return;
     ids[id] = true; order.push(id);
   }
-  // In-stash refs only: skip entries that name an external module (gallery/
-  // library) — those are resolved separately as cross-links below.
-  function isExternal(r) { return r && typeof r === 'object' && r.module; }
   function refsOf(it) {
-    return (it.relates_to || [])
-      .filter(function(r){ return !isExternal(r); })
-      .map(function(r){ return (r && typeof r === 'object') ? r.id : r; });
+    return (it.relates_to || []).map(function(r){ return (r && typeof r === 'object') ? r.id : r; });
   }
   // 1) Links this item declares directly.
   refsOf(target).forEach(add);
@@ -246,25 +209,10 @@ function buildStashRelated(target, all) {
     if (refsOf(it).map(Number).indexOf(target.id) !== -1) add(it.id);
   });
   // Resolve to {id, title, kind} for rendering.
-  var inStash = order.map(function(id){
+  return order.map(function(id){
     var found = (all || []).find(function(x){ return x.id === id; });
     return found ? { id: id, title: found.title, kind: found.kind } : null;
   }).filter(Boolean);
-
-  // External cross-links out to the main gallery/library. The stash doesn't
-  // load that data, so each entry carries its own title; module decides the
-  // destination and id the target item.
-  var external = (target.relates_to || []).filter(isExternal).map(function(r){
-    var mod = r.module;
-    return {
-      id: r.id,
-      module: mod,
-      kind: mod === 'library' ? 'story' : 'image',
-      title: r.title || ''   // resolved from the module JSON later (resolveExternalTitles)
-    };
-  });
-
-  return inStash.concat(external);
 }
 
 // Map a stash image entry onto the gallery viewer's expected shape:
@@ -334,7 +282,7 @@ function renderComic() {
   // Populate sidebar
   document.getElementById('comic-title-reader').textContent   = item.title;
   var caEl = document.getElementById('comic-artist-reader');
-  if (caEl) caEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (caEl) caEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
   document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
   if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
   renderTags('comic-tags-reader', item.tags);
@@ -443,7 +391,7 @@ function renderScene() {
 
   document.getElementById('scene-title').textContent       = item.title;
   var sceneArtistEl = document.getElementById('scene-artist');
-  if (sceneArtistEl) sceneArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (sceneArtistEl) sceneArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
   document.getElementById('scene-description').textContent = item.description || '';
 
   if (item.canonical) document.getElementById('scene-canonical').style.display = '';
@@ -470,7 +418,7 @@ function renderCharRef() {
 
   document.getElementById('ref-title').textContent  = item.title;
   var refArtistEl = document.getElementById('ref-artist');
-  if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
 
   if (item.canonical) document.getElementById('ref-canonical').style.display = '';
   renderRelatedLinks('ref-related', item._related);
@@ -517,7 +465,7 @@ function renderSet() {
 
   document.getElementById('set-title').textContent = item.title;
   var saEl = document.getElementById('set-artist');
-  if (saEl) saEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (saEl) saEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '&from=stash">' + item.artist + '</a>' : '';
   document.getElementById('set-synopsis').textContent = item.synopsis || item.description || '';
   document.getElementById('set-count').textContent = setImages.length + (setImages.length === 1 ? ' image' : ' images');
   if (item.canonical) document.getElementById('set-canonical').style.display = '';
@@ -635,12 +583,8 @@ function renderRelatedLinks(containerId, related) {
   el.appendChild(label);
   var rendered = 0;
   related.forEach(function(r) {
-    // External cross-links go out to the main gallery/library; in-stash links
-    // stay local (images -> viewer.html, stories -> reader.html).
-    var href;
-    if (r.module === 'gallery')      href = '../gallery/viewer.html?id=' + r.id;
-    else if (r.module === 'library') href = '../library/reader.html?id=' + r.id;
-    else href = (r.kind === 'story' ? 'reader.html?id=' : 'viewer.html?id=') + r.id;
+    // Within the stash: images -> viewer.html, stories -> reader.html.
+    var href = (r.kind === 'story' ? 'reader.html?id=' : 'viewer.html?id=') + r.id;
     if (rendered > 0) el.appendChild(document.createTextNode(', '));
     var a = document.createElement('a');
     a.className = 'viewer-related-link';
