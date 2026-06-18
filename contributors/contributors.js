@@ -4,9 +4,9 @@
    ----------------------------------------------------------------------------
    Profiles from contributors.json. Contribution counts are auto-tallied by
    scanning gallery.json, library.json, and cyoa.json for each contributor's
-   id (lowercased). A set with N images counts as N artworks; an empty set as 1.
+   id (lowercased). Comics count per page and serials per chapter; a SET counts
    Adventure contributions are weighted at 1/5 for SORT ranking only (displayed
-   counts stay true). Supports ?creator=<id> to filter to one contributor
+   as a single entry, as does any other standalone work. Supports ?creator=<id> to filter to one contributor
    (used by gallery/viewer artist links).
    ========================================================================== */
 
@@ -75,10 +75,11 @@ function buildTypes(types, container) {
 // work is hidden from the public list (they only show via a direct ?creator=
 // link from the stash).
 function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
+  // Comics count per page and serials per chapter; a set counts as ONE entry,
+  // and any other single work counts as one.
   var g = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
-    if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var l = libraryItems.reduce(function(sum, i) {
@@ -94,15 +95,15 @@ function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
 // and stories (serials count their chapters). Matches stash.json's `creator`
 // field. Stash entries use `creator`; we also accept `artist`/`author` aliases.
 function stashCounts(id, stashItems) {
-  function who(it) { return it.creator || it.artist || it.author || ''; }
+  function who(it) { return (it.creator || it.artist || it.author || '').toLowerCase(); }
+  var key = (id || '').toLowerCase();
   var images = (stashItems || []).reduce(function(sum, i) {
-    if (i.kind !== 'image' || who(i) !== id) return sum;
-    if (i.pages && i.pages.length)   return sum + i.pages.length;
-    if (i.images && i.images.length) return sum + i.images.length;
-    return sum + 1;
+    if (i.kind !== 'image' || who(i) !== key) return sum;
+    if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
+    return sum + 1; // a set counts as one entry
   }, 0);
   var stories = (stashItems || []).reduce(function(sum, i) {
-    if (i.kind !== 'story' || who(i) !== id) return sum;
+    if (i.kind !== 'story' || who(i) !== key) return sum;
     if (i.type === 'serial' && i.chapters && i.chapters.length) return sum + i.chapters.length;
     return sum + 1;
   }, 0);
@@ -111,10 +112,10 @@ function stashCounts(id, stashItems) {
 
 // ── Build content count links ─────────────────────────────────
 function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, isJay, stash) {
+  // Comics count per page and serials per chapter; a set counts as one entry.
   var gCount = galleryItems.reduce(function(sum, i) {
     if (i.artist !== id) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length > 0) return sum + i.pages.length;
-    if (i.type === 'set' && i.images && i.images.length > 0) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var lCount = libraryItems.reduce(function(sum, i) {
@@ -243,10 +244,10 @@ function renderCard(contributor, galleryItems, libraryItems, adventureNodes, sta
 
 // ── Anonymous counts ──────────────────────────────────────────
 function renderAnon(galleryItems, libraryItems, adventureNodes) {
+  // Comics count per page and serials per chapter; a set counts as one entry.
   var gAnon = galleryItems.reduce(function(sum, i) {
     if (!isAnon(i.artist)) return sum;
     if (i.type === 'comic' && i.pages && i.pages.length > 0) return sum + i.pages.length;
-    if (i.type === 'set' && i.images && i.images.length > 0) return sum + i.images.length;
     return sum + 1;
   }, 0);
   var lAnon = libraryItems.reduce(function(sum, i) {
@@ -499,10 +500,10 @@ async function init() {
     var ADVENTURE_WEIGHT = 0.2;
     rest.sort(function(a, b) {
       function count(id) {
+        // Comics count per page and serials per chapter; a set counts as one.
         var g = galleryItems.reduce(function(sum, i) {
           if (i.artist !== id) return sum;
           if (i.type === 'comic' && i.pages && i.pages.length) return sum + i.pages.length;
-          if (i.type === 'set' && i.images && i.images.length) return sum + i.images.length;
           return sum + 1;
         }, 0);
         var l = libraryItems.reduce(function(sum, i) {

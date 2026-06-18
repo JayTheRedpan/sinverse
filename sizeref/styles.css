@@ -523,7 +523,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   flex: 1;
   overflow-x: hidden;  /* no horizontal scroll — zoom controls width instead */
   overflow-y: auto;
-  padding: 1rem 1.5rem 0;
+  padding: 1rem 1.5rem 0.5rem;  /* bottom padding so the last row's headshot name isn't clipped in copy/export */
 }
 
 .sr-length-zoom {
@@ -532,6 +532,10 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   display: inline-block;
   min-width: 100%;
   position: relative;
+  /* The copy/export captures THIS element. Pad the bottom so the last row's
+     headshot name sits inside the captured box rather than at its very edge,
+     where its lower half was being shaved off. */
+  padding-bottom: 0.75rem;
 }
 
 .sr-length-rows {
@@ -544,6 +548,10 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   display: flex;
   align-items: center;
   gap: 0;
+  /* Floor the row height so a row whose length bar is very short still reserves
+     room for the full headshot column (72px image + gap + name). The primary
+     name-clipping fix is the padding-bottom on the captured #sr-length-zoom. */
+  min-height: 96px;
 }
 
 /* Headshot column */
@@ -574,6 +582,12 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   overflow: hidden;
   text-overflow: ellipsis;
   max-width: 82px;
+  /* Explicit, roomy line box. Without a set line-height, html2canvas computes a
+     too-short line box and (with overflow:hidden) shaves the lower half of the
+     text off in the copied/exported image, on every name. A generous
+     line-height + small bottom padding gives the glyphs room to render fully. */
+  line-height: 1.6;
+  padding-bottom: 2px;
 }
 
 /* Length image */
@@ -697,15 +711,6 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   .zoom-btn { width: 24px; height: 24px; font-size: .85rem; }
   .zoom-label { min-width: 30px; font-size: .56rem; }
   .zoom-reset-btn { padding: 0 .35rem; font-size: .54rem; }
-  /* Background-picker popover: stay fully on-screen on phones. Right-anchored
-     and allowed to wrap its swatches so it fits any narrow width. */
-  .sr-bg-pop { right: 0; left: auto; }
-  .sr-bg-pop-row {
-    grid-template-columns: repeat(auto-fit, 24px);
-    justify-content: flex-end;
-    max-width: 100%;
-  }
-  .sr-bg-preset { width: 24px; height: 24px; }  /* slightly larger tap target */
 }
 
 /* Headshot counter-zoom — inverse scale applied by JS to cancel out parent zoom */
@@ -2025,66 +2030,4 @@ body.sandbox-active .sr-img-wrap img { cursor: inherit; }
   color: var(--text-muted, var(--text-secondary));
   text-align: center;
   margin-top: 0.1rem;
-}
-
-
-
-
-/* ── Scene background-colour picker: pill + preset-swatch popover ───────────
-   View-only control; chosen colour never affects copied/exported images. */
-.sr-bg-control { position:relative; display:inline-flex; align-items:center; }
-.sr-bg-toggle {
-  display:inline-flex; align-items:center; gap:6px;
-  background:transparent; border:1px solid var(--border); border-radius:var(--radius);
-  padding:0 9px; min-height:30px; cursor:pointer;
-  font-size:0.85rem; color:var(--text-secondary);
-  transition:border-color 0.15s, color 0.15s;
-}
-.sr-bg-toggle:hover,
-.sr-bg-toggle.active { border-color:var(--accent); color:var(--accent); }
-.sr-bg-swatch {
-  width:14px; height:14px; border-radius:3px;
-  border:1px solid var(--border-mid); background:var(--bg-panel); flex:none;
-}
-.sr-bg-text { letter-spacing:0.04em; }
-
-/* Popover */
-.sr-bg-pop {
-  position:absolute; top:calc(100% + 6px); right:0; z-index:200;
-  background:var(--bg-panel); border:1px solid var(--border-mid); border-radius:var(--radius);
-  padding:10px; box-shadow:0 8px 24px rgba(0,0,0,0.45);
-  display:flex; flex-direction:column; gap:9px;
-  max-width:calc(100vw - 24px);   /* never wider than the viewport (mobile safety) */
-  box-sizing:border-box;
-}
-.sr-bg-pop-row { display:grid; grid-template-columns:repeat(7, 22px); gap:6px; }
-.sr-bg-preset {
-  width:22px; height:22px; border-radius:5px; cursor:pointer;
-  border:1px solid var(--border-mid); padding:0;
-  transition:transform 0.1s, border-color 0.12s, box-shadow 0.12s;
-}
-.sr-bg-preset:hover { transform:scale(1.12); border-color:var(--accent); }
-.sr-bg-preset.active { border-color:var(--accent); box-shadow:0 0 0 2px var(--accent-dim); }
-.sr-bg-preset-default {
-  background:var(--bg-inset); color:var(--text-secondary);
-  font-size:0.7rem; line-height:1; display:flex; align-items:center; justify-content:center;
-}
-.sr-bg-preset-default:hover { color:var(--accent); }
-
-/* Custom (native picker) row */
-.sr-bg-custom-row {
-  display:flex; align-items:center; gap:7px; position:relative;
-  border-top:1px solid var(--border); padding-top:8px; cursor:pointer;
-}
-.sr-bg-custom-label {
-  font-family:var(--font-caps); font-size:0.58rem; letter-spacing:0.12em; text-transform:uppercase;
-  color:var(--text-secondary); flex:1;
-}
-.sr-bg-custom-chip {
-  width:22px; height:22px; border-radius:5px;
-  border:1px solid var(--border-mid); background:var(--bg-panel); flex:none;
-}
-.sr-bg-input {
-  position:absolute; right:0; width:22px; height:22px;
-  opacity:0; cursor:pointer; border:none; padding:0; margin:0;
 }
