@@ -2,7 +2,8 @@
   {
     "id": "apotheosis-serum",
     "label": "The Apotheosis Serum",
-    "section": "Concepts"
+    "section": "Concepts",
+    "group": "The Serum & Transformation"
   },
   {
     "id": "tday",
@@ -12,77 +13,98 @@
   {
     "id": "sincorp",
     "label": "SinCorp",
-    "section": "Organizations"
+    "section": "Organizations",
+    "group": "SinCorp & Allies"
   },
   {
     "id": "r-labs",
     "label": "R-Labs",
-    "section": "Organizations"
+    "section": "Organizations",
+    "group": "SinCorp & Allies"
   },
   {
     "id": "the-resistance",
     "label": "The Resistance",
-    "section": "Organizations"
+    "section": "Organizations",
+    "group": "Opposition"
   },
   {
     "id": "the-paws",
     "label": "The Huntresses (The Paws)",
-    "section": "Organizations"
+    "section": "Organizations",
+    "group": "SinCorp & Allies"
   },
   {
     "id": "angora",
     "label": "Angora",
-    "section": "Locations"
+    "section": "Locations",
+    "group": "Mega-Cities"
   },
   {
     "id": "alea-panthera",
     "label": "Alea Panthera",
-    "section": "Locations"
+    "section": "Locations",
+    "group": "Mega-Cities"
+  },
+  {
+    "id": "marisol",
+    "label": "Marisol",
+    "section": "Locations",
+    "group": "Mega-Cities"
   },
   {
     "id": "mega-cities",
     "label": "The Mega-Cities",
-    "section": "Locations"
+    "section": "Locations",
+    "group": "Overview"
   },
   {
     "id": "matriarchs",
     "label": "The Matriarchs",
-    "section": "Concepts"
+    "section": "Concepts",
+    "group": "Society"
   },
   {
     "id": "the-wilds",
     "label": "The Wilds",
-    "section": "Locations"
+    "section": "Locations",
+    "group": "Regions"
   },
   {
     "id": "bastion",
     "label": "Bastion",
-    "section": "Locations"
+    "section": "Locations",
+    "group": "Regions"
   },
   {
     "id": "toys",
     "label": "Toys",
-    "section": "Concepts"
+    "section": "Concepts",
+    "group": "Toys"
   },
   {
     "id": "life-of-a-toy",
     "label": "Life of a Toy in the Cities",
-    "section": "Concepts"
+    "section": "Concepts",
+    "group": "Toys"
   },
   {
     "id": "toy-modifications",
     "label": "SinCorp Toy Modifications",
-    "section": "Concepts"
+    "section": "Concepts",
+    "group": "Toys"
   },
   {
     "id": "project-sylph",
     "label": "Project Sylph",
-    "section": "Concepts"
+    "section": "Concepts",
+    "group": "Society"
   },
   {
     "id": "tempered",
     "label": "The Tempered",
-    "section": "Concepts"
+    "section": "Concepts",
+    "group": "The Serum & Transformation"
   },
   {
     "id": "era-pre-sin",

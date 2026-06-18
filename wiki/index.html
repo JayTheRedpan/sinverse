@@ -135,6 +135,16 @@
       color: var(--accent);
       padding: 0.5rem 1.5rem 0.25rem;
     }
+    .wiki-cat-subhead {
+      font-family: var(--font-caps);
+      font-size: 0.7rem;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      color: var(--accent);
+      margin: 0 0 0.85rem;
+      padding-bottom: 0.4rem;
+      border-bottom: 1px solid var(--border);
+    }
     .wiki-nav-link {
       display: block;
       padding: 0.4rem 1.5rem;
@@ -1980,10 +1990,9 @@ function showCategory(section, pushState) {
   var grid = document.getElementById('cat-grid');
   grid.innerHTML = '';
   var items = LORE_PAGES.filter(function(lp){ return lp.section === section; });
-  // Render as a simple card list
-  var list = document.createElement('div');
-  list.style.cssText = 'display:flex;flex-direction:column;gap:1px;background:var(--border);';
-  items.forEach(function(lp) {
+
+  // Helper: build a single clickable lore card.
+  function makeCard(lp) {
     var card = document.createElement('a');
     card.href = '#lore-' + lp.id;
     card.style.cssText = 'display:block;text-decoration:none;background:var(--bg-panel);padding:1.1rem 1.5rem;cursor:pointer;transition:background 0.15s;';
@@ -1995,9 +2004,44 @@ function showCategory(section, pushState) {
       e.preventDefault();
       loadLorePage(lp.id);
     });
-    list.appendChild(card);
+    return card;
+  }
+
+  // Determine the sub-groups present in this section, preserving first-seen order.
+  var groupOrder = [];
+  items.forEach(function(lp) {
+    var g = lp.group || '';
+    if (groupOrder.indexOf(g) === -1) groupOrder.push(g);
   });
-  grid.appendChild(list);
+  // Sub-group only when there's real grouping (more than one named group, or a
+  // single named group alongside ungrouped items). A section with no groups at
+  // all renders as the original flat list.
+  var hasGroups = groupOrder.some(function(g){ return g !== ''; }) &&
+                  (groupOrder.length > 1 || groupOrder[0] !== '');
+
+  if (!hasGroups) {
+    var list = document.createElement('div');
+    list.style.cssText = 'display:flex;flex-direction:column;gap:1px;background:var(--border);';
+    items.forEach(function(lp) { list.appendChild(makeCard(lp)); });
+    grid.appendChild(list);
+    showPage('category', false);
+    return;
+  }
+
+  // Render each sub-group with a heading, then its cards. Ungrouped items (if
+  // any) fall under a trailing "More" heading so nothing is lost.
+  groupOrder.forEach(function(g) {
+    var groupItems = items.filter(function(lp){ return (lp.group || '') === g; });
+    if (!groupItems.length) return;
+    var heading = document.createElement('div');
+    heading.className = 'wiki-cat-subhead';
+    heading.textContent = g || 'More';
+    grid.appendChild(heading);
+    var list = document.createElement('div');
+    list.style.cssText = 'display:flex;flex-direction:column;gap:1px;background:var(--border);margin-bottom:1.75rem;';
+    groupItems.forEach(function(lp) { list.appendChild(makeCard(lp)); });
+    grid.appendChild(list);
+  });
   showPage('category', false);
 }
 

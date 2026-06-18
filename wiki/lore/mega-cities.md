@@ -52,9 +52,11 @@ Because each city sets its own laws, the lived experience of a toy can differ en
 
 Most mega-cities are ruled by a single Matriarch with total autonomy. A minority take other forms — an oligarchy, or a ruling council of powerful giantesses — though these are the exception rather than the rule. Whatever the structure, it governs only its own city; the variety between mega-cities is one of the defining features of the post-TDay world, and the wellspring of nearly all its distinct settings, cultures, and stories.
 
-## Known Mega-Cities
+## The Cities Themselves
 
-- **[Angora](angora)** — the first mega-city, the most powerful, and the unofficial capital. Seat of Sin's authority and SinCorp's headquarters, ruled by Sin as **First Matriarch**.
+Rather than catalogue every mega-city here — their number grows as the new world is charted — each has its own dedicated entry under [Locations](mega-cities), where its particular culture, ruler, and character are described in full. They are a study in variety: no two are alike, and each is the wellspring of its own distinct setting and stories.
+
+The first among them is [Angora](angora) — the first mega-city built, the most powerful, and the unofficial capital of the new world. It is the seat of Sin's authority and the headquarters of [SinCorp](sincorp), ruled by Sin herself as **First Matriarch**, and it stands as the model on which the idea of a mega-city was founded. The others that have risen since each take the same two constants and build something wholly their own atop them.
 
 
 ## Related

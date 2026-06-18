@@ -1,6 +1,6 @@
 ## Overview
 
-Ira is a blue jay and one of the apotheosis girls who turned the first day of the new world into a reckoning. Before TDay she was a receptionist at a high-rise investment firm — hired, by her own bitter understanding, to be decoration: a pretty face at the front desk for a floor full of swaggering salesmen to leer at. She spent a decade swallowing their harassment because the alternative was losing the job. When the [serum](../lore/apotheosis-serum) took her, it took her mid-assault, and whatever restraint a lifetime of biting her tongue had built in her did not survive the transformation.
+Ira is a blue jay and one of the apotheosis girls who turned the first day of the new world into a reckoning. Before TDay she was a receptionist at a high-rise investment firm — hired, by her own bitter understanding, to be decoration: a pretty face at the front desk for a floor full of swaggering salesmen to leer at. She spent a decade swallowing their harassment because the alternative was losing the job. When the serum took her, it took her mid-assault, and whatever restraint a lifetime of biting her tongue had built in her did not survive the transformation.
 
 She stands nearly sixty feet tall now, a towering, jet-taloned predator with a prehensile endowment, and she hunts. The men who built their careers on treating women like furniture were exactly the kind she came up under, and on TDay she stopped being the one who had to take it.
 
@@ -70,5 +70,4 @@ Ira's signature is the **constriction** she practices with her prehensile endowm
 - [The Apotheosis Serum](../lore/apotheosis-serum) — what transformed her, body and temperament
 - [TDay](../lore/tday) — the day she stopped being prey
 - [Mega-Cities](../lore/mega-cities) — her hunting grounds
-- [SinCorp](../lore/sincorp) — the institution woven through the cities she stalks
 - [Toys](../lore/toys) — what the new world made of the men she hunts

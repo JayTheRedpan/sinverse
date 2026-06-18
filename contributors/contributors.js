@@ -279,9 +279,11 @@ function renderContributorGrid(list) {
     grid.innerHTML = '<div class="con-loading">No contributors match your search.</div>';
   } else {
     list.forEach(function(c) {
-      // Only surface stash stats on a direct ?creator= link — never the public
-      // list — to keep the stash secret.
-      var stash = ctx.isCreatorLink ? stashCounts(c.id, ctx.stashItems || []) : null;
+      // Only surface stash stats when the visitor actually came FROM the stash
+      // (links marked &from=stash) — never on the public list, and never on a
+      // plain ?creator= link from gallery/library/adventures — to keep the
+      // stash secret.
+      var stash = ctx.fromStash ? stashCounts(c.id, ctx.stashItems || []) : null;
       grid.appendChild(renderCard(c, ctx.galleryItems || [], ctx.libraryItems || [], ctx.adventureNodes || [], stash));
     });
   }
@@ -456,6 +458,12 @@ async function init() {
 
     // Check for ?creator= param (direct link, e.g. from the stash).
     var creatorParam = new URLSearchParams(window.location.search).get('creator');
+    // The stash value must ONLY be revealed when the visitor actually came from
+    // the stash, which marks its links with &from=stash. Public modules (gallery,
+    // library, adventures) link with ?creator= alone, so they resolve the
+    // profile but must NOT expose the stash. `isCreatorLink` still governs
+    // single-profile view; `fromStash` alone gates the stash stats.
+    var fromStash = new URLSearchParams(window.location.search).get('from') === 'stash';
     var isCreatorLink = false;
     if (creatorParam) {
       isCreatorLink = true;
@@ -518,7 +526,8 @@ async function init() {
       libraryItems: libraryItems,
       adventureNodes: adventureNodes,
       stashItems: stashItems,
-      isCreatorLink: isCreatorLink
+      isCreatorLink: isCreatorLink,
+      fromStash: fromStash
     };
 
     renderContributorGrid(rest);
