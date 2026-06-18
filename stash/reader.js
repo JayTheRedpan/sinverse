@@ -1,4 +1,21 @@
 'use strict';
+
+// Render a "by ..." byline where each author (single value or array, for
+// collabs) links to their contributor profile (marked &from=stash).
+function stashAuthorByline(value) {
+  var list = Array.isArray(value)
+    ? value.filter(function(n){ return n && String(n).trim(); }).map(String)
+    : (value && String(value).trim() ? [String(value)] : []);
+  if (!list.length) return '';
+  var links = list.map(function(name) {
+    return '<a class="viewer-artist-link" href="../contributors/?creator=' +
+      encodeURIComponent(name) + '&from=stash">' + name + '</a>';
+  });
+  var joined = links.length === 1 ? links[0]
+    : links.length === 2 ? links[0] + ' &amp; ' + links[1]
+    : links.slice(0, -1).join(', ') + ' &amp; ' + links[links.length - 1];
+  return 'by ' + joined;
+}
 /* ============================================================================
    Sinverse — Library story reader (reader.html?story=<id>)
    ----------------------------------------------------------------------------
@@ -50,7 +67,7 @@ async function init() {
 function normalizeStashStory(it) {
   var out = {};
   for (var k in it) out[k] = it[k];
-  out.author  = it.author  || it.creator || '';
+  out.author  = (it.author != null ? it.author : (it.creator != null ? it.creator : ''));
   out.summary = it.summary || it.blurb   || '';
   out.type    = it.type || 'standalone';
   return out;
@@ -89,7 +106,7 @@ function renderMeta() {
   document.getElementById('reader-topbar-title').textContent = story.title;
   document.getElementById('reader-title').textContent        = story.title;
   var raEl = document.getElementById('reader-author');
-  if (raEl) raEl.innerHTML = story.author ? 'by <a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(story.author) + '&from=stash">' + story.author + '</a>' : '';
+  if (raEl) raEl.innerHTML = stashAuthorByline(story.author);
   document.getElementById('reader-summary').textContent      = story.summary || '';
   var canonEl = document.getElementById('reader-canonical');
   if (canonEl) canonEl.style.display = story.canonical ? '' : 'none';

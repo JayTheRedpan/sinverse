@@ -64,6 +64,25 @@ async function init() {
   applyFilters();
 }
 
+// ── Creator helpers (support single string OR array, for collabs) ────────────
+// An item's creator may be a string ("Kyrm") or an array (["Kyrm","Sushi"]) for
+// collaborations. These normalize both to a clean array and a display string,
+// so the rest of the module never has to care which form the data is in.
+function creatorList(it) {
+  if (!it) return [];
+  var c = it.creator;
+  if (Array.isArray(c)) return c.filter(function(n){ return n && String(n).trim(); }).map(String);
+  if (c && String(c).trim()) return [String(c)];
+  return [];
+}
+function creatorText(it) {
+  var list = creatorList(it);
+  if (!list.length) return '';
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return list[0] + ' & ' + list[1];
+  return list.slice(0, -1).join(', ') + ' & ' + list[list.length - 1];
+}
+
 // ── Tag state persistence ───────────────────────────────────────────────────
 function loadTagState() {
   try {
@@ -238,7 +257,7 @@ function applyFilters() {
     if (state.search) {
       var fields = [];
       if (state.searchModes.title)   fields.push(it.title || '');
-      if (state.searchModes.creator) fields.push(it.creator || '');
+      if (state.searchModes.creator) fields.push(creatorList(it).join(' '));
       var hay = fields.join(' ').toLowerCase();
       if (hay.indexOf(state.search) === -1) return false;
     }
@@ -249,7 +268,7 @@ function applyFilters() {
     switch (state.sort) {
       case 'oldest':  return (a.date || '').localeCompare(b.date || '');
       case 'title':   return (a.title || '').localeCompare(b.title || '');
-      case 'creator': return (a.creator || '').localeCompare(b.creator || '');
+      case 'creator': return creatorText(a).localeCompare(creatorText(b));
       case 'newest':
       default:        return (b.date || '').localeCompare(a.date || '');
     }
@@ -401,10 +420,11 @@ function renderGrid(items) {
     t.className = 'stash-card-title';
     t.textContent = it.title || 'Untitled';
     body.appendChild(t);
-    if (it.creator) {
+    var cText = creatorText(it);
+    if (cText) {
       var c = document.createElement('p');
       c.className = 'stash-card-creator';
-      c.textContent = 'by ' + it.creator;
+      c.textContent = 'by ' + cText;
       body.appendChild(c);
     }
     if (it.tags && it.tags.length) {
@@ -443,7 +463,7 @@ function buildStoryCard(it) {
     '<div class="lib-title-card" style="background:' + pal.bg + ';border-top:3px solid ' + pal.line + '">' +
       '<div class="lib-title-card-line" style="background:' + pal.line + '"></div>' +
       '<div class="lib-title-card-text" style="color:' + pal.accent + '">' + escapeHtml(it.title || 'Untitled') + '</div>' +
-      (it.creator ? '<div class="lib-title-card-author">by ' + escapeHtml(it.creator) + '</div>' : '') +
+      (creatorText(it) ? '<div class="lib-title-card-author">by ' + escapeHtml(creatorText(it)) + '</div>' : '') +
       '<div class="lib-title-card-line" style="background:' + pal.line + '"></div>' +
       '<div class="lib-title-card-type">' + typeLabel + '</div>' +
     '</div>';
@@ -522,7 +542,7 @@ function openInfoModal(it, words) {
       '<div class="lib-info-eyebrow">' + (it.type === 'serial' ? 'Serial' : 'Story') +
         (it.type === 'serial' && it.chapters ? ' &middot; ' + it.chapters.length + ' chapters' : '') + '</div>' +
       '<h2 class="lib-info-title">' + escapeHtml(it.title || 'Untitled') + '</h2>' +
-      (it.creator ? '<div class="lib-info-author">by ' + escapeHtml(it.creator) + '</div>' : '') +
+      (creatorText(it) ? '<div class="lib-info-author">by ' + escapeHtml(creatorText(it)) + '</div>' : '') +
       (it.blurb ? '<p class="lib-info-summary">' + escapeHtml(it.blurb) + '</p>' : '') +
       (tagHtml ? '<div class="lib-info-tags">' + tagHtml + '</div>' : '') +
       (words ? '<div class="lib-info-wordcount">' + fmtWords(words) + '</div>' : '') +
@@ -565,7 +585,7 @@ function openLightbox(it) {
   document.getElementById('stash-lightbox-img').src = it.image || '';
   document.getElementById('stash-lightbox-img').alt = it.title || '';
   document.getElementById('stash-lightbox-title').textContent = it.title || '';
-  document.getElementById('stash-lightbox-creator').textContent = it.creator ? 'by ' + it.creator : '';
+  document.getElementById('stash-lightbox-creator').textContent = creatorText(it) ? 'by ' + creatorText(it) : '';
   document.getElementById('stash-lightbox-blurb').textContent = it.blurb || '';
   renderTagPills('stash-lightbox-tags', it.tags);
   lb.style.display = 'flex';
@@ -589,7 +609,7 @@ async function openReader(it) {
   var r = document.getElementById('stash-reader');
   document.getElementById('stash-reader-title').textContent = it.title || '';
   document.getElementById('stash-reader-bartitle').textContent = it.title || '';
-  document.getElementById('stash-reader-creator').textContent = it.creator ? 'by ' + it.creator : '';
+  document.getElementById('stash-reader-creator').textContent = creatorText(it) ? 'by ' + creatorText(it) : '';
   document.getElementById('stash-reader-blurb').textContent = it.blurb || '';
   renderTagPills('stash-reader-tags', it.tags);
   r.style.display = 'flex';

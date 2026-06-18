@@ -26,6 +26,26 @@ var state = {
   query:      '',
 };
 
+// ── Artist helpers (support single string OR array, for collabs) ─────────────
+// An item's `artist` may be a string ("FastTrack") or an array (["Vex","FastTrack"])
+// for collaborations. These normalize both to a clean array and a display string,
+// so the rest of the module never has to care which form the data is in.
+// (Mirrors the stash module's creatorList/creatorText.)
+function artistList(item) {
+  if (!item) return [];
+  var a = item.artist;
+  if (Array.isArray(a)) return a.filter(function (n) { return n && String(n).trim(); }).map(String);
+  if (a && String(a).trim()) return [String(a)];
+  return [];
+}
+function artistText(item) {
+  var list = artistList(item);
+  if (!list.length) return '';
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return list[0] + ' & ' + list[1];
+  return list.slice(0, -1).join(', ') + ' & ' + list[list.length - 1];
+}
+
 var TYPE_LABELS = {
   comic:   'Comic',
   scene:   'World Scene',
@@ -228,7 +248,7 @@ function applyFilters() {
     if (q) {
       var matched = false;
       if (modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q)) matched = true;
-      if (modes.indexOf('artist')    > -1 && (item.artist || '').toLowerCase().includes(q)) matched = true;
+      if (modes.indexOf('artist')    > -1 && artistList(item).join(' ').toLowerCase().includes(q)) matched = true;
       if (modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); })) matched = true;
       if (!matched) return false;
     }
@@ -239,7 +259,7 @@ function applyFilters() {
     if (state.sortOrder === 'newest') return (b.date || '').localeCompare(a.date || '');
     if (state.sortOrder === 'oldest') return (a.date || '').localeCompare(b.date || '');
     if (state.sortOrder === 'title')  return a.title.localeCompare(b.title);
-    if (state.sortOrder === 'artist') return (a.artist || '').localeCompare(b.artist || '');
+    if (state.sortOrder === 'artist') return artistText(a).localeCompare(artistText(b));
     return 0;
   });
 
@@ -390,7 +410,7 @@ function renderGrid() {
       '</div>' +
       '<div class="gallery-card-body">' +
         '<div class="gallery-card-title">' + item.title + '</div>' +
-        '<div class="gallery-card-artist">' + (item.artist || '') + '</div>' +
+        '<div class="gallery-card-artist">' + artistText(item) + '</div>' +
         '<div class="gallery-card-meta">' +
           (item.tags || []).map(function(t) { return '<span class="content-tag">' + t + '</span>'; }).join('') +
         '</div>' +

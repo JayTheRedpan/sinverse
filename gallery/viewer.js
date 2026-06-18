@@ -20,6 +20,31 @@
 var item       = null;
 var comicPage  = 0;
 
+// ── Artist helpers (support single string OR array, for collabs) ─────────────
+// `item.artist` may be a string or an array (collab). Normalize to an array and
+// build a "by <links>" string where EACH artist links to their contributor page.
+// (Mirrors the stash module's creator handling.)
+function artistList(item) {
+  if (!item) return [];
+  var a = item.artist;
+  if (Array.isArray(a)) return a.filter(function (n) { return n && String(n).trim(); }).map(String);
+  if (a && String(a).trim()) return [String(a)];
+  return [];
+}
+function artistLinksHtml(item) {
+  var list = artistList(item);
+  if (!list.length) return '';
+  var links = list.map(function (name) {
+    return '<a class="viewer-artist-link" href="../contributors/?creator=' +
+      encodeURIComponent(name) + '">' + name + '</a>';
+  });
+  var joined;
+  if (links.length === 1) joined = links[0];
+  else if (links.length === 2) joined = links[0] + ' & ' + links[1];
+  else joined = links.slice(0, -1).join(', ') + ' & ' + links[links.length - 1];
+  return 'by ' + joined;
+}
+
 // Attach +/- / fit zoom to an image. Default state fits the screen (the CSS
 // Fit-by-default image zoom with grab-to-drag panning.
 // At scale 1 the image fits (object-fit:contain). Zooming scales it up and the
@@ -256,7 +281,7 @@ function renderComic() {
   // Populate sidebar
   document.getElementById('comic-title-reader').textContent   = item.title;
   var caEl = document.getElementById('comic-artist-reader');
-  if (caEl) caEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (caEl) caEl.innerHTML = artistLinksHtml(item);
   document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
   if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
   renderTags('comic-tags-reader', item.tags);
@@ -366,7 +391,7 @@ function renderScene() {
 
   document.getElementById('scene-title').textContent       = item.title;
   var sceneArtistEl = document.getElementById('scene-artist');
-  if (sceneArtistEl) sceneArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (sceneArtistEl) sceneArtistEl.innerHTML = artistLinksHtml(item);
   document.getElementById('scene-description').textContent = item.description || '';
 
   if (item.canonical) document.getElementById('scene-canonical').style.display = '';
@@ -401,7 +426,7 @@ function renderCharRef() {
 
   document.getElementById('ref-title').textContent  = item.title;
   var refArtistEl = document.getElementById('ref-artist');
-  if (refArtistEl) refArtistEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (refArtistEl) refArtistEl.innerHTML = artistLinksHtml(item);
 
   if (item.canonical) document.getElementById('ref-canonical').style.display = '';
   renderRelatedLinks('ref-related', item._related);
@@ -455,7 +480,7 @@ function renderSet() {
 
   document.getElementById('set-title').textContent = item.title;
   var saEl = document.getElementById('set-artist');
-  if (saEl) saEl.innerHTML = item.artist ? 'by ' + '<a class="viewer-artist-link" href="../contributors/?creator=' + encodeURIComponent(item.artist) + '">' + item.artist + '</a>' : '';
+  if (saEl) saEl.innerHTML = artistLinksHtml(item);
   document.getElementById('set-synopsis').textContent = item.synopsis || item.description || '';
   document.getElementById('set-count').textContent = setImages.length + (setImages.length === 1 ? ' image' : ' images');
   if (item.canonical) document.getElementById('set-canonical').style.display = '';

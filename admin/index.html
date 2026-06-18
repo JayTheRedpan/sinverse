@@ -203,13 +203,15 @@ async function checkCharacters(chars) {
 async function checkContributors(contribs, gallery, library, cyoa) {
   const issues = checkIds(contribs, 'contributor', c => c.name || c.id || '(unnamed)');
   const contribIds = new Set(contribs.map(c => c.id));
+  // An artist/author may be a single id or an array (collab); flatten to ids.
+  const idsOf = v => Array.isArray(v) ? v : (v != null ? [v] : []);
 
   // Gallery artists
-  const badArtists = [...new Set(gallery.filter(g => g.artist && !contribIds.has(g.artist)).map(g => g.artist))];
+  const badArtists = [...new Set(gallery.flatMap(g => idsOf(g.artist)).filter(a => a && !contribIds.has(a)))];
   if (badArtists.length) issues.push(err('Gallery references unknown contributor id(s): ' + badArtists.map(a => '<code>' + a + '</code>').join(', ')));
 
   // Library authors
-  const libIds = library.map(s => s.author).filter(Boolean);
+  const libIds = library.flatMap(s => idsOf(s.author)).filter(Boolean);
   const badAuthors = [...new Set(libIds.filter(a => !contribIds.has(a)))];
   if (badAuthors.length) issues.push(err('Library references unknown contributor id(s): ' + badAuthors.map(a => '<code>' + a + '</code>').join(', ')));
 
@@ -272,7 +274,10 @@ function checkLore(records, selfModule, loreIds) {
 async function checkGallery(gallery, galleryIds, libraryIds, loreIds) {
   const issues = checkIds(gallery, 'gallery', g => g.title || ('id ' + g.id));
   const noTitle = gallery.filter(g => !g.title);
-  const noImage = gallery.filter(g => g.type !== 'comic' && g.type !== 'set' && !g.image);
+  // scene needs `image`; charref may use `image` OR an `images` array (multiple
+  // reference views) — exactly what the viewer accepts. comic/set are checked below.
+  const hasCharrefImages = g => g.type === 'charref' && g.images && g.images.length;
+  const noImage = gallery.filter(g => g.type !== 'comic' && g.type !== 'set' && !g.image && !hasCharrefImages(g));
   const noPages = gallery.filter(g => g.type === 'comic' && (!g.pages || !g.pages.length));
   const noSet   = gallery.filter(g => g.type === 'set' && (!g.images || !g.images.length));
   if (noTitle.length) issues.push(warn(noTitle.length + ' gallery item(s) missing title (ids: ' + noTitle.map(g => g.id).join(', ') + ')'));
