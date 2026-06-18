@@ -10,7 +10,7 @@ For now she is a nobody — one of the smaller giantesses, unknown to the powers
 
 Jenny's hybrid heritage reads beautifully across her. Her fur is black — the deep black of her bunny parentage — but carries the subtle markings of a red panda rendered in shades of black rather than rust, lighter patches surfacing against the dark like a familiar pattern half-remembered in shadow. She has slightly rounded bunny ears and a long, puffed tail, and bright gold eyes that catch the light.
 
-Her long black hair is worn in pigtails, each tip dyed a different neon — one electric blue, one electric red — a splash of deliberate, youthful flash against all that black. Around her neck she wears a chain bearing Brandy's logo, a fan's devotion worn openly. She stands a shade under twelve feet, modest by giantess standards; she is, at present, one of the smaller of her kind, a fact that sits in sharp and deliberate contrast with the colossal size she has been promised. The serum-equivalent of her heritage left her with equine anatomy, inherited from the same line as Sin herself.
+Her long black hair is worn in pigtails, each tip dyed a different neon — one electric blue, one electric red — a splash of deliberate, youthful flash against all that black. Around her neck she wears a chain bearing Brandy's logo, a fan's devotion worn openly. She stands a shade under twelve feet, modest by giantess standards; she is, at present, one of the smaller of her kind, a fact that sits in sharp and deliberate contrast with the colossal size she has been promised. The serum-equivalent of her heritage left her with equine anatomy, inherited from the Bailly.
 
 ## Personality
 
