@@ -67,7 +67,6 @@ Threaded through all of it is **size fantasy**, specifically her own future macr
 - Jenny wears a chain with Brandy's logo on it — open fandom for the influencer she idolizes.
 - She tries to imitate Sin's sadism but gets it almost backwards: where Sin is cold and patient, Jenny is hot, fast, and overwhelmed by the power trip. The gap is much of her character.
 - She seeks out shrunken toys specifically so she can fantasize about her future macro size — a dress rehearsal for the enormity she's been promised.
-- Her equine anatomy comes from the same line as Sin herself.
 - Jenny dreams of working for SinCorp, though the organization has no idea she exists.
 
 ## Related
