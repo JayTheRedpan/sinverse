@@ -7,7 +7,9 @@
     "summary": "A story about how couple dynamics changed a lot after TDay hit.",
     "tags": [
       "noncon",
-      "snuff"
+      "snuff",
+      "micro",
+      "abuse"
     ],
     "file": "stories/tdaytales_pakawa_couples_tday.md",
     "date": "2022-05",
@@ -32,7 +34,9 @@
     "tags": [
       "noncon",
       "watersports",
-      "snuff"
+      "snuff",
+      "abuse",
+	    "gore"
     ],
     "date": "2025-02",
     "universe_date": null,
@@ -42,7 +46,17 @@
       "kel"
     ],
     "lore": [
-      
+      "toys",
+      "the-resistance",
+      "sincorp",
+      "apotheosis-serum",
+      "tday",
+      "the-wilds",
+      "bastion",
+      "life-of-a-toy",
+      "toy-modifications",
+      "mega-cities",
+      "the-paws"
     ],
     "chapters": [
       {
@@ -92,7 +106,8 @@
       "bella"
     ],
     "lore": [
-      
+      "tday",
+	    "apotheosis-serum"
     ],
     "wordCount": 5946,
     "relates_to": []
@@ -106,7 +121,8 @@
     "tags": [
       "noncon",
       "snuff",
-      "vore"
+      "vore",
+      "gore"
     ],
     "file": "stories/tday_tales_lucy_kyrm.md",
     "date": "2021-06",
@@ -116,7 +132,8 @@
       "lucy"
     ],
     "lore": [
-      
+      "tday",
+	    "apotheosis-serum"
     ],
     "wordCount": 7476,
     "relates_to": []
@@ -128,7 +145,8 @@
     "author": "Kyrm",
     "summary": null,
     "tags": [
-      "noncon"
+      "noncon",
+      "gore"
     ],
     "file": "stories/tday_tales_mean_girls_kyrm.md",
     "date": "2021-10",
@@ -136,7 +154,8 @@
     "canonical": true,
     "characters": [],
     "lore": [
-      
+      "tday",
+	    "apotheosis-serum"
     ],
     "wordCount": 10416,
     "relates_to": []
@@ -159,7 +178,8 @@
       "contra"
     ],
     "lore": [
-      
+      "tday",
+	    "apotheosis-serum"
     ],
     "wordCount": 7572,
     "relates_to": []
@@ -173,7 +193,8 @@
     "tags": [
       "noncon",
       "vore",
-      "snuff"
+      "snuff",
+      "gore"
     ],
     "file": "stories/tdaytales_ira.md",
     "date": "2023-02",
@@ -183,7 +204,8 @@
       "ira"
     ],
     "lore": [
-      
+      "tday",
+	    "apotheosis-serum"
     ],
     "wordCount": 8686,
     "relates_to": []
@@ -197,7 +219,8 @@
     "tags": [
       "noncon",
       "snuff",
-      "watersports"
+      "watersports",
+      "bdsm"
     ],
     "date": "2019-10",
     "universe_date": null,
@@ -207,7 +230,13 @@
       "jay"
     ],
     "lore": [
-      
+      "toys",
+      "the-wilds",
+      "sincorp",
+      "mega-cities",
+      "the-paws",
+      "the-resistance",
+      "bastion"
     ],
     "chapters": [
       {
@@ -237,7 +266,9 @@
     "tags": [
       "m/m",
       "snuff",
-      "vore"
+      "vore",
+      "abuse",
+      "gore"
     ],
     "file": "stories/subjects.md",
     "date": "2025-06",
@@ -247,7 +278,8 @@
       "ardian"
     ],
     "lore": [
-      
+      "project-sylph",
+	    "toys"
     ],
     "wordCount": 13063,
     "relates_to": []
@@ -270,7 +302,8 @@
       "autumn"
     ],
     "lore": [
-      
+      "toys",
+	    "sincorp"
     ],
     "wordCount": 4594,
     "relates_to": []
@@ -293,7 +326,8 @@
       "mini"
     ],
     "lore": [
-      
+      "sincorp",
+	    "toys"
     ],
     "wordCount": 4889,
     "relates_to": []
@@ -315,7 +349,9 @@
       "sandy"
     ],
     "lore": [
-      
+      "toys",
+      "sincorp",
+      "life-of-a-toy"
     ],
     "wordCount": 6037,
     "relates_to": []
@@ -336,7 +372,10 @@
       "zuzu"
     ],
     "lore": [
-      
+      "toys",
+      "sincorp",
+      "the-resistance",
+      "the-wilds"
     ],
     "wordCount": 8234,
     "relates_to": []

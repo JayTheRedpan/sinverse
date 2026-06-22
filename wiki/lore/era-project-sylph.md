@@ -1,7 +1,7 @@
 ---
 id: era-project-sylph
 title: Project Sylph
-eyebrow: Era — T+11 onward
+eyebrow: Era — T+101 onward
 era: project-sylph
 ---
 

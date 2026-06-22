@@ -1,8 +1,8 @@
 ---
-id: era-pre-tday
-title: Pre-TDay
-eyebrow: Era — T-20 to T-1
-era: pre-tday
+id: era-sins-rise
+title: Sin's-Rise
+eyebrow: Era — T-40 to T0
+era: sins-rise
 ---
 
 Sin develops the serum and founds [SinCorp](sincorp) in secret. The old world's final years, unaware of what is coming.

@@ -61,3 +61,15 @@ You wanted to cry, but instead you black out, the last sight you saw however was
 
 ***???: "It seems your journey has met a disastrous end, lost in the translation of a sign meant to guide souls to the right direction, but in your case lead to the path of certain demise, watched by beings you've not even met. But understand this in your final hours, Death is not an escape in these hallowed halls, only the means to an end. ***
 
+## 8
+
+**"How deep is this place, this hall is so tall! Who built this place?! Why did they build this place?!**
+
+Your travels in this complex has lead you to one possible location, existing though the door of your chosen path, you enter into a another lobby area, but this time you see seats, seats for beings near 4 times your size! you see a giant board baring the logo of a crescent moon, almost like an eclipse, behind it seems to be data moving up glass panes in a holographic display. Looking past this entry you see an increasingly tall passage, it has to be at least 20 stories tall! at the end of the passage and the center of this lobby is a octagonal shaped lift, the glass is tinted red and there's 2 passages, labels on the wall in large text are still in the alien language beyond your comprehension. You suddenly feel a shudder down your spine walking though this angular corridor, the fear of isolation passing though you, this hall is empty, a mild layer of dust covering seats, but the space is in perfect condition, the desk still build for way taller than you is slightly sunken and infront of the red glass lift, you muster the courage to go around and look at the displays of the monitors, disheartened it is also in the alien text, you ponder why it doesn't auto translate, you slam your fist on it, in frustration, hurting yourself in the process. However, this one action changes everything, you hear a deep toned announcement, the language starts alien, then proceeds to change.
+
+*"BZZZ...BZZ ESTO TEVERLA... CEASTORIA ANGORA LE.. LA..LANGUAGE DE...DETECTED, AUTOMATIC TRANSLATION CONFIRMED, WELCOME TO.. BZZZ....ONYX"*
+
+You feel a slight sense of glee, the text on displays sudden translate automatically, the signage on the walls, becomes readable, to your left "ENGINEERING" to your right "RESEARCH" between them, you can see a relaxation hall, you concept of taking a break to you with the threat of what could be looming, or what could even be arriving, makes you feel uneasy.  Some text in the hall you entered from lists "HANGER ACCESS" as well, providing a new option to proceed, but that would mean going back up, up to the levels where huntresses or worse could be lurking. You for now disregard such an option, the despair of being caught flooding your mind once more, you notice on the desk the terminal states "PLAY LOG", maybe this could help you learn about this place?
+
+Question is, what do you do?
+

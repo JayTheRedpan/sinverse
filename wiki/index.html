@@ -125,6 +125,7 @@
       position: sticky;
       top: 0;
       height: 100%;
+      z-index: 2;   /* sit above the timeline's sticky era bar (z-index:1) */
     }
     .wiki-nav-section { margin-bottom: 0.25rem; }
     .wiki-nav-heading {
@@ -1493,6 +1494,133 @@
     .wiki-md-content h2 { font-size: 1.3rem; }
     }
 
+    /* ── Timeline (vertical, era-grouped) ── */
+    .wiki-vtl-controls { display:flex; align-items:center; justify-content:center; margin:1.5rem 0 0.85rem; }
+    .wiki-vtl-seg { display:inline-flex; border:1px solid var(--border-mid); border-radius:999px; overflow:hidden; }
+    .wiki-vtl-seg button {
+      background:transparent; border:none; color:var(--text-muted);
+      font-family:var(--font-caps); text-transform:uppercase; letter-spacing:0.12em; font-size:0.62rem;
+      padding:0.45rem 0.95rem; cursor:pointer; transition:background var(--transition), color var(--transition);
+    }
+    .wiki-vtl-seg button.on { background:var(--accent-dim); color:var(--accent); }
+    .wiki-vtl-seg button + button { border-left:1px solid var(--border-mid); }
+
+    /* Era jump-nav: a full-width band that sticks to the top of the timeline
+       as you scroll. This browser sticks at the scroll container's CONTENT
+       edge, which is below .wiki-main's top padding — so top must be the
+       NEGATIVE of that padding (-3rem desktop, -1.5rem ≤768px) to dock flush
+       under the header with no gap. z-index:1 keeps it above timeline content
+       but below the sidebar (z-index:2), so it never covers sidebar or header.
+       Negative side margins break it out of .wiki-main's padding for full
+       width (values mirror .wiki-main padding per breakpoint). */
+    .wiki-vtl-nav {
+      position:sticky; top:-3rem; z-index:1;
+      background:var(--bg);
+      border-bottom:1px solid var(--border); margin:0 -4rem 1.5rem; padding:0.6rem 4rem;
+      display:flex; flex-wrap:wrap; justify-content:center; gap:0.4rem 0.45rem;
+    }
+    .wiki-vtl-nav:empty { display:none; }
+    .wiki-vtl-pill {
+      flex:0 0 auto; background:transparent; border:1px solid var(--border-mid);
+      border-left:3px solid var(--era-accent, var(--border-mid)); color:var(--text-muted);
+      font-family:var(--font-caps); text-transform:uppercase; letter-spacing:0.1em; font-size:0.6rem;
+      padding:0.32rem 0.7rem; border-radius:999px; cursor:pointer; white-space:nowrap;
+      transition:color var(--transition), background var(--transition), border-color var(--transition);
+    }
+    .wiki-vtl-pill:hover { color:var(--text-secondary); border-color:var(--era-accent); background:var(--accent-glow); }
+
+    /* timeline body */
+    #timeline-container { position:relative; }
+    .wiki-vtl-era { position:relative; padding-left:2.6rem; scroll-margin-top:80px; --era-accent:var(--accent); }
+    .wiki-vtl-era::before {
+      content:""; position:absolute; left:7px; top:0; bottom:0; width:2px;
+      background:var(--era-accent-line, var(--border-mid));
+    }
+    .wiki-vtl-era:first-child::before { top:1.9rem; }
+    .wiki-vtl-era:last-child::before  { bottom:auto; height:2.4rem; }
+
+    .wiki-vtl-era-head {
+      position:relative; padding:1.5rem 0 0.55rem; cursor:pointer; user-select:none;
+      border-top:1px solid var(--border); margin-top:0.4rem;
+    }
+    .wiki-vtl-era:first-child .wiki-vtl-era-head { border-top:none; margin-top:0; }
+    .wiki-vtl-node {
+      position:absolute; left:calc(-2.6rem + 8px); top:1.7rem; width:18px; height:18px;
+      transform:translate(-50%, 0) rotate(45deg);   /* centre on the spine (line centre = 8px) */
+      background:var(--bg); border:2px solid var(--era-accent); border-radius:3px;
+    }
+    .wiki-vtl-eyebrow {
+      font-family:var(--font-caps); text-transform:uppercase; letter-spacing:0.16em;
+      font-size:0.92rem; font-weight:600; color:var(--era-accent);
+    }
+    .wiki-vtl-era-name {
+      font-family:var(--font-display); font-weight:600; font-size:1.7rem; color:var(--text-primary);
+      margin:0.05rem 0 0.15rem; display:flex; align-items:center; gap:0.5rem;
+    }
+    .wiki-vtl-caret { font-size:0.8rem; color:var(--text-muted); transition:transform var(--transition); }
+    .wiki-vtl-era.collapsed .wiki-vtl-caret { transform:rotate(-90deg); }
+    .wiki-vtl-era-name-text { color:inherit; text-decoration:none; }
+    .wiki-vtl-era-link { cursor:pointer; }
+    .wiki-vtl-era-link:hover { text-decoration:underline; text-underline-offset:3px; }
+    .wiki-vtl-count { font-family:var(--font-caps); font-size:0.6rem; letter-spacing:0.12em; color:var(--text-muted); opacity:0.7; margin-left:0.3rem; }
+    .wiki-vtl-era-desc { color:var(--text-muted); font-size:0.98rem; max-width:60ch; }
+    .wiki-vtl-empty { font-family:var(--font-caps); text-transform:uppercase; letter-spacing:0.14em; font-size:0.62rem; color:var(--text-muted); opacity:0.6; padding:0.2rem 0 0.6rem; }
+
+    .wiki-vtl-era-body { overflow:hidden; max-height:9000px; opacity:1; padding-bottom:0.6rem; transition:max-height 0.4s ease, opacity 0.3s ease, padding 0.3s ease; }
+    .wiki-vtl-era.collapsed .wiki-vtl-era-body { max-height:0; opacity:0; padding-bottom:0; }
+
+    .wiki-vtl-era.anchor .wiki-vtl-node { background:var(--era-accent); box-shadow:0 0 0 5px var(--era-accent-glow, var(--accent-glow)); }
+    .wiki-vtl-era.uncharted .wiki-vtl-era-name,
+    .wiki-vtl-era.present   .wiki-vtl-era-name { font-style:italic; color:var(--text-secondary); }
+
+    .wiki-vtl-event { position:relative; margin:0 0 0.6rem; }
+    .wiki-vtl-dot {
+      position:absolute; left:calc(-2.6rem + 8px); top:1.15rem; width:10px; height:10px; border-radius:50%;
+      transform:translateX(-50%);
+      background:var(--bg); border:2px solid var(--era-accent); transition:background var(--transition);
+    }
+    .wiki-vtl-card {
+      background:var(--bg-card); border:1px solid var(--border);
+      border-left:3px solid var(--era-accent-rail, var(--border-mid));
+      border-radius:var(--radius-lg); padding:0.8rem 1.05rem; cursor:pointer;
+      transition:background var(--transition), border-color var(--transition);
+    }
+    .wiki-vtl-card:hover { background:var(--bg-card-hover); border-color:var(--border-mid); border-left-color:var(--era-accent); }
+    .wiki-vtl-event.open .wiki-vtl-card { border-color:var(--border-bright); background:var(--bg-card-hover); }
+    .wiki-vtl-event.open .wiki-vtl-dot { background:var(--era-accent); }
+    .wiki-vtl-date { font-family:var(--font-caps); text-transform:uppercase; letter-spacing:0.14em; font-size:0.64rem; color:var(--era-accent); }
+    .wiki-vtl-title { font-family:var(--font-display); font-weight:600; font-size:1.25rem; color:var(--text-primary); margin:0.05rem 0 0; }
+    .wiki-vtl-body { max-height:0; overflow:hidden; opacity:0; transition:max-height 0.35s ease, opacity 0.3s ease, margin 0.3s ease; }
+    .wiki-vtl-event.open .wiki-vtl-body { max-height:700px; opacity:1; margin-top:0.6rem; }
+    .wiki-vtl-summary { color:var(--text-secondary); font-size:1rem; }
+    .wiki-vtl-related { margin-top:0.65rem; display:flex; flex-wrap:wrap; gap:0.4rem; align-items:center; }
+    .wiki-vtl-related-label { font-family:var(--font-caps); text-transform:uppercase; letter-spacing:0.14em; font-size:0.55rem; color:var(--text-muted); }
+    .wiki-vtl-tag {
+      font-size:0.82rem; color:var(--accent); border:1px solid var(--border-mid);
+      border-radius:999px; padding:0.05rem 0.6rem; cursor:pointer; text-decoration:none; display:inline-block;
+      transition:background var(--transition), border-color var(--transition);
+    }
+    .wiki-vtl-tag:hover { background:var(--accent-dim); border-color:var(--accent); }
+    .wiki-vtl-event.anchor .wiki-vtl-dot { width:14px; height:14px; left:calc(-2.6rem + 8px); top:1.05rem; background:var(--era-accent); }
+
+    .wiki-vtl-gap { position:relative; padding-left:0; margin:0.05rem 0 0.8rem; }
+    .wiki-vtl-gap span { font-family:var(--font-caps); text-transform:uppercase; letter-spacing:0.16em; font-size:0.58rem; color:var(--text-muted); opacity:0.6; }
+    .wiki-vtl-gap::before { content:"\22EE"; position:absolute; left:calc(-2.6rem + 8px); transform:translateX(-50%); top:-4px; color:var(--era-accent); opacity:0.5; font-size:1.2rem; }
+
+    .wiki-vtl-footnote { color:var(--text-muted); font-size:0.9rem; margin-top:2rem; border-top:1px solid var(--border); padding-top:1rem; }
+    .wiki-vtl-footnote em { color:var(--text-secondary); font-style:normal; }
+
+    @media (max-width:768px) {
+      /* match .wiki-main's 1.5rem/1.25rem padding at this breakpoint */
+      .wiki-vtl-nav { top:-1.5rem; margin:0 -1.25rem 1.5rem; padding:0.55rem 1.25rem; }
+      .wiki-vtl-era { scroll-margin-top:112px; }
+    }
+    @media (max-width:520px) {
+      .wiki-vtl-era-name { font-size:1.45rem; }
+      .wiki-vtl-title { font-size:1.12rem; }
+      .wiki-vtl-eyebrow { font-size:0.82rem; }
+      .wiki-vtl-pill { font-size:0.56rem; padding:0.3rem 0.6rem; }
+    }
   </style>
 </head>
 <body>
@@ -1552,15 +1680,14 @@
       <div class="wiki-intro-eyebrow">Sinverse History</div>
       <h1 class="wiki-intro-title">Timeline</h1>
 
-      <div class="wiki-tl-controls">
-        <span class="wiki-tl-controls-hint">Drag to pan</span>
-        <div class="wiki-tl-zoom">
-          <button id="tl-zoom-out" class="wiki-tl-zoom-btn" aria-label="Zoom out">&#8722;</button>
-          <button id="tl-zoom-reset" class="wiki-tl-zoom-btn wiki-tl-zoom-reset" aria-label="Reset zoom">Fit</button>
-          <button id="tl-zoom-in" class="wiki-tl-zoom-btn" aria-label="Zoom in">&#43;</button>
+      <div class="wiki-vtl-controls">
+        <div class="wiki-vtl-seg" id="vtl-seg">
+          <button type="button" data-mode="expanded" class="on">Expanded</button>
+          <button type="button" data-mode="collapsed">Overview</button>
         </div>
       </div>
 
+      <nav class="wiki-vtl-nav" id="vtl-nav" aria-label="Jump to era"></nav>
       <div id="timeline-container"></div>
     </section>
 
@@ -1757,25 +1884,9 @@ function showPage(id, pushState) {
   if (pushState !== false) {
     history.pushState({ type: 'page', id: id }, '', '#page-' + id);
   }
-  // Sidebar behaviour on desktop: collapse only for the timeline (for a wider
-  // view), keep it open everywhere else. This is per-view and never persisted.
-  if (window.innerWidth > 768) {
-    var app = document.querySelector('.wiki-app');
-    if (app) {
-      if (id === 'timeline') app.classList.add('sidebar-collapsed');
-      else app.classList.remove('sidebar-collapsed');
-    }
-  }
-  // When the timeline becomes visible, fit the full span to the viewport then
-  // centre on TDay. (It can't be measured while hidden, so do it now.)
-  if (id === 'timeline') {
-    requestAnimationFrame(function() {
-      requestAnimationFrame(function() {
-        fitTimelineToViewport();
-        centerTimelineOnTDay();
-      });
-    });
-  }
+  // The vertical timeline fits the normal layout, so the sidebar no longer
+  // auto-collapses for it. (Users can still collapse it manually via the
+  // sidebar toggle, and that choice now persists across views.)
 }
 
 // Single delegated listener on the sidebar — handles static and dynamic links
@@ -1888,7 +1999,7 @@ Promise.all([
   SIZE_BUCKETS = results[7] || [];
   buildLoreSidebar();
   buildTimeline();
-  initTimelineZoom();
+  initTimelineView();
   buildCharGrid(characters);
 
   // Restore page from URL hash if returning via browser Back from gallery/library
@@ -2221,490 +2332,268 @@ document.getElementById('wiki-main').addEventListener('click', function(e) {
 
 // buildSidebar removed — characters accessed via category page
 
-// ── Timeline ──────────────────────────────────────────────────
-var TL_PX_PER_YEAR = 88;        // horizontal scale, adjusted by zoom controls
-var TL_PX_MIN = 6, TL_PX_MAX = 200, TL_PX_STEP = 22, TL_PX_DEFAULT = 88;
+// ── Timeline (vertical, era-grouped) ───────────────────────────
+// Replaces the old proportional horizontal track + zoom/drag system.
+// Reuses shared globals: timelineEvents, erasData, fTDate, LORE_PAGES,
+// loadLorePage, loadCharPage, characters.
+var _vtlViewMode = 'expanded';   // 'expanded' (default) | 'collapsed'
+
+// Muted, theme-harmonised palette. Each era gets one by position, so colours
+// work with zero config; an optional "accent" field in eras.json overrides.
+var VTL_PALETTE = ['#8a93a6','#c0925e','#c97a8c','#cf8a55','#a3ad77','#d9b87f','#b08fc4','#9aa0b8','#cba06a'];
+function vtlHexToRgba(hex, a) {
+  var h = String(hex).replace('#','');
+  if (h.length === 3) h = h[0]+h[0]+h[1]+h[1]+h[2]+h[2];
+  var n = parseInt(h, 16);
+  return 'rgba(' + ((n>>16)&255) + ',' + ((n>>8)&255) + ',' + (n&255) + ',' + a + ')';
+}
+// Resolve an era's accent (override or palette) and apply its colour vars.
+function vtlApplyAccent(el, era, idx) {
+  var c = era.accent || VTL_PALETTE[idx % VTL_PALETTE.length];
+  el.style.setProperty('--era-accent', c);
+  el.style.setProperty('--era-accent-line', vtlHexToRgba(c, 0.5));
+  el.style.setProperty('--era-accent-rail', vtlHexToRgba(c, 0.55));
+  el.style.setProperty('--era-accent-glow', vtlHexToRgba(c, 0.22));
+}
+
+function vtlEvDate(ev) {
+  return (ev.date === null || ev.date === undefined || ev.date === '') ? null : (parseInt(ev.date, 10) || 0);
+}
+function vtlEraRange(e) {
+  if (e.point) return fTDate(e.start);
+  var s  = (e.start === null || e.start === undefined) ? '\u2026'   : fTDate(e.start);
+  var en = (e.end   === null || e.end   === undefined) ? 'present' : fTDate(e.end);
+  return s + '  \u2192  ' + en;
+}
+// Render order is by start date, so era order in eras.json never matters.
+function vtlSortedEras(list) {
+  return list.slice().sort(function(a, b) {
+    var sa = (a.start === null || a.start === undefined) ? -Infinity : a.start;
+    var sb = (b.start === null || b.start === undefined) ? -Infinity : b.start;
+    if (sa !== sb) return sa - sb;
+    return (a.point ? 0 : 1) - (b.point ? 0 : 1); // an instant precedes the span that follows it
+  });
+}
+// Match a dated event to its era: exact point match -> era starting that year
+// -> containing range. Returns null if no era contains the year.
+function vtlEraForDate(eras, d) {
+  if (d === null) return null;
+  for (var p = 0; p < eras.length; p++) if (eras[p].point && eras[p].start === d) return eras[p];
+  for (var q = 0; q < eras.length; q++) if (!eras[q].point && eras[q].start === d) return eras[q];
+  for (var i = 0; i < eras.length; i++) {
+    var e = eras[i]; if (e.point) continue;
+    var s  = (e.start === null || e.start === undefined) ? -Infinity : e.start;
+    var en = (e.end   === null || e.end   === undefined) ?  Infinity : e.end;
+    if (d >= s && d <= en) return e;
+  }
+  return null;
+}
 
 function buildTimeline() {
   var container = document.getElementById('timeline-container');
+  var nav = document.getElementById('vtl-nav');
+  if (!container) return;
   container.innerHTML = '';
+  if (nav) nav.innerHTML = '';
 
-  // --- Scale setup ---------------------------------------------------------
-  // Events are positioned by their actual date so era widths reflect real
-  // time spans. Null-date events (ongoing/TBD) go in a "Present" zone at the end.
-  var PX_PER_YEAR = TL_PX_PER_YEAR;  // horizontal scale (zoom-controlled)
-  var EDGE_PAD    = 90;       // padding at each end of the track
-  var PRESENT_W   = 240;      // width of the ongoing/TBD zone
+  var ordered = vtlSortedEras(erasData);
 
-  function evDate(ev) {
-    return (ev.date === null || ev.date === undefined) ? null : (parseInt(ev.date, 10) || 0);
+  // Assign each event to an era id; collect dated orphans and undated events.
+  var assigned = {}, orphans = [], present = [];
+  timelineEvents.forEach(function(ev) {
+    var d = vtlEvDate(ev);
+    if (d === null) { present.push(ev); return; }
+    var er = vtlEraForDate(ordered, d);
+    if (er) { (assigned[er.id] = assigned[er.id] || []).push(ev); }
+    else orphans.push(ev);
+  });
+
+  // Render list: real eras, then a catch-all for orphaned dated events (so era
+  // edits never lose anything), then a Present zone for undated events.
+  var renderList = ordered.slice();
+  if (orphans.length) {
+    renderList.push({ id: '__uncharted', name: 'Uncharted', start: null, end: null, uncharted: true, accent: '#9a7d6a',
+      description: 'Events whose date falls outside every defined era. They still appear here so nothing is lost \u2014 adjust the eras to reclaim them.' });
+    assigned.__uncharted = orphans;
+  }
+  if (present.length) {
+    renderList.push({ id: '__present', name: 'The Present', start: null, end: null, present: true, accent: '#a08870',
+      description: 'Ongoing or undated events.' });
+    assigned.__present = present;
   }
 
-  var dated = timelineEvents.filter(function(ev){ return evDate(ev) !== null; });
-  var undated = timelineEvents.filter(function(ev){ return evDate(ev) === null; });
+  function eraLoreId(id) { return 'era-' + id; }
+  function eraHasLore(id) { return !!LORE_PAGES.find(function(p){ return p.id === eraLoreId(id); }); }
 
-  // Determine the year range across both events and eras
-  var years = dated.map(evDate);
-  erasData.forEach(function(era){
-    if (era.start !== null && era.start !== undefined) years.push(era.start);
-    if (era.end   !== null && era.end   !== undefined) years.push(era.end);
-  });
-  if (!years.length) years = [0];
-  var minYear = Math.min.apply(null, years);
-  var maxYear = Math.max.apply(null, years);
-  // Pad the range slightly so edge eras/events aren't flush against the ends
-  minYear -= 1; maxYear += 1;
-
-  function xForYear(y) { return EDGE_PAD + (y - minYear) * PX_PER_YEAR; }
-  var datedWidth = xForYear(maxYear) + EDGE_PAD;
-  var totalWidth = datedWidth + (undated.length ? PRESENT_W : 0);
-
-  // --- Track scaffold ------------------------------------------------------
-  var trackWrap = document.createElement('div');
-  trackWrap.className = 'wiki-timeline-wrap';
-
-  var track = document.createElement('div');
-  track.className = 'wiki-timeline-track';
-  track.style.width = totalWidth + 'px';
-  track.style.minWidth = totalWidth + 'px';
-
-  // --- Era bands (behind events) -------------------------------------------
-  var bandLayer = document.createElement('div');
-  bandLayer.className = 'wiki-tl-bands';
-
-  // Clicking an era band/divider opens its lore page (era-<id>), if it exists.
-  function wireEraClick(el, eraId) {
-    var loreId = 'era-' + eraId;
-    var exists = LORE_PAGES.find(function(p){ return p.id === loreId; });
-    if (!exists) return;
-    el.style.cursor = 'pointer';
-    el.addEventListener('click', function(e) {
-      e.stopPropagation();
-      loadLorePage(loreId);
+  renderList.forEach(function(era, idx) {
+    var evs = (assigned[era.id] || []).slice().sort(function(a, b){
+      var da = vtlEvDate(a), db = vtlEvDate(b);
+      return (da === null ? Infinity : da) - (db === null ? Infinity : db);
     });
-  }
 
-  erasData.forEach(function(era, i) {
-    if (era.point) {
-      // A single-moment era (TDay) — render as a vertical divider, not a band
-      var x = xForYear(era.start);
-      var div = document.createElement('div');
-      div.className = 'wiki-tl-divider';
-      div.style.left = x + 'px';
-      div.innerHTML = '<span class="wiki-tl-divider-label">' + era.name + '</span>';
-      div.title = era.description ? era.description + ' — click to read more' : '';
-      wireEraClick(div, era.id);
-      bandLayer.appendChild(div);
-      return;
+    // Jump-nav pill
+    if (nav) {
+      var pill = document.createElement('button');
+      pill.type = 'button';
+      pill.className = 'wiki-vtl-pill';
+      pill.textContent = era.name;
+      vtlApplyAccent(pill, era, idx);
+      pill.addEventListener('click', function() {
+        var sec = document.getElementById('vtl-era-' + era.id);
+        if (!sec) return;
+        sec.classList.remove('collapsed');
+        sec.scrollIntoView({ behavior: 'smooth', block: 'start' });
+      });
+      nav.appendChild(pill);
     }
-    var startY = (era.start === null || era.start === undefined) ? minYear : era.start;
-    var endY   = (era.end   === null || era.end   === undefined) ? maxYear : era.end;
-    var left  = xForYear(startY);
-    // Era boundaries are shared instants (one era's end == the next era's start),
-    // so a band spans exactly start→end with no extra year — adjacent bands meet
-    // cleanly at the boundary without overlapping.
-    var right = xForYear(endY);
-    var band = document.createElement('div');
-    band.className = 'wiki-tl-band ' + (i % 2 === 0 ? 'band-a' : 'band-b');
-    band.style.left  = left + 'px';
-    band.style.width = (right - left) + 'px';
-    band.innerHTML = '<div class="wiki-tl-band-name">' + era.name + '</div>';
-    band.title = (era.description || era.name) + ' — click to read more';
-    wireEraClick(band, era.id);
-    bandLayer.appendChild(band);
-  });
 
-  // Present / ongoing zone for undated events
-  if (undated.length) {
-    var pband = document.createElement('div');
-    pband.className = 'wiki-tl-band band-present';
-    pband.style.left  = datedWidth + 'px';
-    pband.style.width = PRESENT_W + 'px';
-    pband.innerHTML = '<div class="wiki-tl-band-name">The Present</div>';
-    bandLayer.appendChild(pband);
-  }
+    var section = document.createElement('div');
+    section.className = 'wiki-vtl-era'
+      + (era.point ? ' anchor' : '')
+      + (era.uncharted ? ' uncharted' : '')
+      + (era.present ? ' present' : '')
+      + (_vtlViewMode === 'collapsed' ? ' collapsed' : '');
+    section.id = 'vtl-era-' + era.id;
+    vtlApplyAccent(section, era, idx);
 
-  track.appendChild(bandLayer);
+    // Header
+    var head = document.createElement('div');
+    head.className = 'wiki-vtl-era-head';
+    var eyebrow = era.uncharted ? 'Outside defined eras'
+                : era.present   ? 'Ongoing'
+                : vtlEraRange(era);
+    var countTxt = evs.length ? evs.length + (evs.length > 1 ? ' events' : ' event') : '';
+    var nameClickable = (!era.uncharted && !era.present && eraHasLore(era.id));
+    head.innerHTML =
+      '<div class="wiki-vtl-node"></div>' +
+      '<div class="wiki-vtl-eyebrow">' + eyebrow + '</div>' +
+      '<div class="wiki-vtl-era-name">' +
+        '<span class="wiki-vtl-caret">\u25BC</span>' +
+        (nameClickable
+          ? '<a class="wiki-vtl-era-name-text wiki-vtl-era-link" href="#lore-era-' + encodeURIComponent(era.id) + '" data-era="' + era.id + '">' + era.name + '</a>'
+          : '<span class="wiki-vtl-era-name-text">' + era.name + '</span>') +
+        (countTxt ? '<span class="wiki-vtl-count">' + countTxt + '</span>' : '') +
+      '</div>' +
+      (era.description ? '<div class="wiki-vtl-era-desc">' + era.description + '</div>' : '');
+    section.appendChild(head);
 
-  // --- Baseline line -------------------------------------------------------
-  var line = document.createElement('div');
-  line.className = 'wiki-timeline-line';
-  track.appendChild(line);
-
-  // --- Detail panel --------------------------------------------------------
-  var detail = document.createElement('div');
-  detail.className = 'wiki-tl-detail';
-  detail.id = 'tl-detail';
-  var openId = null;
-
-  // --- Event markers -------------------------------------------------------
-  function eraForDate(d) {
-    if (d === null || d === undefined) return null;
-    // Prefer an exact point-era match (e.g. TDay at year 0)
-    for (var p = 0; p < erasData.length; p++) {
-      if (erasData[p].point && erasData[p].start === d) return erasData[p];
+    // Toggle collapse on header click (let an era-name lore link through).
+    head.addEventListener('click', function(e) {
+      if (e.target.closest('.wiki-vtl-era-link')) return;
+      section.classList.toggle('collapsed');
+    });
+    var nameLink = head.querySelector('.wiki-vtl-era-link');
+    if (nameLink) {
+      nameLink.addEventListener('click', function(e) {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+        e.preventDefault();
+        e.stopPropagation();
+        loadLorePage(eraLoreId(this.getAttribute('data-era')));
+      });
     }
-    // Then prefer a non-point era that STARTS at this year (boundary years
-    // belong to the era beginning there, not the one ending there)
-    for (var q = 0; q < erasData.length; q++) {
-      if (!erasData[q].point && erasData[q].start === d) return erasData[q];
+
+    var body = document.createElement('div');
+    body.className = 'wiki-vtl-era-body';
+
+    if (!evs.length) {
+      var empty = document.createElement('div');
+      empty.className = 'wiki-vtl-empty';
+      empty.textContent = 'No recorded events yet';
+      body.appendChild(empty);
     }
-    // Otherwise fall back to whichever range contains the year
-    for (var i = 0; i < erasData.length; i++) {
-      var e = erasData[i];
-      if (e.point) continue;
-      var s = (e.start === null || e.start === undefined) ? -Infinity : e.start;
-      var en = (e.end === null || e.end === undefined) ? Infinity : e.end;
-      if (d >= s && d <= en) return e;
-    }
-    return null;
-  }
-  function eraEyebrowHtml(d) {
-    var e = eraForDate(d);
-    if (!e) return 'The Present';
-    var loreId = 'era-' + e.id;
-    var exists = LORE_PAGES.find(function(p){ return p.id === loreId; });
-    if (exists) {
-      return '<span class="wiki-lore-link wiki-tl-era-link" data-target="' + loreId + '">' + e.name + '</span>';
-    }
-    return e.name;
-  }
 
-  function placeEvent(ev, x, stagger) {
-    var node = document.createElement('div');
-    node.className = 'wiki-timeline-event' + (ev.era === 'anchor' ? ' anchor' : '') + (stagger ? ' staggered' : '');
-    node.style.left = x + 'px';
+    evs.forEach(function(ev, idx) {
+      // "N years pass" marker for large jumps within an era.
+      if (idx > 0) {
+        var da = vtlEvDate(evs[idx - 1]), db = vtlEvDate(ev);
+        if (da !== null && db !== null && (db - da) >= 20) {
+          var gap = document.createElement('div');
+          gap.className = 'wiki-vtl-gap';
+          gap.innerHTML = '<span>\u2248 ' + (db - da) + ' years pass</span>';
+          body.appendChild(gap);
+        }
+      }
 
-    var dot = document.createElement('div');
-    dot.className = 'wiki-tl-dot';
-    var date = document.createElement('div');
-    date.className = 'wiki-tl-date';
-    date.textContent = fTDate(ev.date);
-    var title = document.createElement('div');
-    title.className = 'wiki-tl-title';
-    title.textContent = ev.title;
+      var card = document.createElement('div');
+      card.className = 'wiki-vtl-event' + (ev.era === 'anchor' ? ' anchor' : '');
+      card.setAttribute('data-ev-id', ev.id);
 
-    node.appendChild(dot);
-    node.appendChild(date);
-    node.appendChild(title);
-    node.setAttribute('data-ev-id', ev.id);
-
-    node.addEventListener('click', function() {
-      var wasOpen = openId === ev.id;
-      document.querySelectorAll('.wiki-tl-dot').forEach(function(d){ d.style.background = ''; });
-      if (wasOpen) { detail.classList.remove('open'); openId = null; return; }
-      dot.style.background = 'var(--accent)';
+      // Related links (lore pages / characters) — same resolution as before.
       var relatedHtml = '';
       if (ev.tags && ev.tags.length) {
         var relLinks = ev.tags.map(function(tag) {
           var lp = LORE_PAGES.find(function(p){ return p.id === tag; });
           var ch = characters.find(function(c){ return c.name.toLowerCase() === tag; });
-          if (lp) return '<span class="tl-related-link wiki-lore-link" data-target="' + tag + '">' + lp.label + '</span>';
-          if (ch) return '<span class="tl-related-link wiki-lore-link" data-target="' + ch.name.toLowerCase() + '">' + ch.name + '</span>';
+          if (lp) return '<a class="wiki-vtl-tag wiki-lore-link" href="#lore-' + encodeURIComponent(tag) + '" data-target="' + tag + '">' + lp.label + '</a>';
+          if (ch) {
+            var cslug = ch.wiki || ch.name.toLowerCase().replace(/\s+/g, '-');
+            return '<a class="wiki-vtl-tag wiki-lore-link" href="#char-' + encodeURIComponent(cslug) + '" data-target="' + ch.name.toLowerCase() + '">' + ch.name + '</a>';
+          }
           return null;
         }).filter(Boolean);
-        if (relLinks.length) relatedHtml = '<div class="tl-related"><span class="tl-related-label">Related</span>' + relLinks.join('') + '</div>';
+        if (relLinks.length) relatedHtml =
+          '<div class="wiki-vtl-related"><span class="wiki-vtl-related-label">Related</span>' + relLinks.join('') + '</div>';
       }
-      detail.innerHTML =
-        '<button class="wiki-tl-detail-close" id="tl-close">Close \u2715</button>' +
-        '<div class="wiki-tl-detail-era">' + eraEyebrowHtml(evDate(ev)) + '</div>' +
-        '<div class="wiki-tl-detail-date">' + fTDate(ev.date) + '</div>' +
-        '<div class="wiki-tl-detail-title">' + ev.title + '</div>' +
-        '<div class="wiki-tl-detail-body">' + ev.summary + '</div>' +
-        relatedHtml;
-      detail.classList.add('open');
-      openId = ev.id;
-      document.getElementById('tl-close').addEventListener('click', function(e) {
-        e.stopPropagation();
-        detail.classList.remove('open');
-        dot.style.background = '';
-        openId = null;
-      });
-      detail.querySelectorAll('.wiki-lore-link').forEach(function(el) {
-        el.addEventListener('click', function(e) {
-          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+
+      card.innerHTML =
+        '<div class="wiki-vtl-dot"></div>' +
+        '<div class="wiki-vtl-card">' +
+          '<span class="wiki-vtl-date">' + fTDate(ev.date) + '</span>' +
+          '<div class="wiki-vtl-title">' + ev.title + '</div>' +
+          '<div class="wiki-vtl-body">' +
+            '<div class="wiki-vtl-summary">' + (ev.summary || '') + '</div>' +
+            relatedHtml +
+          '</div>' +
+        '</div>';
+
+      // Expand/collapse the event; clicks on a related link route instead.
+      card.querySelector('.wiki-vtl-card').addEventListener('click', function(e) {
+        var link = e.target.closest('.wiki-lore-link');
+        if (link) {
+          if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return;
           e.preventDefault();
-          e.stopPropagation();
-          var t = this.getAttribute('data-target');
-          var isLore = LORE_PAGES.find(function(p){ return p.id===t; });
+          var t = link.getAttribute('data-target');
+          var isLore = LORE_PAGES.find(function(p){ return p.id === t; });
           if (isLore) loadLorePage(t);
           else {
-            var cByName = characters.find(function(c){ return c.name.toLowerCase()===t.toLowerCase(); });
+            var cByName = characters.find(function(c){ return c.name.toLowerCase() === t.toLowerCase(); });
             if (cByName) loadCharPage(cByName.id);
           }
-        });
+          return;
+        }
+        card.classList.toggle('open');
       });
+
+      body.appendChild(card);
     });
 
-    track.appendChild(node);
-  }
-
-  dated.slice().sort(function(a,b){ return evDate(a) - evDate(b); })
-       .forEach(function(ev, i){ placeEvent(ev, xForYear(evDate(ev)), i % 2 === 1); });
-
-  // Undated events spread across the Present zone
-  undated.forEach(function(ev, i) {
-    var x = datedWidth + (PRESENT_W / (undated.length + 1)) * (i + 1);
-    placeEvent(ev, x, i % 2 === 1);
+    section.appendChild(body);
+    container.appendChild(section);
   });
 
-  trackWrap.appendChild(track);
-  container.appendChild(trackWrap);
-  enableDragScroll(trackWrap);
-  // Remember where TDay (T±0) sits so the view can centre on it,
-  // and the dated year span so the view can fit-to-content.
-  trackWrap._tdayX = xForYear(0);
-  trackWrap._minYear = minYear;
-  trackWrap._maxYear = maxYear;
-  trackWrap._edgePad = EDGE_PAD;
-
+  // Footnote (carried over from the old timeline).
   var fn = document.createElement('p');
-  fn.className = 'wiki-tl-footnote';
-  fn.innerHTML = 'Dates relative to TDay (T&plusmn;0) — <em>T-N</em> = N years before; <em>T+N</em> = N years after. Bands mark the eras; click any event to expand.';
+  fn.className = 'wiki-vtl-footnote';
+  fn.innerHTML = 'Dates relative to TDay (T&plusmn;0) \u2014 <em>T-N</em> = N years before; <em>T+N</em> = N years after. Tap an event to expand; tap an era heading to collapse it.';
   container.appendChild(fn);
-  container.appendChild(detail);
-
-  // Collapse crowded event labels to dots at the current zoom level
-  applyEventDensity();
 }
 
-
-// Drag-to-pan for the timeline (mouse + touch via pointer events). Suppresses
-// the click that would otherwise fire on an event after a real drag.
-function enableDragScroll(el) {
-  var isDown = false, startX = 0, startScroll = 0, moved = false;
-  var DRAG_THRESHOLD = 5; // px before it counts as a drag (not a click)
-
-  el.style.cursor = 'grab';
-
-  el.addEventListener('pointerdown', function(e) {
-    // Ignore non-primary buttons
-    if (e.button !== undefined && e.button !== 0) return;
-    isDown = true;
-    moved = false;
-    startX = e.clientX;
-    startScroll = el.scrollLeft;
-    el.style.cursor = 'grabbing';
-    el.style.userSelect = 'none';
-  });
-
-  el.addEventListener('pointermove', function(e) {
-    if (!isDown) return;
-    var dx = e.clientX - startX;
-    if (Math.abs(dx) > DRAG_THRESHOLD) {
-      moved = true;
-      // Capture the pointer once we know it's a drag so it keeps tracking
-      // even if the cursor leaves the element.
-      if (el.setPointerCapture) { try { el.setPointerCapture(e.pointerId); } catch (err) {} }
-    }
-    if (moved) {
-      el.scrollLeft = startScroll - dx;
-      e.preventDefault();
-    }
-  });
-
-  function endDrag(e) {
-    if (!isDown) return;
-    isDown = false;
-    el.style.cursor = 'grab';
-    el.style.userSelect = '';
-    if (el.releasePointerCapture && e && e.pointerId !== undefined) {
-      try { el.releasePointerCapture(e.pointerId); } catch (err) {}
-    }
-  }
-  el.addEventListener('pointerup', endDrag);
-  el.addEventListener('pointercancel', endDrag);
-  el.addEventListener('pointerleave', function(e) { if (!el.hasPointerCapture || !el.hasPointerCapture(e.pointerId)) endDrag(e); });
-
-  // Swallow the click that follows a drag, so panning doesn't open a detail panel
-  el.addEventListener('click', function(e) {
-    if (moved) {
-      e.stopPropagation();
-      e.preventDefault();
-      moved = false;
-    }
-  }, true);
-}
-
-
-// Zoom controls for the timeline. Adjusting the scale rebuilds the timeline,
-// preserving the scroll centre so the view stays anchored.
-function rebuildTimelinePreservingCenter() {
-  var wrap = document.querySelector('.wiki-timeline-wrap');
-  var centerRatio = 0.5;
-  if (wrap && wrap.scrollWidth > wrap.clientWidth) {
-    centerRatio = (wrap.scrollLeft + wrap.clientWidth / 2) / wrap.scrollWidth;
-  }
-  buildTimeline();
-  var nw = document.querySelector('.wiki-timeline-wrap');
-  if (nw && nw.scrollWidth > nw.clientWidth) {
-    nw.scrollLeft = centerRatio * nw.scrollWidth - nw.clientWidth / 2;
-  }
-  updateZoomButtons();
-}
-
-// Rebuild the timeline while keeping the content under a given screen x-offset
-// (relative to the wrap's left edge) anchored in place — used for wheel zoom.
-function rebuildTimelineAnchoredAt(offsetX) {
-  var wrap = document.querySelector('.wiki-timeline-wrap');
-  // Convert the cursor's screen x to the YEAR under it, using the pre-zoom
-  // scale. After rebuild we scroll so that same year sits back under the
-  // cursor. (A width-ratio anchor drifts because the edge padding and the
-  // "Present" zone are fixed-width and don't scale with zoom.)
-  var anchorYear = null;
-  if (wrap && wrap._minYear !== undefined) {
-    var contentX = wrap.scrollLeft + offsetX;           // x within the track
-    anchorYear = wrap._minYear + (contentX - wrap._edgePad) / TL_PX_PER_YEAR_PREV();
-  }
-  buildTimeline();
-  var nw = document.querySelector('.wiki-timeline-wrap');
-  if (nw && anchorYear !== null && nw._minYear !== undefined) {
-    var newContentX = nw._edgePad + (anchorYear - nw._minYear) * TL_PX_PER_YEAR;
-    nw.scrollLeft = newContentX - offsetX;
-  }
-  _tlPrevScale = null;
-  updateZoomButtons();
-}
-// The scale used to render the timeline currently on screen. We snapshot it
-// before each zoom so the anchor conversion uses the pre-change scale.
-var _tlPrevScale = null;
-function TL_PX_PER_YEAR_PREV() { return _tlPrevScale !== null ? _tlPrevScale : TL_PX_PER_YEAR; }
-
-// Choose an initial zoom so the entire dated span fits the viewport width
-// (clamped to the zoom limits), then rebuild at that scale. This keeps even a
-// very long era on-screen at first load; the user can zoom in for detail.
-function fitTimelineToViewport() {
-  var wrap = document.querySelector('.wiki-timeline-wrap');
-  if (!wrap || wrap._minYear === undefined) return;
-  var span = wrap._maxYear - wrap._minYear;
-  if (span <= 0) return;
-  var avail = wrap.clientWidth - (wrap._edgePad * 2);
-  if (avail <= 0) return;
-  var fitPx = avail / span;
-  // Clamp into the allowed zoom range; round to a tidy step
-  fitPx = Math.max(TL_PX_MIN, Math.min(TL_PX_MAX, Math.floor(fitPx)));
-  if (fitPx !== TL_PX_PER_YEAR) {
-    TL_PX_PER_YEAR = fitPx;
-    buildTimeline();
-    updateZoomButtons();
-  }
-}
-
-
-// Level-of-detail for events. Two thresholds, applied left-to-right per row
-// (staggered vs not, which don't collide vertically):
-//   • DOT_GAP   — if a dot is closer than this to the last *visible* dot, hide
-//                 it entirely so far-out views don't smear into a blob.
-//   • LABEL_GAP — a visible dot only shows its label if it clears this much
-//                 room from the last *labelled* dot; otherwise it's dot-only.
-// The TDay anchor always stays fully visible.
-function applyEventDensity() {
-  var track = document.querySelector('.wiki-timeline-track');
-  if (!track) return;
-  var DOT_GAP = 13;
-  var LABEL_GAP = 110;
-  var events = Array.prototype.slice.call(track.querySelectorAll('.wiki-timeline-event'));
-  events.sort(function(a, b){ return parseFloat(a.style.left) - parseFloat(b.style.left); });
-  var lastDot   = { top: -Infinity, bottom: -Infinity };
-  var lastLabel = { top: -Infinity, bottom: -Infinity };
-  events.forEach(function(ev) {
-    var x = parseFloat(ev.style.left) || 0;
-    var row = ev.classList.contains('staggered') ? 'bottom' : 'top';
-
-    // Anchor (TDay) is never culled
-    if (ev.classList.contains('anchor')) {
-      ev.classList.remove('dot-only', 'tl-hidden');
-      lastDot[row] = x; lastLabel[row] = x;
-      return;
-    }
-
-    // Tier 1: hide the dot if it would overlap the previous visible dot
-    if (x - lastDot[row] < DOT_GAP) {
-      ev.classList.add('tl-hidden');
-      ev.classList.remove('dot-only');
-      return;
-    }
-    ev.classList.remove('tl-hidden');
-    lastDot[row] = x;
-
-    // Tier 2: show the label only if there's room; otherwise dot-only
-    if (x - lastLabel[row] < LABEL_GAP) {
-      ev.classList.add('dot-only');
-    } else {
-      ev.classList.remove('dot-only');
-      lastLabel[row] = x;
-    }
+// View toggle: Expanded (default) vs Overview (all eras collapsed).
+function initTimelineView() {
+  var seg = document.getElementById('vtl-seg');
+  if (!seg || seg._bound) return;
+  seg._bound = true;
+  seg.addEventListener('click', function(e) {
+    var b = e.target.closest('button');
+    if (!b) return;
+    _vtlViewMode = b.getAttribute('data-mode');
+    seg.querySelectorAll('button').forEach(function(x){ x.classList.toggle('on', x === b); });
+    document.querySelectorAll('.wiki-vtl-era').forEach(function(sec){
+      sec.classList.toggle('collapsed', _vtlViewMode === 'collapsed');
+    });
   });
 }
 
-// Scroll the timeline so TDay (T\u00b10) is centred in the viewport.
-function centerTimelineOnTDay() {
-  var wrap = document.querySelector('.wiki-timeline-wrap');
-  if (!wrap || wrap._tdayX === undefined) return;
-  var target = wrap._tdayX - wrap.clientWidth / 2;
-  wrap.scrollLeft = Math.max(0, target);
-}
-
-function updateZoomButtons() {
-  var out = document.getElementById('tl-zoom-out');
-  var inc = document.getElementById('tl-zoom-in');
-  if (out) out.disabled = TL_PX_PER_YEAR <= TL_PX_MIN;
-  if (inc) inc.disabled = TL_PX_PER_YEAR >= TL_PX_MAX;
-}
-
-function initTimelineZoom() {
-  var out = document.getElementById('tl-zoom-out');
-  var inc = document.getElementById('tl-zoom-in');
-  var reset = document.getElementById('tl-zoom-reset');
-  if (out) out.addEventListener('click', function() {
-    TL_PX_PER_YEAR = Math.max(TL_PX_MIN, TL_PX_PER_YEAR / 1.35);
-    rebuildTimelinePreservingCenter();
-  });
-  if (inc) inc.addEventListener('click', function() {
-    TL_PX_PER_YEAR = Math.min(TL_PX_MAX, TL_PX_PER_YEAR * 1.35);
-    rebuildTimelinePreservingCenter();
-  });
-  if (reset) reset.addEventListener('click', function() {
-    // "Fit" returns to the whole-span view centred on TDay
-    fitTimelineToViewport();
-    centerTimelineOnTDay();
-  });
-
-  // Wheel over the timeline zooms (toward the cursor) instead of scrolling the
-  // page. Attached to the container so it persists across rebuilds.
-  var container = document.getElementById('timeline-container');
-  if (container && !container._wheelZoomBound) {
-    container._wheelZoomBound = true;
-    var lastWheelZoom = 0;
-    container.addEventListener('wheel', function(e) {
-      var wrap = e.target.closest ? e.target.closest('.wiki-timeline-wrap') : null;
-      if (!wrap) return;
-      var delta = Math.abs(e.deltaY) >= Math.abs(e.deltaX) ? e.deltaY : e.deltaX;
-      if (delta === 0) return;
-      e.preventDefault();
-      // Light throttle so one trackpad swipe doesn't fire dozens of rebuilds
-      var now = Date.now();
-      if (now - lastWheelZoom < 60) return;
-      lastWheelZoom = now;
-      var rect = wrap.getBoundingClientRect();
-      var offsetX = e.clientX - rect.left;   // cursor x within the wrap
-      var prev = TL_PX_PER_YEAR;
-      // Multiplicative zoom — each tick scales by a fixed ratio, so the change
-      // feels the same whether you're zoomed way out or way in (additive steps
-      // felt fine when zoomed in but doubled the scale when zoomed out).
-      var factor = delta < 0 ? 1.18 : 1 / 1.18;
-      var next = TL_PX_PER_YEAR * factor;
-      next = Math.max(TL_PX_MIN, Math.min(TL_PX_MAX, next));
-      if (Math.abs(next - prev) > 0.01) {
-        _tlPrevScale = prev;          // remember the on-screen scale for anchoring
-        TL_PX_PER_YEAR = next;
-        rebuildTimelineAnchoredAt(offsetX);
-      }
-    }, { passive: false });
-  }
-
-  updateZoomButtons();
-}
 
 // ── Character grid ────────────────────────────────────────────
 // Characters page: filter state + the full list it filters from.

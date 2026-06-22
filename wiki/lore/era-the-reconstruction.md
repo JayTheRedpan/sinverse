@@ -1,7 +1,7 @@
 ---
 id: era-the-reconstruction
 title: The Reconstruction
-eyebrow: Era — T+3 to T+4
+eyebrow: Era — T+8 to T+40
 era: the-reconstruction
 ---
 
