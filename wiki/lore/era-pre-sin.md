@@ -1,7 +1,7 @@
 ---
 id: era-pre-sin
 title: Pre-Sin
-eyebrow: Era — before T-21
+eyebrow: Era — before T-40
 era: pre-sin
 ---
 

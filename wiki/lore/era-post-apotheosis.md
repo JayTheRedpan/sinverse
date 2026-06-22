@@ -1,7 +1,7 @@
 ---
 id: era-post-apotheosis
 title: Post-Apotheosis
-eyebrow: Era — T+1 to T+2
+eyebrow: Era — T0 to T+8
 era: post-apotheosis
 ---
 

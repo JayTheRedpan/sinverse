@@ -872,5 +872,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/sylviec/"
     }
+  },
+  {
+    "id": "TsuneKitsune",
+    "name": "TsuneKitsune",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782089222/tsunekitsune_fmyybd.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/tsunekitsune/"
+    }
   }
 ]

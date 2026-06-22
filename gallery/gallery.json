@@ -3256,5 +3256,70 @@
     "universe_date": null,
     "canonical": false,
     "relates_to": []
+  },
+  {
+    "id": 140,
+    "type": "scene",
+    "title": "Hero Libby",
+    "artist": "TsuneKitsune",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782089547/Dreixesmulti_render_ewgchm.webp",
+    "characters": [
+      "jay",
+      "libby"
+    ],
+    "tags": [
+
+    ],
+    "lore": [
+      
+    ],
+    "date": "2026-06",
+    "universe_date": null,
+    "canonical": true,
+    "synopsis": null,
+    "relates_to": []
+  },
+  {
+    "id": 141,
+    "type": "scene",
+    "title": "Welcome Home",
+    "artist": "Picturd",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782089849/JayNAshley_bqj71q.webp",
+    "characters": [
+      "jay"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "lore": [
+      
+    ],
+    "date": "2024-01",
+    "universe_date": null,
+    "canonical": false,
+    "synopsis": null,
+    "relates_to": []
+  },
+  {
+    "id": 142,
+    "type": "scene",
+    "title": "Milking Boys",
+    "artist": "TamFox",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782090460/tamfox_sin_milking_web_cvxatv.webp",
+    "characters": [
+      "jay",
+      "sin"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "lore": [
+      
+    ],
+    "date": "2026-06",
+    "universe_date": null,
+    "canonical": false,
+    "synopsis": null,
+    "relates_to": []
   }
 ]

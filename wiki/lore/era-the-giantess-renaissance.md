@@ -1,7 +1,7 @@
 ---
 id: era-the-giantess-renaissance
 title: The Giantess Renaissance
-eyebrow: Era — T+5 to T+10
+eyebrow: Era — T+40 to T+101
 era: the-giantess-renaissance
 ---
 

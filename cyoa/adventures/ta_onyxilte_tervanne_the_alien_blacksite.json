@@ -71,7 +71,7 @@
     "choices": [
       {
         "text": "I don't have a choice, I made it this far! I must continue into this dark complex!",
-        "nextId": null
+        "nextId": 8
       }
     ],
     "author": "SpearmintMagpie",
@@ -84,7 +84,7 @@
     "choices": [
       {
         "text": "The depths hold more secrets now than what laid above, what is hiding behind that door?",
-        "nextId": null
+        "nextId": 8
       }
     ],
     "author": "SpearmintMagpie",
@@ -101,5 +101,26 @@
     "choices": [],
     "author": "SpearmintMagpie",
     "title": "Lost in Translation"
+  },
+  {
+    "id": 8,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Play the recording, I must know who made it!",
+        "nextId": null
+      },
+      {
+        "text": "Engineering may be the way forward, I know a thing or two about mechanics!",
+        "nextId": null
+      },
+      {
+        "text": "Research may be the way forward, if this is a laboratory, its likely deeper and safer in the labs.",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Welcome to Onyx"
   }
 ]

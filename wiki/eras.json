@@ -3,13 +3,13 @@
     "id": "pre-sin",
     "name": "Pre-Sin",
     "start": null,
-    "end": -20,
+    "end": -40,
     "description": "The world as it was before Sin's discovery — ordinary history, before the Apotheosis Serum existed."
   },
   {
-    "id": "pre-tday",
-    "name": "Pre-TDay",
-    "start": -20,
+    "id": "sins-rise",
+    "name": "Sin's-Rise",
+    "start": -40,
     "end": 0,
     "description": "Sin develops the serum and founds SinCorp in secret. The old world's final years, unaware of what is coming."
   },
@@ -25,28 +25,28 @@
     "id": "post-apotheosis",
     "name": "Post-Apotheosis",
     "start": 0,
-    "end": 2,
+    "end": 8,
     "description": "The Chaos and its immediate aftermath. The old world collapses; the Transformed begin consolidating power."
   },
   {
     "id": "the-reconstruction",
     "name": "The Reconstruction",
-    "start": 2,
-    "end": 4,
+    "start": 8,
+    "end": 40,
     "description": "The mega-cities rise and the Wilds are abandoned. A new order takes physical shape across the world."
   },
   {
     "id": "the-giantess-renaissance",
     "name": "The Giantess Renaissance",
-    "start": 4,
-    "end": 10,
+    "start": 40,
+    "end": 101,
     "description": "Transformed society matures into its own culture. The Resistance organises in the shadows of a confident new world."
   },
   {
-    "id": "project-sylph",
-    "name": "Project Sylph",
-    "start": 10,
+    "id": "sylph-age",
+    "name": "The Sylph Age",
+    "start": 101,
     "end": null,
-    "description": "The present day. SinCorp's most significant current initiative drives events forward into uncharted territory."
+    "description": "SinCorp's most significant current initiative drives events forward into uncharted territory."
   }
 ]
