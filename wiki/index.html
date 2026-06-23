@@ -1660,6 +1660,7 @@
     <div class="wiki-nav-section">
       <div class="wiki-nav-heading">Browse by Category</div>
       <a class="wiki-nav-link" data-page="characters" href="#page-characters">Characters</a>
+      <a class="wiki-nav-link" data-page="fan-characters" href="#page-fan-characters">Fan Characters</a>
       <div id="sidebar-lore-cats"></div>
     </div>
     <hr class="wiki-nav-divider" />
@@ -1704,6 +1705,21 @@
       </div>
       <div class="wiki-char-count" id="char-count"></div>
       <div class="wiki-char-grid" id="char-grid"></div>
+    </section>
+
+    <!-- Fan Characters index (community-contributed; mirrors Characters) -->
+    <section class="wiki-page" id="page-fan-characters">
+      <div class="wiki-intro-eyebrow">Community</div>
+      <h1 class="wiki-intro-title">Fan Characters</h1>
+      <button type="button" class="wiki-char-filter-toggle" id="fanchar-filter-toggle" aria-expanded="false">
+        <span class="wiki-char-filter-toggle-caret">&#9656;</span> Filters
+        <span class="wiki-char-filter-active" id="fanchar-filter-active"></span>
+      </button>
+      <div class="wiki-char-filters-panel" id="fanchar-filters-panel">
+        <div class="wiki-char-filters" id="fanchar-filters"></div>
+      </div>
+      <div class="wiki-char-count" id="fanchar-count"></div>
+      <div class="wiki-char-grid" id="fanchar-grid"></div>
     </section>
 
     <!-- Search results page -->
@@ -1845,6 +1861,19 @@ if (typeof marked !== 'undefined') {
 }
 
 // ── State ──────────────────────────────────────────────────────
+// ── Feature flag ──────────────────────────────────────────────
+// Toggle the community "Fan Characters" section on/off with one value.
+//   true  = show the nav link, page, grid, and routing
+//   false = hide it everywhere (the code, data file, and examples all stay in
+//           place, ready to switch on whenever you decide).
+var FAN_CHARACTERS_ENABLED = false;
+(function(){
+  if (!FAN_CHARACTERS_ENABLED) {
+    var l = document.querySelector('[data-page="fan-characters"]');
+    if (l) l.style.display = 'none';
+  }
+})();
+
 var characters = [];
 var timelineEvents = [];
 var currentCharSlug = null;
@@ -1874,6 +1903,7 @@ function buildFaqIndex(md) {
 
 // ── Navigation ────────────────────────────────────────────────
 function showPage(id, pushState) {
+  if (id === 'fan-characters' && !FAN_CHARACTERS_ENABLED) { loadLorePage('world-of-sinverse', false); return; }
   clearTimeout(searchTimeout); // cancel pending search
   document.querySelectorAll('.wiki-page').forEach(function(p) { p.classList.remove('active'); });
   document.querySelectorAll('.wiki-nav-link').forEach(function(l) { l.classList.remove('active'); });
@@ -1978,6 +2008,7 @@ function fLen(inches) {
 var galleryItems = [];
 var libraryItems = [];
 var erasData = [];
+var fanCharacters = [];
 
 Promise.all([
   fetch('../_data/characters.json').then(function(r){ return r.json(); }),
@@ -1987,7 +2018,8 @@ Promise.all([
   fetch('../library/library.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
   fetch('eras.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
   fetch('lore/faq.md').then(function(r){ return r.text(); }).catch(function(){ return ''; }),
-  fetch('size-classes.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
+  fetch('size-classes.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+  fetch('../_data/fan-characters.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
 ]).then(function(results) {
   characters = results[0];
   timelineEvents = results[1];
@@ -1997,20 +2029,29 @@ Promise.all([
   erasData = results[5] || [];
   buildFaqIndex(results[6] || '');
   SIZE_BUCKETS = results[7] || [];
+  fanCharacters = results[8] || [];
   buildLoreSidebar();
   buildTimeline();
   initTimelineView();
-  buildCharGrid(characters);
+  canonCharGrid.build(characters);
+  if (FAN_CHARACTERS_ENABLED) fanCharGrid.build(fanCharacters);
 
   // Restore page from URL hash if returning via browser Back from gallery/library
   var restoreHash = window._restoreHash;
   if (restoreHash) {
     window._restoreHash = null;
     var charMatch = restoreHash.match(/^#char-(.+)$/);
+    var fanMatch  = restoreHash.match(/^#fanchar-(.+)$/);
     var loreMatch = restoreHash.match(/^#lore-(.+)$/);
     var catMatch  = restoreHash.match(/^#cat-(.+)$/);
     var pageMatch = restoreHash.match(/^#page-(.+)$/);
-    if (charMatch) {
+    if (fanMatch) {
+      var fref = decodeURIComponent(fanMatch[1]);
+      var fc = fanCharacters.find(function(x){ return x.wiki === fref; })
+            || (/^\d+$/.test(fref) ? fanCharacters.find(function(x){ return x.id === parseInt(fref); }) : null);
+      if (fc) loadFanCharPage(fc.id, false);
+    }
+    else if (charMatch) {
       var ref = decodeURIComponent(charMatch[1]);
       var c = characters.find(function(x){ return x.wiki === ref; })
            || (/^\d+$/.test(ref) ? characters.find(function(x){ return x.id === parseInt(ref); }) : null);
@@ -2043,10 +2084,15 @@ Promise.all([
     if (matchChar) {
       loadCharPage(matchChar.id);
     } else {
-      // Character not in characters.json — show dedicated not-found page
-      document.getElementById('nf-name').textContent = decodeURIComponent(charParam);
-      showPage('not-found', false);
-      history.replaceState({ type: 'page', id: 'not-found' }, '', '#not-found');
+      var matchFan = fanCharacters.find(function(c){ return c.name.toLowerCase() === charNameParam; });
+      if (matchFan) {
+        loadFanCharPage(matchFan.id);
+      } else {
+        // Not in either character set — show dedicated not-found page
+        document.getElementById('nf-name').textContent = decodeURIComponent(charParam);
+        showPage('not-found', false);
+        history.replaceState({ type: 'page', id: 'not-found' }, '', '#not-found');
+      }
     }
   } else {
     // Fresh visit with no deep-link: show the default landing page.
@@ -2596,10 +2642,10 @@ function initTimelineView() {
 
 
 // ── Character grid ────────────────────────────────────────────
-// Characters page: filter state + the full list it filters from.
-var _charAll = [];
 var SIZE_BUCKETS = [];   // loaded from size-classes.json (ordered, smallest first)
-var _charFilters = { faction: '', role: '', species: '', size_class: '', 'class': '' };
+// Per-grid state (the full character list + active filter selections) now
+// lives inside each createCharGrid() instance below, so the Characters and Fan
+// Characters pages each keep their own.
 
 // Computes a character's size-class label from its height using the buckets
 // defined in size-classes.json. Each bucket has a `max` (exclusive upper bound
@@ -2628,178 +2674,228 @@ var CHAR_FILTER_DEFS = [
   { key: 'class', label: 'Class', arr: false }
 ];
 
-function buildCharGrid(chars) {
-  _charAll = chars.slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
-  buildCharFilters();
-  applyCharFilters();
-}
+// Reusable character-grid controller. Both the Characters page and the Fan
+// Characters page create one of these; each keeps its own data + filter state
+// and targets its own DOM ids, but they share this one implementation and the
+// CHAR_FILTER_DEFS above. `opts`:
+//   ids:   { toggle, active, panel, filters, count, grid }  (element ids)
+//   href:  function(c) -> string   (anchor href for a card)
+//   open:  function(c)             (called on a normal left-click)
+//   emptyAllText: string           (shown when the dataset itself is empty)
+function createCharGrid(opts) {
+  var all = [];
+  var filters = { faction: '', role: '', species: '', size_class: '', 'class': '' };
 
-function buildCharFilters() {
-  var wrap = document.getElementById('char-filters');
-  if (!wrap) return;
-  wrap.innerHTML = '';
+  function build(chars) {
+    all = (chars || []).slice().sort(function(a,b){ return a.name.localeCompare(b.name); });
+    buildFilters();
+    apply();
+  }
 
-  CHAR_FILTER_DEFS.forEach(function(def) {
-    var opts;
-    if (def.options) {
-      // Supplied, ordered options (e.g. size buckets in config order).
-      opts = def.options();
-    } else {
-      // Collect the distinct values present across all characters.
-      var values = {};
-      _charAll.forEach(function(c) {
-        var v = c[def.key];
-        if (def.arr) { (v || []).forEach(function(x){ if (x) values[x] = true; }); }
-        else if (v) { values[v] = true; }
+  function buildFilters() {
+    var wrap = document.getElementById(opts.ids.filters);
+    if (!wrap) return;
+    wrap.innerHTML = '';
+
+    CHAR_FILTER_DEFS.forEach(function(def) {
+      var optlist;
+      if (def.options) {
+        optlist = def.options();
+      } else {
+        var values = {};
+        all.forEach(function(c) {
+          var v = c[def.key];
+          if (def.arr) { (v || []).forEach(function(x){ if (x) values[x] = true; }); }
+          else if (v) { values[v] = true; }
+        });
+        optlist = Object.keys(values).sort();
+      }
+      if (!optlist.length) return;   // skip a filter with no values/data yet
+
+      var field = document.createElement('div');
+      field.className = 'wiki-char-filter';
+      var lab = document.createElement('span');
+      lab.className = 'wiki-char-filter-label';
+      lab.textContent = def.label;
+      field.appendChild(lab);
+
+      var sel = document.createElement('select');
+      sel.setAttribute('data-key', def.key);
+      var allOpt = document.createElement('option');
+      allOpt.value = '';
+      allOpt.textContent = '--All--';
+      sel.appendChild(allOpt);
+      optlist.forEach(function(o) {
+        var op = document.createElement('option');
+        op.value = o;
+        op.textContent = def.fmt ? def.fmt(o) : o;
+        sel.appendChild(op);
       });
-      opts = Object.keys(values).sort();
+      sel.value = filters[def.key] || '';
+      sel.addEventListener('change', function() {
+        filters[def.key] = sel.value;
+        apply();
+      });
+      field.appendChild(sel);
+      wrap.appendChild(field);
+    });
+
+    var reset = document.createElement('button');
+    reset.type = 'button';
+    reset.className = 'wiki-char-filter-reset';
+    reset.textContent = 'Reset';
+    reset.addEventListener('click', function() {
+      Object.keys(filters).forEach(function(k){ filters[k] = ''; });
+      wrap.querySelectorAll('select').forEach(function(s){ s.value = ''; });
+      apply();
+    });
+    wrap.appendChild(reset);
+
+    var toggle = document.getElementById(opts.ids.toggle);
+    var panel  = document.getElementById(opts.ids.panel);
+    if (toggle && panel && !toggle._wired) {
+      toggle._wired = true;
+      toggle.addEventListener('click', function() {
+        var open = panel.classList.toggle('open');
+        toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
+      });
     }
-    if (!opts.length) return;   // skip a filter with no values/data yet
-
-    var field = document.createElement('div');
-    field.className = 'wiki-char-filter';
-    var lab = document.createElement('span');
-    lab.className = 'wiki-char-filter-label';
-    lab.textContent = def.label;
-    field.appendChild(lab);
-
-    var sel = document.createElement('select');
-    sel.setAttribute('data-key', def.key);
-    var allOpt = document.createElement('option');
-    allOpt.value = '';
-    allOpt.textContent = '--All--';
-    sel.appendChild(allOpt);
-    opts.forEach(function(o) {
-      var op = document.createElement('option');
-      op.value = o;
-      op.textContent = def.fmt ? def.fmt(o) : o;
-      sel.appendChild(op);
-    });
-    sel.value = _charFilters[def.key] || '';
-    sel.addEventListener('change', function() {
-      _charFilters[def.key] = sel.value;
-      applyCharFilters();
-    });
-    field.appendChild(sel);
-    wrap.appendChild(field);
-  });
-
-  // Reset button
-  var reset = document.createElement('button');
-  reset.type = 'button';
-  reset.className = 'wiki-char-filter-reset';
-  reset.textContent = 'Reset';
-  reset.addEventListener('click', function() {
-    Object.keys(_charFilters).forEach(function(k){ _charFilters[k] = ''; });
-    wrap.querySelectorAll('select').forEach(function(s){ s.value = ''; });
-    applyCharFilters();
-  });
-  wrap.appendChild(reset);
-
-  // Wire the collapsible toggle once. Panel starts collapsed.
-  var toggle = document.getElementById('char-filter-toggle');
-  var panel  = document.getElementById('char-filters-panel');
-  if (toggle && panel && !toggle._wired) {
-    toggle._wired = true;
-    toggle.addEventListener('click', function() {
-      var open = panel.classList.toggle('open');
-      toggle.setAttribute('aria-expanded', open ? 'true' : 'false');
-    });
-  }
-}
-
-function charMatchesFilters(c) {
-  return CHAR_FILTER_DEFS.every(function(def) {
-    var sel = _charFilters[def.key];
-    if (!sel) return true;                       // "All" — no constraint
-    if (def.compute) return def.compute(c) === sel;
-    if (def.arr) return (c[def.key] || []).indexOf(sel) !== -1;
-    return c[def.key] === sel;
-  });
-}
-
-function applyCharFilters() {
-  var list = _charAll.filter(charMatchesFilters);
-  renderCharCards(list);
-  var activeCount = Object.keys(_charFilters).filter(function(k){ return _charFilters[k]; }).length;
-  var count = document.getElementById('char-count');
-  if (count) {
-    count.textContent = activeCount
-      ? (list.length + ' of ' + _charAll.length + ' characters')
-      : (_charAll.length + ' characters');
-  }
-  // Reflect active filters on the collapsed toggle so it's clear they're set.
-  var active = document.getElementById('char-filter-active');
-  if (active) active.textContent = activeCount ? '(' + activeCount + ' active)' : '';
-}
-
-function renderCharCards(chars) {
-  var grid = document.getElementById('char-grid');
-  grid.innerHTML = '';
-
-  if (!chars.length) {
-    var empty = document.createElement('div');
-    empty.className = 'community-empty';
-    empty.style.cssText = 'padding:2rem 0;font-style:italic;color:var(--text-secondary)';
-    empty.textContent = 'No characters match those filters.';
-    grid.appendChild(empty);
-    return;
   }
 
-  chars.forEach(function(c) {
-    var card = document.createElement('a');
-    card.className = 'wiki-char-card';
-    card.href = '#char-' + (c.wiki || c.id);
-
-    var imgEl = document.createElement('img');
-    imgEl.className = 'wiki-char-portrait';
-    imgEl.src = c.profile_image || c.image || '';
-    imgEl.alt = c.name;
-    if (!c.profile_image && !c.image) {
-      imgEl.style.filter = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
-      imgEl.src = 'https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png';
-    }
-
-    var name = document.createElement('div');
-    name.className = 'wiki-char-name';
-    name.textContent = c.name;
-
-    var species = document.createElement('div');
-    species.className = 'wiki-char-species';
-    species.textContent = (c.species && c.species.length) ? c.species.join(' / ') : '';
-
-    card.appendChild(imgEl);
-    card.appendChild(name);
-    card.appendChild(species);
-
-    // Faction tag (faction is now an array — show the first, if any).
-    var fac = (c.faction && c.faction.length) ? c.faction[0] : '';
-    if (fac) {
-      var tag = document.createElement('div');
-      tag.className = 'wiki-char-tag';
-      tag.textContent = fac;
-      card.appendChild(tag);
-    }
-
-    card.addEventListener('click', function(e) {
-      if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
-      e.preventDefault();
-      loadCharPage(c.id);
+  function matches(c) {
+    return CHAR_FILTER_DEFS.every(function(def) {
+      var sel = filters[def.key];
+      if (!sel) return true;
+      if (def.compute) return def.compute(c) === sel;
+      if (def.arr) return (c[def.key] || []).indexOf(sel) !== -1;
+      return c[def.key] === sel;
     });
-    grid.appendChild(card);
-  });
+  }
+
+  function apply() {
+    var list = all.filter(matches);
+    render(list);
+    var activeCount = Object.keys(filters).filter(function(k){ return filters[k]; }).length;
+    var count = document.getElementById(opts.ids.count);
+    if (count) {
+      count.textContent = activeCount
+        ? (list.length + ' of ' + all.length + ' characters')
+        : (all.length + ' characters');
+    }
+    var active = document.getElementById(opts.ids.active);
+    if (active) active.textContent = activeCount ? '(' + activeCount + ' active)' : '';
+  }
+
+  function render(chars) {
+    var grid = document.getElementById(opts.ids.grid);
+    if (!grid) return;
+    grid.innerHTML = '';
+
+    if (!chars.length) {
+      var empty = document.createElement('div');
+      empty.className = 'community-empty';
+      empty.style.cssText = 'padding:2rem 0;font-style:italic;color:var(--text-secondary)';
+      empty.textContent = all.length
+        ? 'No characters match those filters.'
+        : (opts.emptyAllText || 'Nothing here yet.');
+      grid.appendChild(empty);
+      return;
+    }
+
+    chars.forEach(function(c) {
+      var card = document.createElement('a');
+      card.className = 'wiki-char-card';
+      card.href = opts.href(c);
+
+      var imgEl = document.createElement('img');
+      imgEl.className = 'wiki-char-portrait';
+      imgEl.src = c.profile_image || c.image || '';
+      imgEl.alt = c.name;
+      if (!c.profile_image && !c.image) {
+        imgEl.style.filter = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
+        imgEl.src = 'https://res.cloudinary.com/dq40xaaux/image/upload/v1779738249/giantess_ktiwfb.png';
+      }
+
+      var name = document.createElement('div');
+      name.className = 'wiki-char-name';
+      name.textContent = c.name;
+
+      var species = document.createElement('div');
+      species.className = 'wiki-char-species';
+      species.textContent = (c.species && c.species.length) ? c.species.join(' / ') : '';
+
+      card.appendChild(imgEl);
+      card.appendChild(name);
+      card.appendChild(species);
+
+      var fac = (c.faction && c.faction.length) ? c.faction[0] : '';
+      if (fac) {
+        var tag = document.createElement('div');
+        tag.className = 'wiki-char-tag';
+        tag.textContent = fac;
+        card.appendChild(tag);
+      }
+
+      card.addEventListener('click', function(e) {
+        if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
+        e.preventDefault();
+        opts.open(c);
+      });
+      grid.appendChild(card);
+    });
+  }
+
+  return { build: build };
 }
+
+// Canon characters page.
+var canonCharGrid = createCharGrid({
+  ids: { toggle: 'char-filter-toggle', active: 'char-filter-active', panel: 'char-filters-panel', filters: 'char-filters', count: 'char-count', grid: 'char-grid' },
+  href: function(c){ return '#char-' + (c.wiki || c.id); },
+  open: function(c){ loadCharPage(c.id); },
+  emptyAllText: 'No characters yet.'
+});
+
+// Fan (community) characters page — same UI, separate data + routing.
+var fanCharGrid = createCharGrid({
+  ids: { toggle: 'fanchar-filter-toggle', active: 'fanchar-filter-active', panel: 'fanchar-filters-panel', filters: 'fanchar-filters', count: 'fanchar-count', grid: 'fanchar-grid' },
+  href: function(c){ return '#fanchar-' + (c.wiki || c.id); },
+  open: function(c){ loadFanCharPage(c.id); },
+  emptyAllText: 'No fan characters yet — add entries to _data/fan-characters.json to populate this page.'
+});
+
 
 // ── Character detail page ─────────────────────────────────────
+// Resolve a character name to a link target, searching canon first then fan,
+// so relationships (and other name links) work across both sets and route to
+// the correct page.
+function resolveCharLink(name) {
+  var n = String(name).toLowerCase();
+  var c = characters.find(function(x){ return x.name.toLowerCase() === n; });
+  if (c) return { char: c, href: '#char-' + (c.wiki || c.id), open: function(){ loadCharPage(c.id); } };
+  var f = fanCharacters.find(function(x){ return x.name.toLowerCase() === n; });
+  if (f) return { char: f, href: '#fanchar-' + (f.wiki || f.id), open: function(){ loadFanCharPage(f.id); } };
+  return null;
+}
 function loadCharPage(charId, pushState) {
-  var char = characters.find(function(c){ return c.id === charId; });
+  renderCharDetail(characters.find(function(c){ return c.id === charId; }),
+    { routePrefix: '#char-', stateType: 'character', mdDir: 'characters/' }, pushState);
+}
+function loadFanCharPage(charId, pushState) {
+  if (!FAN_CHARACTERS_ENABLED) { loadLorePage('world-of-sinverse', false); return; }
+  renderCharDetail(fanCharacters.find(function(c){ return c.id === charId; }),
+    { routePrefix: '#fanchar-', stateType: 'fanchar', mdDir: 'fan-characters/' }, pushState);
+}
+// Shared detail renderer used by both canon and fan characters. cfg:
+//   { routePrefix:'#char-'|'#fanchar-', stateType:'character'|'fanchar', mdDir:'characters/'|'fan-characters/' }
+function renderCharDetail(char, cfg, pushState) {
   if (!char) return;
 
   var slug = char.wiki || char.name.toLowerCase().replace(/\s+/g, '-');
   var container = document.getElementById('char-detail-content');
   container.innerHTML = '<p style="color:var(--text-secondary);font-style:italic;padding:2rem 0">Loading…</p>';
   showPage('character', false);
-  if (pushState !== false) history.pushState({ type: 'character', id: charId, slug: slug }, '', '#char-' + slug);
+  if (pushState !== false) history.pushState({ type: cfg.stateType, id: char.id, slug: slug }, '', cfg.routePrefix + slug);
 
   // Build stat block from JSON
   var factionStr = (char.faction && char.faction.length) ? char.faction.join(', ') : '—';
@@ -2842,7 +2938,7 @@ function loadCharPage(charId, pushState) {
   '</div>';
 
   // Try to load markdown
-  fetch('characters/' + slug + '.md')
+  fetch(cfg.mdDir + slug + '.md')
     .then(function(r) { return r.ok ? r.text() : null; })
     .then(function(md) {
       if (!document.getElementById('page-character').classList.contains('active')) return;
@@ -2892,9 +2988,9 @@ function loadCharPage(charId, pushState) {
       var relInner;
       if (char.relationships && char.relationships.length) {
         var relRows = char.relationships.map(function(rel) {
-          var target = characters.find(function(c){ return c.name.toLowerCase() === String(rel.name).toLowerCase(); });
-          var nameHtml = target
-            ? '<a class="wiki-rel-link" href="#char-' + (target.wiki || target.id) + '" data-target="' + target.name.toLowerCase() + '">' + rel.name + '</a>'
+          var link = resolveCharLink(rel.name);
+          var nameHtml = link
+            ? '<a class="wiki-rel-link" href="' + link.href + '" data-target="' + String(rel.name).toLowerCase() + '">' + rel.name + '</a>'
             : rel.name;
           var noteHtml = rel.note ? ' <span class="wiki-rel-note">— ' + rel.note + '</span>' : '';
           return '<li><span class="wiki-rel-type">' + (rel.type || 'Connection') + '</span> ' + nameHtml + noteHtml + '</li>';
@@ -2930,9 +3026,8 @@ function loadCharPage(charId, pushState) {
         el.addEventListener('click', function(e) {
           if (e.button !== 0 || e.metaKey || e.ctrlKey || e.shiftKey || e.altKey) return; // let new-tab clicks through
           e.preventDefault();
-          var t = this.getAttribute('data-target');
-          var cId = characters.find(function(c){ return c.name.toLowerCase() === t.toLowerCase(); });
-          if (cId) loadCharPage(cId.id);
+          var link = resolveCharLink(this.getAttribute('data-target'));
+          if (link) link.open();
         });
       });
       // Wire internal wiki links in character markdown
@@ -2945,8 +3040,8 @@ function loadCharPage(charId, pushState) {
           var isLore = LORE_PAGES.find(function(p){ return p.id === t; });
           if (isLore) loadLorePage(t);
           else {
-            var cId = characters.find(function(c){ return c.name.toLowerCase() === t.toLowerCase(); });
-            if (cId) loadCharPage(cId.id);
+            var link = resolveCharLink(t);
+            if (link) link.open();
           }
         });
       });
@@ -2970,6 +3065,7 @@ window.addEventListener('popstate', function(e) {
     else showPage(state.id, false);
   }
   else if (state.type === 'character') loadCharPage(state.id, false);
+  else if (state.type === 'fanchar') loadFanCharPage(state.id, false);
   else if (state.type === 'lore') loadLorePage(state.id, false);
   else if (state.type === 'category') showCategory(state.id, false);
 });
