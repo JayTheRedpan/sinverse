@@ -1233,6 +1233,129 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   margin-left: 0.75rem;  /* visual gap from unit buttons */
 }
 
+/* ── Scene background (BG) control ─────────────────────────────────
+   The control is built in JS (buildBgControl) but had no CSS, so it
+   rendered unstyled. These rules match the toolbar's .unit-btn look and
+   the .sr-resize-popup pattern. */
+.sr-bg-control {
+  position: relative;            /* anchor for the popover */
+  display: inline-flex;
+  align-items: center;
+  margin-left: 0.4rem;
+}
+/* Toggle button — mirrors .unit-btn so it sits flush beside "Grid" */
+.sr-bg-toggle {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4em;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 2px;
+  padding: .28em .7em;   /* match .unit-btn (Grid) exactly */
+  font-family: var(--font-caps);
+  font-size: .6rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-secondary);
+  cursor: pointer;
+  transition: all .2s;
+}
+.sr-bg-toggle:hover { border-color: var(--border-mid); }
+.sr-bg-toggle.active { background: var(--accent-dim); border-color: var(--accent); color: var(--accent); }
+.sr-bg-swatch {
+  width: 11px; height: 11px;
+  border-radius: 2px;
+  border: 1px solid var(--border-mid);
+  background: var(--bg-panel);
+  flex-shrink: 0;
+}
+/* No line-height override here — the "BG" text uses the same normal
+   line-height as the Grid button, so both buttons end up the same height. */
+
+/* Popover */
+.sr-bg-pop {
+  position: absolute;
+  top: calc(100% + 6px);
+  left: 0;
+  z-index: 60;
+  display: flex;
+  flex-direction: column;
+  gap: 0.6rem;
+  padding: 0.7rem;
+  background: var(--bg-panel);
+  border: 1px solid var(--border-mid);
+  border-radius: calc(var(--radius) * 2);
+  box-shadow: 0 8px 30px rgba(0,0,0,0.55);
+}
+.sr-bg-pop-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.35rem;
+  max-width: 184px;
+}
+/* Preset swatches */
+.sr-bg-preset {
+  width: 22px; height: 22px;
+  border: 1px solid var(--border-mid);
+  border-radius: 3px;
+  cursor: pointer;
+  padding: 0;
+  transition: transform .12s, border-color .2s;
+}
+.sr-bg-preset:hover { transform: scale(1.08); border-color: var(--accent); }
+.sr-bg-preset-default {
+  background: var(--bg-inset);
+  color: var(--text-muted);
+  font-size: 0.7rem;
+  line-height: 1;
+  display: flex; align-items: center; justify-content: center;
+}
+.sr-bg-preset-default:hover { color: var(--accent); }
+
+/* Custom colour row */
+.sr-bg-custom-row {
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  border-top: 1px solid var(--border);
+  padding-top: 0.55rem;
+  cursor: pointer;
+}
+.sr-bg-custom-label {
+  font-family: var(--font-caps);
+  font-size: 0.58rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+  flex: 1;
+}
+.sr-bg-custom-chip {
+  width: 22px; height: 22px;
+  border: 1px solid var(--border-mid);
+  border-radius: 3px;
+  background: var(--bg-panel);
+  flex-shrink: 0;
+}
+/* Native colour input kept compact next to the chip */
+.sr-bg-input {
+  width: 26px; height: 22px;
+  padding: 0;
+  border: 1px solid var(--border-mid);
+  border-radius: 3px;
+  background: var(--bg-inset);
+  cursor: pointer;
+}
+
+/* Toolbar caps buttons are tiny; bump to a real semibold (Cormorant SC ships
+   600) and a touch larger for legibility. Scoped to the toolbar so .unit-btn
+   used elsewhere (custom forms, length toggle) is unaffected. Keeps Grid,
+   Imperial, Metric and BG matched to each other. */
+.sr-toolbar .unit-btn,
+.sr-bg-toggle {
+  font-size: .66rem;
+  font-weight: 600;
+}
+
 /* Resize row inside sv-header (stats tab) */
 .sv-header .sr-resize-row {
   margin-top: 0.5rem;
