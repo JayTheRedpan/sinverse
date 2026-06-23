@@ -18,7 +18,7 @@ Different kinds of contributions are approved in different ways:
 
 - **Stories** are automatically approved — bring them along and they'll go up. They're best submitted as **`.md` files** so they drop cleanly into the Library.
 - **Images** are welcome, but if a piece features any **canon characters**, coordinate with Jay ahead of time so it stays consistent with how those characters are established.
-- **Character references** are open to everyone — anyone is welcome to get a character ref done in the Sinverse style and join the world's cast.
+- **Character references** are open to everyone — anyone is welcome to get a character ref done in the Sinverse style and join the world's cast.  If you do you can also be added to the "Fan Characters" page, with your own character bio writeup.
 - **Interactive adventures** can be submitted through the **form in the adventures (CYOA) module**; submissions are sent to Jay automatically for review.
 
 You don't need to be a polished professional. Rough, enthusiastic, and in-the-spirit beats perfect-but-cold every time, and a single scene or sketch is a perfectly good way to begin.
