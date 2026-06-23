@@ -4024,16 +4024,21 @@ function syncLen(slot, isM) {
 }
 
 function syncH(slot, isM) {
+  // An imported (or not-yet-opened) custom slot may have no height inputs in
+  // the DOM. Cache the elements and bail out if any is missing — matching the
+  // defensive style of getHIn()/syncLen() — instead of crashing on null.value.
+  var cmEl=g('cm-'+slot), ftEl=g('ft-'+slot), inEl=g('in-'+slot);
+  if(!cmEl||!ftEl||!inEl) return;
   if (isM) {
-    var cm=parseFloat(g('cm-'+slot).value)||0;
+    var cm=parseFloat(cmEl.value)||0;
     var ti=cm/2.54, ft=Math.floor(ti/12), ins=Math.round(ti%12);
     if(ins===12){ft++;ins=0;}
-    g('ft-'+slot).value=cm?ft:''; g('in-'+slot).value=cm?ins:'';
+    ftEl.value=cm?ft:''; inEl.value=cm?ins:'';
   } else {
-    var ft2=parseFloat(g('ft-'+slot).value)||0;
-    var in2=parseFloat(g('in-'+slot).value)||0;
-    if(in2>=12){ft2+=Math.floor(in2/12);in2=in2%12;g('ft-'+slot).value=ft2;g('in-'+slot).value=in2;}
-    g('cm-'+slot).value=(ft2||in2)?Math.round(inToCm(ft2*12+in2)):'';
+    var ft2=parseFloat(ftEl.value)||0;
+    var in2=parseFloat(inEl.value)||0;
+    if(in2>=12){ft2+=Math.floor(in2/12);in2=in2%12;ftEl.value=ft2;inEl.value=in2;}
+    cmEl.value=(ft2||in2)?Math.round(inToCm(ft2*12+in2)):'';
   }
 }
 
