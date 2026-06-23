@@ -226,6 +226,31 @@ async function init() {
   });
 }
 
+// Crop a canvas down to its non-transparent content bounds (used by the
+// screenshot/bot capture so the output hugs the figures with no dead space).
+function trimCanvas(canvas) {
+  var ctx = canvas.getContext('2d');
+  var w = canvas.width, h = canvas.height, data;
+  try { data = ctx.getImageData(0, 0, w, h).data; } catch (e) { return null; }
+  var top = null, bottom = 0, left = w, right = 0;
+  for (var y = 0; y < h; y++) {
+    for (var x = 0; x < w; x++) {
+      if (data[(y * w + x) * 4 + 3] !== 0) {   // alpha > 0 = real content
+        if (top === null) top = y;
+        bottom = y;
+        if (x < left) left = x;
+        if (x > right) right = x;
+      }
+    }
+  }
+  if (top === null) return null;               // fully transparent canvas
+  var cw = right - left + 1, ch = bottom - top + 1;
+  var out = document.createElement('canvas');
+  out.width = cw; out.height = ch;
+  out.getContext('2d').drawImage(canvas, left, top, cw, ch, 0, 0, cw, ch);
+  return out;
+}
+
 // ── URL param handling (bot/deeplink support) ──────────────────
 function applyURLParams() {
   var p = new URLSearchParams(window.location.search);
@@ -286,11 +311,12 @@ function applyURLParams() {
           }).then(function(canvas) {
             // Replace entire page with just the captured image
             window._screenshotDone = true;  // suppress any deferred renders
+            var cropped = trimCanvas(canvas) || canvas;
             document.body.innerHTML = '';
-            document.body.style.cssText = 'margin:0;padding:0;background:#0a0a0a;display:flex;align-items:center;justify-content:center;min-height:100vh;';
+            document.body.style.cssText = 'margin:0;padding:0;background:transparent;display:inline-block;';
             var img = new Image();
-            img.style.cssText = 'max-width:100%;display:block;';
-            img.src = canvas.toDataURL('image/png');
+            img.style.cssText = 'display:block;';
+            img.src = cropped.toDataURL('image/png');
             document.body.appendChild(img);
           });
         });
