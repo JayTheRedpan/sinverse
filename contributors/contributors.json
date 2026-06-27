@@ -884,5 +884,19 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/tsunekitsune/"
     }
+  },
+  {
+    "id": "RightSideDown",
+    "name": "RightSideDown",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782310813/rightsidedown_qmfvs6.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/right0side0down",
+      "bluesky": "https://bsky.app/profile/rightsidedown.bsky.social",
+      "subscribestar": "https://subscribestar.adult/right-side-down"
+    }
   }
 ]

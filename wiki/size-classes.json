@@ -1,5 +1,5 @@
 [
-  { "label": "Runt",     "max": 96 },
+  { "label": "Petite",   "max": 96 },
   { "label": "Amazon",   "max": 360 },
   { "label": "Macro",    "max": 960 },
   { "label": "Titan",    "max": null }
