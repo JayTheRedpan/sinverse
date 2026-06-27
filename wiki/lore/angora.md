@@ -64,5 +64,4 @@ In practice the cities are independent nations, and Angora does not rule them. O
 - Angora was designed giantess-scale from its first foundation, making it markedly more liveable for the Transformed than cities adapted from old-world architecture. Its grid comfortably accommodates inhabitants up to thirty feet; anything larger requires specialist access routes.
 - Sin does not rule Angora through visible governance. Its administrative apparatus understands itself to be implementing her vision, not exercising authority of its own — which makes the capital a city run, in effect, in its ruler's absence.
 - SinCorp's central research complex in Angora is the largest structure in the city, and the only building whose blueprints are filed with no administrative body. It is where Sin actually spends her time.
-- There is no tourism in Angora. Entry requires SinCorp-issued documentation, and the process for obtaining it is not publicly described.
-- Angora has never officially published its population figures — the only mega-city that has never released even an estimate.
+- Angora has never officially published its population figures — but it is easily the largest of the mega-cities.

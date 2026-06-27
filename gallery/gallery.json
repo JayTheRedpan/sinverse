@@ -3321,5 +3321,30 @@
     "canonical": false,
     "synopsis": null,
     "relates_to": []
+  },
+  {
+    "id": 143,
+    "type": "set",
+    "title": "Pretty Bird's Pretty Toy",
+    "artist": "RightSideDown",
+    "coverImage": null,
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1782310342/01_wtyejz.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1782310344/02_sildxo.webp"
+    ],
+    "characters": [
+      "jay"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "lore": [
+      
+    ],
+    "synopsis": null,
+    "date": "2026-06",
+    "universe_date": null,
+    "canonical": false,
+    "relates_to": []
   }
 ]
