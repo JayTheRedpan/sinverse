@@ -29,7 +29,7 @@ A Paw's life alternates between two modes.
 
 ## The Tools of the Trade
 
-The Paws do not make their own equipment. They buy it from [SinCorp](sincorp), whose capture catalogue is built precisely for this work — feralizing agents, pheromone lures and weapons, restraints scaled for a struggling toy, shrinking technology to make a catch portable, and the specialised gear that lets a giantess survive a country that wants her dead nearly as much as it wants her quarry. A well-equipped Paw is a walking advertisement for SinCorp's hunting line, and the relationship runs both ways: the huntresses are among SinCorp's best customers, and SinCorp's tools are much of what makes the profession survivable at all.
+The Paws do not make their own equipment. They buy it from [SinCorp](sincorp), whose capture catalogue is built precisely for this work — incapacitating agents, pheromone lures and weapons, restraints scaled for a struggling toy, shrinking technology to make a catch portable, and the specialised gear that lets a giantess survive a country that wants her dead nearly as much as it wants her quarry. A well-equipped Paw is a walking advertisement for SinCorp's hunting line, and the relationship runs both ways: the huntresses are among SinCorp's best customers, and SinCorp's tools are much of what makes the profession survivable at all.
 
 Skill still decides everything. The gear gets a huntress into the Wilds and gives her a chance against what lives there; it does not find the toy, read the country, or get her home alive. The best Paws are woodcraft and patience and nerve first, and customers of SinCorp second.
 
