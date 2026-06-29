@@ -113,7 +113,7 @@
     "choices": [
       {
         "text": "Play the recording, I must know who made it!",
-        "nextId": null
+        "nextId": 8
       },
       {
         "text": "Engineering may be the way forward, I know a thing or two about mechanics!",
@@ -147,5 +147,35 @@
     ],
     "author": "",
     "title": "A wolf huntress"
+  },
+  {
+    "id": 10,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Watch the second log, there must be more.",
+        "nextId": 11
+      },
+      {
+        "text": "I know engineering is a dead end.. I must explore research wing! forget more logs.",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Log 001: Introductions"
+  },
+  {
+    "id": 11,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "To the research wing.. hopefully they didn't put that in lockdown too.",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Log 002: 5 years..."
   }
 ]

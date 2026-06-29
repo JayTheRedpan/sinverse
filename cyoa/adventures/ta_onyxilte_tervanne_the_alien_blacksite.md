@@ -89,3 +89,75 @@ You look around for another location, and on the other end, there is an entrance
 
 The question of whether you'll head in directly or go somewhere else remains.
 
+## 10
+
+**NOTE: logs are numerical in when they can be found, if you skip a number that log is lost.**
+
+As you hit the play button, holograms of several avian beings appear along the dark hallway Infront of the desk, each dressed in lab coats, minus the few in clear security uniform, seemingly guarding the ways in. The figures are mixture of various types of birds, parrots, raven, magpie, falcon, red kite, and more. The secretary bird, seemingly hosting this event starts to speak.
+
+Male Scientist: "Welcome Welcome... I know this assignment is a bit, off the norm, but I assure you Ta Onyxilte Tervanne will change our perspective on how we understand genetics of not our own race but others too!"
+
+Sebastian: "I'm Sebastian, the facility director, and you all were chosen as the brighest minds we have in genetic research! Now, that the NDA's are in order and we are here, its time we explain a few things..."
+
+Female Magpie: "I apologies director but, why is the place called "in darkness we dream?"
+
+Sebastian: "ah.. yes good question! And no need to apologies, good questions are always welcomed here! So since we are here, I will state the obvious, this isn't the obvious "we are here for passive studies" laboratory you are all use to, we codenamed the facility Onyx and.. its a blacksite. The research Eclipse wants us to conduct is to do with what seems to be some type of genetic blip that seems to effect certain members of this race. That blip could be a major key in developing new level medical treatments and further enhancements!
+
+Male Kite: "So we are conducting more.. unethical experiments here?"
+
+Sebastian: "technically yes, the ends must justify the means however, Eclipse was strict on keeping our impact at a minimal, even Onyx herself is designed to.. install fear among the locals, its also been installed with a state of the art suppression field, with it, creatures unauthorised will always be smaller than us!
+
+Female Shoebill: "So, can we get the lab tour now?"
+
+Sebastian: *gestures to the research wing* right this way! We can get you all access cards while we are down there.
+
+The recording ends before they start walking, leaving you with a slight unease to the place's intentions, unethical experiments that the girls do to the men now makes you wince at the prospect, but in this place, god know what they did.. but being here is safer than our there. As you were about to leave the screen flashes up a second log, its more recent than the first, and may hold more insight to this complex, question is, do you wish to view it?
+
+## 11
+
+Holograms once again fill the hallway, but unlike before these holograms wear much more advanced armor than before, and only contain what looks like 2 scientists now, there is also a much larger bird among them, he looks like a brutish tyrant, far more bulky and toned than expected, you can almost feel the thump of his steps as he walks, the one that looks like the leader begins to speak.
+
+Leader?: "Feels odd walking these halls again.. after the facility was shuttered"
+
+Sebastian: "heh, I remember when you first walked here, a young intern full of ideas, smart girl too. But Eclipse was feeling the heat with no results and unethical practices.."
+
+Leader?: "indeed..." she looks behind towards one of the other armoured birds "Frya, secure the engineering wing, level 9 access only, I don't want interruptions to the power supply again"
+
+Frya: they nod and head off to towards engineering, you can see they have heavy arms on their back, looks like an assault rifle of some kind but far beyond what you expected
+
+Leader?: "5 years ago we shuttered this place, and the world change since then.. girls of this world are now these beings of lust... how can that happen in such a short amount of time?"
+
+Sebastian: "Admiral Valentina.. look when we left everything was a normal.. if not slightly male centric society.. but when I had 2 scouts look though the ruins of the city we used to use.. we found this" he hands who is known as valentina a vile
+
+Valentina: "fascinating airborne agent.. I'll consider this a key priority in understanding this mess.. it may be a factor in making Project Zypher a reality."
+
+Sebastian: "it was found in a damaged HVAC system, the damage seemed be caused by a larger.. I mean LARGE creature, that caused the dispersal system to break, the vile's been dormant since.. glad its useful"
+
+Before they could continue, the tyrant bird moves foward.. you panic ever slightly as the hologram walks right up to the desk, plucking out a small bird behind the desk, in a panic frenzy, Valentina asks before he get to the desk "Theta?"
+
+???: NONO, P...PLEASE... I...I DONT WANNA... WANNA DIE..
+
+Theta glares down the pygmy falcon that was plucked from behind the desk, guards ready themselves at the panicing falcon as she curls up crying in fear of what could happen, your own fear felt in hers as she gently placed down by the tyrant, petting her gently somehow on her head, making her squeak in panic, you look over to see Valentina grabbing the muzzle of a rifle and forcing it down, one guard holsters her gun, and runs up to the crying pygmy.
+
+Guard: woah there, easy now.. you spooked us a lil
+
+the pygmy's hologram depicts her in a rather weakened state, her feathers matted and filthy, she looks more like skin and bones, it seems she was here for a very long time.
+
+Valentina: What's your name..
+
+Aria: A..Aria miss... l..look im sorry, but e...every happened out there and iwasscared and... p..please don't hurt me
+
+Valentina: Tiara, take care of this please
+
+Tiara, happening to be the hawk hugging Aria: "there there, I got you, my god Admiral... she's basically just bone.. she must have been living on the reserves here!"
+
+The pygmy falcon is basically a bundled mess of tears.
+
+Valentina: ...hmmm impressive survival skills, giving the circumstances, bring your new pet with us Tiara..
+
+Tiara: She's not a pet! We just met her
+
+Valentina: Hmm.. ok fair argument, I won't call her a pet.. for now, bring her Site B regardless she might be useful for the project... and.. get her some proper food, she could use it.
+
+The recording ends at that, you have learned there are beings here, and one is an unaffected girl from this world, and a site B, but no idea where it is.. for now you know engineering is at a lockdown so high you have no idea if you'll ever access it, you know where to go.
+
