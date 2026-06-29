@@ -113,7 +113,7 @@
     "choices": [
       {
         "text": "Play the recording, I must know who made it!",
-        "nextId": 8
+        "nextId": 10
       },
       {
         "text": "Engineering may be the way forward, I know a thing or two about mechanics!",
@@ -145,7 +145,7 @@
         "nextId": null
       }
     ],
-    "author": "",
+    "author": null,
     "title": "A wolf huntress"
   },
   {
