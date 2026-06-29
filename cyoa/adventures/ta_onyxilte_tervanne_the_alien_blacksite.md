@@ -73,3 +73,19 @@ You feel a slight sense of glee, the text on displays sudden translate automatic
 
 Question is, what do you do?
 
+## 9
+
+> Well, I'm tired of looking for toys to collect... I might as well take a break for once.
+
+You are a wolf girl, wandering through greenery of the wilds in search of toys. After running away from a rather giant huntress, you've managed to find youself lost, and the last sign of any habitation is an imposing monolith you caught sight of trying to find your way back to your hunting friends.
+
+Having left most of your belongs back at your house in the city, you feel like this may be the only way to find your way home. You brushed the sweat off your fur and headed towards the monolith in hopes of finding help...
+
+And now you stand in front of "Ta Onyxilte Tervanne..", the imposing structure enough to conjure all the harrowing tales you've been told by your friends post T-day. It's practically the only thing that the citizens of your mega-city are remotely afraid of, ever since most other fears were banished as a result of T-day, given that there are several tales of girls going missing here.
+
+You look down at the front of the monolith. You can see that there is an entrance to it, enough to entice anyone nearby to enter. You stick one of your paws inside, trying to see if you can go in there, but after a while you give up. It's definitely the perfect size for a toy, but you've long since outgrown it. 
+
+You look around for another location, and on the other end, there is an entrancethat is definitely large enough for you to walk through. You peer inside, and can see that there are several stacked freight containers populating the cargo wing. It's eerily quiet, but you can't help but suspect there is something here that might be worth investigating.
+
+The question of whether you'll head in directly or go somewhere else remains.
+

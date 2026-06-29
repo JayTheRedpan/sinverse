@@ -9,6 +9,10 @@
         "nextId": 2
       },
       {
+        "text": "A wolf huntress",
+        "nextId": 9
+      },
+      {
         "text": "Someone unique: be yourself~",
         "nextId": null
       }
@@ -122,5 +126,26 @@
     ],
     "author": "SpearmintMagpie",
     "title": "Welcome to Onyx"
+  },
+  {
+    "id": 9,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Head inside the cargo wing.",
+        "nextId": null
+      },
+      {
+        "text": "Actually, no. There has to be a better way in.",
+        "nextId": null
+      },
+      {
+        "text": "Camp outside the entrance instead.",
+        "nextId": null
+      }
+    ],
+    "author": "",
+    "title": "A wolf huntress"
   }
 ]
