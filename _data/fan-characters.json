@@ -5,8 +5,8 @@
     "wiki": "haven",
     "pronouns": "she/her",
     "species": ["Bobcat"],
-    "faction": ["-"],
-    "role": [""],
+    "faction": [],
+    "role": [],
     "class": "Giantess",
     "height": 132,
     "weight": 1200,
@@ -14,6 +14,24 @@
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782180703/haven_height_stb0y0.webp",
     "relationships": [
       { "type": "Cousin", "name": "Turbo", "note": "" }
+    ],
+    "canonical": false
+  },
+  {
+    "id": 2,
+    "name": "Rosi",
+    "wiki": "rosi",
+    "pronouns": "she/her",
+    "species": ["Rosella Parrot"],
+    "faction": [],
+    "role": [],
+    "class": "Giantess",
+    "height": 192,
+    "weight": 3230,
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782883606/rosi_profile_viayg3.webp",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782883604/rosi_height_plgyjg.webp",
+    "relationships": [
+      
     ],
     "canonical": false
   }
