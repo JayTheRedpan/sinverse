@@ -631,11 +631,15 @@ function renderCharacterLinks(containerId, characters) {
   el.appendChild(label);
   characters.forEach(function(charId, i) {
     var a = document.createElement('a');
-    a.href      = '../wiki/#' + charId;
     a.className = 'viewer-char-link';
-    var displayName = charId.replace(/_/g, ' ');
-    a.textContent = displayName.charAt(0).toUpperCase() + displayName.slice(1);
-    a.href = '../wiki/?character=' + encodeURIComponent(displayName.toLowerCase());
+    // A tag is a character handle: optional "canon:"/"fan:" prefix + name (or
+    // slug). Pass the full handle to the wiki (it resolves canon vs fan); show
+    // just the readable name, prefix stripped.
+    var m = String(charId).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+    var pfx = m ? (m[1].toLowerCase() + ':') : '';
+    var key = (m ? m[2] : String(charId)).replace(/_/g, ' ').trim();
+    a.href = '../wiki/?character=' + encodeURIComponent(pfx + key.toLowerCase());
+    a.textContent = key.charAt(0).toUpperCase() + key.slice(1);
     el.appendChild(a);
     if (i < characters.length - 1) el.appendChild(document.createTextNode(', '));
   });

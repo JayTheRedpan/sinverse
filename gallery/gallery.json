@@ -3333,7 +3333,8 @@
       "https://res.cloudinary.com/dq40xaaux/image/upload/v1782310344/02_sildxo.webp"
     ],
     "characters": [
-      "jay"
+      "jay",
+      "rosi"
     ],
     "tags": [
       "noncon"
@@ -3345,6 +3346,28 @@
     "date": "2026-06",
     "universe_date": null,
     "canonical": false,
+    "relates_to": []
+  },
+  {
+    "id": 144,
+    "type": "scene",
+    "title": "Sylphs Over Toys",
+    "artist": "Pkuai",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783480708/sylphs_over_toys_jlzflp.webp",
+    "characters": [
+      "jay",
+      "eve"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "lore": [
+      
+    ],
+    "date": "2026-07",
+    "universe_date": null,
+    "canonical": false,
+    "synopsis": null,
     "relates_to": []
   }
 ]
