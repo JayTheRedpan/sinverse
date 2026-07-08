@@ -25,7 +25,7 @@
     "species": ["Rosella Parrot"],
     "faction": [],
     "role": [],
-    "class": "Giantess",
+    "class": ["Giantess", "Tempered"],
     "height": 192,
     "weight": 3230,
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782883606/rosi_profile_viayg3.webp",

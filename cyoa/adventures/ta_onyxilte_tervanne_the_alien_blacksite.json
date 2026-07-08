@@ -172,10 +172,31 @@
     "choices": [
       {
         "text": "To the research wing.. hopefully they didn't put that in lockdown too.",
-        "nextId": null
+        "nextId": 12
       }
     ],
     "author": "SpearmintMagpie",
     "title": "Log 002: 5 years..."
+  },
+  {
+    "id": 12,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Level 4 - Hazard lab?",
+        "nextId": null
+      },
+      {
+        "text": "Level 6 - Security?",
+        "nextId": null
+      },
+      {
+        "text": "Level 7 - Medical?",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "The Lobby of Science"
   }
 ]

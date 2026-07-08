@@ -195,12 +195,16 @@ function renderReaderCharacters(characters) {
   var list = document.createElement('div');
   list.className = 'reader-characters-list';
   characters.forEach(function(charId) {
-    var displayName = String(charId).replace(/_/g, ' ');
-    displayName = displayName.charAt(0).toUpperCase() + displayName.slice(1);
+    // A tag is a character handle: optional "canon:"/"fan:" prefix + name (or
+    // slug). Pass the full handle to the wiki (it resolves canon vs fan); show
+    // just the readable name, prefix stripped.
+    var m = String(charId).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+    var pfx = m ? (m[1].toLowerCase() + ':') : '';
+    var key = (m ? m[2] : String(charId)).replace(/_/g, ' ').trim();
     var a = document.createElement('a');
     a.className   = 'reader-char-link';
-    a.href        = '../wiki/?character=' + encodeURIComponent(String(charId).toLowerCase());
-    a.textContent = displayName;
+    a.href        = '../wiki/?character=' + encodeURIComponent(pfx + key.toLowerCase());
+    a.textContent = key.charAt(0).toUpperCase() + key.slice(1);
     list.appendChild(a);
   });
   el.appendChild(list);
