@@ -117,7 +117,7 @@
       },
       {
         "text": "Engineering may be the way forward, I know a thing or two about mechanics!",
-        "nextId": null
+        "nextId": 13
       },
       {
         "text": "Research may be the way forward, if this is a laboratory, its likely deeper and safer in the labs.",
@@ -198,5 +198,18 @@
     ],
     "author": "SpearmintMagpie",
     "title": "The Lobby of Science"
+  },
+  {
+    "id": 13,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "I guess there's only one way to go, to research wing, if its open...",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "2 Steps Back"
   }
 ]
