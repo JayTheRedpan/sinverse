@@ -898,5 +898,17 @@
       "bluesky": "https://bsky.app/profile/rightsidedown.bsky.social",
       "subscribestar": "https://subscribestar.adult/right-side-down"
     }
+  },
+  {
+    "id": "Pkuai",
+    "name": "Pkuai",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783480878/pkuai_ooiwvw.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/pkuai/"
+    }
   }
 ]

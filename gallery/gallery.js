@@ -1,29 +1,36 @@
 'use strict';
 /* ============================================================================
-   Sinverse — Gallery viewer (single item view: viewer.html?id=N)
+   Sinverse — Gallery browser
    ----------------------------------------------------------------------------
-   Renders one gallery item. All single-image views (scene, charref, comic page,
-   set lightbox) share the SAME .scene-image-panel UI, so they get identical
-   zoom, drag-to-pan, scroll-wheel pan, and download controls.
+   Grid of artworks loaded from gallery.json. Supports four item types:
+   scene, comic, charref (character reference), and set (a bundle of images).
 
-   - setupImageZoom(): the shared zoom controller. scale 1 = fit (object-fit
-     contain); fit-by-default. Grab-to-drag + wheel pan when zoomed. Pan clamp
-     is computed from the image's natural dimensions (NOT live-measured) so a
-     CSS transition can't make it drift off-screen. Two fit buttons: whole + width.
-   - Comic: same panel + Prev/Next + a centered thumbnail jump-strip below.
-   - Layout uses the global-nav-aware sizing (body height:100vh with the 52px
-     nav padding absorbed via border-box; panels flex to fill).
-   - On mobile the zoom controls are hidden (pinch-zoom covers it); comic page
-     changes scroll the window to the top of the image, offset by fixed bars.
+   - `state` holds filters: tagMode ('exclude'|'include'), selectedTags (Set),
+     typeFilter, search query, sort order.
+   - Tag filtering: mode-toggle system (Hide these / Show only these) with
+     any-match logic, persisted to localStorage (sinverse_gallery_*). The tag
+     list comes from _data/tags.json — a tag missing there gets no filter button.
+   - Clicking a card opens viewer.html?id=N (see viewer.js).
+   - Artist names link to ../contributors/?creator=<artist>.
    ========================================================================== */
 
-var item       = null;
-var comicPage  = 0;
+var state = {
+  items:      [],
+  filtered:   [],
+  typeFilter: { comic: true, scene: true, charref: true, set: true },
+  canonOnly:  false,
+  // Per-tag tristate filtering. tagStates maps a normalized tag -> 'include'
+  // or 'exclude'; a tag absent from the map is neutral (no effect).
+  tagStates: {},
+  sortOrder:  'newest',
+  query:      '',
+};
 
 // ── Artist helpers (support single string OR array, for collabs) ─────────────
-// `item.artist` may be a string or an array (collab). Normalize to an array and
-// build a "by <links>" string where EACH artist links to their contributor page.
-// (Mirrors the stash module's creator handling.)
+// An item's `artist` may be a string ("FastTrack") or an array (["Vex","FastTrack"])
+// for collaborations. These normalize both to a clean array and a display string,
+// so the rest of the module never has to care which form the data is in.
+// (Mirrors the stash module's creatorList/creatorText.)
 function artistList(item) {
   if (!item) return [];
   var a = item.artist;
@@ -31,657 +38,461 @@ function artistList(item) {
   if (a && String(a).trim()) return [String(a)];
   return [];
 }
-function artistLinksHtml(item) {
+function artistText(item) {
   var list = artistList(item);
   if (!list.length) return '';
-  var links = list.map(function (name) {
-    return '<a class="viewer-artist-link" href="../contributors/?creator=' +
-      encodeURIComponent(name) + '">' + name + '</a>';
-  });
-  var joined;
-  if (links.length === 1) joined = links[0];
-  else if (links.length === 2) joined = links[0] + ' & ' + links[1];
-  else joined = links.slice(0, -1).join(', ') + ' & ' + links[links.length - 1];
-  return 'by ' + joined;
+  if (list.length === 1) return list[0];
+  if (list.length === 2) return list[0] + ' & ' + list[1];
+  return list.slice(0, -1).join(', ') + ' & ' + list[list.length - 1];
 }
 
-// Attach +/- / fit zoom to an image. Default state fits the screen (the CSS
-// Fit-by-default image zoom with grab-to-drag panning.
-// At scale 1 the image fits (object-fit:contain). Zooming scales it up and the
-// user drags to pan — no scrollbars. Pan offset is clamped to the overflow.
-function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
-  var img   = document.getElementById(imgId);
-  var panel = img && img.closest('.scene-image-panel');
-  var out   = document.getElementById(outId);
-  var reset = document.getElementById(resetId);
-  var inc   = document.getElementById(inId);
-  var widthBtn = widthId ? document.getElementById(widthId) : null;
-  var pctEl = pctId ? document.getElementById(pctId) : null;
-  if (!img || !panel) return;
-  var scale = 1, tx = 0, ty = 0;
-  var MIN = 1, MAX = 5;
-  var drag = null;
+var TYPE_LABELS = {
+  comic:   'Comic',
+  scene:   'World Scene',
+  charref: 'Reference',
+  set:     'Set',
+};
 
-  // Compute the image's letterboxed "fit" box (object-fit:contain at scale 1)
-  // from natural dimensions + the image element's UNTRANSFORMED layout box.
-  // Using getBoundingClientRect() here read the *transformed* rect, which made
-  // clamp() recompute different limits every pointermove and produced a rapid
-  // stutter at the edges. offsetWidth/Height and offset position are immune to
-  // the CSS transform, so the geometry is stable while panning/zooming.
-  function fitBox() {
-    var pr = panel.getBoundingClientRect();
-    var boxW = img.offsetWidth, boxH = img.offsetHeight;   // layout size (no transform)
-    var nw = img.naturalWidth || boxW, nh = img.naturalHeight || boxH;
-    if (!nw || !nh || !boxW || !boxH) return { w: boxW, h: boxH, cxRel: pr.width/2, cyRel: pr.height/2, pr: pr };
-    var s = Math.min(boxW / nw, boxH / nh);   // contain scale
-    var fw = nw * s, fh = nh * s;             // fitted (displayed) size at scale 1
-    // Untransformed element position relative to the panel. Walk offsetParent
-    // chain up to (and including) the panel so we get layout coords, not the
-    // transformed rect. If the chain doesn't reach the panel, fall back to
-    // assuming the image is centered in the panel (the object-fit:contain case).
-    var ox = 0, oy = 0, node = img, reached = false;
-    for (var guard = 0; node && guard < 12; guard++) {
-      if (node === panel) { reached = true; break; }
-      ox += node.offsetLeft; oy += node.offsetTop;
-      node = node.offsetParent;
-    }
-    var boxCxRel, boxCyRel;
-    if (reached) { boxCxRel = ox + boxW / 2; boxCyRel = oy + boxH / 2; }
-    else         { boxCxRel = pr.width / 2;  boxCyRel = pr.height / 2; }
-    return { w: fw, h: fh, cxRel: boxCxRel, cyRel: boxCyRel, pr: pr };
-  }
-
-  function fitWidthScale() {
-    var f = fitBox();
-    if (!f.w) return 1;
-    return Math.min(MAX, Math.max(1, f.pr.width / f.w));
-  }
-
-  function maxOffset() {
-    var f = fitBox();
-    var pr = f.pr;
-    var scaledW = f.w * scale, scaledH = f.h * scale;
-    // Offset of the fitted image's center from the panel center at scale 1.
-    // (translate scales about the element center, and the fitted image is
-    // centered in the element, so the fitted center == element center.)
-    var baseDx = (f.cxRel != null ? f.cxRel : pr.width / 2) - pr.width / 2;
-    var baseDy = (f.cyRel != null ? f.cyRel : pr.height / 2) - pr.height / 2;
-    return {
-      xPos: Math.max(0, scaledW / 2 - pr.width  / 2 - baseDx),
-      xNeg: Math.max(0, scaledW / 2 - pr.width  / 2 + baseDx),
-      yPos: Math.max(0, scaledH / 2 - pr.height / 2 - baseDy),
-      yNeg: Math.max(0, scaledH / 2 - pr.height / 2 + baseDy)
-    };
-  }
-  function clamp() {
-    var m = maxOffset();
-    // Allow a little overscroll into the black (so fast scrolls don't slam into
-    // a hard wall and bounce), but never enough to push the whole image away —
-    // cap the slack at ~12% of the panel so a meaningful slice always shows.
-    var pr = panel.getBoundingClientRect();
-    var slackX = Math.min(pr.width, pr.height) * 0.12;
-    var slackY = slackX;
-    tx = Math.max(-(m.xNeg + slackX), Math.min(m.xPos + slackX, tx));
-    ty = Math.max(-(m.yNeg + slackY), Math.min(m.yPos + slackY, ty));
-  }
-  // Toggle the CSS transition: smooth for button zoom, instant for drag/wheel
-  function setSmooth(on) { img.style.transition = on ? '' : 'none'; }
-  function apply() {
-    if (scale === 1) { tx = 0; ty = 0; }
-    else clamp();
-    img.style.transform = 'translate(' + tx + 'px,' + ty + 'px) scale(' + scale + ')';
-    img.style.cursor = scale > 1 ? (drag ? 'grabbing' : 'grab') : '';
-    if (pctEl) pctEl.textContent = Math.round(scale * 100) + '%';
-  }
-  function zoomTo(s) { scale = Math.max(MIN, Math.min(MAX, Math.round(s * 100) / 100)); apply(); }
-
-  if (out)   out.addEventListener('click',   function(){ setSmooth(true); zoomTo(scale - 0.25); });
-  if (inc)   inc.addEventListener('click',   function(){ setSmooth(true); zoomTo(scale + 0.25); });
-  if (reset) reset.addEventListener('click', function(){ setSmooth(true); scale = 1; tx = 0; ty = 0; apply(); });
-  if (widthBtn) widthBtn.addEventListener('click', function(){
-    setSmooth(true);
-    scale = fitWidthScale();
-    tx = 0;
-    apply();
-    // Jump to the top of the (now taller-than-panel) image so reading starts there
-    var m = maxOffset();
-    ty = m.yPos;   // max positive ty reveals the top edge
-    apply();
-  });
-
-  // Grab-to-drag panning (pointer events cover mouse + touch)
-  img.addEventListener('pointerdown', function(e) {
-    if (scale <= 1) return;
-    setSmooth(false);
-    drag = { x: e.clientX, y: e.clientY, tx: tx, ty: ty };
-    img.setPointerCapture(e.pointerId);
-    img.style.cursor = 'grabbing';
-    e.preventDefault();
-  });
-  img.addEventListener('pointermove', function(e) {
-    if (!drag) return;
-    tx = drag.tx + (e.clientX - drag.x);
-    ty = drag.ty + (e.clientY - drag.y);
-    apply();
-  });
-  function endDrag(e) {
-    if (!drag) return;
-    drag = null;
-    try { img.releasePointerCapture(e.pointerId); } catch(_) {}
-    img.style.cursor = scale > 1 ? 'grab' : '';
-  }
-  img.addEventListener('pointerup', endDrag);
-  img.addEventListener('pointercancel', endDrag);
-
-  // Double-click toggles between fit and 2x
-  img.addEventListener('dblclick', function(){ setSmooth(true); scale === 1 ? zoomTo(2) : (function(){ scale = 1; tx = 0; ty = 0; apply(); })(); });
-
-  // Scroll wheel pans the image while zoomed (vertical; shift = horizontal).
-  // Falls through to normal page scroll when at fit (scale 1).
-  panel.addEventListener('wheel', function(e) {
-    if (scale <= 1) return;
-    e.preventDefault();
-    setSmooth(false);   // instant pan — no animated bounce on fast scroll
-    if (e.shiftKey) { tx -= e.deltaY; }
-    else { ty -= e.deltaY; tx -= e.deltaX; }
-    apply();
-  }, { passive: false });
-
-  // Reset to fit whenever a new image loads
-  img.addEventListener('load', function(){ scale = 1; tx = 0; ty = 0; apply(); });
-  apply();
-}
+// Small inline-SVG icon per type for at-a-glance distinction in the badge.
+var TYPE_ICONS = {
+  // stacked pages
+  comic:   '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="3" y="2" width="8" height="11" rx="1"/><path d="M5.5 2.5V13.5M13 4v9a1 1 0 0 1-1 1H5"/></svg>',
+  // single frame
+  scene:   '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="3" width="11" height="10" rx="1"/><circle cx="6" cy="6.5" r="1"/><path d="M3 11l3-2.5 2.5 2 2-1.5L13 11"/></svg>',
+  // person
+  charref: '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><circle cx="8" cy="5" r="2.5"/><path d="M3.5 13c0-2.8 2-4.5 4.5-4.5s4.5 1.7 4.5 4.5"/></svg>',
+  // grid of squares
+  set:     '<svg viewBox="0 0 16 16" width="10" height="10" fill="none" stroke="currentColor" stroke-width="1.4"><rect x="2.5" y="2.5" width="4.5" height="4.5" rx="0.8"/><rect x="9" y="2.5" width="4.5" height="4.5" rx="0.8"/><rect x="2.5" y="9" width="4.5" height="4.5" rx="0.8"/><rect x="9" y="9" width="4.5" height="4.5" rx="0.8"/></svg>',
+};
 
 // -- Boot
+// ── INIT: load tags + gallery.json, build filters, first render ──────────
 async function init() {
-  var params = new URLSearchParams(window.location.search);
-  var id     = parseInt(params.get('id'), 10);
-  if (!id) { window.location.href = 'index.html'; return; }
-
   try {
-    var res = await fetch('./gallery.json');
+    var res = await fetch('gallery.json');
     if (!res.ok) throw new Error('Could not load gallery.json');
-    var items = await res.json();
-    item = items.find(function(i) { return i.id === id; });
-    if (!item) throw new Error('Item not found: ' + id);
-    // Also load the library index so related-work links can resolve titles, and
-    // build reciprocal links (a link declared on either side shows on both).
-    window._galleryItems = items;
-    try {
-      var libRes = await fetch('../library/library.json');
-      window._libraryItems = libRes.ok ? await libRes.json() : [];
-    } catch(e) { window._libraryItems = []; }
-    buildRelatedFor(item, 'gallery', window._galleryItems, window._libraryItems);
-    if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
-    render();
+    state.items = await res.json();
+    var tagsRes = await fetch('../_data/tags.json');
+    var tagsData = await tagsRes.json();
+    buildTagFilters(tagsData.gallery || []);
+
+    // Seed filter state from the URL (shareable links + restore-on-return).
+    var hadUrlState = readURLState();
+
+    // Reflect search modes onto the toggle buttons.
+    if (state._urlModes) {
+      document.querySelectorAll('.search-mode-btn').forEach(function(b){
+        b.classList.toggle('active', state._urlModes.indexOf(b.getAttribute('data-mode')) > -1);
+      });
+    }
+    // Reflect the seeded query into the search box.
+    if (state.query) {
+      var inp = document.getElementById('search-input');
+      if (inp) inp.value = state.query;
+    }
+    // Reflect type toggles, canon button, sort select, and tag buttons.
+    document.querySelectorAll('#type-filters .type-toggle-btn').forEach(function(b){
+      var t = b.getAttribute('data-type');
+      if (t in state.typeFilter) b.classList.toggle('active', state.typeFilter[t]);
+    });
+    var canonBtn = document.getElementById('canon-filter-btn');
+    if (canonBtn) canonBtn.classList.toggle('active', state.canonOnly);
+    var sortSel = document.getElementById('sort-select');
+    if (sortSel && state.sortOrder) sortSel.value = state.sortOrder;
+    if (typeof reflectTagButtons === 'function') reflectTagButtons();
+    if (typeof updateTagModeHint === 'function') updateTagModeHint();
+
+
+    // Clean up any legacy entry params now that they've been folded into state.
+    if (hadUrlState) {
+      var cleanUrl = new URL(window.location.href);
+      ['character', 'search', 'mode'].forEach(function(k){ cleanUrl.searchParams.delete(k); });
+      window.history.replaceState({}, '', cleanUrl);
+    } else {
+      resetSearch();
+    }
+
+    applyFilters();
   } catch(e) {
-    document.body.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-muted)">' + e.message + '</div>';
+    document.getElementById('gallery-grid').innerHTML =
+      '<div class="loading-placeholder" style="color:var(--wine)">Failed to load gallery.<br><small>' + e.message + '</small></div>';
   }
 }
 
-// Resolve the effective related-works list for an item, merging its own
-// declared `relates_to` with any reciprocal links declared on the other side.
-// Each entry is { module: 'gallery'|'library', id: N }. Single source of truth:
-// you declare a link on ONE item and it appears on both.
-function buildRelatedFor(target, targetModule, galleryItems, libraryItems) {
-  var out = [];
-  var seen = {};
-  function add(module, id) {
-    var key = module + ':' + id;
-    if (seen[key]) return;
-    if (module === targetModule && id === target.id) return; // no self-links
-    seen[key] = true;
-    out.push({ module: module, id: id });
+// -- Tag filters built from data
+// ── TAG FILTERING ─────────────────────────────────────────────────────────
+// Mode-toggle (exclude/include) + select-all/clear, persisted to localStorage
+// (sinverse_gallery_* keys). Tag list from _data/tags.json. Tristate per-tag.
+function buildTagFilters(warningTags) {
+  var container = document.getElementById('tag-filters');
+  if (!warningTags || !warningTags.length) {
+    container.style.display = 'none';
+    var ctrls = document.querySelector('.tag-controls'); if (ctrls) ctrls.style.display = 'none';
+    var hint = document.getElementById('tag-mode-hint'); if (hint) hint.style.display = 'none';
+    return;
   }
-  // 1) Links this item declares directly.
-  (target.relates_to || []).forEach(function(r) {
-    if (r && r.module && r.id != null) add(r.module, parseInt(r.id, 10));
+
+  // Restore saved per-tag states (gallery-specific key)
+  try {
+    var saved = JSON.parse(localStorage.getItem('sinverse_gallery_tag_states') || '{}');
+    state.tagStates = (saved && typeof saved === 'object') ? saved : {};
+  } catch(e) { state.tagStates = {}; }
+
+  var sortedTags = warningTags.slice().sort();
+  container.innerHTML = '';
+  sortedTags.forEach(function(tag) {
+    var key = String(tag).trim().toLowerCase();
+    var btn = document.createElement('button');
+    btn.setAttribute('data-tag', key);
+    btn.addEventListener('click', function() {
+      // Cycle: neutral -> include -> exclude -> neutral
+      var cur = state.tagStates[key];
+      if (!cur)                   state.tagStates[key] = 'include';
+      else if (cur === 'include') state.tagStates[key] = 'exclude';
+      else                        delete state.tagStates[key];
+      paintTagButton(btn, key);
+      persistTagState();
+      applyFilters();
+    });
+    paintTagButton(btn, key);
+    container.appendChild(btn);
   });
-  // 2) Reciprocals: any item (in either module) that points AT this one.
-  function scan(list, module) {
-    (list || []).forEach(function(it) {
-      (it.relates_to || []).forEach(function(r) {
-        if (r && r.module === targetModule && parseInt(r.id, 10) === target.id) {
-          add(module, it.id);
-        }
-      });
+
+  // Clear-all button (resets every tag to neutral)
+  var selNone = document.getElementById('tag-select-none');
+  if (selNone) selNone.addEventListener('click', function() {
+    state.tagStates = {};
+    reflectTagButtons();
+    persistTagState();
+    applyFilters();
+  });
+
+  updateTagModeHint();
+}
+
+// Render one tag button to reflect its tristate. Leading glyph keeps the state
+// legible without relying on colour alone: ＋ included, － excluded, blank off.
+function paintTagButton(btn, key) {
+  var st = state.tagStates[key];
+  var text = btn._label || (btn._label = btn.textContent || key);
+  btn.className = 'tag-filter-btn tristate' + (st ? ' ' + st : ' neutral');
+  var glyph = st === 'include' ? '＋' : (st === 'exclude' ? '－' : '');
+  btn.innerHTML = (glyph ? '<span class="tag-tri-glyph">' + glyph + '</span>' : '') + '<span class="tag-tri-label">' + text + '</span>';
+  btn.setAttribute('aria-pressed', st ? 'true' : 'false');
+  btn.title = st === 'include' ? 'Including: only artworks WITH this tag pass (click to exclude)'
+            : st === 'exclude' ? 'Excluding: artworks with this tag are hidden (click to clear)'
+            : 'Click to require this tag; click again to exclude it';
+}
+
+// Repaint every tag button to reflect current tagStates (used by Clear all / reset).
+function reflectTagButtons() {
+  document.querySelectorAll('.tag-filter-btn').forEach(function(b) {
+    paintTagButton(b, b.getAttribute('data-tag'));
+  });
+}
+
+function updateTagModeHint() {
+  var hint = document.getElementById('tag-mode-hint');
+  if (!hint) return;
+  var inc = 0, exc = 0;
+  Object.keys(state.tagStates || {}).forEach(function(k){
+    if (state.tagStates[k] === 'include') inc++;
+    else if (state.tagStates[k] === 'exclude') exc++;
+  });
+  if (!inc && !exc) {
+    hint.textContent = 'Tap a tag once to require it (＋), again to exclude it (－), again to clear.';
+  } else {
+    var parts = [];
+    if (inc) parts.push('requiring ' + inc + ' tag' + (inc > 1 ? 's' : ''));
+    if (exc) parts.push('excluding ' + exc + ' tag' + (exc > 1 ? 's' : ''));
+    hint.textContent = 'Showing artworks ' + parts.join(' and ') + '.';
+  }
+}
+
+function persistTagState() {
+  try {
+    localStorage.setItem('sinverse_gallery_tag_states', JSON.stringify(state.tagStates || {}));
+  } catch(e) {}
+}
+
+// -- Filter + sort + render
+// ── SEARCH + FILTER + SORT ────────────────────────────────────────────────
+// applyFilters() filters by type, canon, tags, and search; then renderGrid().
+function getActiveModes() {
+  var modes = [];
+  document.querySelectorAll('.search-mode-btn.active').forEach(function(b){ modes.push(b.getAttribute('data-mode')); });
+  return modes;
+}
+
+function applyFilters() {
+  var q = state.query.toLowerCase();
+  var modes = getActiveModes();
+
+  state.filtered = state.items.filter(function(item) {
+    if (!state.typeFilter[item.type]) return false;
+    if (state.canonOnly && !item.canonical) return false;
+    // Per-tag tristate filtering (case/space-insensitive). Hidden if it carries
+    // ANY excluded tag, or if there are included tags and it lacks them all.
+    var includeTags = [], excludeTags = [];
+    Object.keys(state.tagStates || {}).forEach(function(k){
+      if (state.tagStates[k] === 'include') includeTags.push(k);
+      else if (state.tagStates[k] === 'exclude') excludeTags.push(k);
+    });
+    if (includeTags.length || excludeTags.length) {
+      var itemTags = (item.tags || []).map(function(t){ return String(t).trim().toLowerCase(); });
+      if (excludeTags.some(function(t){ return itemTags.indexOf(t) > -1; })) return false;
+      if (includeTags.length && !includeTags.some(function(t){ return itemTags.indexOf(t) > -1; })) return false;
+    }
+    // Character filter from URL param is now folded into the search query
+    if (state.characterFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
+    if (q) {
+      var matched = false;
+      if (modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q)) matched = true;
+      if (modes.indexOf('artist')    > -1 && artistList(item).join(' ').toLowerCase().includes(q)) matched = true;
+      if (modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); })) matched = true;
+      if (!matched) return false;
+    }
+    return true;
+  });
+
+  state.filtered.sort(function(a, b) {
+    if (state.sortOrder === 'newest') return (b.date || '').localeCompare(a.date || '');
+    if (state.sortOrder === 'oldest') return (a.date || '').localeCompare(b.date || '');
+    if (state.sortOrder === 'title')  return a.title.localeCompare(b.title);
+    if (state.sortOrder === 'artist') return artistText(a).localeCompare(artistText(b));
+    return 0;
+  });
+
+  renderGrid();
+  syncURL();
+}
+
+// ── URL STATE ─────────────────────────────────────────────────────────────
+// The URL query string is a mirror of the current filter state. This gives us
+// two things for free: navigating into an item and back restores the view (the
+// browser keeps the URL), and the URL is shareable. It does NOT touch the
+// in-memory filter/sort path — applyFilters() still runs entirely client-side
+// at the same speed; this only reads/writes the address bar.
+//
+// Params (all optional, omitted when at their default):
+//   q     search query text
+//   modes comma list of active search modes (title/artist/character)
+//   types comma list of ENABLED types, only when not all four are on
+//   tags  comma list of tag filters, each prefixed + (include) or - (exclude)
+//   canon "1" when canon-only is active
+//   sort  sort order, only when not the default "newest"
+var _syncingURL = false;
+function syncURL() {
+  if (_syncingURL) return;
+  var p = new URLSearchParams();
+
+  if (state.query) p.set('q', state.query);
+
+  var modes = getActiveModes();
+  // Only record modes if they differ from "all active" (the default).
+  var allModes = ['title', 'artist', 'character'];
+  if (modes.length && modes.length !== allModes.length) p.set('modes', modes.join(','));
+
+  var enabledTypes = Object.keys(state.typeFilter).filter(function(t){ return state.typeFilter[t]; });
+  var totalTypes = Object.keys(state.typeFilter).length;
+  if (enabledTypes.length !== totalTypes) p.set('types', enabledTypes.join(','));
+
+  var tagBits = [];
+  Object.keys(state.tagStates || {}).forEach(function(k){
+    if (state.tagStates[k] === 'include') tagBits.push('+' + k);
+    else if (state.tagStates[k] === 'exclude') tagBits.push('-' + k);
+  });
+  if (tagBits.length) p.set('tags', tagBits.join(','));
+
+  if (state.canonOnly) p.set('canon', '1');
+  if (state.sortOrder && state.sortOrder !== 'newest') p.set('sort', state.sortOrder);
+
+  var qs = p.toString();
+  var newUrl = window.location.pathname + (qs ? '?' + qs : '');
+  // replaceState (not pushState): filtering shouldn't spam the back button.
+  window.history.replaceState({}, '', newUrl);
+}
+
+// Seed state from the URL on load. Returns true if any filter param was found,
+// so init() knows whether to skip its default resetSearch().
+function readURLState() {
+  var p = new URLSearchParams(window.location.search);
+  var found = false;
+
+  // Back-compat: the old entry params (character / search / mode) still work.
+  var legacyChar = p.get('character');
+  var legacySearch = p.get('search');
+  if (legacyChar) {
+    state.query = decodeURIComponent(legacyChar).toLowerCase();
+    p.set('q', state.query);
+    p.set('modes', 'character');
+    found = true;
+  } else if (legacySearch) {
+    state.query = decodeURIComponent(legacySearch).toLowerCase();
+    p.set('q', state.query);
+    if (p.get('mode')) p.set('modes', p.get('mode'));
+    found = true;
+  }
+
+  if (p.has('q')) { state.query = decodeURIComponent(p.get('q')); found = true; }
+
+  if (p.has('types')) {
+    found = true;
+    var on = p.get('types').split(',').filter(Boolean);
+    Object.keys(state.typeFilter).forEach(function(t){ state.typeFilter[t] = on.indexOf(t) > -1; });
+  }
+
+  if (p.has('tags')) {
+    found = true;
+    state.tagStates = {};
+    p.get('tags').split(',').filter(Boolean).forEach(function(bit){
+      var sign = bit.charAt(0);
+      var key = bit.slice(1);
+      if (sign === '+') state.tagStates[key] = 'include';
+      else if (sign === '-') state.tagStates[key] = 'exclude';
     });
   }
-  scan(galleryItems, 'gallery');
-  scan(libraryItems, 'library');
-  target._related = out;
+
+  if (p.get('canon') === '1') { state.canonOnly = true; found = true; }
+  if (p.has('sort')) { state.sortOrder = p.get('sort'); found = true; }
+
+  // Stash desired modes so init() can reflect them onto the buttons after the
+  // DOM is ready (the buttons exist, but we centralize the reflect in init).
+  state._urlModes = p.has('modes') ? p.get('modes').split(',').filter(Boolean) : null;
+  if (state._urlModes) found = true;
+
+  return found;
 }
 
-function render() {
-  document.title = item.title + ' — Sinverse Gallery';
-  document.getElementById('viewer-title').textContent = item.title;
-
-  if (item.type === 'comic')   renderComic();
-  if (item.type === 'scene')   renderScene();
-  if (item.type === 'charref') {
-    // A charref with multiple versions (clothed/unclothed, etc.) reuses the
-    // comic reader's polished page-by-page layout. Single-image references keep
-    // their purpose-built reference page.
-    var refImgs = (item.images && item.images.length) ? item.images
-                : (item.image ? [item.image] : []);
-    if (refImgs.length > 1) {
-      item.pages = refImgs;   // feed the versions to the comic reader as pages
-      renderComic();
-    } else {
-      renderCharRef();
-    }
-  }
-  if (item.type === 'set')     renderSet();
-}
-
-// -- Comic
-function renderComic() {
-  document.getElementById('view-comic').style.display = '';
-
-  // Populate sidebar
-  document.getElementById('comic-title-reader').textContent   = item.title;
-  var caEl = document.getElementById('comic-artist-reader');
-  if (caEl) caEl.innerHTML = artistLinksHtml(item);
-  document.getElementById('comic-synopsis-reader').textContent = item.synopsis || '';
-  if (item.canonical) document.getElementById('comic-canonical-reader').style.display = '';
-  renderTags('comic-tags-reader', item.tags);
-  renderDates('comic-dates', item);
-  renderCharacterLinks('comic-characters-reader', item.characters);
-  renderLoreLinks('comic-lore-reader', item.lore);
-  renderRelatedLinks('comic-related', item._related);
-
-  // Start on page 0
-  comicPage = 0;
-  showPage(0);
-
-  // Build the jump-to-page thumbnail strip
-  buildComicStrip();
-
-  // Zoom + grab-drag on the comic page (same behavior as scene/ref)
-  setupImageZoom('comic-page-img', 'comic-zoom-out', 'comic-zoom-reset', 'comic-zoom-in', 'comic-zoom-width', 'comic-zoom-pct');
-
-  document.getElementById('comic-prev').addEventListener('click', function() { showPage(comicPage - 1); });
-  document.getElementById('comic-next').addEventListener('click', function() { showPage(comicPage + 1); });
-
-  // Keyboard navigation
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'ArrowRight' || e.key === 'ArrowDown') showPage(comicPage + 1);
-    if (e.key === 'ArrowLeft'  || e.key === 'ArrowUp')   showPage(comicPage - 1);
-  });
-}
-
-function showPage(n) {
-  var pages = item.pages || [];
-  comicPage = Math.max(0, Math.min(n, pages.length - 1));
-  var img = document.getElementById('comic-page-img');
-  img.src = pages[comicPage];
-  document.getElementById('comic-page-counter').textContent = (comicPage + 1) + ' / ' + pages.length;
-  document.getElementById('comic-prev').style.visibility = comicPage === 0 ? 'hidden' : '';
-  document.getElementById('comic-next').style.visibility = comicPage === pages.length - 1 ? 'hidden' : '';
-  // Download link for the current page
-  var dl = document.getElementById('comic-download');
-  if (dl) {
-    dl.href = pages[comicPage] || '#';
-    dl.download = (item.title || 'comic').replace(/\s+/g, '_') + '_p' + (comicPage + 1) + '.jpg';
-  }
-  // Highlight the active thumbnail. Center it within the strip horizontally
-  // without yanking the page (use manual scrollLeft, not scrollIntoView which
-  // can scroll the whole window on mobile).
-  var strip = document.getElementById('comic-thumb-strip');
-  if (strip) {
-    var thumbs = strip.querySelectorAll('.comic-thumb');
-    thumbs.forEach(function(t, i){ t.classList.toggle('active', i === comicPage); });
-    var active = thumbs[comicPage];
-    if (active) {
-      var target = active.offsetLeft - (strip.clientWidth / 2) + (active.clientWidth / 2);
-      strip.scrollTo({ left: target, behavior: 'smooth' });
-    }
-  }
-
-  // On mobile the whole page scrolls, so jump back to the top of the comic
-  // image when the page changes (matches prev/next behavior; lets readers go
-  // top-to-bottom without manually scrolling up each time).
-  if (window.matchMedia('(max-width: 900px)').matches) {
-    var panel = document.querySelector('#view-comic .comic-image-panel');
-    if (panel) {
-      // After the new image starts loading, scroll so the TOP of the image sits
-      // just below any fixed bars (global nav + viewer topbar), which
-      // scrollIntoView ignores and would hide behind.
-      img.addEventListener('load', function onLoad() {
-        img.removeEventListener('load', onLoad);
-        var nav = document.querySelector('.global-nav');
-        var topbar = document.querySelector('.viewer-topbar');
-        var offset = 0;
-        if (nav && getComputedStyle(nav).position === 'fixed') offset += nav.offsetHeight;
-        if (topbar && getComputedStyle(topbar).position === 'fixed') offset += topbar.offsetHeight;
-        var top = panel.getBoundingClientRect().top + window.pageYOffset - offset;
-        window.scrollTo({ top: Math.max(0, top), behavior: 'smooth' });
-      });
-    }
-  }
-}
-
-// Build a clickable thumbnail strip for jumping to any comic page.
-function buildComicStrip() {
-  var strip = document.getElementById('comic-thumb-strip');
-  if (!strip) return;
-  var pages = item.pages || [];
-  strip.innerHTML = '';
-  if (pages.length <= 1) { strip.style.display = 'none'; return; }
-  pages.forEach(function(src, idx) {
-    var t = document.createElement('button');
-    t.className = 'comic-thumb' + (idx === comicPage ? ' active' : '');
-    t.setAttribute('aria-label', 'Jump to page ' + (idx + 1));
-    var thumb = (window.SinverseImg ? SinverseImg.thumb(src, 120) : src);
-    t.innerHTML = '<img src="' + thumb + '" alt="Page ' + (idx + 1) + '" loading="lazy" /><span class="comic-thumb-num">' + (idx + 1) + '</span>';
-    t.addEventListener('click', function(){ showPage(idx); });
-    strip.appendChild(t);
-  });
-}
-
-// -- Scene
-function renderScene() {
-  document.getElementById('view-scene').style.display = '';
-  var typeBadge = document.getElementById('scene-type-badge');
-  if (typeBadge) typeBadge.textContent = item.type === 'charref' ? 'Reference' : 'World Scene';
-
-  var img = document.getElementById('scene-img');
-  img.src = item.image || '';
-  img.alt = item.title;
-
-  document.getElementById('scene-title').textContent       = item.title;
-  var sceneArtistEl = document.getElementById('scene-artist');
-  if (sceneArtistEl) sceneArtistEl.innerHTML = artistLinksHtml(item);
-  document.getElementById('scene-description').textContent = item.description || '';
-
-  if (item.canonical) document.getElementById('scene-canonical').style.display = '';
-
-  renderTags('scene-tags', item.tags);
-  renderDates('scene-dates', item);
-  renderCharacterLinks('scene-characters', item.characters);
-  renderLoreLinks('scene-lore', item.lore);
-  renderRelatedLinks('scene-related', item._related);
-
-  var dl = document.getElementById('scene-download');
-  dl.href     = item.image || '#';
-  dl.download = item.title.replace(/\s+/g, '_') + '.jpg';
-
-  setupImageZoom('scene-img', 'scene-zoom-out', 'scene-zoom-reset', 'scene-zoom-in', 'scene-zoom-width', 'scene-zoom-pct');
-}
-
-// -- Character Reference
-function renderCharRef() {
-  document.getElementById('view-charref').style.display = '';
-
-  // A charref may carry a single `image` or an `images` array (e.g. clothed /
-  // unclothed versions). Normalise to a list, and pick the first as the primary.
-  var refImages = (item.images && item.images.length) ? item.images.slice()
-                : (item.image ? [item.image] : []);
-  var primary = refImages[0] || '';
-  var refThumbs = document.getElementById('ref-version-thumbs');
-
-  var img = document.getElementById('ref-img');
-  img.src = primary;
-  img.alt = item.title;
-
-  document.getElementById('ref-title').textContent  = item.title;
-  var refArtistEl = document.getElementById('ref-artist');
-  if (refArtistEl) refArtistEl.innerHTML = artistLinksHtml(item);
-
-  if (item.canonical) document.getElementById('ref-canonical').style.display = '';
-  renderRelatedLinks('ref-related', item._related);
-
-  renderTags('ref-tags', item.tags);
-  renderDates('ref-dates', item);
-
-  // Character wiki link
-  if (item.characterId) {
-    var charLink = document.getElementById('ref-char-link');
-    var a = document.createElement('a');
-    a.href      = '../wiki/#' + item.characterId;
-    a.className = 'ref-wiki-link';
-    a.textContent = 'View character wiki entry';
-    charLink.appendChild(a);
-  }
-
-  // Height
-  if (item.height) {
-    document.getElementById('ref-height-block').style.display = '';
-    document.getElementById('ref-height').textContent = item.height;
-  }
-
-  // Artist notes
-  if (item.notes) {
-    document.getElementById('ref-notes-block').style.display = '';
-    document.getElementById('ref-notes').textContent = item.notes;
-  }
-
-  var dl = document.getElementById('ref-download');
-  dl.href     = primary || '#';
-  dl.download = item.title.replace(/\s+/g, '_') + '_ref.jpg';
-
-  setupImageZoom('ref-img', 'ref-zoom-out', 'ref-zoom-reset', 'ref-zoom-in', 'ref-zoom-width', 'ref-zoom-pct');
-
-  // Multi-version references (clothed/unclothed, etc.) are routed to the comic
-  // reader in renderItem() for a clean page-by-page layout, so this function
-  // only ever handles a single image. Hide any leftover version controls.
-  if (refThumbs) refThumbs.style.display = 'none';
-  var leftoverNav = document.getElementById('ref-version-nav');
-  if (leftoverNav) leftoverNav.style.display = 'none';
-}
-
-// -- Set (a bundle of related images shown as a browsable grid)
-var setImages = [];
-var setLightboxIdx = 0;
-
-function renderSet() {
-  document.getElementById('view-set').style.display = '';
-  setImages = item.images || [];
-
-  document.getElementById('set-title').textContent = item.title;
-  var saEl = document.getElementById('set-artist');
-  if (saEl) saEl.innerHTML = artistLinksHtml(item);
-  document.getElementById('set-synopsis').textContent = item.synopsis || item.description || '';
-  document.getElementById('set-count').textContent = setImages.length + (setImages.length === 1 ? ' image' : ' images');
-  if (item.canonical) document.getElementById('set-canonical').style.display = '';
-  renderTags('set-tags', item.tags);
-  renderDates('set-dates', item);
-  renderCharacterLinks('set-characters', item.characters);
-  renderLoreLinks('set-lore', item.lore);
-  renderRelatedLinks('set-related', item._related);
-
-  // Build the image grid
-  var grid = document.getElementById('set-grid');
+// ── RENDER GRID ───────────────────────────────────────────────────────────
+// Builds the cards. Per-type icon/colour, stacked edge for multi-image items
+// (comic/set). Clicking a card opens viewer.html?id=N.
+function renderGrid() {
+  var grid  = document.getElementById('gallery-grid');
+  var count = document.getElementById('gallery-count');
+  if (!count) count = { textContent: '' };
   grid.innerHTML = '';
-  setImages.forEach(function(src, idx) {
-    var cell = document.createElement('button');
-    cell.className = 'set-grid-cell';
-    cell.setAttribute('aria-label', 'View image ' + (idx + 1));
-    var thumb = (window.SinverseImg ? SinverseImg.thumb(src, 500) : src);
-    cell.innerHTML = '<img src="' + thumb + '" alt="' + item.title + ' ' + (idx + 1) + '" loading="lazy" />';
-    cell.addEventListener('click', function() { openSetLightbox(idx); });
-    grid.appendChild(cell);
-  });
 
-  wireSetLightbox();
-}
+  count.textContent = state.filtered.length + ' item' + (state.filtered.length !== 1 ? 's' : '');
 
-function openSetLightbox(idx) {
-  setLightboxIdx = idx;
-  var lb = document.getElementById('set-lightbox');
-  showSetLightboxImage();
-  lb.style.display = 'flex';
-}
-function showSetLightboxImage() {
-  var n = setImages.length;
-  setLightboxIdx = (setLightboxIdx + n) % n;
-  document.getElementById('set-lightbox-img').src = setImages[setLightboxIdx];
-  document.getElementById('set-lightbox-counter').textContent = (setLightboxIdx + 1) + ' / ' + n;
-  var dl = document.getElementById('set-lightbox-download');
-  if (dl) {
-    dl.href = setImages[setLightboxIdx] || '#';
-    dl.download = (item.title || 'set').replace(/\s+/g, '_') + '_' + (setLightboxIdx + 1) + '.jpg';
+  if (!state.filtered.length) {
+    grid.innerHTML = '<div class="loading-placeholder">No items match your filters.</div>';
+    return;
   }
-  var prev = document.getElementById('set-lightbox-prev');
-  var next = document.getElementById('set-lightbox-next');
-  prev.style.visibility = n > 1 ? '' : 'hidden';
-  next.style.visibility = n > 1 ? '' : 'hidden';
-}
-function closeSetLightbox() {
-  document.getElementById('set-lightbox').style.display = 'none';
-}
-function wireSetLightbox() {
-  var lb = document.getElementById('set-lightbox');
-  if (lb._wired) return;
-  lb._wired = true;
-  document.getElementById('set-lightbox-close').addEventListener('click', closeSetLightbox);
-  document.getElementById('set-lightbox-prev').addEventListener('click', function(e){ e.stopPropagation(); setLightboxIdx--; showSetLightboxImage(); });
-  document.getElementById('set-lightbox-next').addEventListener('click', function(e){ e.stopPropagation(); setLightboxIdx++; showSetLightboxImage(); });
-  // Clicking the dark backdrop (outside the image panel) closes
-  lb.addEventListener('click', function(e){ if (e.target === lb) closeSetLightbox(); });
-  document.addEventListener('keydown', function(e) {
-    if (lb.style.display === 'none') return;
-    if (e.key === 'Escape') closeSetLightbox();
-    if (e.key === 'ArrowRight') { setLightboxIdx++; showSetLightboxImage(); }
-    if (e.key === 'ArrowLeft')  { setLightboxIdx--; showSetLightboxImage(); }
-  });
-  // Same zoom + grab-drag + wheel-pan as scene/comic
-  setupImageZoom('set-lightbox-img', 'set-zoom-out', 'set-zoom-reset', 'set-zoom-in', 'set-zoom-width', 'set-zoom-pct');
-}
 
-// -- Helpers
-function renderTags(containerId, tags) {
-  var el = document.getElementById(containerId);
-  if (!el || !tags || !tags.length) return;
-  tags.forEach(function(tag) {
-    var span = document.createElement('span');
-    span.className   = 'content-tag';
-    span.textContent = tag;
-    el.appendChild(span);
-  });
-}
+  state.filtered.forEach(function(item) {
+    var card = document.createElement('a');
+    var isMulti = item.type === 'comic' || item.type === 'set';
+    card.className = 'gallery-card gallery-card-' + item.type + (isMulti ? ' has-stack' : '');
+    card.href      = 'viewer.html?id=' + item.id;
 
-function formatPostedDate(s) {
-  if (!s) return '';
-  var parts = String(s).split('-');
-  var months = ['January','February','March','April','May','June','July','August','September','October','November','December'];
-  if (parts.length >= 2) {
-    var m = parseInt(parts[1], 10);
-    if (m >= 1 && m <= 12) return months[m-1] + ' ' + parts[0];
-  }
-  return s;
-}
+    var thumbSrc = item.coverImage || item.image ||
+      (item.images && item.images.length ? item.images[0] : '') ||
+      (item.pages && item.pages.length ? item.pages[0] : '') || '';
+    var thumb = (window.SinverseImg ? SinverseImg.thumb(thumbSrc, 500) : thumbSrc);
 
-function renderDates(containerId, it) {
-  var el = document.getElementById(containerId);
-  if (!el) return;
-  var rows = '';
-  if (it.date) {
-    rows += '<div class="viewer-date-row"><span class="viewer-date-label">Posted</span><span class="viewer-date-val">' + formatPostedDate(it.date) + '</span></div>';
-  }
-  if (it.universe_date !== null && it.universe_date !== undefined && window.SinverseDates) {
-    rows += '<div class="viewer-date-row"><span class="viewer-date-label">Set</span><span class="viewer-date-val">' + SinverseDates.label(it.universe_date) + '</span></div>';
-  }
-  el.innerHTML = rows;
-}
+    // Count label for multi-image types
+    var countLabel = '';
+    if (item.type === 'comic') countLabel = (item.pages ? item.pages.length : 0) + ' pages';
+    else if (item.type === 'set') countLabel = (item.images ? item.images.length : 0) + ' images';
 
-// Render "Related works" links in an info panel: cross-links to library stories
-// or other gallery items. Resolves each link's title from the loaded indexes.
-function renderRelatedLinks(containerId, related) {
-  var el = document.getElementById(containerId);
-  if (!el) return;
-  el.innerHTML = '';
-  if (!related || !related.length) { el.style.display = 'none'; return; }
-  el.style.display = '';
-  var label = document.createElement('span');
-  label.className = 'viewer-related-label';
-  label.textContent = 'Related: ';
-  el.appendChild(label);
-  var rendered = 0;
-  related.forEach(function(r) {
-    var title, href;
-    if (r.module === 'library') {
-      var s = (window._libraryItems || []).find(function(x){ return x.id === r.id; });
-      if (!s) return;
-      title = s.title;
-      href  = '../library/reader.html?id=' + r.id;
-    } else {
-      var g = (window._galleryItems || []).find(function(x){ return x.id === r.id; });
-      if (!g) return;
-      title = g.title;
-      href  = 'viewer.html?id=' + r.id;
-    }
-    if (rendered > 0) el.appendChild(document.createTextNode(', '));
-    var a = document.createElement('a');
-    a.className = 'viewer-related-link';
-    a.href = href;
-    a.textContent = title;
-    el.appendChild(a);
-    rendered++;
-  });
-  if (!rendered) el.style.display = 'none';
-}
+    card.innerHTML =
+      '<div class="gallery-thumb-wrap">' +
+        (thumb
+          ? '<img class="gallery-thumb" src="' + thumb + '" alt="' + item.title + '" loading="lazy" />'
+          : '<div class="gallery-thumb-placeholder">&#10022;</div>') +
+        '<span class="gallery-type-badge type-' + item.type + '">' +
+          (TYPE_ICONS[item.type] || '') +
+          '<span class="gallery-type-badge-txt">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
+        '</span>' +
+        (item.canonical ? '<span class="gallery-canonical-badge">&#10022;</span>' : '') +
+        (countLabel ? '<span class="gallery-page-count">' + countLabel + '</span>' : '') +
+      '</div>' +
+      '<div class="gallery-card-body">' +
+        '<div class="gallery-card-title">' + item.title + '</div>' +
+        '<div class="gallery-card-artist">' + artistText(item) + '</div>' +
+        '<div class="gallery-card-meta">' +
+          (item.tags || []).map(function(t) { return '<span class="content-tag">' + t + '</span>'; }).join('') +
+        '</div>' +
+      '</div>';
 
-function renderCharacterLinks(containerId, characters) {
-  var el = document.getElementById(containerId);
-  if (!el || !characters || !characters.length) return;
-  var label = document.createElement('span');
-  label.className   = 'viewer-chars-label';
-  label.textContent = 'Characters: ';
-  el.appendChild(label);
-  characters.forEach(function(charId, i) {
-    var a = document.createElement('a');
-    a.className = 'viewer-char-link';
-    // A tag is a character handle: optional "canon:"/"fan:" prefix + name (or
-    // slug). Pass the full handle to the wiki (it resolves canon vs fan); show
-    // just the readable name, prefix stripped.
-    var m = String(charId).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
-    var pfx = m ? (m[1].toLowerCase() + ':') : '';
-    var key = (m ? m[2] : String(charId)).replace(/_/g, ' ').trim();
-    a.href = '../wiki/?character=' + encodeURIComponent(pfx + key.toLowerCase());
-    a.textContent = key.charAt(0).toUpperCase() + key.slice(1);
-    el.appendChild(a);
-    if (i < characters.length - 1) el.appendChild(document.createTextNode(', '));
+    grid.appendChild(card);
   });
 }
 
-// Lore links: maps each lore id to its label from wiki/lore.json (fetched once,
-// cached) and links to the wiki lore page via its #lore-<id> hash. Mirrors the
-// character row's styling. Async so labels resolve after the JSON loads.
-var _loreLabels = null;
-function loadLoreLabels() {
-  if (_loreLabels) return Promise.resolve(_loreLabels);
-  return fetch('../wiki/lore.json')
-    .then(function(r){ return r.ok ? r.json() : []; })
-    .then(function(list){
-      _loreLabels = {};
-      (list || []).forEach(function(p){ _loreLabels[p.id] = p.label; });
-      return _loreLabels;
-    })
-    .catch(function(){ _loreLabels = {}; return _loreLabels; });
+// -- Event listeners
+// Search mode toggle buttons
+document.querySelectorAll('.search-mode-btn').forEach(function(btn) {
+  btn.addEventListener('click', function() {
+    this.classList.toggle('active');
+    applyFilters();
+  });
+});
+
+// ── RESET ─────────────────────────────────────────────────────────────────
+function resetSearch() {
+  var inp = document.getElementById('search-input');
+  if (inp) inp.value = '';
+  state.query = '';
+  document.querySelectorAll('.search-mode-btn').forEach(function(b){ b.classList.add('active'); });
+  state.typeFilter = { comic: true, scene: true, charref: true, set: true };
+  state.canonOnly = false;
+  var cb = document.getElementById('canon-filter-btn');
+  if (cb) cb.classList.remove('active');
+  state.tagStates = {};
+  localStorage.removeItem('sinverse_gallery_tag_states');
+  localStorage.removeItem('sinverse_gallery_selected_tags'); // legacy key cleanup
+  localStorage.removeItem('sinverse_gallery_tag_mode');       // legacy key cleanup
+  localStorage.removeItem('sinverse_hidden_tags');            // legacy key cleanup
+  if (typeof reflectTagButtons === 'function') reflectTagButtons();
+  if (typeof updateTagModeHint === 'function') updateTagModeHint();
+  document.querySelectorAll('#type-filters .type-toggle-btn').forEach(function(b){ b.classList.add('active'); });
+  applyFilters();
 }
-function prettyLoreId(id) {
-  return String(id).replace(/-/g, ' ').replace(/\b\w/g, function(c){ return c.toUpperCase(); });
-}
-function renderLoreLinks(containerId, lore) {
-  var el = document.getElementById(containerId);
-  if (!el || !lore || !lore.length) { if (el) el.style.display = 'none'; return; }
-  loadLoreLabels().then(function(labels) {
-    el.innerHTML = '';
-    el.style.display = '';
-    var label = document.createElement('span');
-    label.className   = 'viewer-chars-label';
-    label.textContent = 'Related Lore: ';
-    el.appendChild(label);
-    lore.forEach(function(id, i) {
-      var a = document.createElement('a');
-      a.href      = '../wiki/#lore-' + id;
-      a.className = 'viewer-char-link';
-      a.textContent = labels[id] || prettyLoreId(id);
-      el.appendChild(a);
-      if (i < lore.length - 1) el.appendChild(document.createTextNode(', '));
-    });
+
+
+// -- Filter panel toggle
+// ── UI WIRING: collapsible filter panel, type/canon toggles, search box ───
+var filterToggleBtn = document.getElementById('filter-toggle-btn');
+var filterPanel = document.getElementById('filter-panel');
+if (filterToggleBtn && filterPanel) {
+  filterToggleBtn.addEventListener('click', function() {
+    var open = filterPanel.classList.toggle('open');
+    filterToggleBtn.textContent = open ? 'Filters ▴' : 'Filters ▾';
   });
 }
+
+document.getElementById('search-clear-btn').addEventListener('click', resetSearch);
+
+document.getElementById('search-input').addEventListener('input', function() {
+  state.query = this.value.trim();
+  applyFilters();
+});
+
+document.getElementById('search-input').addEventListener('keydown', function(e) {
+  if (e.key === 'Enter') { state.query = this.value.trim(); applyFilters(); }
+  if (e.key === 'Escape') resetSearch();
+});
+
+document.getElementById('type-filters').addEventListener('click', function(e) {
+  var btn = e.target.closest('.type-toggle-btn');
+  if (!btn) return;
+  var type = btn.getAttribute('data-type');
+  state.typeFilter[type] = !state.typeFilter[type];
+  btn.classList.toggle('active', state.typeFilter[type]);
+  applyFilters();
+});
+
+var galleryCanonBtn = document.getElementById('canon-filter-btn');
+if (galleryCanonBtn) galleryCanonBtn.addEventListener('click', function() {
+  state.canonOnly = !state.canonOnly;
+  this.classList.toggle('active', state.canonOnly);
+  applyFilters();
+});
+
+document.getElementById('sort-select').addEventListener('change', function() {
+  state.sortOrder = this.value;
+  applyFilters();
+});
 
 init();
