@@ -2075,24 +2075,19 @@ Promise.all([
     return; // skip ?character= param handling below
   }
 
-  // Handle ?character= param from gallery/library links
+  // Handle ?character= param from gallery/library links. The value is a
+  // character handle (bare name, or "canon:"/"fan:" prefixed, or a wiki slug).
   var urlParams = new URLSearchParams(window.location.search);
   var charParam = urlParams.get('character');
   if (charParam) {
-    var charNameParam = decodeURIComponent(charParam).toLowerCase();
-    var matchChar = characters.find(function(c){ return c.name.toLowerCase() === charNameParam; });
-    if (matchChar) {
-      loadCharPage(matchChar.id);
+    var charLink = resolveCharLink(decodeURIComponent(charParam));
+    if (charLink) {
+      charLink.open();
     } else {
-      var matchFan = fanCharacters.find(function(c){ return c.name.toLowerCase() === charNameParam; });
-      if (matchFan) {
-        loadFanCharPage(matchFan.id);
-      } else {
-        // Not in either character set — show dedicated not-found page
-        document.getElementById('nf-name').textContent = decodeURIComponent(charParam);
-        showPage('not-found', false);
-        history.replaceState({ type: 'page', id: 'not-found' }, '', '#not-found');
-      }
+      // Not in either character set — show dedicated not-found page
+      document.getElementById('nf-name').textContent = decodeURIComponent(charParam).replace(/^(canon|fan)\s*:\s*/i, '');
+      showPage('not-found', false);
+      history.replaceState({ type: 'page', id: 'not-found' }, '', '#not-found');
     }
   } else {
     // Fresh visit with no deep-link: show the default landing page.
@@ -2865,17 +2860,51 @@ var fanCharGrid = createCharGrid({
 });
 
 
-// ── Character detail page ─────────────────────────────────────
-// Resolve a character name to a link target, searching canon first then fan,
-// so relationships (and other name links) work across both sets and route to
-// the correct page.
-function resolveCharLink(name) {
-  var n = String(name).toLowerCase();
-  var c = characters.find(function(x){ return x.name.toLowerCase() === n; });
-  if (c) return { char: c, href: '#char-' + (c.wiki || c.id), open: function(){ loadCharPage(c.id); } };
-  var f = fanCharacters.find(function(x){ return x.name.toLowerCase() === n; });
-  if (f) return { char: f, href: '#fanchar-' + (f.wiki || f.id), open: function(){ loadFanCharPage(f.id); } };
+// ── Character references ("handles") ──────────────────────────
+// A character is referenced by a HANDLE. Normally that's just the name
+// (case-insensitive). A bare name resolves CANON first, then FAN — so if only
+// one character owns that name, it just works. When a name exists in BOTH sets,
+// disambiguate with a prefix: "canon:Name" or "fan:Name". The key part after
+// the prefix may be the character's name OR its wiki slug.
+//   resolveCharLink("Sin")       -> canon Sin (canon wins a bare name)
+//   resolveCharLink("fan:Sin")   -> the fan Sin
+//   resolveCharLink("mara-vell") -> fan Mara (no canon match, falls through)
+// Detail URLs are already namespaced (#char- vs #fanchar-), so once resolved
+// there is never a routing collision.
+function resolveCharLink(handle) {
+  var raw = String(handle == null ? '' : handle).trim();
+  var set = null, key = raw;
+  var m = raw.match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+  if (m) { set = m[1].toLowerCase(); key = m[2]; }
+  key = key.trim().toLowerCase();
+  function findIn(list) {
+    return list.find(function(x) {
+      return x.name.toLowerCase() === key || (x.wiki && String(x.wiki).toLowerCase() === key);
+    });
+  }
+  var c = null, f = null;
+  if (set === 'canon') c = findIn(characters);
+  else if (set === 'fan') f = findIn(fanCharacters);
+  else { c = findIn(characters); if (!c) f = findIn(fanCharacters); }   // bare: canon first, then fan
+  if (c) return { char: c, fan: false, href: '#char-' + (c.wiki || c.id), open: function(){ loadCharPage(c.id); } };
+  if (f) return { char: f, fan: true, href: '#fanchar-' + (f.wiki || f.id), open: function(){ loadFanCharPage(f.id); } };
   return null;
+}
+// Does a gallery/library tag refer to THIS exact character? Compares by identity
+// (set + id) via the resolver, so Featured Content counts stay correct even when
+// a name is shared by a canon and a fan character.
+function tagRefersTo(tag, char, isFan) {
+  var r = resolveCharLink(tag);
+  return !!r && r.fan === isFan && r.char.id === char.id;
+}
+// The handle to emit when linking OUT to the gallery/library filtered by this
+// character. Namespaced only when the name exists in both sets — otherwise the
+// bare name, so existing (non-colliding) links are unchanged.
+function charOutboundHandle(char, isFan) {
+  var nm = char.name.toLowerCase();
+  var inCanon = characters.some(function(c){ return c.name.toLowerCase() === nm; });
+  var inFan   = fanCharacters.some(function(c){ return c.name.toLowerCase() === nm; });
+  return (inCanon && inFan) ? (isFan ? 'fan:' : 'canon:') + char.name : char.name;
 }
 function loadCharPage(charId, pushState) {
   renderCharDetail(characters.find(function(c){ return c.id === charId; }),
@@ -2951,16 +2980,17 @@ function renderCharDetail(char, cfg, pushState) {
         bodyHtml = '<p style="color:var(--text-secondary);font-style:italic">No wiki page written yet for this character.</p>';
       }
       var charName = char.name;
-      var charNameLower = charName.toLowerCase();
+      var isFan = cfg.routePrefix === '#fanchar-';
       var galleryCount = galleryItems.filter(function(g){
-        return g.characters && g.characters.map(function(c){return c.toLowerCase();}).indexOf(charNameLower) > -1;
+        return (g.characters || []).some(function(tag){ return tagRefersTo(tag, char, isFan); });
       }).length;
       var libraryCount = libraryItems.filter(function(l){
-        return l.characters && l.characters.map(function(c){return c.toLowerCase();}).indexOf(charNameLower) > -1;
+        return (l.characters || []).some(function(tag){ return tagRefersTo(tag, char, isFan); });
       }).length;
 
-      var gUrl = '../gallery/?character=' + encodeURIComponent(charName.toLowerCase());
-      var lUrl = '../library/?character=' + encodeURIComponent(charName.toLowerCase());
+      var outHandle = charOutboundHandle(char, isFan);
+      var gUrl = '../gallery/?character=' + encodeURIComponent(outHandle.toLowerCase());
+      var lUrl = '../library/?character=' + encodeURIComponent(outHandle.toLowerCase());
       var gSub = galleryCount === 0 ? 'No artworks yet' : (galleryCount === 1 ? '1 artwork' : galleryCount + ' artworks');
       var lSub = libraryCount === 0 ? 'No stories yet' : (libraryCount === 1 ? '1 story' : libraryCount + ' stories');
       var contentLinks =

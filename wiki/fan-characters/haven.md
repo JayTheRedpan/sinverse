@@ -1,6 +1,6 @@
 ## Overview
 
-Haven is bobcat and one of the most sadistic giantesses out there. While the vast majority of girls possess a great deal of empathy for their fellow sisters in this new world, Haven lacks empathy altogether. Though she'll never take advantage of her newfound sisters in the way she would've in the old world, Haven is still overwhelmingly self-serving and only really interested in satisfying her own desires. 
+Haven is a bobcat and one of the most sadistic giantesses out there. While the vast majority of girls possess a great deal of empathy for their fellow sisters in this new world, Haven lacks empathy altogether. Though she'll never take advantage of her newfound sisters in the way she would've in the old world, Haven is still overwhelmingly self-serving and only really interested in satisfying her own desires. 
 
 {{FEATURED}}
 
