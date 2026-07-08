@@ -50,8 +50,7 @@
         <div class="sr-list-hint">Higher in list = closer to front in sandbox</div>
         <div id="sr-char-slots"></div>
         <div class="slot-add-row">
-          <button id="btn-add-char" class="slot-add-btn">+ Add character</button>
-          <button id="btn-add-obj"  class="slot-add-btn">+ Add object</button>
+          <button id="btn-add-slot" class="slot-add-btn">+ Add to scene</button>
         </div>
       </div>
     </div>
@@ -183,35 +182,30 @@
 <!-- ── Resize popup backdrop ──────────────────── -->
 <div id="sr-resize-backdrop" class="sr-resize-backdrop"></div>
 
-<!-- ── Character picker modal ─────────────────── -->
-<div id="char-modal-overlay" class="char-modal-overlay" style="display:none">
+<!-- ── Unified add / select picker modal (Characters / Fan Characters / Objects) ─────────────────── -->
+<div id="picker-modal-overlay" class="char-modal-overlay" style="display:none">
   <div class="char-modal">
     <div class="char-modal-header">
-      <div class="char-modal-title">Select Character</div>
-      <input id="char-modal-search" class="char-modal-search" type="text" placeholder="Search…" autocomplete="off" />
-      <button id="char-modal-close" class="char-modal-close" title="Close">&#10005;</button>
+      <div class="char-modal-title" id="picker-modal-title">Add to scene</div>
+      <button id="picker-modal-close" class="char-modal-close" title="Close">&#10005;</button>
     </div>
-    <div class="char-modal-sortbar">
+    <div class="picker-tabs" id="picker-tabs">
+      <button type="button" class="picker-tab active" data-ptab="characters">Characters</button>
+      <button type="button" class="picker-tab" data-ptab="fan">Fan Characters</button>
+      <button type="button" class="picker-tab" data-ptab="objects">Objects</button>
+    </div>
+    <div class="picker-search-row">
+      <input id="picker-modal-search" class="char-modal-search picker-search-input" type="text" placeholder="Search within category…" autocomplete="off" />
+    </div>
+    <div class="char-modal-sortbar" id="picker-sortbar">
       <span class="char-modal-sort-label">Sort</span>
-      <button class="char-modal-sort-btn" data-sort="name" title="Sort A–Z">Name</button>
+      <button class="char-modal-sort-btn active" data-sort="name" title="Sort A–Z">Name</button>
       <button class="char-modal-sort-btn" data-sort="height-desc" title="Tallest first">Height &#9660;</button>
       <button class="char-modal-sort-btn" data-sort="height-asc" title="Shortest first">Height &#9650;</button>
     </div>
-    <div id="char-modal-grid" class="char-modal-grid"></div>
+    <div id="picker-modal-grid" class="char-modal-grid"></div>
   </div>
 </div>
-
-    <!-- Object picker modal -->
-    <div id="obj-modal-overlay" class="char-modal-overlay" style="display:none">
-      <div class="char-modal">
-        <div class="char-modal-header">
-          <div class="char-modal-title">Select Object</div>
-          <input id="obj-modal-search" class="char-modal-search" type="text" placeholder="Search…" autocomplete="off" />
-          <button id="obj-modal-close" class="char-modal-close" title="Close">&#10005;</button>
-        </div>
-        <div id="obj-modal-grid" class="char-modal-grid obj-modal-grid"></div>
-      </div>
-    </div>
 
 
 <script src="../_shared/nav.js?v=1780533713"></script>

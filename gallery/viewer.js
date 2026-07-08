@@ -176,14 +176,22 @@ function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
   // Double-click toggles between fit and 2x
   img.addEventListener('dblclick', function(){ setSmooth(true); scale === 1 ? zoomTo(2) : (function(){ scale = 1; tx = 0; ty = 0; apply(); })(); });
 
-  // Scroll wheel pans the image while zoomed (vertical; shift = horizontal).
-  // Falls through to normal page scroll when at fit (scale 1).
+  // Scroll wheel zooms toward the cursor (wheel up = zoom in, down = zoom out).
   panel.addEventListener('wheel', function(e) {
-    if (scale <= 1) return;
     e.preventDefault();
-    setSmooth(false);   // instant pan — no animated bounce on fast scroll
-    if (e.shiftKey) { tx -= e.deltaY; }
-    else { ty -= e.deltaY; tx -= e.deltaX; }
+    setSmooth(false);   // instant zoom — no animated bounce on fast scroll
+    var oldScale = scale;
+    var factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+    var newScale = Math.max(MIN, Math.min(MAX, Math.round(oldScale * factor * 100) / 100));
+    if (newScale === oldScale) return;   // already at fit (min) or max
+    // Keep the point under the cursor fixed while scaling about the element centre.
+    var f = fitBox();
+    var a = (e.clientX - f.pr.left) - f.cxRel;
+    var b = (e.clientY - f.pr.top)  - f.cyRel;
+    var r = newScale / oldScale;
+    scale = newScale;
+    tx = a - (a - tx) * r;
+    ty = b - (b - ty) * r;
     apply();
   }, { passive: false });
 
@@ -213,6 +221,7 @@ async function init() {
     } catch(e) { window._libraryItems = []; }
     buildRelatedFor(item, 'gallery', window._galleryItems, window._libraryItems);
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
+    await loadInactiveFanKeys();
     render();
   } catch(e) {
     document.body.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-muted)">' + e.message + '</div>';
@@ -622,8 +631,36 @@ function renderRelatedLinks(containerId, related) {
   if (!rendered) el.style.display = 'none';
 }
 
+// ── Inactive fan characters ───────────────────────────────────
+// Fan characters flagged "active": false in _data/fan-characters.json are
+// hidden site-wide, so their appearances as character tags are ignored.
+var _inactiveFanKeys = {};
+function loadInactiveFanKeys() {
+  return fetch('../_data/fan-characters.json')
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(list){
+      (list || []).forEach(function(c){
+        if (c && c.active === false) {
+          if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
+          if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
+        }
+      });
+    })
+    .catch(function(){});
+}
+function isInactiveFanTag(tag) {
+  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+  if (m && m[1].toLowerCase() === 'canon') return false; // explicit canon ref is never a fan char
+  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
+  return !!_inactiveFanKeys[key] || !!_inactiveFanKeys[key.replace(/\s+/g, '-')];
+}
+function activeCharacters(chars) {
+  return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
+}
+
 function renderCharacterLinks(containerId, characters) {
   var el = document.getElementById(containerId);
+  characters = activeCharacters(characters);   // drop inactive fan characters
   if (!el || !characters || !characters.length) return;
   var label = document.createElement('span');
   label.className   = 'viewer-chars-label';

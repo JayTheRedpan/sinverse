@@ -67,6 +67,34 @@ var TYPE_ICONS = {
 
 // -- Boot
 // ── INIT: load tags + gallery.json, build filters, first render ──────────
+// ── Inactive fan characters ───────────────────────────────────
+// Fan characters flagged "active": false in _data/fan-characters.json are
+// hidden site-wide, so their appearances as character tags on gallery items
+// are ignored — not shown, not counted in filters or search.
+var _inactiveFanKeys = {};
+function loadInactiveFanKeys() {
+  return fetch('../_data/fan-characters.json')
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(list){
+      (list || []).forEach(function(c){
+        if (c && c.active === false) {
+          if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
+          if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
+        }
+      });
+    })
+    .catch(function(){});
+}
+function isInactiveFanTag(tag) {
+  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+  if (m && m[1].toLowerCase() === 'canon') return false; // an explicit canon ref is never a fan char
+  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
+  return !!_inactiveFanKeys[key] || !!_inactiveFanKeys[key.replace(/\s+/g, '-')];
+}
+function activeCharacters(chars) {
+  return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
+}
+
 async function init() {
   try {
     var res = await fetch('gallery.json');
@@ -74,6 +102,7 @@ async function init() {
     state.items = await res.json();
     var tagsRes = await fetch('../_data/tags.json');
     var tagsData = await tagsRes.json();
+    await loadInactiveFanKeys();
     buildTagFilters(tagsData.gallery || []);
 
     // Seed filter state from the URL (shareable links + restore-on-return).
@@ -244,12 +273,12 @@ function applyFilters() {
       if (includeTags.length && !includeTags.some(function(t){ return itemTags.indexOf(t) > -1; })) return false;
     }
     // Character filter from URL param is now folded into the search query
-    if (state.characterFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
+    if (state.characterFilter && !activeCharacters(item.characters).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
     if (q) {
       var matched = false;
       if (modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q)) matched = true;
       if (modes.indexOf('artist')    > -1 && artistList(item).join(' ').toLowerCase().includes(q)) matched = true;
-      if (modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); })) matched = true;
+      if (modes.indexOf('character') > -1 && activeCharacters(item.characters).some(function(c){ return c.toLowerCase().includes(q); })) matched = true;
       if (!matched) return false;
     }
     return true;

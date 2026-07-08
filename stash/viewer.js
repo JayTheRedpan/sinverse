@@ -169,14 +169,22 @@ function setupImageZoom(imgId, outId, resetId, inId, widthId, pctId) {
   // Double-click toggles between fit and 2x
   img.addEventListener('dblclick', function(){ setSmooth(true); scale === 1 ? zoomTo(2) : (function(){ scale = 1; tx = 0; ty = 0; apply(); })(); });
 
-  // Scroll wheel pans the image while zoomed (vertical; shift = horizontal).
-  // Falls through to normal page scroll when at fit (scale 1).
+  // Scroll wheel zooms toward the cursor (wheel up = zoom in, down = zoom out).
   panel.addEventListener('wheel', function(e) {
-    if (scale <= 1) return;
     e.preventDefault();
-    setSmooth(false);   // instant pan — no animated bounce on fast scroll
-    if (e.shiftKey) { tx -= e.deltaY; }
-    else { ty -= e.deltaY; tx -= e.deltaX; }
+    setSmooth(false);   // instant zoom — no animated bounce on fast scroll
+    var oldScale = scale;
+    var factor = e.deltaY < 0 ? 1.15 : 1 / 1.15;
+    var newScale = Math.max(MIN, Math.min(MAX, Math.round(oldScale * factor * 100) / 100));
+    if (newScale === oldScale) return;   // already at fit (min) or max
+    // Keep the point under the cursor fixed while scaling about the element centre.
+    var f = fitBox();
+    var a = (e.clientX - f.pr.left) - f.cxRel;
+    var b = (e.clientY - f.pr.top)  - f.cyRel;
+    var r = newScale / oldScale;
+    scale = newScale;
+    tx = a - (a - tx) * r;
+    ty = b - (b - ty) * r;
     apply();
   }, { passive: false });
 
