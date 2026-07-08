@@ -2029,7 +2029,10 @@ Promise.all([
   erasData = results[5] || [];
   buildFaqIndex(results[6] || '');
   SIZE_BUCKETS = results[7] || [];
-  fanCharacters = results[8] || [];
+  // Fan characters can be hidden site-wide with "active": false in their JSON.
+  // Filtering here removes them from the grid, detail pages, name resolution,
+  // and Featured Content counts in one place.
+  fanCharacters = (results[8] || []).filter(function(c){ return c.active !== false; });
   buildLoreSidebar();
   buildTimeline();
   initTimelineView();

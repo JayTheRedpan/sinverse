@@ -58,6 +58,7 @@ async function init() {
     buildRelatedFor(story, 'library', window._galleryItems, window._libraryItems);
     chapterIdx = ch;
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
+    await loadInactiveFanKeys();
     renderMeta();
     if (story.type === 'serial') {
       renderChapterList();
@@ -180,10 +181,38 @@ function renderReaderRelated(related) {
 
 // Render the "Characters" list in the info panel, linking each to its wiki
 // page — same behaviour as the gallery viewer's character links.
+// ── Inactive fan characters ───────────────────────────────────
+// Fan characters flagged "active": false in _data/fan-characters.json are
+// hidden site-wide, so their appearances as character tags are ignored.
+var _inactiveFanKeys = {};
+function loadInactiveFanKeys() {
+  return fetch('../_data/fan-characters.json')
+    .then(function(r){ return r.ok ? r.json() : []; })
+    .then(function(list){
+      (list || []).forEach(function(c){
+        if (c && c.active === false) {
+          if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
+          if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
+        }
+      });
+    })
+    .catch(function(){});
+}
+function isInactiveFanTag(tag) {
+  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+  if (m && m[1].toLowerCase() === 'canon') return false; // explicit canon ref is never a fan char
+  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
+  return !!_inactiveFanKeys[key] || !!_inactiveFanKeys[key.replace(/\s+/g, '-')];
+}
+function activeCharacters(chars) {
+  return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
+}
+
 function renderReaderCharacters(characters) {
   var el = document.getElementById('reader-characters');
   if (!el) return;
   el.innerHTML = '';
+  characters = activeCharacters(characters);   // drop inactive fan characters
   if (!characters || !characters.length) { el.style.display = 'none'; return; }
   el.style.display = '';
 

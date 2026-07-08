@@ -190,8 +190,11 @@ async function init() {
     try { var r = await fetch(url); return r.ok ? await r.json() : fallback; }
     catch(e) { console.warn('Could not load', url, e); return fallback; }
   }
-  S.chars   = await fetchJSON('../_data/characters.json', []);
-  S.objects = await fetchJSON('./objects.json', []);
+  S.chars    = await fetchJSON('../_data/characters.json', []);
+  // Fan characters with "active": false are hidden site-wide — drop them so
+  // they don't appear in the Fan tab and can't resolve into a scene.
+  S.fanChars = (await fetchJSON('../_data/fan-characters.json', [])).filter(function(c){ return c.active !== false; });
+  S.objects  = await fetchJSON('./objects.json', []);
   var defsData = await fetchJSON('./defaults.json?v=1780365037', {});
   populateDefaults(defsData);
 
@@ -213,6 +216,7 @@ async function init() {
   fillSelects();
 
   wireCharModal();
+  wirePicker();
 
   var area = document.getElementById('sr-canvas-area');
   requestAnimationFrame(function() {
@@ -526,6 +530,13 @@ function buildSelectOptions(sel, preserveValue) {
     var o = el('option'); o.value = 'canon_'+c.id; o.textContent = c.name; cg.appendChild(o);
   });
   sel.appendChild(cg);
+  if ((S.fanChars||[]).length) {
+    var fg = el('optgroup'); fg.label = 'Fan Characters';
+    S.fanChars.forEach(function(c) {
+      var o = el('option'); o.value = 'fan_'+c.id; o.textContent = c.name; fg.appendChild(o);
+    });
+    sel.appendChild(fg);
+  }
   var customChars = (loadCustom().chars||[]).filter(function(c){return c&&c.name&&c.height;});
   if (customChars.length) {
     var custG = el('optgroup'); custG.label = 'Custom';
@@ -577,6 +588,9 @@ function charFromValue(v) {
   if (!v) return null;
   if (v.startsWith('canon_')) {
     var id = parseInt(v.replace('canon_','')); return S.chars.find(function(c){return c.id===id;})||null;
+  }
+  if (v.startsWith('fan_')) {
+    var fid = parseInt(v.replace('fan_','')); return (S.fanChars||[]).find(function(c){return c.id===fid;})||null;
   }
   if (v.startsWith('custom_')) {
     return getCustomChar(v);
@@ -1270,7 +1284,7 @@ function wireResizeControls(block) {
         var _k1 = charKeyForSlot(idx2); if(_k1) S.heightOverrides[_k1] = inches; else S.heightOverrides[idx2] = inches;
         closeResizePopup();
         renderActive();
-        if (S.view !== 'stats') renderStatsView();
+        if (S.view === 'stats') renderStatsView();
       });
 
       var bd = document.getElementById('sr-resize-backdrop');
@@ -1302,7 +1316,7 @@ function wireResizeControls(block) {
       var _k2 = charKeyForSlot(idx2); if(_k2) S.heightOverrides[_k2] = inches; else S.heightOverrides[idx2] = inches;
       closeResizePopup();
       renderActive();
-      if (S.view !== 'stats') renderStatsView();
+      if (S.view === 'stats') renderStatsView();
       return;
     }
 
@@ -1313,7 +1327,7 @@ function wireResizeControls(block) {
       var _k3 = charKeyForSlot(idx3); if(_k3) delete S.heightOverrides[_k3]; delete S.heightOverrides[idx3];
       closeResizePopup();
       renderActive();
-      if (S.view !== 'stats') renderStatsView();
+      if (S.view === 'stats') renderStatsView();
     }
   });
 }
@@ -1515,6 +1529,8 @@ function calcStats(char, slotIdx) {
     // Anatomy — all linear dimensions scale with hR, volume/mass with hR^3
     penisGirthIn:    (scaledLength(char, slotIdx) || 0) * 0.836,   // circumference = length * (4.6/5.5), proportional to actual length
     testicleG:      20   * mR,   // avg 20g each, scale with mass
+    testicleLenIn:  1.9  * hR,   // avg testicle ~1.9" long — linear dim scales with height
+    testicleWidIn:  1.2  * hR,   // avg testicle ~1.2" wide
     penisG:        100   * Math.pow((scaledLength(char, slotIdx) || 5.5) / 5.5, 3), // volume ∝ length^3, anchored 100g at 5.5"
   };
 }
@@ -1885,6 +1901,7 @@ function renderStatsView() {
               statRow('Width (diam.)',    fL(s.penisWidIn)),
               statRow('Weight',           penisWeightDisp),
               statRow('Testicle weight',  testWeightDisp),
+              statRow('Testicle size',    fL(s.testicleLenIn) + ' \u00D7 ' + fL(s.testicleWidIn), '(length \u00D7 width, each)'),
               statRow('Pre volume',       fmtL(s.preMl / 1000), '(Sinverse scaled)'),
               statRow('Ejaculate volume', fmtL(s.ejacMl / 1000), '(Sinverse scaled)'),
             ])
@@ -1894,6 +1911,7 @@ function renderStatsView() {
               statRow('Width (diam.)',    dash),
               statRow('Weight',           dash),
               statRow('Testicle weight',  dash),
+              statRow('Testicle size',    dash),
               statRow('Pre volume',       dash),
               statRow('Ejaculate volume', dash),
             ]);
@@ -3323,7 +3341,7 @@ function createSlotRow(type) {
     pickerBtn.className = 'sr-select slot-picker-btn';
     pickerBtn.type = 'button';
     pickerBtn.textContent = '— Select character —';
-    pickerBtn.addEventListener('click', function() { openCharModal(sel); });
+    pickerBtn.addEventListener('click', function() { openPicker('change', sel, 'char'); });
     sel.addEventListener('change', function() {
       var opt = sel.options[sel.selectedIndex];
       pickerBtn.textContent = opt && opt.value ? opt.textContent : '— Select character —';
@@ -3339,7 +3357,7 @@ function createSlotRow(type) {
     var objPickerBtn = el('button');
     objPickerBtn.className = 'slot-picker-btn';
     objPickerBtn.textContent = '— Select object —';
-    objPickerBtn.addEventListener('click', function() { openObjModal(sel); });
+    objPickerBtn.addEventListener('click', function() { openPicker('change', sel, 'obj'); });
     sel.addEventListener('change', function() {
       var opt = sel.options[sel.selectedIndex];
       objPickerBtn.textContent = opt && opt.value ? opt.textContent : '— Select object —';
@@ -3551,13 +3569,13 @@ function updateSlotUI() {
     var btn = row.querySelector('.slot-remove-btn');
     if (btn) btn.style.visibility = only1 ? 'hidden' : 'visible';
   });
+  // Grey out / hide the single add button at max slots
   var addBtn = document.getElementById('btn-add-slot');
-  if (addBtn) addBtn.style.display = atMax ? 'none' : '';
-  // Grey out the add-char / add-obj buttons at max
-  var addCharBtn = document.getElementById('btn-add-char');
-  var addObjBtn  = document.getElementById('btn-add-obj');
-  if (addCharBtn) { addCharBtn.disabled = atMax; addCharBtn.classList.toggle('slot-add-btn-disabled', atMax); }
-  if (addObjBtn)  { addObjBtn.disabled  = atMax; addObjBtn.classList.toggle('slot-add-btn-disabled', atMax); }
+  if (addBtn) {
+    addBtn.style.display = atMax ? 'none' : '';
+    addBtn.disabled = atMax;
+    addBtn.classList.toggle('slot-add-btn-disabled', atMax);
+  }
 }
 
 
@@ -3684,39 +3702,244 @@ function buildModalGrid(query) {
   }
 }
 
-function wireCharModal() {
-  var _cmc = document.getElementById('char-modal-close');
-  if (_cmc) _cmc.addEventListener('click', closeCharModal);
+// ── Unified add / select picker (Characters / Fan Characters / Objects) ──
+// One modal, three tabs. Opened either in ADD mode (via "+ Add to scene", with
+// no target slot — a slot is created only when something is actually picked, so
+// cancelling leaves nothing behind) or CHANGE mode (via a slot's picker button —
+// replaces that slot's selection, and cancelling keeps the slot as it was).
+var pickerTargetSel = null;         // slot-select being changed; null in add mode
+var pickerMode      = 'add';        // 'add' | 'change'
+var pickerRestrict  = null;         // in change mode: 'char' or 'obj'
+var pickerTab       = 'characters'; // 'characters' | 'fan' | 'objects'
+var pickerSort      = 'name';       // 'name' | 'height-desc' | 'height-asc'
 
+function openPicker(mode, targetSel, restrict) {
+  var overlay = document.getElementById('picker-modal-overlay');
+  if (!overlay) return;
+  // At max slots, adding is blocked (changing an existing slot is still fine).
+  if (mode === 'add') {
+    var c = document.getElementById('sr-char-slots');
+    if (c && c.querySelectorAll('.sr-slot-row').length >= MAX_SLOTS) return;
+  }
+  pickerMode      = mode || 'add';
+  pickerTargetSel = targetSel || null;
+  pickerRestrict  = restrict || null;
+
+  fillSelects(); // keep option lists current (fresh custom chars, etc.)
+
+  if (restrict === 'obj')       pickerTab = 'objects';
+  else if (restrict === 'char') pickerTab = (pickerTab === 'objects') ? 'characters' : pickerTab;
+  else                          pickerTab = 'characters';
+
+  document.querySelectorAll('#picker-tabs .picker-tab').forEach(function(t){
+    var pt = t.getAttribute('data-ptab');
+    var show = (restrict === 'obj') ? (pt === 'objects')
+             : (restrict === 'char') ? (pt !== 'objects')
+             : true;
+    t.style.display = show ? '' : 'none';
+    t.classList.toggle('active', pt === pickerTab);
+  });
+
+  var titleEl = document.getElementById('picker-modal-title');
+  if (titleEl) titleEl.textContent = (mode === 'change') ? 'Change selection' : 'Add to scene';
+
+  var search = document.getElementById('picker-modal-search');
+  if (search) search.value = '';
+  updatePickerSortbar();
+  reflectPickerSort();
+  buildPickerGrid('');
+  overlay.style.display = 'flex';
+  if (search) search.focus();
+}
+
+function closePicker() {
+  var overlay = document.getElementById('picker-modal-overlay');
+  if (overlay) overlay.style.display = 'none';
+  pickerTargetSel = null;
+  pickerMode = 'add';
+  pickerRestrict = null;
+}
+
+function updatePickerSortbar() {
+  // Sort bar applies to character tabs; the Objects tab groups by size bands.
+  // Toggle visibility (not display) so its space stays reserved and the fixed-
+  // height modal doesn't shift when switching tabs.
+  var sb = document.getElementById('picker-sortbar');
+  if (sb) sb.style.visibility = (pickerTab === 'objects') ? 'hidden' : 'visible';
+}
+
+function reflectPickerSort() {
+  // Highlight the sort button matching the active sort (default: Name).
+  document.querySelectorAll('#picker-sortbar .char-modal-sort-btn').forEach(function(b){
+    b.classList.toggle('active', b.getAttribute('data-sort') === pickerSort);
+  });
+}
+
+function setPickerTab(tab) {
+  pickerTab = tab;
+  document.querySelectorAll('#picker-tabs .picker-tab').forEach(function(t){
+    t.classList.toggle('active', t.getAttribute('data-ptab') === tab);
+  });
+  updatePickerSortbar();
+  var s = document.getElementById('picker-modal-search');
+  buildPickerGrid(s ? s.value : '');
+}
+
+// Create a new slot row of the given type WITHOUT auto-opening a picker, and
+// return its slot-select (used by add-mode selection).
+function addSlotReturningSelect(type) {
+  var container = document.getElementById('sr-char-slots');
+  if (!container) return null;
+  if (container.querySelectorAll('.sr-slot-row').length >= MAX_SLOTS) return null;
+  var row = createSlotRow(type || 'char');
+  container.appendChild(row);
+  updateSlotUI();
+  return row.querySelector('.slot-select');
+}
+
+// Apply a picked item. itemType: 'char' (canon/fan/custom values) or 'obj'.
+function pickerApply(value, name, itemType) {
+  var sel = (pickerMode === 'change' && pickerTargetSel)
+    ? pickerTargetSel
+    : addSlotReturningSelect(itemType === 'obj' ? 'obj' : 'char');
+  if (sel) {
+    if (itemType !== 'obj') buildSelectOptions(sel, value); // ensure the option exists
+    sel.value = value;
+    var row = sel.closest('.sr-slot-row');
+    var pb = row && row.querySelector('.slot-picker-btn');
+    if (pb) pb.textContent = name;
+    sel.dispatchEvent(new Event('change'));
+  }
+  closePicker();
+}
+
+function buildPickerGrid(query) {
+  var grid = document.getElementById('picker-modal-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  var q = (query || '').trim().toLowerCase();
+  if (pickerTab === 'objects') { buildPickerObjects(grid, q); return; }
+  buildPickerChars(grid, q, pickerTab === 'fan');
+}
+
+function _pickerSortChars(list) {
+  var arr = list.slice();
+  if (pickerSort === 'height-desc')     arr.sort(function(a,b){ return (b.height||0)-(a.height||0); });
+  else if (pickerSort === 'height-asc') arr.sort(function(a,b){ return (a.height||0)-(b.height||0); });
+  else                                  arr.sort(function(a,b){ return a.name.localeCompare(b.name); });
+  return arr;
+}
+
+function _pickerCharCard(entry) {
+  var card = document.createElement('div');
+  card.className = 'cpm-card';
+  var imgUrl = entry.img || DEFAULTS.headshot[entry.sil] || DEFAULTS.headshot.giantess || '';
+  var isReal = !!entry.img;
+  var imgThumb = (window.SinverseImg ? SinverseImg.thumb(imgUrl, 160) : imgUrl);
+  var heightLabel = (entry.height || entry.height === 0) ? fH(entry.height) : '';
+  card.innerHTML =
+    '<div class="cpm-img-wrap">' +
+      '<img class="cpm-img'+(isReal?'':' sr-sil-filter')+'" src="'+imgThumb+'" alt="'+entry.name+'" loading="lazy" />' +
+    '</div>' +
+    '<div class="cpm-name">'+entry.name+'</div>' +
+    (heightLabel ? '<div class="cpm-height">'+heightLabel+'</div>' : '');
+  card.addEventListener('click', function(){ pickerApply(entry.value, entry.name, 'char'); });
+  return card;
+}
+
+function buildPickerChars(grid, q, fanOnly) {
+  if (fanOnly) {
+    var fanEntries = (S.fanChars||[]).map(function(c){
+      return { value:'fan_'+c.id, name:c.name, img:c.profile_image||'',
+               sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', height:c.height };
+    }).filter(function(e){ return !q || e.name.toLowerCase().indexOf(q) >= 0; });
+    fanEntries = _pickerSortChars(fanEntries);
+    if (!fanEntries.length) { grid.innerHTML = '<div class="cpm-empty">No fan characters found</div>'; return; }
+    fanEntries.forEach(function(e){ grid.appendChild(_pickerCharCard(e)); });
+    return;
+  }
+  // Characters tab = the user's custom characters ("My Characters") + canon.
+  var custom = (loadCustom().chars||[]).filter(function(c){return c&&c.name&&c.height;})
+    .map(function(c){ return { value:c.id, name:c.name, img:c.profile_image||'', sil:'giantess', height:c.height }; })
+    .filter(function(e){ return !q || e.name.toLowerCase().indexOf(q) >= 0; });
+  custom = _pickerSortChars(custom);
+  var canon = S.chars.map(function(c){
+    return { value:'canon_'+c.id, name:c.name, img:c.profile_image||'',
+             sil:c.default_headshot_silhouette||c.default_silhouette||'giantess', height:c.height };
+  }).filter(function(e){ return !q || e.name.toLowerCase().indexOf(q) >= 0; });
+  canon = _pickerSortChars(canon);
+  if (!custom.length && !canon.length) { grid.innerHTML = '<div class="cpm-empty">No characters found</div>'; return; }
+  if (custom.length) {
+    var l1 = document.createElement('div'); l1.className='cpm-section-label'; l1.textContent='My Characters'; grid.appendChild(l1);
+    custom.forEach(function(e){ grid.appendChild(_pickerCharCard(e)); });
+  }
+  if (canon.length) {
+    // No 'Characters' label here — the tab already names this category.
+    canon.forEach(function(e){ grid.appendChild(_pickerCharCard(e)); });
+  }
+}
+
+function buildPickerObjects(grid, q) {
+  var filtered = S.objects.filter(function(o){ return !q || o.label.toLowerCase().indexOf(q) >= 0; })
+                          .slice().sort(function(a,b){ return a.height-b.height; });
+  if (!filtered.length) { grid.innerHTML = '<div class="cpm-empty">No objects found</div>'; return; }
+  var groups = {};
+  filtered.forEach(function(o){
+    var lbl='Other';
+    for (var i=0;i<OBJ_SIZE_GROUPS.length;i++){ if (o.height<=OBJ_SIZE_GROUPS[i].maxIn){ lbl=OBJ_SIZE_GROUPS[i].label; break; } }
+    (groups[lbl]=groups[lbl]||[]).push(o);
+  });
+  OBJ_SIZE_GROUPS.forEach(function(grp){
+    var items = groups[grp.label]; if (!items || !items.length) return;
+    var label = document.createElement('div'); label.className='cpm-section-label'; label.textContent=grp.label; grid.appendChild(label);
+    items.forEach(function(o){
+      var card = document.createElement('div'); card.className='cpm-card obj-cpm-card';
+      var imgHtml;
+      if (o.image) {
+        var oThumb = (window.SinverseImg ? SinverseImg.thumb(o.image, 160) : o.image);
+        imgHtml = '<div class="cpm-img-wrap"><img class="cpm-img sr-sil-filter" src="'+oThumb+'" alt="'+o.label+'" loading="lazy" /></div>';
+      } else {
+        imgHtml = '<div class="cpm-img-wrap obj-swatch-wrap"><div class="obj-cpm-swatch" style="background:'+o.color+'"></div></div>';
+      }
+      card.innerHTML = imgHtml + '<div class="cpm-name">'+o.label+'</div><div class="obj-cpm-height">'+fH(o.height)+'</div>';
+      card.addEventListener('click', function(){ pickerApply(o.id, o.label, 'obj'); });
+      grid.appendChild(card);
+    });
+  });
+}
+
+function wirePicker() {
+  var closeBtn = document.getElementById('picker-modal-close');
+  if (closeBtn) closeBtn.addEventListener('click', closePicker);
+  var overlay = document.getElementById('picker-modal-overlay');
+  if (overlay) overlay.addEventListener('click', function(e){ if (e.target === this) closePicker(); });
+  var search = document.getElementById('picker-modal-search');
+  if (search) search.addEventListener('input', function(){ buildPickerGrid(this.value); });
+  document.querySelectorAll('#picker-tabs .picker-tab').forEach(function(t){
+    t.addEventListener('click', function(){ setPickerTab(t.getAttribute('data-ptab')); });
+  });
+  document.querySelectorAll('#picker-sortbar .char-modal-sort-btn').forEach(function(b){
+    b.addEventListener('click', function(){
+      pickerSort = b.getAttribute('data-sort') || 'name';
+      document.querySelectorAll('#picker-sortbar .char-modal-sort-btn').forEach(function(x){ x.classList.toggle('active', x===b); });
+      var s = document.getElementById('picker-modal-search');
+      buildPickerGrid(s ? s.value : '');
+    });
+  });
+  document.addEventListener('keydown', function(e){
+    if (e.key === 'Escape') {
+      var ov = document.getElementById('picker-modal-overlay');
+      if (ov && ov.style.display !== 'none') closePicker();
+    }
+  });
+}
+
+function wireCharModal() {
+  // The old separate character/object picker modals were replaced by the
+  // unified tabbed picker (see wirePicker). The only still-relevant thing this
+  // function wired is the resize-popup backdrop, kept here.
   var resizeBd = document.getElementById('sr-resize-backdrop');
   if (resizeBd) resizeBd.addEventListener('click', closeResizePopup);
-  var _cmo = document.getElementById('char-modal-overlay');
-  if (_cmo) _cmo.addEventListener('click', function(e) {
-    if (e.target === this) closeCharModal();
-  });
-  document.getElementById('char-modal-search').addEventListener('input', function() {
-    buildModalGrid(this.value);
-  });
-  // Sort buttons
-  var sortBtns = document.querySelectorAll('.char-modal-sort-btn');
-  function reflectActiveSort() {
-    sortBtns.forEach(function(b) {
-      b.classList.toggle('active', b.getAttribute('data-sort') === charModalSort);
-    });
-  }
-  sortBtns.forEach(function(btn) {
-    btn.addEventListener('click', function() {
-      charModalSort = btn.getAttribute('data-sort');
-      reflectActiveSort();
-      var sv = document.getElementById('char-modal-search');
-      buildModalGrid(sv ? sv.value : '');
-    });
-  });
-  reflectActiveSort();
-  // Escape key
-  document.addEventListener('keydown', function(e) {
-    if (e.key === 'Escape') closeCharModal();
-  });
 }
 
 function wireForm(slot, wrap) {
@@ -4224,7 +4447,7 @@ function autoSave(slot) {
   if(vals.some(function(v){return v==='custom_'+slot;})) {
     fillSelects();  // update picker button label if name changed
     renderActive();
-    if(S.view!=='stats') renderStatsView();
+    if(S.view==='stats') renderStatsView();
   }
 }
 
@@ -4597,7 +4820,7 @@ function clearSlot(slot){
     }
   });
   fillSelects(); buildForms(); renderActive();
-  if(S.view!=='stats') renderStatsView();
+  if(S.view==='stats') renderStatsView();
 }
 
 
@@ -4895,11 +5118,11 @@ function applyGlobalUnit(isM) {
   });
   if(S.view==='stats') renderStatsView();
   renderActive();
-  // If the character picker is open, rebuild it so heights reflect the new unit
-  var _cmo = document.getElementById('char-modal-overlay');
+  // If the picker is open, rebuild it so heights reflect the new unit
+  var _cmo = document.getElementById('picker-modal-overlay');
   if (_cmo && _cmo.style.display !== 'none') {
-    var _cms = document.getElementById('char-modal-search');
-    buildModalGrid(_cms ? _cms.value : '');
+    var _cms = document.getElementById('picker-modal-search');
+    buildPickerGrid(_cms ? _cms.value : '');
   }
 }
 g('btn-imperial').addEventListener('click',function(){applyGlobalUnit(false);});
@@ -6220,8 +6443,7 @@ g('btn-zoom-reset').addEventListener('click',function(){
   else{S.zoomH=1;renderOrSandbox();}
 });
 document.querySelectorAll('.custom-clear-btn').forEach(function(btn){btn.addEventListener('click',function(){clearSlot(parseInt(this.getAttribute('data-slot')));});});
-document.getElementById('btn-add-char').addEventListener('click', function(){ addSlot('char'); });
-document.getElementById('btn-add-obj').addEventListener('click',  function(){ addSlot('obj');  });
+(function(){ var b = document.getElementById('btn-add-slot'); if (b) b.addEventListener('click', function(){ openPicker('add', null, null); }); })();
 
 // ── Clear all custom data on page load for a clean session ───
 (function clearOnLoad() {

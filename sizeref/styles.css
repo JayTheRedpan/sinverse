@@ -2145,6 +2145,47 @@ body.sandbox-active .sr-img-wrap img { cursor: inherit; }
   background: var(--accent);
 }
 
+/* Unified picker tabs (Characters / Fan Characters / Objects) */
+/* Consistent modal size so switching tabs never resizes the dialog */
+#picker-modal-overlay .char-modal { height: 72vh; }
+/* With search moved out of the header, push the close button to the top-right */
+#picker-modal-overlay .char-modal-close { margin-left: auto; }
+/* Pack cards to the top so a sparsely-filled tab (e.g. Fan) keeps square cards
+   instead of stretching the single row to fill the taller grid */
+#picker-modal-grid { align-content: start; }
+#picker-modal-grid .cpm-card { align-self: start; }
+
+.picker-tabs {
+  display: flex;
+  gap: 0.3rem;
+  padding: 0.6rem 1rem;
+  border-bottom: 1px solid var(--border);
+}
+.picker-tab {
+  flex: 1 1 0;
+  background: transparent;
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-secondary);
+  font-family: var(--font-body);
+  font-size: 0.95rem;
+  letter-spacing: 0.01em;
+  padding: 0.5rem 0.4rem;
+  cursor: pointer;
+  transition: color 0.15s, background 0.15s, border-color 0.15s;
+}
+.picker-tab:hover { color: var(--accent); border-color: var(--accent); }
+.picker-tab.active {
+  color: var(--accent);
+  background: rgba(196, 154, 120, 0.16);
+  border-color: var(--accent);
+  font-weight: 600;
+}
+
+/* Search row sits below the tabs, so it clearly scopes to the selected category */
+.picker-search-row { padding: 0.55rem 1rem 0.45rem; }
+.picker-search-input { width: 100%; box-sizing: border-box; }
+
 /* Height sub-label on picker cards */
 .cpm-height {
   font-family: var(--font-caps, var(--font-display));
