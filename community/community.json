@@ -21,12 +21,20 @@
       "blurb": "Our main community hub \u2014 chat, share, and hang out."
     },
     {
+      "id": "stoat",
+      "label": "Stoat",
+      "role": "fallback",
+      "status": "standby",
+      "url": "https://stt.gg/9BJxaHWE",
+      "blurb": "Backup community. If Discord is unavailable, we could gather here."
+    },
+    {
       "id": "telegram",
       "label": "Telegram",
       "role": "fallback",
       "status": "standby",
       "url": "https://t.me/REPLACE_ME",
-      "blurb": "Backup community. If Discord is unavailable, we gather here."
+      "blurb": "Backup community. If Discord is unavailable, we could gather here."
     }
   ],
 
