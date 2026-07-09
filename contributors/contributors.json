@@ -910,5 +910,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/pkuai/"
     }
+  },
+  {
+    "id": "MistyMorning",
+    "name": "MistyMorning",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562394/mistymorning_hian2i.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/gallery/mistymorning/"
+    }
   }
 ]

@@ -202,7 +202,7 @@
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999577/profile_lucile_j2wrdf.webp",
     "wiki": "lucile",
     "faction": [
-      "The Paws"
+      
     ],
     "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
@@ -233,7 +233,9 @@
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999660/profile_popo_suoqjd.webp",
     "wiki": "popo",
-    "faction": [],
+    "faction": [
+      "The Paws"
+    ],
     "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
