@@ -221,7 +221,6 @@ async function init() {
     } catch(e) { window._libraryItems = []; }
     buildRelatedFor(item, 'gallery', window._galleryItems, window._libraryItems);
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
-    await loadInactiveFanKeys();
     render();
   } catch(e) {
     document.body.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-muted)">' + e.message + '</div>';
@@ -323,7 +322,7 @@ function showPage(n) {
   var pages = item.pages || [];
   comicPage = Math.max(0, Math.min(n, pages.length - 1));
   var img = document.getElementById('comic-page-img');
-  img.src = pages[comicPage];
+  img.src = (window.SinverseImg ? SinverseImg.full(pages[comicPage]) : pages[comicPage]);
   document.getElementById('comic-page-counter').textContent = (comicPage + 1) + ' / ' + pages.length;
   document.getElementById('comic-prev').style.visibility = comicPage === 0 ? 'hidden' : '';
   document.getElementById('comic-next').style.visibility = comicPage === pages.length - 1 ? 'hidden' : '';
@@ -395,7 +394,7 @@ function renderScene() {
   if (typeBadge) typeBadge.textContent = item.type === 'charref' ? 'Reference' : 'World Scene';
 
   var img = document.getElementById('scene-img');
-  img.src = item.image || '';
+  img.src = (window.SinverseImg ? SinverseImg.full(item.image || '') : (item.image || ''));
   img.alt = item.title;
 
   document.getElementById('scene-title').textContent       = item.title;
@@ -430,7 +429,7 @@ function renderCharRef() {
   var refThumbs = document.getElementById('ref-version-thumbs');
 
   var img = document.getElementById('ref-img');
-  img.src = primary;
+  img.src = (window.SinverseImg ? SinverseImg.full(primary) : primary);
   img.alt = item.title;
 
   document.getElementById('ref-title').textContent  = item.title;
@@ -524,7 +523,7 @@ function openSetLightbox(idx) {
 function showSetLightboxImage() {
   var n = setImages.length;
   setLightboxIdx = (setLightboxIdx + n) % n;
-  document.getElementById('set-lightbox-img').src = setImages[setLightboxIdx];
+  document.getElementById('set-lightbox-img').src = (window.SinverseImg ? SinverseImg.full(setImages[setLightboxIdx]) : setImages[setLightboxIdx]);
   document.getElementById('set-lightbox-counter').textContent = (setLightboxIdx + 1) + ' / ' + n;
   var dl = document.getElementById('set-lightbox-download');
   if (dl) {
@@ -631,36 +630,8 @@ function renderRelatedLinks(containerId, related) {
   if (!rendered) el.style.display = 'none';
 }
 
-// ── Inactive fan characters ───────────────────────────────────
-// Fan characters flagged "active": false in _data/fan-characters.json are
-// hidden site-wide, so their appearances as character tags are ignored.
-var _inactiveFanKeys = {};
-function loadInactiveFanKeys() {
-  return fetch('../_data/fan-characters.json')
-    .then(function(r){ return r.ok ? r.json() : []; })
-    .then(function(list){
-      (list || []).forEach(function(c){
-        if (c && c.active === false) {
-          if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
-          if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
-        }
-      });
-    })
-    .catch(function(){});
-}
-function isInactiveFanTag(tag) {
-  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
-  if (m && m[1].toLowerCase() === 'canon') return false; // explicit canon ref is never a fan char
-  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
-  return !!_inactiveFanKeys[key] || !!_inactiveFanKeys[key.replace(/\s+/g, '-')];
-}
-function activeCharacters(chars) {
-  return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
-}
-
 function renderCharacterLinks(containerId, characters) {
   var el = document.getElementById(containerId);
-  characters = activeCharacters(characters);   // drop inactive fan characters
   if (!el || !characters || !characters.length) return;
   var label = document.createElement('span');
   label.className   = 'viewer-chars-label';
