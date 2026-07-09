@@ -1,8 +1,8 @@
 ## Overview
 
-Mia is a snow leopard giantess and a true macro — sixty feet of cool, blue-lit predator moving through a world built for beings a fraction her size. She is a dominant by nature and by reputation, accustomed to being the largest and least-answerable thing in any space she occupies. There is exactly one exception to that rule, and her name is [Vex](vex): to her partner, and to no one else, Mia is entirely a sub.
+Mia is a snow leopard giantess and a true macro — sixty feet of cool, blue-lit predator moving through a world built for beings a fraction her size. She is a dominant by nature and by reputation, accustomed to being the largest and least-answerable thing in any space she occupies. 
 
-That contradiction is the most interesting thing about her. To the world she is an apex, unbothered and unhurried, the kind of giantess whose sheer scale settles most questions before they are asked. Behind closed doors, with Vex, the whole arrangement inverts — a private surrender she guards as closely as Mia the macro guards her dominance everywhere else. The two have been together since before either was Transformed, and neither the years nor the enormous gulf of scale between them has ever loosened the bond.
+That contradiction is the most interesting thing about her. To the world she is an apex, unbothered and unhurried, the kind of giantess whose sheer scale settles most questions before they are asked. She is the partner of the sabertooth [Vex](vex). The two have been together since before either was Transformed, and neither the years nor the enormous gulf of scale between them has ever loosened the bond.
 
 {{FEATURED}}
 
@@ -11,6 +11,8 @@ That contradiction is the most interesting thing about her. To the world she is 
 Mia is a snow leopard through and through — the thick, pale, rosette-dappled coat, the heavy paws, and the long, balancing tail of a cat built for cold and height, all scaled up to the proportions of a sixty-foot macro. What marks her out is the colour woven through it: a light, luminous neon blue that surfaces in her eyes, her nipples, the pads of her paws, and a scattering of her fur's spots, cool against the soft grey-white of the rest of her. Where her partner [Vex](vex) burns a vivid, electric green, Mia glows in a quieter, icier register — the two of them a matched set of opposites.
 
 Her scale is the first and last thing anyone registers about her. At around sixty feet she is a true macro, on a scale that puts her well beyond the reach of ordinary mega-city life and among the largest beings in the setting; a toy at her paws stands roughly ankle-high, and everything about her — the breadth of a single pawstep, the slow weather of her breathing — operates at a magnitude the small are built to fear. The serum left her endowed, as it does the Transformed, in an equine form to match the rest of her outsized frame.
+
+But what truly sets Mia apart is her exceptionally musky scrotum. While other giantesses often overlook this aspect, for toys beneath her, it is both physically overwhelming and psychologically devastating. Its musk is so potent that when she squats over a toy, the overhwhelming scent can render them unconscious or worse with a single breath as they drown in the raw essance of "her".
 
 ## Personality
 
@@ -36,7 +38,7 @@ How is a mystery Mia does not explain. What is whispered, never confirmed, is th
 
 ## Preferences
 
-Mia's primary kink is rooted in her size and its effects on toys. She finds particular gratification in utilizing her vast physical power, and the most intense expression of this is through the use of her exceptionally musky scrotum. When she squats over a toy, the overwhelming scent can render them unconscious, a sensation she enjoys immensely as it underscores her dominance. This aspect of her sexuality affects her attitude towards her partners in profound ways. For her, sex is not merely an act but an assertion of power and control — one that often sees toys overwhelmed by both her physical presence and the musky allure of her anatomy. Her motivations are not simply sexual; they are a constant reminder to herself and others of her dominance and her ability to command total submission from those who serve her pleasure.
+Mia's primary kink is rooted in her size and its effects on toys. She finds particular gratification in utilizing her vast physical power, and the most intense expression of this is through the use of her exceptionally musky scrotum. When she squats over a toy, the overwhelming scent can render them unconscious or even dead, a sensation she enjoys immensely as it underscores her dominance. She often leans leans into her feline instincts, viewing the tiny things beneath her as prey...prey to be toyed with for her amusement, before ultimately being snuffed out.  Its not an uncommon sight to see their final screams drowned out by her powerful booming purrs.
 
 ## Usage Guide
 

@@ -5,16 +5,26 @@
     "active": true,
     "wiki": "haven",
     "pronouns": "she/her",
-    "species": ["Bobcat"],
-    "faction": [],
-    "role": [],
+    "species": [
+      "Bobcat"
+    ],
+    "faction": [
+
+    ],
+    "role": [
+
+    ],
     "class": "Giantess",
     "height": 132,
     "weight": 1200,
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782180704/haven_profile_in9ojv.webp",
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782180703/haven_height_stb0y0.webp",
     "relationships": [
-      { "type": "Cousin", "name": "Turbo", "note": "" }
+      { 
+        "type": "Cousin", 
+        "name": "Turbo", 
+        "note": "" 
+      }
     ],
     "canonical": false
   },
@@ -24,13 +34,23 @@
     "active": true,
     "wiki": "rosi",
     "pronouns": "she/her",
-    "species": ["Rosella Parrot"],
-    "faction": [],
-    "role": [],
-    "class": ["Giantess", "Tempered"],
+    "species": [
+      "Rosella Parrot"
+    ],
+    "faction": [
+
+    ],
+    "role": [
+
+    ],
+    "class": [
+      "Giantess", 
+      "Tempered"
+    ],
     "height": 192,
     "weight": 3230,
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782883606/rosi_profile_viayg3.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782883604/rosi_height_plgyjg.webp",
     "relationships": [
       
@@ -53,10 +73,12 @@
     "length": 46,
     "length_correction": 1,
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783483159/vex_height_n39mj2.webp",
-    "length_image": "",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783483160/vex_profile_zwap12.webp",
     "wiki": "vex",
-    "faction": [],
+    "faction": [
+
+    ],
     "transformed_by": "Apotheosis Serum",
     "canonical": false,
     "anatomy": {
@@ -81,7 +103,8 @@
         "type": "Ward",
         "note": "took her in and raised her as her own; Riley calls her \"aunt\""
       }
-    ]
+    ],
+    "contributor": "Vex"
   },
   {
     "id": 4,
@@ -96,14 +119,18 @@
     "length": 210,
     "length_correction": 1,
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783483162/mia_height_rncp1b.webp",
-    "length_image": "",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783483163/mia_profile_djvlds.webp",
     "wiki": "mia",
-    "faction": [],
+    "faction": [
+
+    ],
     "transformed_by": "Apotheosis Serum",
     "canonical": false,
     "anatomy": { "breasts": true, "bustSize": "d", "penis": true, "vag": false, "penisType": "equine" },
-    "role": [],
+    "role": [
+
+    ],
     "class": "Giantess",
     "relationships": [
       { 
@@ -112,5 +139,83 @@
         "note": "romantic partner; a true dom to all the world, but a sub to Vex alone" 
       }
     ]
+  },
+  {
+    "id": 5,
+    "name": "Song",
+    "active": true,
+    "species": ["Shire Horse"],
+    "pronouns": "he/him",
+    "height": 126,
+    "height_correction": 1,
+    "headroom_pct": 1.5,
+    "weight": 911,
+    "length": 44,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783488779/song_height_ubxtr6.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783483158/song_profile_i8g9ch.webp",
+    "wiki": "song",
+    "faction": [
+      "The Resistance"
+    ],
+    "transformed_by": "Project Sylph",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": false, 
+      "bustSize": null, 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "equine" 
+    },
+    "role": [
+
+    ],
+    "class": "Sylph",
+    "relationships": [
+      { 
+        "name": "Hydey", 
+        "type": "Owner", 
+        "note": null 
+      }
+    ],
+    "contributor": "CharitysSongbird"
+  },
+  {
+    "id": 6,
+    "name": "Adhara",
+    "active": true,
+    "species": ["Jackal"],
+    "pronouns": "she/her",
+    "height": 216,
+    "height_correction": 1,
+    "headroom_pct": 9,
+    "weight": 4600,
+    "length": 48,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783613208/adhara_height_ngt71p.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988230/CanineCock_length_jbhbva.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783613210/adhara_profile_latwmd.webp",
+    "wiki": "adhara",
+    "faction": [
+      "The Resistance"
+    ],
+    "transformed_by": "Birth",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "canine" 
+    },
+    "role": [
+      "Historian"
+    ],
+    "class": "Giantess",
+    "relationships": [
+
+    ],
+    "contributor": "CGK"
   }
 ]
