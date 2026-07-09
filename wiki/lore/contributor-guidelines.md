@@ -18,10 +18,24 @@ Different kinds of contributions are approved in different ways:
 
 - **Stories** are automatically approved — bring them along and they'll go up. They're best submitted as **`.md` files** so they drop cleanly into the Library.
 - **Images** are welcome, but if a piece features any **canon characters**, coordinate with Jay ahead of time so it stays consistent with how those characters are established.
-- **Character references** are open to everyone — anyone is welcome to get a character ref done in the Sinverse style and join the world's cast.  If you do you can also be added to the "Fan Characters" page, with your own character bio writeup.
+- **Character references** are open to everyone — anyone is welcome to get a character ref done in the Sinverse style. And if you've added something to the world yourself, your character can also join the **Fan Characters** page with its own bio; see *"Fan characters, and a place in the cast"* just below.
 - **Interactive adventures** can be submitted through the **form in the adventures (CYOA) module**; submissions are sent to Jay automatically for review.
 
 You don't need to be a polished professional. Rough, enthusiastic, and in-the-spirit beats perfect-but-cold every time, and a single scene or sketch is a perfectly good way to begin.
+
+## Fan characters, and a place in the cast
+
+Sinverse has a **Fan Characters** section in the wiki, and it runs on one simple idea: **if you've helped build the world, you belong in it.** The people who've added to this setting — its writers, its artists, the ones who've fleshed out its corners — are as much a part of Sinverse as anything in the lore, and the fan-character roster is really just the world reflecting that back. If you've contributed, you're welcome to have your own character written up and take a place among the cast.
+
+Because tone matters, two honest notes on how to read this:
+
+It isn't a reward held out to talk anyone into making things, and it isn't a trade — *give us content, get an entry.* A shared world is simply made of the people who show up for it, and its cast ought to reflect who those people are. Make something because you'd like to see it exist in Sinverse; the wiki entry is just us recognising that you did, never the reason to do it.
+
+And by **contributing** we mean something you **volunteered to the world** — a story, a piece of art, a stretch of lore you made because you wanted to add to the setting. That's a different thing from paid or commissioned work: being hired to draw or write a piece is a job, and a perfectly good one, but it's a transaction rather than joining in. It's the joining-in that earns a spot in the cast.
+
+There's also a modest floor, and only for one reason: so that "a contribution" means a real addition to the world rather than a placeholder. As a rough guide, think a **short story of a few thousand words**, a finished **piece of art made for the setting**, a **genuine piece of lore**, or an **interactive adventure**. It needn't be much, and it certainly needn't be polished — it just needs to be a real thing you've given the world. If you're unsure whether what you have in mind counts, ask Jay; the answer is almost always yes.
+
+When you're ready, have a word with Jay (the Discord is easiest). You'll want a character reference in the Sinverse style and a short bio, and he'll get you set up.
 
 ## The core principles
 
