@@ -1119,12 +1119,13 @@
     "tags": [
       "noncon",
       "micro",
-      "snuff"
+      "snuff",
+      "vore"
     ],
     "file": "stories/lunch_with_libby.md",
     "date": "2026-07",
     "universe_date": null,
-    "canonical": false,
+    "canonical": true,
     "characters": [
       "libby",
       "rona"
