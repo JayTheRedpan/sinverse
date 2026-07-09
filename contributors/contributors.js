@@ -222,9 +222,10 @@ function renderJay(jay, chars, galleryItems, libraryItems, adventureNodes) {
 }
 
 // ── Render contributor card ───────────────────────────────────
-function renderCard(contributor, galleryItems, libraryItems, adventureNodes, stash) {
+function renderCard(contributor, galleryItems, libraryItems, adventureNodes, stash, fanChars) {
   var card = document.createElement('div');
   card.className = 'con-card';
+  card.id = 'contrib-' + contributor.id;   // anchor target for wiki -> profile deep links
 
   // Avatar
   var avatarHtml;
@@ -242,6 +243,13 @@ function renderCard(contributor, galleryItems, libraryItems, adventureNodes, sta
     return '<span class="type-pill">' + t + '</span>';
   }).join('');
 
+  // Fan characters that are this contributor's avatar (matched by `contributor`
+  // id in fan-characters.json). Rendered as a "Wiki" button in the socials row.
+  var avatars = (fanChars || []).filter(function(fc){
+    return String(fc.contributor || '').toLowerCase() === String(contributor.id).toLowerCase();
+  });
+  var slugOf = function(fc){ return fc.wiki || (fc.name || '').toLowerCase().replace(/\s+/g, '-'); };
+
   card.innerHTML =
     '<div class="con-card-top">' +
       avatarHtml +
@@ -254,7 +262,18 @@ function renderCard(contributor, galleryItems, libraryItems, adventureNodes, sta
     '<div class="con-card-socials"></div>' +
     '<div class="con-card-counts"></div>';
 
-  buildSocials(contributor.socials, card.querySelector('.con-card-socials'));
+  var socialsEl = card.querySelector('.con-card-socials');
+  // "Wiki" button(s) go first, styled like the socials, linking to the
+  // contributor's fan character page(s) in the wiki.
+  avatars.forEach(function(fc){
+    var a = document.createElement('a');
+    a.className = 'social-link';
+    a.textContent = 'Wiki';
+    a.href = '../wiki/#fanchar-' + slugOf(fc);
+    a.title = fc.name + ' — wiki character';
+    socialsEl.appendChild(a);
+  });
+  buildSocials(contributor.socials, socialsEl);
   buildCounts(contributor.id, galleryItems, libraryItems, adventureNodes, card.querySelector('.con-card-counts'), false, stash);
 
   return card;
@@ -303,7 +322,7 @@ function renderContributorGrid(list) {
       // plain ?creator= link from gallery/library/adventures — to keep the
       // stash secret.
       var stash = ctx.fromStash ? stashCounts(c.id, ctx.stashItems || []) : null;
-      grid.appendChild(renderCard(c, ctx.galleryItems || [], ctx.libraryItems || [], ctx.adventureNodes || [], stash));
+      grid.appendChild(renderCard(c, ctx.galleryItems || [], ctx.libraryItems || [], ctx.adventureNodes || [], stash, ctx.fanChars || []));
     });
   }
 
@@ -448,6 +467,7 @@ async function init() {
       safeFetch(root + 'library/library.json',     []),
       safeFetch(root + 'cyoa/cyoa.json',           []),
       safeFetch(root + 'stash/stash.json',         []),
+      safeFetch(root + '_data/fan-characters.json',[]),
     ]);
 
     var contributors = results[0];
@@ -456,6 +476,8 @@ async function init() {
     var libraryItems = results[3];
     var cyoaManifest = results[4];
     var stashItems   = results[5];
+    // Active fan characters that are contributor avatars link back to a profile.
+    var fanChars     = (results[6] || []).filter(function(c){ return c.active !== false; });
 
     // Fetch all adventure nodes from adventures/*.json
     var adventureNodes = [];
@@ -545,6 +567,7 @@ async function init() {
       libraryItems: libraryItems,
       adventureNodes: adventureNodes,
       stashItems: stashItems,
+      fanChars: fanChars,
       isCreatorLink: isCreatorLink,
       fromStash: fromStash
     };
