@@ -239,11 +239,12 @@ async function checkCharacters(chars) {
 // ── Fan characters ────────────────────────────────────────────
 // Validates _data/fan-characters.json: ids, core fields, the active flag, the
 // backing wiki .md (active ones only), and name collisions with canon.
-async function checkFanCharacters(fan, canon) {
+async function checkFanCharacters(fan, canon, contribs) {
   const issues = checkIds(fan, 'fan character', c => c.name || '(unnamed)');
   if (!fan.length) { issues.push(info('No fan characters defined.')); return issues; }
 
   const canonNames = new Set((canon || []).map(c => (c.name || '').toLowerCase()));
+  const contribIds = new Set((contribs || []).map(c => String(c.id).toLowerCase()));
   fan.forEach(c => {
     if (c.active !== undefined && typeof c.active !== 'boolean')
       issues.push(warn('Fan character <code>' + (c.name || c.id) + '</code> has a non-boolean <code>active</code> value'));
@@ -253,6 +254,9 @@ async function checkFanCharacters(fan, canon) {
       issues.push(info('Fan character <code>' + (c.name || c.id) + '</code> has no image'));
     if (canonNames.has((c.name || '').toLowerCase()))
       issues.push(info('Fan character <code>' + c.name + '</code> shares a name with a canon character — reference it as <code>fan:' + c.name + '</code> where it matters'));
+    // Contributor avatar link must point at a real contributor id.
+    if (c.contributor && !contribIds.has(String(c.contributor).toLowerCase()))
+      issues.push(err('Fan character <code>' + c.name + '</code> has contributor <code>' + c.contributor + '</code>, which is not a known contributor id'));
   });
 
   // Active fan characters should have a backing .md; inactive ones are hidden
@@ -703,7 +707,7 @@ async function run() {
 
   const checks = [
     { id: 'characters',     fn: () => checkCharacters(chars) },
-    { id: 'fan-characters', fn: () => checkFanCharacters(fanChars, chars) },
+    { id: 'fan-characters', fn: () => checkFanCharacters(fanChars, chars, contribs) },
     { id: 'relationships',  fn: () => Promise.resolve(checkRelationships(chars, fanChars)) },
     { id: 'contributors',   fn: () => checkContributors(contribs, gallery, library, cyoaNodes) },
     { id: 'gallery',        fn: () => checkGallery(gallery, galleryIds, libraryIds, loreIds) },
