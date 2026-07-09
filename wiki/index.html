@@ -976,6 +976,24 @@
       line-height: 1.1;
       margin-bottom: 0.5rem;
     }
+    .wiki-char-hero-col {
+      display: flex;
+      flex-direction: column;
+      gap: 0.6rem;
+      align-items: stretch;
+    }
+    .wiki-char-creator {
+      display: block;
+      text-align: center;
+      font-size: 0.82rem;
+      color: var(--accent);
+      text-decoration: none;
+      border: 1px solid var(--border);
+      border-radius: 6px;
+      padding: 0.5rem 0.7rem;
+      transition: border-color 0.15s, background 0.15s;
+    }
+    .wiki-char-creator:hover { border-color: var(--accent); background: rgba(196, 154, 120, 0.1); }
     .wiki-char-meta-sub {
       font-family: var(--font-caps);
       font-size: 0.6rem;
@@ -2010,6 +2028,7 @@ var galleryItems = [];
 var libraryItems = [];
 var erasData = [];
 var fanCharacters = [];
+var contributorsData = [];
 
 Promise.all([
   fetch('../_data/characters.json').then(function(r){ return r.json(); }),
@@ -2020,7 +2039,8 @@ Promise.all([
   fetch('eras.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
   fetch('lore/faq.md').then(function(r){ return r.text(); }).catch(function(){ return ''; }),
   fetch('size-classes.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
-  fetch('../_data/fan-characters.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
+  fetch('../_data/fan-characters.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
+  fetch('../contributors/contributors.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
 ]).then(function(results) {
   characters = results[0];
   timelineEvents = results[1];
@@ -2030,7 +2050,12 @@ Promise.all([
   erasData = results[5] || [];
   buildFaqIndex(results[6] || '');
   SIZE_BUCKETS = results[7] || [];
-  fanCharacters = results[8] || [];
+  // Fan characters can be hidden site-wide with "active": false in their JSON.
+  // Filtering here removes them from the grid, detail pages, name resolution,
+  // and Featured Content counts in one place.
+  fanCharacters = (results[8] || []).filter(function(c){ return c.active !== false; });
+  // Contributors — used to link a fan character back to its creator's profile.
+  contributorsData = results[9] || [];
   buildLoreSidebar();
   buildTimeline();
   initTimelineView();
@@ -2955,9 +2980,27 @@ function renderCharDetail(char, cfg, pushState) {
     '</table>';
 
   var heroSrc = char.image || char.profile_image || '';
-  var heroHtml = heroSrc
+  var heroInner = heroSrc
     ? '<div class="wiki-char-hero"><img src="' + heroSrc + '" alt="' + char.name + '" /></div>'
     : '<div class="wiki-char-hero"><div class="wiki-char-hero-placeholder">No image yet</div></div>';
+
+  // If this is a fan character that represents a contributor, link to their
+  // profile. The link FILTERS the contributors page to that creator (?creator=);
+  // a stale id just hides the button (the contributor must exist).
+  var creatorHtml = '';
+  if (cfg.routePrefix === '#fanchar-' && char.contributor) {
+    var contrib = (contributorsData || []).find(function(c){
+      return String(c.id).toLowerCase() === String(char.contributor).toLowerCase();
+    });
+    if (contrib) {
+      creatorHtml = '<a class="wiki-char-creator" href="../contributors/?creator=' + encodeURIComponent(contrib.id) + '">Created by ' + contrib.name + ' &rarr;</a>';
+    }
+  }
+
+  // Hero column: the image, plus (for a contributor's fan character) the creator
+  // button directly beneath it — so it extends the image rather than lengthening
+  // the stat block beside it.
+  var heroHtml = '<div class="wiki-char-hero-col">' + heroInner + creatorHtml + '</div>';
 
   var header = '<div class="wiki-char-header">' +
     heroHtml +
