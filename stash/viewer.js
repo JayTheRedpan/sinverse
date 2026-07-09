@@ -341,7 +341,7 @@ function showPage(n) {
   var pages = item.pages || [];
   comicPage = Math.max(0, Math.min(n, pages.length - 1));
   var img = document.getElementById('comic-page-img');
-  img.src = pages[comicPage];
+  img.src = (window.SinverseImg ? SinverseImg.full(pages[comicPage]) : pages[comicPage]);
   document.getElementById('comic-page-counter').textContent = (comicPage + 1) + ' / ' + pages.length;
   document.getElementById('comic-prev').style.visibility = comicPage === 0 ? 'hidden' : '';
   document.getElementById('comic-next').style.visibility = comicPage === pages.length - 1 ? 'hidden' : '';
@@ -413,7 +413,7 @@ function renderScene() {
   if (typeBadge) typeBadge.textContent = item.type === 'charref' ? 'Reference' : 'World Scene';
 
   var img = document.getElementById('scene-img');
-  img.src = item.image || '';
+  img.src = (window.SinverseImg ? SinverseImg.full(item.image || '') : (item.image || ''));
   img.alt = item.title;
 
   document.getElementById('scene-title').textContent       = item.title;
@@ -440,7 +440,7 @@ function renderCharRef() {
   document.getElementById('view-charref').style.display = '';
 
   var img = document.getElementById('ref-img');
-  img.src = item.image || '';
+  img.src = (window.SinverseImg ? SinverseImg.full(item.image || '') : (item.image || ''));
   img.alt = item.title;
 
   document.getElementById('ref-title').textContent  = item.title;
@@ -526,7 +526,7 @@ function openSetLightbox(idx) {
 function showSetLightboxImage() {
   var n = setImages.length;
   setLightboxIdx = (setLightboxIdx + n) % n;
-  document.getElementById('set-lightbox-img').src = setImages[setLightboxIdx];
+  document.getElementById('set-lightbox-img').src = (window.SinverseImg ? SinverseImg.full(setImages[setLightboxIdx]) : setImages[setLightboxIdx]);
   document.getElementById('set-lightbox-counter').textContent = (setLightboxIdx + 1) + ' / ' + n;
   var dl = document.getElementById('set-lightbox-download');
   if (dl) {

@@ -33,5 +33,17 @@ window.SinverseImg = (function() {
     return url.replace(/\/upload\/(?!w_|h_|c_|q_|f_)/, '/upload/' + transform + '/');
   }
 
-  return { thumb: thumb };
+  // Full-size display (image viewers / lightboxes): keep the image large but
+  // still serve it auto-compressed and in a modern format, with a sane max
+  // width so enormous originals don't ship at full resolution. No cropping,
+  // never upscales (c_limit).
+  function full(url, maxWidth) {
+    if (!url || typeof url !== 'string') return url;
+    if (url.indexOf('res.cloudinary.com') === -1) return url;
+    if (url.indexOf('/upload/') === -1) return url;
+    var parts = ['q_auto', 'f_auto', 'c_limit', 'w_' + (maxWidth || 1600)];
+    return url.replace(/\/upload\/(?!w_|h_|c_|q_|f_)/, '/upload/' + parts.join(',') + '/');
+  }
+
+  return { thumb: thumb, full: full };
 })();

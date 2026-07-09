@@ -398,7 +398,7 @@ function renderGrid(items) {
     thumb.className = 'stash-card-thumb';
     if (coverSrc) {
       var img = document.createElement('img');
-      img.src = coverSrc;
+      img.src = (window.SinverseImg ? SinverseImg.thumb(coverSrc, 500) : coverSrc);
       img.alt = it.title || '';
       img.loading = 'lazy';
       thumb.appendChild(img);
@@ -582,7 +582,7 @@ function renderTagPills(containerId, tags) {
 // ── Image lightbox ──────────────────────────────────────────────────────────
 function openLightbox(it) {
   var lb = document.getElementById('stash-lightbox');
-  document.getElementById('stash-lightbox-img').src = it.image || '';
+  document.getElementById('stash-lightbox-img').src = (window.SinverseImg ? SinverseImg.full(it.image || '') : (it.image || ''));
   document.getElementById('stash-lightbox-img').alt = it.title || '';
   document.getElementById('stash-lightbox-title').textContent = it.title || '';
   document.getElementById('stash-lightbox-creator').textContent = creatorText(it) ? 'by ' + creatorText(it) : '';

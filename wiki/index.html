@@ -26,6 +26,7 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="../_shared/styles-global.css?v=1780345398" />
   <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
+  <script src="../_shared/images.js?v=1781400000"></script>
   <style>
     * { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -975,24 +976,6 @@
       line-height: 1.1;
       margin-bottom: 0.5rem;
     }
-    .wiki-char-hero-col {
-      display: flex;
-      flex-direction: column;
-      gap: 0.6rem;
-      align-items: stretch;
-    }
-    .wiki-char-creator {
-      display: block;
-      text-align: center;
-      font-size: 0.82rem;
-      color: var(--accent);
-      text-decoration: none;
-      border: 1px solid var(--border);
-      border-radius: 6px;
-      padding: 0.5rem 0.7rem;
-      transition: border-color 0.15s, background 0.15s;
-    }
-    .wiki-char-creator:hover { border-color: var(--accent); background: rgba(196, 154, 120, 0.1); }
     .wiki-char-meta-sub {
       font-family: var(--font-caps);
       font-size: 0.6rem;
@@ -1832,7 +1815,7 @@ if (typeof marked !== 'undefined') {
     var title   = parts[0] ? parts[0].trim() : '';
     var caption = parts[1] ? parts[1].trim() : '';
     return '<figure class="wiki-img-figure">' +
-      '<img src="' + src + '" alt="' + title + '" class="wiki-img" loading="lazy" />' +
+      '<img src="' + (window.SinverseImg ? SinverseImg.thumb(src, 700) : src) + '" alt="' + title + '" class="wiki-img" loading="lazy" />' +
       (title || caption
         ? '<figcaption class="wiki-img-caption">' +
             (title   ? '<span class="wiki-img-title">'   + title   + '</span>' : '') +
@@ -2027,7 +2010,6 @@ var galleryItems = [];
 var libraryItems = [];
 var erasData = [];
 var fanCharacters = [];
-var contributorsData = [];
 
 Promise.all([
   fetch('../_data/characters.json').then(function(r){ return r.json(); }),
@@ -2038,8 +2020,7 @@ Promise.all([
   fetch('eras.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
   fetch('lore/faq.md').then(function(r){ return r.text(); }).catch(function(){ return ''; }),
   fetch('size-classes.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
-  fetch('../_data/fan-characters.json').then(function(r){ return r.json(); }).catch(function(){ return []; }),
-  fetch('../contributors/contributors.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
+  fetch('../_data/fan-characters.json').then(function(r){ return r.json(); }).catch(function(){ return []; })
 ]).then(function(results) {
   characters = results[0];
   timelineEvents = results[1];
@@ -2049,12 +2030,7 @@ Promise.all([
   erasData = results[5] || [];
   buildFaqIndex(results[6] || '');
   SIZE_BUCKETS = results[7] || [];
-  // Fan characters can be hidden site-wide with "active": false in their JSON.
-  // Filtering here removes them from the grid, detail pages, name resolution,
-  // and Featured Content counts in one place.
-  fanCharacters = (results[8] || []).filter(function(c){ return c.active !== false; });
-  // Contributors — used to link a fan character back to its creator's profile.
-  contributorsData = results[9] || [];
+  fanCharacters = results[8] || [];
   buildLoreSidebar();
   buildTimeline();
   initTimelineView();
@@ -2829,7 +2805,7 @@ function createCharGrid(opts) {
 
       var imgEl = document.createElement('img');
       imgEl.className = 'wiki-char-portrait';
-      imgEl.src = c.profile_image || c.image || '';
+      imgEl.src = (window.SinverseImg ? SinverseImg.thumb(c.profile_image || c.image || '', 600, 'fit') : (c.profile_image || c.image || ''));
       imgEl.alt = c.name;
       if (!c.profile_image && !c.image) {
         imgEl.style.filter = 'invert(0.72) sepia(0.25) saturate(450%) hue-rotate(350deg) brightness(0.88)';
@@ -2979,27 +2955,9 @@ function renderCharDetail(char, cfg, pushState) {
     '</table>';
 
   var heroSrc = char.image || char.profile_image || '';
-  var heroInner = heroSrc
+  var heroHtml = heroSrc
     ? '<div class="wiki-char-hero"><img src="' + heroSrc + '" alt="' + char.name + '" /></div>'
     : '<div class="wiki-char-hero"><div class="wiki-char-hero-placeholder">No image yet</div></div>';
-
-  // If this is a fan character that represents a contributor, link to their
-  // profile. The link FILTERS the contributors page to that creator (?creator=);
-  // a stale id just hides the button (the contributor must exist).
-  var creatorHtml = '';
-  if (cfg.routePrefix === '#fanchar-' && char.contributor) {
-    var contrib = (contributorsData || []).find(function(c){
-      return String(c.id).toLowerCase() === String(char.contributor).toLowerCase();
-    });
-    if (contrib) {
-      creatorHtml = '<a class="wiki-char-creator" href="../contributors/?creator=' + encodeURIComponent(contrib.id) + '">Created by ' + contrib.name + ' &rarr;</a>';
-    }
-  }
-
-  // Hero column: the image, plus (for a contributor's fan character) the creator
-  // button directly beneath it — so it extends the image rather than lengthening
-  // the stat block beside it.
-  var heroHtml = '<div class="wiki-char-hero-col">' + heroInner + creatorHtml + '</div>';
 
   var header = '<div class="wiki-char-header">' +
     heroHtml +
@@ -3291,7 +3249,7 @@ function renderSearchResults(q, results) {
     var row = document.createElement('div');
     row.style.cssText = 'background:var(--bg-panel);padding:1rem 1.5rem;cursor:pointer;display:flex;align-items:center;gap:1rem;transition:background 0.15s;';
     var thumb = r.img
-      ? '<div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--bg-inset);border:1px solid var(--border)"><img src="'+r.img+'" style="width:100%;height:100%;object-fit:cover" /></div>'
+      ? '<div style="width:40px;height:40px;border-radius:50%;overflow:hidden;flex-shrink:0;background:var(--bg-inset);border:1px solid var(--border)"><img src="'+(window.SinverseImg?SinverseImg.thumb(r.img,80):r.img)+'" style="width:100%;height:100%;object-fit:cover" /></div>'
       : '';
     row.innerHTML =
       '<div style="font-family:var(--font-caps);font-size:0.62rem;letter-spacing:0.12em;text-transform:uppercase;font-weight:600;color:'+TYPE_COLORS[r.type]+';width:80px;flex-shrink:0">'+TYPE_LABELS[r.type]+'</div>' +

@@ -191,10 +191,10 @@ function renderJay(jay, chars, galleryItems, libraryItems, adventureNodes) {
   var portrait = document.getElementById('jay-portrait');
   if (portrait) {
     if (portraitSrc) {
-      portrait.src = portraitSrc;
+      portrait.src = (window.SinverseImg ? SinverseImg.thumb(portraitSrc, 400) : portraitSrc);
       portrait.classList.remove('is-sil');
     } else if (char && char.image) {
-      portrait.src = char.image;
+      portrait.src = (window.SinverseImg ? SinverseImg.thumb(char.image, 400) : char.image);
       portrait.classList.add('is-sil');
     } else {
       portrait.src = '';
