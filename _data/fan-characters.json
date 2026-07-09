@@ -40,7 +40,7 @@
   {
     "id": 3,
     "name": "Vex",
-    "active": false,
+    "active": true,
     "species": [
       "Sabertooth",
       "Jackal"
@@ -71,6 +71,11 @@
     ],
     "class": "Giantess",
     "relationships": [
+      { 
+        "name": "Mia", 
+        "type": "Partner", 
+        "note": "romantic partner; subs to Vex alone" 
+      },
       {
         "name": "Riley",
         "type": "Ward",
@@ -81,7 +86,7 @@
   {
     "id": 4,
     "name": "Mia",
-    "active": false,
+    "active": true,
     "species": ["Snow Leopard"],
     "pronouns": "she/her",
     "height": 720,
@@ -101,7 +106,11 @@
     "role": [],
     "class": "Giantess",
     "relationships": [
-      { "name": "Vex", "type": "Partner", "note": "romantic partner; a true dom to all the world, but a sub to Vex alone" }
+      { 
+        "name": "Vex", 
+        "type": "Partner", 
+        "note": "romantic partner; a true dom to all the world, but a sub to Vex alone" 
+      }
     ]
   }
 ]

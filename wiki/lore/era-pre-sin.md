@@ -14,4 +14,4 @@ In hindsight, the people of this era are sometimes described as living in "the o
 ## Related
 
 - [The Apotheosis Serum](apotheosis-serum) — the invention that would end this era
-- [Pre-TDay](era-pre-tday) — the era that followed
+- [Sins-Rise](era-sins-rise) — the era that followed

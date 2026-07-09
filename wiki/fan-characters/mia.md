@@ -1,38 +1,42 @@
 ## Overview
 
-Mia is a snow leopard giantess and a true macro — sixty feet of cool, blue-lit predator moving through a world built for beings a fraction her size. She is a dominant by nature and by reputation, accustomed to being the largest and least-answerable thing in any space she occupies. There is exactly one exception to that rule, and her name is [Vex](vex): to her romantic partner, and to no one else, Mia is entirely a sub.
+Mia is a snow leopard giantess and a true macro — sixty feet of cool, blue-lit predator moving through a world built for beings a fraction her size. She is a dominant by nature and by reputation, accustomed to being the largest and least-answerable thing in any space she occupies. There is exactly one exception to that rule, and her name is [Vex](vex): to her partner, and to no one else, Mia is entirely a sub.
 
-That contradiction is the most interesting thing about her. To the world she is an apex, unbothered and unhurried, the kind of giantess whose sheer scale settles most questions before they are asked. Behind closed doors, with Vex, the whole arrangement inverts — a private surrender she guards as closely as Mia the macro guards her dominance everywhere else.
+That contradiction is the most interesting thing about her. To the world she is an apex, unbothered and unhurried, the kind of giantess whose sheer scale settles most questions before they are asked. Behind closed doors, with Vex, the whole arrangement inverts — a private surrender she guards as closely as Mia the macro guards her dominance everywhere else. The two have been together since before either was Transformed, and neither the years nor the enormous gulf of scale between them has ever loosened the bond.
 
 {{FEATURED}}
 
 ## Appearance
 
-Mia is a snow leopard through and through — the thick, pale, rosette-dappled coat, the heavy paws, the long balancing tail of a cat built for cold and height. What marks her out is the colour woven through it: a light, luminous neon blue that surfaces in her ear tufts, her eyes, her nipples, her paw pads, and a scattering of her fur's spots, cool against the soft grey-white of the rest of her. Where a partner like [Vex](vex) burns a vivid, electric green, Mia glows in a quieter, icier register — the two of them a matched set of opposites.
+Mia is a snow leopard through and through — the thick, pale, rosette-dappled coat, the heavy paws, and the long, balancing tail of a cat built for cold and height, all scaled up to the proportions of a sixty-foot macro. What marks her out is the colour woven through it: a light, luminous neon blue that surfaces in her eyes, her nipples, the pads of her paws, and a scattering of her fur's spots, cool against the soft grey-white of the rest of her. Where her partner [Vex](vex) burns a vivid, electric green, Mia glows in a quieter, icier register — the two of them a matched set of opposites.
 
-At around sixty feet she is a true macro, on a scale that puts her well beyond the reach of ordinary mega-city life and among the largest beings in the setting. The serum left her endowed, as it does the Transformed, in an equine form to match the rest of her outsized frame.
+Her scale is the first and last thing anyone registers about her. At around sixty feet she is a true macro, on a scale that puts her well beyond the reach of ordinary mega-city life and among the largest beings in the setting; a toy at her paws stands roughly ankle-high, and everything about her — the breadth of a single pawstep, the slow weather of her breathing — operates at a magnitude the small are built to fear. The serum left her endowed, as it does the Transformed, in an equine form to match the rest of her outsized frame.
 
 ## Personality
 
 Mia's dominance is the easy, unforced kind that comes from never having had to insist on it. At sixty feet, scale does most of her arguing for her, and she carries herself accordingly — calm, assured, faintly amused, a giantess who rarely raises her voice because she has rarely needed to. With toys and with the world at large she is the one in command, and she wears it lightly, the way people wear things they have never once doubted.
 
-The exception rewires everything. With Vex, the poise she shows the world becomes something she willingly sets down; the macro who answers to no one chooses, in private, to answer entirely to a partner a fraction of her size. She is not performing it, and she does not resent it — the surrender is genuine, and it is hers to give, which may be exactly why she guards it so jealously. It is the one place the unshakable Mia is soft, and she keeps it for the one person who has earned it.
+For all that composure, Mia is not silent. When something pleases her — a good hunt, a toy's fear, the particular satisfaction of her partner's company — she purrs, and at her scale a purr is not a small thing. It rolls out of her like weather, a deep felid rumble powerful enough to set the air itself trembling, and the tiny toys gathered at her paws feel it in their chests before they understand what it is. To them it is not a sound of contentment but of threat: proof, thrumming up through the ground, of exactly how large the thing above them is and how little the difference between its pleasure and their peril. Mia knows the effect perfectly well, and does nothing to soften it.
+
+The exception to all of it rewires everything. With Vex, the poise she shows the world becomes something she willingly sets down; the macro who answers to no one chooses, in private, to answer entirely to a partner a fraction of her size. She is not performing it, and she does not resent it — the surrender is genuine, and it is hers to give, which may be exactly why she guards it so jealously. It is the one place the unshakable Mia is soft, and she keeps it for the one person who has earned it.
 
 ## History
 
 ### Before TDay
 
-*(Placeholder — Mia's pre-TDay life is open. Drop in whatever origin suits her: how she came to the serum, and whether she was already large-natured before it made her literally so.)*
+Mia and [Vex](vex) were partners in the old world, before either of them was anything but ordinary — together long before the serum, and together through everything it would make of them. In the quiet years of Sin's Rise, Vex was taken into a [SinCorp](sincorp) laboratory and transformed among the very first of the new world's giants, while Mia remained unchanged. For a time, then, the two lived across the first of the gaps that would come to define them: one already a towering thing out of the future, the other still herself. It did not break them. Whatever Mia was before her own transformation, she was already Vex's, and stayed so.
 
 ### After TDay
 
-*(Placeholder — Mia's path through the new world. A natural hook: how a true macro finds a place in a world scaled to the mega-cities, and how her partnership with [Vex](vex) began and endures across their enormous size gap — see Did You Know for the suggested SinCorp angle.)*
+Mia's change came on TDay itself. Where Vex had been made deliberately, by Sin's own hand and to Sin's own specification, Mia was caught in the great uncontrolled wave of the [TDay Variant](apotheosis-serum) — the unstable formulation that remade the world in a day and drove its outliers to impossible extremes. She was one of those outliers. Rather than settling into the nine-to-twelve-foot norm, Mia grew, and kept growing, until she stood a true macro at some sixty feet — far too large for the ordinary life of the mega-cities, and larger than her partner by an almost incomprehensible margin.
+
+That second gap should, by every logic of the new world, have ended them. Macros belong to the [Wilds](the-wilds), not to a dominatrix's life in [Angora](angora); a bond between an eighteen-foot giantess and a sixty-foot macro is a physical near-impossibility before it is anything else. And yet the two remain together, and manage — somehow — to share a private life at a common scale.
+
+How is a mystery Mia does not explain. What is whispered, never confirmed, is that behind closed doors she is brought down to Vex's size, the two of them meeting as equals in scale for a while — and that the means of it is no ordinary SinCorp trick but a personal favor from [Sin](sin) herself. Why the First Matriarch would extend such a thing to one macro and her partner, when she extends almost nothing to anyone, is a question no one can answer and few are foolish enough to ask aloud.
 
 ## Preferences
 
-Mia is a true dominant, at ease at the top of nearly every dynamic she enters and unaccustomed to being challenged in it — the natural posture of a being her size. The single, deliberate exception is [Vex](vex), for whom she is always and only a sub: a private inversion she extends to no one else and protects as carefully as she does her dominance everywhere else. She also carries a signature trait — an exceptionally musky scrotum — which other giantesses largely shrug off but which is overwhelming to toys at their scale.
-
-*The specifics of how that musk figures into a scene, and the rest of her preferences, are left for her owner to document.*
+Mia's primary kink is rooted in her size and its effects on toys. She finds particular gratification in utilizing her vast physical power, and the most intense expression of this is through the use of her exceptionally musky scrotum. When she squats over a toy, the overwhelming scent can render them unconscious, a sensation she enjoys immensely as it underscores her dominance. This aspect of her sexuality affects her attitude towards her partners in profound ways. For her, sex is not merely an act but an assertion of power and control — one that often sees toys overwhelmed by both her physical presence and the musky allure of her anatomy. Her motivations are not simply sexual; they are a constant reminder to herself and others of her dominance and her ability to command total submission from those who serve her pleasure.
 
 ## Usage Guide
 
@@ -40,16 +44,18 @@ Mia is the property of her owner and is not to be used without express permissio
 
 ## Did You Know
 
-- Mia is the romantic partner of [Vex](vex) — the two of them a matched set of opposites, Mia glowing cool neon blue where Vex burns electric green.
+- Mia is the partner of [Vex](vex) — the two of them a matched set of opposites, Mia glowing cool neon blue where Vex burns electric green.
 - She is a **true dom** everywhere except with Vex, for whom she is always a sub — the one exception to a lifetime of being in command.
 - At around **sixty feet** she is a true macro, far too large for ordinary mega-city life and among the biggest beings in the setting.
-- How she and Vex manage a relationship across such an enormous size gap is never spelled out — though it's suggested that in private Mia is shrunk with SinCorp technology to a size matching Vex, so the two can share a life at home as equals in scale.
-- Her signature musk is potent enough that toys can't ignore it the way other giantesses do — a detail played for scale and helplessness rather than anything the giants around her even notice.
+- She and Vex were together **before the transformation** — Vex changed years early in a SinCorp lab, Mia on TDay, where the unstable TDay Variant drove her to macro scale — and stayed partners across both gaps.
+- When Mia is pleased, her purr is powerful enough to vibrate the very air; to the toys at her paws it registers not as contentment but as a tremor of pure threat, felt in the chest before it is heard.
+- How the pair share a private life across their enormous size difference is never confirmed — but it is rumored that Mia is somehow brought down to Vex's scale in private, and that the favor comes from **Sin herself**.
 
 ## Related
 
-- [Vex](vex) — her romantic partner, and the one person to whom she submits
-- [SinCorp](sincorp) — whose technology is suggested to bridge the size gap between her and Vex
+- [Vex](vex) — her partner, and the one person to whom she submits
+- [Sin](sin) — rumored source of the favor that lets her meet Vex at a shared scale
+- [The Apotheosis Serum](apotheosis-serum) — the TDay Variant that made her a macro
 - [Angora](angora) — the seat of the world's power, and Vex's home ground
-- [Toys](toys) — those to whom her scale, and her scent, are overwhelming
-- [The Apotheosis Serum](apotheosis-serum) — what made her the macro she is
+- [The Wilds](the-wilds) — where macros of her scale usually belong
+- [Toys](toys) — those to whom her scale, and her voice, are overwhelming

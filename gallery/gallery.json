@@ -3499,5 +3499,40 @@
     "universe_date": null,
     "canonical": false,
     "relates_to": []
+  },
+  {
+    "id": 149,
+    "type": "comic",
+    "title": "Syndication",
+    "artist": "MistyMorning",
+    "coverImage": null,
+    "pages": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562825/01_z9rxii.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562827/02_dxervf.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562829/03_k8jafo.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562831/04_cmxarm.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562832/05_bcqj7p.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562835/06_bz59hb.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562837/07_xvl7ip.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562840/08_ijmaaw.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1783562842/09_sfgqfz.webp"
+    ],
+    "characters": [
+      
+    ],
+    "tags": [
+      "noncon",
+      "gore"
+    ],
+    "lore": [
+      "apotheosis-serum"
+    ],
+    "synopsis": null,
+    "date": "2023-10",
+    "universe_date": 0,
+    "canonical": true,
+    "relates_to": [
+      
+    ]
   }
 ]

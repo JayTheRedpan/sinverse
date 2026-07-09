@@ -35,7 +35,7 @@ TDay is the anchor of the Sinverse timeline. It is T±0 — the moment everythin
 - [SinCorp](sincorp) — the organization that executed it
 - [The Apotheosis Serum](apotheosis-serum) — the weapon used
 - [The Mega-Cities](mega-cities) — what was built in its wake
-- [Pre-TDay](era-pre-tday) — the era leading up to this moment
+- [Sins-Rise](era-sins-rise) — the era leading up to this moment
 - [Post-Apotheosis](era-post-apotheosis) — the era that followed
 
 ## Did You Know
