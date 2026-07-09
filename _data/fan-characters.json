@@ -58,7 +58,7 @@
     "wiki": "vex",
     "faction": [],
     "transformed_by": "Apotheosis Serum",
-    "canonical": true,
+    "canonical": false,
     "anatomy": {
       "breasts": true,
       "bustSize": "d",
@@ -101,7 +101,7 @@
     "wiki": "mia",
     "faction": [],
     "transformed_by": "Apotheosis Serum",
-    "canonical": true,
+    "canonical": false,
     "anatomy": { "breasts": true, "bustSize": "d", "penis": true, "vag": false, "penisType": "equine" },
     "role": [],
     "class": "Giantess",
