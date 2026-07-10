@@ -141,5 +141,13 @@
     "id": "era-project-sylph",
     "label": "Project Sylph",
     "section": "Eras"
-  }
+  },
+  { "id": "the-overgrown", "label": "The Overgrown", "section": "Wilds Bestiary", "group": "Overview" },
+  { "id": "grazers",       "label": "Grazers",       "section": "Wilds Bestiary", "group": "Fauna" },
+  { "id": "snarebloom",    "label": "Snarebloom",    "section": "Wilds Bestiary", "group": "Flora" },
+  { "id": "the-transformed", "label": "The Transformed",             "section": "Concepts", "group": "The Serum & Transformation" },
+  { "id": "reproduction",    "label": "Reproduction & the Population","section": "Concepts", "group": "Society" },
+  { "id": "macro",           "label": "Macro",                        "section": "Concepts", "group": "The Serum & Transformation" },
+  { "id": "wild-toys",       "label": "Wild Toys",                    "section": "Concepts", "group": "Society" },
+  { "id": "life-of-a-giantess",  "label": "Life of a Giantess",           "section": "Concepts", "group": "Society" }
 ]

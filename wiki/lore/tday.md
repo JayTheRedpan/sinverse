@@ -15,7 +15,7 @@ In the weeks prior to TDay, SinCorp had quietly positioned itself across global 
 
 Within hours, women across the world began to change.
 
-The transformation was not subtle. Bodies swelled and grew. In most cases the process took minutes. Clothing tore. Buildings collapsed as newly minted giantesses stumbled through streets built for a smaller world. The empathy suppressant took hold alongside the growth, and many of the Transformed — disoriented, aroused, and no longer particularly concerned with the wellbeing of those around them — acted accordingly.
+The transformation was not subtle. Bodies swelled and grew. In most cases the process took minutes. Clothing tore. Buildings collapsed as newly minted giantesses stumbled through streets built for a smaller world. The empathy suppressant took hold alongside the growth, and many of [the Transformed](the-transformed) — disoriented, aroused, and no longer particularly concerned with the wellbeing of those around them — acted accordingly.
 
 ## The Chaos Period
 
@@ -25,7 +25,7 @@ The Chaos lasted approximately six weeks before the dominant Transformed began a
 
 ## Legacy
 
-TDay is the anchor of the Sinverse timeline. It is T±0 — the moment everything changed. For the Transformed, it is often spoken of with reverence, even celebration. For toys and Resistance members, it is a wound that never fully closes.
+TDay is the anchor of the Sinverse timeline. It is T±0 — the moment everything changed. For the Transformed, it is often spoken of with reverence, even celebration. For [toys](toys) and Resistance members, it is a wound that never fully closes.
 
 *T±0 is not simply a date. It is the border between two entirely different worlds.*
 
@@ -42,6 +42,6 @@ TDay is the anchor of the Sinverse timeline. It is T±0 — the moment everythin
 
 - The entire TDay dispersal was completed in under six hours — a logistical operation years in the making, executed in a single morning.
 - No warning was given. SinCorp had positioned its dispersal systems as routine infrastructure upgrades in the months prior.
-- Historians within the Resistance estimate that fewer than 3% of those susceptible to the serum worldwide were unexposed on TDay itself. The rest were transformed within 48 hours.
+- Historians within [the Resistance](the-resistance) estimate that fewer than 3% of those susceptible to the serum worldwide were unexposed on TDay itself. The rest were transformed within 48 hours.
 - The word "TDay" was coined not by SinCorp, but by a toy journalist who survived the first week. Sin later said she found it apt.
 - Some of the Transformed do not remember the hours of their transformation at all. Others remember every second. Both groups are told this is normal.

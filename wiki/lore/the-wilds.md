@@ -11,13 +11,13 @@ The Wilds are everything that is not a mega-city — and that is very nearly the
 
 ## A World Overgrown
 
-The Wilds are a byproduct of TDay. As the unstable [TDay Variant](apotheosis-serum) of the serum permeated the world — through water, air, and soil — it did not stop at the women it transformed. It saturated the living world itself, and nature answered the only way it could: it grew.
+The Wilds are a byproduct of [TDay](tday). As the unstable [TDay Variant](apotheosis-serum) of the serum permeated the world — through water, air, and soil — it did not stop at the women it transformed. It saturated the living world itself, and nature answered the only way it could: it grew.
 
 It did not merely reclaim the land the old world had abandoned. It reclaimed it in monstrous proportions. Trees climbed to impossible heights, their canopies knitting into roofs so dense that whole regions of the Wilds lie in permanent twilight, the sun never reaching the forest floor. The bones of the old world — its cities, roads, and infrastructure — are still down there, collapsed and overgrown, slowly being swallowed. The Wilds are not wilderness in the gentle sense. They are a ruined world reasserting itself, grown vast and wrong, over the corpse of the one that came before.
 
-## Monstrous Life
+## The Overgrown
 
-What grew in the Wilds did not just grow large. Much of it grew *hungry*.
+What grew in the Wilds did not just grow large. Much of it grew *hungry*. Collectively, the monstrous flora and fauna of the Wilds are known as **[the Overgrown](the-overgrown)** — everything the serum's [TDay Variant](apotheosis-serum) swelled to impossible, and often predatory, scale. They have their own full accounting in the [bestiary](the-overgrown); what follows is the short of it.
 
 The flora is the quieter horror. Plants swelled to enormous size, and some crossed a line no plant should — turning predatory, learning to feed on the warm-blooded things that move through them. The toys of the Wilds are a favoured food source, and the manner of it is its own cruelty: a predatory growth will seize a toy in its vines and feed at leisure, violating him in the process as readily as it consumes him, a slow death with no malice behind it and no one to appeal to.
 
@@ -27,17 +27,17 @@ And the Wilds are still getting worse. Every mega-city's [SinCorp](sincorp) bran
 
 ## Who Lives There
 
-**Macro Transformed.** Women who grew past roughly 100 feet cannot fit within mega-city infrastructure, and many carry the cognitive damage that comes with extreme scale. They claim vast territories in the Wilds and range across them as apex predators — the largest things in a land of large things.
+**[Macro](macro) Transformed.** Women who grew past roughly 100 feet cannot fit within mega-city infrastructure, and many carry the cognitive damage that comes with extreme scale. They claim vast territories in the Wilds and range across them as apex predators — the largest things in a land of large things.
 
-**The ferals.** Rarer and stranger: Transformed whose minds the serum destroyed rather than hardened, left to instinct alone. SinCorp marks the ground they roam as off-limits even to its own people. They are hazards, not residents — things to be avoided rather than reasoned with.
+**The [ferals](ferals).** Rarer and stranger: Transformed whose minds the serum destroyed rather than hardened, left to instinct alone. SinCorp marks the ground they roam as off-limits even to its own people. They are hazards, not residents — things to be avoided rather than reasoned with.
 
-**Wild Toys.** And then there are the toys: males who fled the cities or were never caught, surviving in the one place the Transformed do not directly rule.
+**[Wild Toys](wild-toys).** And then there are the toys: males who fled the cities or were never caught, surviving in the one place [the Transformed](the-transformed) do not directly rule.
 
 ## The Wild Toys
 
-For a toy, the Wilds are a devil's bargain. By every practical measure they are far, *far* more dangerous than any mega-city — the predatory growths, the building-sized fauna, the macro giantesses, the ferals, the loosed experiments, all of it indifferent or hostile. A toy in a city, however degraded his status, is at least valuable property in a managed environment. A toy in the Wilds is prey in an open one.
+For a toy, the Wilds are a devil's bargain. By every practical measure they are far, *far* more dangerous than any mega-city — the [Overgrown](the-overgrown) — predatory growths, building-sized fauna, and loosed experiments alike — the macro giantesses, and the ferals, all of it indifferent or hostile. A toy in a city, however degraded his status, is at least valuable property in a managed environment. A toy in the Wilds is prey in an open one.
 
-And yet the Wilds are also the only place a toy can belong to himself. There is no Matriarch out here, no owner, no SinCorp registry — only survival, and the freedom that comes with it. Wild Toys take that bargain in different ways. Some stay constantly on the move, never rooting long enough to be found. Some gather into small villages, scratching out a fragile peace in defensible corners and hoping to go unnoticed. And there are persistent rumours of something greater — a large, established toy settlement called [**Bastion**](bastion), spoken of as proof that toys can do more than merely survive out here. Whether Bastion is a real place, a scattering of exaggerations, or a story the Wild Toys tell to keep hope alive is a question for another telling.
+And yet the Wilds are also the only place a toy can belong to himself. There is no [Matriarch](matriarchs) out here, no owner, no SinCorp registry — only survival, and the freedom that comes with it. Wild Toys take that bargain in different ways. Some stay constantly on the move, never rooting long enough to be found. Some gather into small villages, scratching out a fragile peace in defensible corners and hoping to go unnoticed. And there are persistent rumours of something greater — a large, established toy settlement called [**Bastion**](bastion), spoken of as proof that toys can do more than merely survive out here. Whether Bastion is a real place, a scattering of exaggerations, or a story the Wild Toys tell to keep hope alive is a question for another telling.
 
 The word *toy* itself changes meaning out here. Applied from above as a label of ownership, it is adopted below as something between a name and a declaration — an acknowledgement of what the world calls them, and a refusal to be reduced to it.
 
@@ -45,11 +45,11 @@ The word *toy* itself changes meaning out here. Applied from above as a label of
 
 The cities have not forgotten the toys who got away. Wild Toys are considered among the most valuable catches in the entire trade — a toy who survived the Wilds is hardier, warier, and crucially *unclaimed*, belonging to no one until someone brings him in. Hunting them is a specialised and dangerous profession, and it has its own organised practitioners: the [**Huntresses**](the-paws), known across the Wilds as **the Paws**, an outfit that ranges out from the cities specifically to capture wild toys and haul them back to market.
 
-The Paws are distinct from the casual sport-hunters of the mega-cities. They are professionals who go *into* the Wilds on purpose, armed with SinCorp's capture equipment and willing to brave everything the country can throw at them for a quarry that commands a premium. Their existence is what makes the Wild Toys' freedom a hunted one: a Wild Toy contends not only with the monstrous environment and the apex predators already out there, but with a third threat that comes looking for him by trade.
+The Paws are distinct from the casual sport-hunters of the mega-cities. They are professionals who go *into* the Wilds on purpose, armed with SinCorp's capture equipment and willing to brave everything the country can throw at them for a quarry that commands a premium. Their existence is what makes the Wild Toys' freedom a hunted one: a Wild Toy contends not only with the [Overgrown](the-overgrown) and the apex predators already out there, but with a third threat that comes looking for him by trade.
 
 ## Danger
 
-The Wilds are not safe and were never meant to be. The environment alone kills constantly; the macro Transformed and ferals kill deliberately or carelessly; the loosed experiments kill in ways no one has catalogued; and the Paws come hunting on top of all of it. Wild Toys who last long enough develop skills no city toy ever needs — tracking, concealment, reading the country, and a hard-won sense of which silences mean *run*.
+The Wilds are not safe and were never meant to be. The [Overgrown](the-overgrown) kill constantly and indifferently; the macro Transformed and ferals kill deliberately or carelessly; and the Paws come hunting on top of all of it. Wild Toys who last long enough develop skills no city toy ever needs — tracking, concealment, reading the country, and a hard-won sense of which silences mean *run*.
 
 What the Wilds offer in exchange is the one thing the mega-cities cannot: a life that, however brief and however brutal, is the toy's own.
 

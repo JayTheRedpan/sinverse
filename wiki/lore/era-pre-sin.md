@@ -5,7 +5,7 @@ eyebrow: Era — before T-40
 era: pre-sin
 ---
 
-The world as it was before Sin's discovery — ordinary history, before the Apotheosis Serum existed.
+The world as it was before [Sin](sin)'s discovery — ordinary history, before the Apotheosis Serum existed.
 
 This is the longest era of the Sinverse, encompassing all of recorded history up until the years immediately preceding Sin's breakthrough. To those living in it, it was simply *the world* — anthropomorphic civilisations rising and falling, nations and cultures spread across the globe, with no inkling of the transformation to come.
 

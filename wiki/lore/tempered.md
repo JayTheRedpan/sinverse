@@ -9,13 +9,13 @@ tags: [tempered, empath, apotheosis-serum, the-resistance, bastion, toys, concep
 
 The **Tempered** are the rare exception to the [Apotheosis Serum's](apotheosis-serum) defining effect: women who underwent the full transformation but kept their empathy. A Tempered woman receives everything the serum gives — the size, the strength, the masculine endowment, the bottomless libido — and loses everything it gives *up* except the one thing it is supposed to take first. Where the serum hollows the ordinary Transformed of any capacity to register a male's suffering as something that matters, the Tempered still look at a toy and see a person.
 
-It is not the mercy it sounds like. It is a fault line down the middle of a person — appetite and conscience at full strength, at the same time, with no way to reconcile them — and it makes the Tempered the most quietly tormented beings the new world has produced. They are estimated at fewer than 1 in 400 of the transformed population, and nearly every one of them, sooner or later, finds her way to the [Resistance](the-resistance).
+It is not the mercy it sounds like. It is a fault line down the middle of a person — appetite and conscience at full strength, at the same time, with no way to reconcile them — and it makes the Tempered the most quietly tormented beings the new world has produced. They are estimated at fewer than 1 in 400 of [the transformed](the-transformed) population, and nearly every one of them, sooner or later, finds her way to the [Resistance](the-resistance).
 
 ## What the Tempered Are
 
 In most women, the serum performs a precise and terrible piece of rewiring: it severs empathy directed at males specifically, and wires the void it leaves into the sexual reward system, so that cruelty toward toys is not merely untroubling but actively gratifying. In the Tempered, that reassignment never fully takes hold. The physical transformation proceeds exactly as it does in anyone else — a Tempered woman is as large, as strong, as hung, and as relentlessly driven as any of the apotheosis girls — but her empathy survives intact, extended to toys as much as to other women.
 
-SinCorp's surviving records file the deviation under the clinical name **Empathic Retention**. The women it happens to came to call it being **Tempered** — a word that has stuck, with its sense of something forged in the same fire as the rest but not made brittle by it. In the first years after TDay they were more often called **Empaths**; that older term has since faded from use, though it still surfaces in early accounts.
+[SinCorp](sincorp)'s surviving records file the deviation under the clinical name **Empathic Retention**. The women it happens to came to call it being **Tempered** — a word that has stuck, with its sense of something forged in the same fire as the rest but not made brittle by it. In the first years after [TDay](tday) they were more often called **Empaths**; that older term has since faded from use, though it still surfaces in early accounts.
 
 The condition is not a holdover from the Chaos. It continues to appear, unpredictably, in a tiny fraction of new transformations, and there is no known way to predict or induce it. It simply happens, rarely, to someone — and remakes the trajectory of her entire life in the new world.
 
@@ -29,7 +29,7 @@ Most spend their lives holding the appetite at arm's length — refusing to let 
 
 ## Living Hidden
 
-For a Tempered woman, the new world offers no comfortable place to stand. To live openly as what she is, in a mega-city, is to be marked — and the cities are not safe ground for her in either direction. SinCorp tracks the Tempered as a matter of policy, for reasons it does not publish; a known Empathic-Retention case is a thing the company wants located. And to her own kind she is, at best, an oddity and at worst a problem — a woman who feels for livestock, who will not fully take part in the order her peers regard as natural and right.
+For a Tempered woman, the new world offers no comfortable place to stand. To live openly as what she is, in a [mega-city](mega-cities), is to be marked — and the cities are not safe ground for her in either direction. SinCorp tracks the Tempered as a matter of policy, for reasons it does not publish; a known Empathic-Retention case is a thing the company wants located. And to her own kind she is, at best, an oddity and at worst a problem — a woman who feels for livestock, who will not fully take part in the order her peers regard as natural and right.
 
 So most Tempered hide what they are, passing as ordinary Transformed while quietly refusing the order from within it, and carrying the strain of a performance that never ends. It is an exhausting way to live, and it is much of why the two places that will have them as they truly are — the Resistance and [Bastion](bastion) — exert such a powerful pull.
 
@@ -41,7 +41,7 @@ A Tempered woman is also, bluntly, an asset the Resistance cannot replicate: a g
 
 ## The Tempered at Bastion
 
-The other place a Tempered woman can be herself is [Bastion](bastion), the hidden toy city deep in the Wilds — one of the only places on earth where she can live openly among toys rather than disguised among her own kind. Bastion allows it, and a number of Tempered make their homes there.
+The other place a Tempered woman can be herself is [Bastion](bastion), the hidden toy city deep in [the Wilds](the-wilds) — one of the only places on earth where she can live openly among toys rather than disguised among her own kind. Bastion allows it, and a number of Tempered make their homes there.
 
 But she is never entirely trusted, even there. To many in Bastion a Tempered is a kindness with a fuse on it: a giantess who has, so far, never given in to the appetites the serum built into her, living among the very beings those appetites are aimed at. Most never do give in. The unease that one *might* never quite leaves the room. It is the cruel double-bind of the Tempered condition rendered social — loved and watched in the same breath, welcomed precisely where she is most quietly feared. It is also what makes Bastion the one place in the world where something tender involving a Tempered woman is even thinkable: a careful, hard-won life or romance built in full knowledge of the fault line running through her, and all the more meaningful for it.
 

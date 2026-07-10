@@ -8,13 +8,13 @@ tags: [marisol, mega-cities, matriarchs, toys, location]
 
 ## Overview
 
-Marisol is the newest of the new world's great [mega-cities](mega-cities) — a sun-soaked tropical island given over wholly to pleasure, where the beach never empties and the party never truly ends. Where [Angora](angora) is cold northern order and [Alea Panthera](alea-panthera) is neon gambling-noir, Marisol is the third face of the new world's appetite: warm, indulgent, and endlessly leisurely, a place giantesses travel to in order to bask, drink, dance, and be waited upon beneath a sun that never seems to set on the festivities.
+Marisol is the newest of the new world's great [mega-cities](mega-cities) — a sun-soaked tropical island given over wholly to pleasure, where the beach never empties and the party never truly ends. Where [Angora](angora) is cold northern order and [Alea Panthera](alea-panthera) is neon gambling-noir, Marisol is the third face of the new world's appetite: warm, indulgent, and endlessly leisurely, a place [giantesses](the-transformed) travel to in order to bask, drink, dance, and be waited upon beneath a sun that never seems to set on the festivities.
 
 It is ruled by a single [Matriarch](matriarchs), [Hannah](hannah), and it runs on a simple promise — that here, more than anywhere, a giantess can simply enjoy herself.
 
 ## The Endless Summer
 
-Marisol sits on a tropical island, ringed with white-sand beaches and warm shallows and crowned inland with resorts, open-air clubs, and pleasure-villas built to giantess scale. The weather is perfect with a monotony that feels almost engineered; the days run long and golden, the nights warm and loud with music. Where the old world's beach towns swelled and emptied with the seasons, Marisol's high season never ends. Giantesses come from across the Wilds-spanning distances to lie in the sun, drink at beach bars scaled to their size, dance until the small hours, and indulge every appetite the serum left them — all of it served, fetched, and tended by toys.
+Marisol sits on a tropical island, ringed with white-sand beaches and warm shallows and crowned inland with resorts, open-air clubs, and pleasure-villas built to giantess scale. The weather is perfect with a monotony that feels almost engineered; the days run long and golden, the nights warm and loud with music. Where the old world's beach towns swelled and emptied with the seasons, Marisol's high season never ends. Giantesses come from across [the Wilds](the-wilds)-spanning distances to lie in the sun, drink at beach bars scaled to their size, dance until the small hours, and indulge every appetite the serum left them — all of it served, fetched, and tended by toys.
 
 If Angora is a city you live in and Alea a city you gamble in, Marisol is a city you holiday in. Many of its giantess residents are visitors who came to unwind and simply never left, drawn by the ease of a place where the whole point is to want for nothing.
 

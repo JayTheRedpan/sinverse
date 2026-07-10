@@ -1088,7 +1088,7 @@
   {
     "id": 43,
     "type": "standalone",
-    "title": "Toy Bath Time",
+    "title": "Toy Bathroom Break",
     "author": "CharitysSongbird",
     "summary": null,
     "tags": [
@@ -1096,7 +1096,7 @@
       "micro",
       "watersports"
     ],
-    "file": "stories/toy_bath.md",
+    "file": "stories/toy_bathroom_break.md",
     "date": "2026-07",
     "universe_date": null,
     "canonical": false,

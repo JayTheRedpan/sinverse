@@ -7,7 +7,7 @@ tags: [matriarchs, mega-cities, sin, sincorp, society]
 
 ## Overview
 
-A Matriarch is the ruler of a [mega-city](mega-cities) — a single giantess who holds total authority over one of the new world's island-nations. Where the old world divided power across parliaments, courts, and constitutions, the post-TDay mega-cities concentrate it in one figure. A Matriarch's word is the law of her city, her culture is its culture, and her appetites and convictions shape the lives of everyone within her walls, Transformed and toy alike.
+A Matriarch is the ruler of a [mega-city](mega-cities) — a single giantess who holds total authority over one of the new world's island-nations. Where the old world divided power across parliaments, courts, and constitutions, the post-[TDay](tday) mega-cities concentrate it in one figure. A Matriarch's word is the law of her city, her culture is its culture, and her appetites and convictions shape the lives of everyone within her walls, [Transformed](the-transformed) and toy alike.
 
 There is no Matriarch of the world. Each rules only her own city, and the cities answer to no authority above them — save one. Above every Matriarch stands [Sin](sin), the **First Matriarch**, whose rare word overrides any of theirs.
 

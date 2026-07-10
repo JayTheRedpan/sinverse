@@ -7,13 +7,13 @@ tags: [project-sylph, sin, sincorp, toys, transformation]
 
 ## Overview
 
-**Project Sylph** is a SinCorp initiative headed personally by **Sin** — and the event that marks the Sinverse's transition into a new era. Where the Apotheosis Serum remade the world in a single uncontrolled surge, Sylph is deliberate: a directed program to engineer an entirely new class of being, sitting between the towering giantesses and the toys who serve them.
+**Project Sylph** is a [SinCorp](sincorp) initiative headed personally by **[Sin](sin)** — and the event that marks the Sinverse's transition into a new era. Where the [Apotheosis Serum](apotheosis-serum) remade the world in a single uncontrolled surge, Sylph is deliberate: a directed program to engineer an entirely new class of being, sitting between the towering giantesses and the [toys](toys) who serve them.
 
 Sylphs are the **rarest kind of being in the setting** — and, unlike every other rung of the new order, kept that way on purpose.
 
 ## The middle class
 
-Before Sylph, the post-TDay order was starkly two-tiered: the Transformed giantesses above, and the toys below. Project Sylph was conceived to fill the space between them — to create a **lieutenant class**, a rung of authority answerable to the giantesses and set over the toys.
+Before Sylph, the post-[TDay](tday) order was starkly two-tiered: [the Transformed](the-transformed) giantesses above, and the toys below. Project Sylph was conceived to fill the space between them — to create a **lieutenant class**, a rung of authority answerable to the giantesses and set over the toys.
 
 The need was practical as much as structural. Many giantesses had simply **outgrown** the toys available to them; an ordinary toy could no longer satisfy a partner of immense scale. And the toy population needed managing. Sylph answered both problems at once with a single new kind of servant.
 
@@ -59,7 +59,7 @@ Only once all three are satisfied is a candidate fully a Sylph. The final test i
 
 ## Loyalty
 
-Because a Sylph is chosen for genuine belief rather than bound to service by chemistry, and because the position is a rare privilege earned through a patron's sponsorship and Sin's own approval, a **Sylph defecting is very nearly unheard of** — if it has ever happened at all. Where a **Tempered** carries a conflict the serum forced on her against her will, a Sylph carries none: he wanted this, was selected precisely *because* he wanted it, and owes his elevation out of lowliness to the very order a defection would betray. He has everything a toy is denied, and every reason to keep it.
+Because a Sylph is chosen for genuine belief rather than bound to service by chemistry, and because the position is a rare privilege earned through a patron's sponsorship and Sin's own approval, a **Sylph defecting is very nearly unheard of** — if it has ever happened at all. Where a **[Tempered](tempered)** carries a conflict the serum forced on her against her will, a Sylph carries none: he wanted this, was selected precisely *because* he wanted it, and owes his elevation out of lowliness to the very order a defection would betray. He has everything a toy is denied, and every reason to keep it.
 
 ## Significance
 

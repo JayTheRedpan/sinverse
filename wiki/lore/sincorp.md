@@ -7,7 +7,7 @@ tags: [sincorp, sin, mega-cities, science, organization]
 
 ## Overview
 
-SinCorp is the organization Sin built around herself — first the instrument of TDay, now the closest thing the post-TDay world has to a global institution. It began as a single bio-research laboratory and became the engine of an apocalypse; today it operates in every mega-city at once, the quiet infrastructure beneath the new order. Publicly it supplies the things the ruling class cannot do without: the tools of the hunt, the modifications that keep toys usable, the water in the pipes. Privately it pursues whatever Sin is curious about that week.
+SinCorp is the organization Sin built around herself — first the instrument of TDay, now the closest thing the post-TDay world has to a global institution. It began as a single bio-research laboratory and became the engine of an apocalypse; today it operates in every [mega-city](mega-cities) at once, the quiet infrastructure beneath the new order. Publicly it supplies the things the ruling class cannot do without: the tools of the hunt, the modifications that keep [toys](toys) usable, the water in the pipes. Privately it pursues whatever Sin is curious about that week.
 
 Its stated purpose is biological research and urban services. Its actual purpose is whatever Sin decides it is — and she rarely explains.
 
@@ -39,17 +39,17 @@ When the Chaos subsided and the mega-cities rose, SinCorp rose with them. Today 
 
 **Urban infrastructure.** SinCorp holds the contracts for water, power, and logistics in most mega-cities. It controls the water supply of nearly every major city — a fact that is not a coincidence, and a dependency Sin has never needed to exercise openly to benefit from.
 
-**The tools of the hunt.** The huntresses who range the mega-cities and the Wilds rely on SinCorp's catalogue of capture equipment — the feralizers, pheromone weapons, shrink technology, and other novelty armaments developed to add sport to running down toys. Useless old-world weapons were replaced by an entire industry of purpose-built ones, and SinCorp supplies it.
+**The tools of the hunt.** The [huntresses](the-paws) who range the mega-cities and [the Wilds](the-wilds) rely on SinCorp's catalogue of capture equipment — the feralizers, pheromone weapons, shrink technology, and other novelty armaments developed to add sport to running down toys. Useless old-world weapons were replaced by an entire industry of purpose-built ones, and SinCorp supplies it.
 
 **Toy modifications.** The single most visible pillar of SinCorp's public business: the [catalogue of enhancements](toy-modifications) that make toys able to survive, serve, and satisfy partners many times their size. Bottomless, Keepsake, Second Wind, the whole product line — these are SinCorp's, sold openly to any giantess who can pay, and the practical reason the size gap that defines the new world is survivable at all.
 
-**Reproduction.** With female reproductive anatomy eliminated by the serum and the toy population in steep decline, SinCorp's vat-growing technology is what keeps the world populated at all — tube-grown toys to replenish the supply, occasionally new girls, and the modifications that let toys themselves carry pregnancies. The continuation of the species runs through SinCorp's laboratories.
+**[Reproduction](reproduction).** With female reproductive anatomy eliminated by the serum, and the toy population having collapsed after TDay before SinCorp's vat-growing stabilized it, that same technology is what keeps the world populated at all — tube-grown toys that hold the supply steady against bottomless demand, occasionally new girls, and the modifications that let toys themselves carry pregnancies. The continuation of the species runs through SinCorp's laboratories.
 
 ## After TDay: The Hidden Work
 
 Everything above is the part SinCorp will admit to. It is not the part that matters most.
 
-Behind the infrastructure contracts and the product catalogue, every mega-city's SinCorp laboratory pursues its own branch of research, and the nature of that research is not disclosed to anyone — not the Matriarchs, not the public, often not other SinCorp divisions. The visible business of water and weapons and modifications is, in large part, the cover and the funding stream for whatever Sin actually wants to know.
+Behind the infrastructure contracts and the product catalogue, every mega-city's SinCorp laboratory pursues its own branch of research, and the nature of that research is not disclosed to anyone — not the [Matriarchs](matriarchs), not the public, often not other SinCorp divisions. The visible business of water and weapons and modifications is, in large part, the cover and the funding stream for whatever Sin actually wants to know.
 
 The flagship of that hidden work is [**Project Sylph**](project-sylph) — Sin's personal initiative to engineer an entirely new class of being between the giantesses and the toys, using a serum reworked to key off femininity rather than womanhood. Sylph is only the program the world has caught a glimpse of. The rest remains behind doors that do not appear on any city's filed blueprints. SinCorp's experiments are the source of most of the strange, the unexplained, and the genuinely dangerous in the post-TDay world; when something inexplicable surfaces, SinCorp research is very often the answer, even when no one can prove it.
 
@@ -57,7 +57,7 @@ The flagship of that hidden work is [**Project Sylph**](project-sylph) — Sin's
 
 SinCorp operates through a network of regional divisions, each nominally reporting to a central body in Angora but in practice running with significant autonomy — regional directors interpret Sin's broad directives and execute them as they see fit, so long as results arrive. Promotion is fast for those who produce. The consequences of failure are not advertised, and do not need to be.
 
-The company has no public-facing leadership other than Sin herself. There are no press releases, no earnings calls, no external board. It simply operates, and the world accommodates it. It employs more Transformed researchers than any other organization in existence, alongside a significant number of toys in administrative and service roles — who are never permitted inside the research facilities.
+The company has no public-facing leadership other than Sin herself. There are no press releases, no earnings calls, no external board. It simply operates, and the world accommodates it. It employs more [Transformed](the-transformed) researchers than any other organization in existence, alongside a significant number of toys in administrative and service roles — who are never permitted inside the research facilities.
 
 ## Relationship to the Mega-Cities
 
