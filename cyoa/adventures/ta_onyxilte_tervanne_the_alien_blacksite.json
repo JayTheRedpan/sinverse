@@ -206,7 +206,7 @@
     "choices": [
       {
         "text": "I guess there's only one way to go, to research wing, if its open...",
-        "nextId": null
+        "nextId": 15
       }
     ],
     "author": "SpearmintMagpie",
@@ -219,7 +219,7 @@
     "choices": [
       {
         "text": "Level 4 Hazard labs?",
-        "nextId": 15
+        "nextId": null
       },
       {
         "text": "Level 6 Security?",
