@@ -217,5 +217,45 @@
 
     ],
     "contributor": "CGK"
+  },
+  {
+    "id": 7,
+    "name": "Alevia",
+    "active": true,
+    "species": ["Green Dragon"],
+    "pronouns": "she/her",
+    "height": 317,
+    "height_correction": 1,
+    "headroom_pct": 2,
+    "weight": 24531,
+    "length": 87,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783690031/alevia_height_zqluek.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783690033/alevia_length_dig1q6.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783690035/alevia_profile_bkbsuh.webp",
+    "wiki": "alevia",
+    "faction": [
+      "Alaric Labs"
+    ],
+    "transformed_by": "Apotheosis Serum",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "canine" 
+    },
+    "role": [
+      "First Huntress"
+    ],
+    "class": "Giantess",
+    "relationships": [
+      { 
+        "name": "Nestle", 
+        "type": "Seneschal", 
+        "note": "Transformed Sylph, relationship pre T-Day" 
+      }
+    ]
   }
 ]
