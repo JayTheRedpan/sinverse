@@ -19,7 +19,7 @@ The toys have supplied their own answers, and the two that have stuck tell you e
 
 ## What It Handles
 
-R-Labs is where bulk toys are sorted, and a toy sorted into R-Labs has fallen out of every more valuable category. He is not a companion, not a useful servant, not a wild-caught prize, not deemed fit for any of the roles a city toy might occupy. He is overstock — a body in a population that, for all its decline, still produces more low-grade males than the economy above has any use for.
+R-Labs is where bulk toys are sorted, and a toy sorted into R-Labs has fallen out of every more valuable category. He is not a companion, not a useful servant, not a wild-caught prize, not deemed fit for any of the roles a city toy might occupy. He is overstock — a body in a population large enough that, for all the demand above it, it still produces more low-grade males than the economy has any use for.
 
 The division is, by turns, three things at once, and a toy who enters it can meet any of the three.
 
@@ -41,7 +41,7 @@ For the toys inside, it is existence narrowed to almost nothing — diminished p
 
 The toys in the bins are tended, and it is who tends them that gives R-Labs its particular edge. The caretakers of the shrunken are, very often, [Sylphs](project-sylph) — the lieutenant class SinCorp engineered from toys, set here to mind the tiny, reduced remnants of what they themselves once were.
 
-It is not a gentle posting, and most who hold it are not gentle in it. A Sylph occupies a strange, narrow rung in the order: lifted out of toyhood but still beneath every giantess, granted authority but never security, forever proving she belongs above the things she came from. And there is no surer way to feel un-toy-like than to stand, enormous and in command, over the smallest and most wretched toys in existence — former brethren reduced to specks in a bin, entirely at her mercy. Many R-Labs Sylphs lord exactly that over their charges: cold, contemptuous, or outright cruel to the tiny men beneath them, putting as much distance as they can between what they are now and what lies teeming in the trays, precisely because that distance is so thin. The caretaker who is harshest with the bins is often the one most afraid of how recently he might have been in one.
+It is not a gentle posting, and most who hold it are not gentle in it. A Sylph occupies a strange, narrow rung in the order: lifted out of toyhood but still beneath every [giantess](the-transformed), granted authority but never security, forever proving she belongs above the things she came from. And there is no surer way to feel un-toy-like than to stand, enormous and in command, over the smallest and most wretched toys in existence — former brethren reduced to specks in a bin, entirely at her mercy. Many R-Labs Sylphs lord exactly that over their charges: cold, contemptuous, or outright cruel to the tiny men beneath them, putting as much distance as they can between what they are now and what lies teeming in the trays, precisely because that distance is so thin. The caretaker who is harshest with the bins is often the one most afraid of how recently he might have been in one.
 
 ## Related
 
@@ -50,7 +50,7 @@ It is not a gentle posting, and most who hold it are not gentle in it. A Sylph o
 - [Life of a Toy in the Cities](life-of-a-toy) — the tiers above the fate R-Labs represents
 - [SinCorp Toy Modifications](toy-modifications) — the shrinking technology that fills the bins
 - [Project Sylph](project-sylph) — the class that staffs R-Labs as caretakers
-- [The Wilds](the-wilds) — source of the prized wild toys R-Labs' stock will never be
+- [The Wilds](the-wilds) — source of the prized [wild toys](wild-toys) R-Labs' stock will never be
 
 ## Did You Know
 
@@ -59,4 +59,4 @@ It is not a gentle posting, and most who hold it are not gentle in it. A Sylph o
 - The division's stock is stored shrunk, packed en masse into clear bins: hundreds of tiny living men to a container, a whole surplus population reduced to stackable inventory.
 - Being "sent to R-Labs" is one of the most effective threats in the cities. Most toys never see the place — they only know it as the fate reserved for the worthless.
 - The shrunken toys are frequently tended by Sylphs — former toys themselves — and those caretakers are often the cruelest figures a bin-toy will ever know, lording a station they are themselves only barely secure in.
-- R-Labs handles the toys the rest of the economy rejects, which makes it a quiet measure of just how disposable the low end of the toy population has become — even amid a worldwide scarcity.
+- R-Labs handles the toys the rest of the economy rejects, which makes it a quiet measure of just how disposable the low end of the toy population has become — even as sound toys stay in constant demand.

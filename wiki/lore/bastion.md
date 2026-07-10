@@ -33,7 +33,7 @@ Bastion is a true settlement, not a hideout — and the proof of that is who cal
 
 **Unaltered women.** Most strikingly, Bastion is home to women the serum never took — those rare females who escaped transformation and live here free, among the toys, as neighbours and partners and family rather than overlords. Their presence is part of what makes Bastion a *city* rather than a refuge: it is a place where ordinary life, the kind the old world had, persists in defiance of everything outside.
 
-**The Tempered.** And, more uneasily, some of the [Tempered](the-resistance) live in Bastion as well — transformed women who kept their empathy and want no part of the new order. Bastion is one of the only places on earth where a Tempered woman can live openly among toys rather than hiding what she is. But she is never entirely trusted. To many in Bastion a Tempered is a kindness with a fuse on it — a giantess who has, so far, never given in to the appetites the serum built into her, living among the very beings those appetites are aimed at. Most never do give in. The unease that they *might* never fully leaves the room, and the Tempered who make their homes in Bastion carry the weight of being loved and watched in the same breath.
+**The [Tempered](tempered).** And, more uneasily, some of the [Tempered](the-resistance) live in Bastion as well — [transformed](the-transformed) women who kept their empathy and want no part of the new order. Bastion is one of the only places on earth where a Tempered woman can live openly among toys rather than hiding what she is. But she is never entirely trusted. To many in Bastion a Tempered is a kindness with a fuse on it — a giantess who has, so far, never given in to the appetites the serum built into her, living among the very beings those appetites are aimed at. Most never do give in. The unease that they *might* never fully leaves the room, and the Tempered who make their homes in Bastion carry the weight of being loved and watched in the same breath.
 
 ## A Place Where Tenderness Is Possible
 
@@ -51,7 +51,7 @@ Bastion is also believed to be the seed of much of the free Wilds. The persisten
 
 Whether or not a toy has ever heard the name, Bastion is what every toy is reaching for — the place where the running stops. It is the answer to the question the new world is built to make unanswerable: *is there anywhere a toy can simply live?* Bastion says yes. Quietly, deniably, never quite confirmed — but yes.
 
-That is the whole of its meaning and the whole of its danger. As long as Bastion is a rumour, it is the hope that keeps the Wild Toys moving and the Resistance working. The day it becomes a known place on a map is the day the new world comes for it. And so it remains exactly what it has always been: the city that may not exist, and had better not, for as long as it possibly can.
+That is the whole of its meaning and the whole of its danger. As long as Bastion is a rumour, it is the hope that keeps the [Wild Toys](wild-toys) moving and the Resistance working. The day it becomes a known place on a map is the day the new world comes for it. And so it remains exactly what it has always been: the city that may not exist, and had better not, for as long as it possibly can.
 
 ## Related
 

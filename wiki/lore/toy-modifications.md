@@ -7,9 +7,9 @@ tags: [toy-modifications, sincorp, sin, toys, science, transformation]
 
 ## Overview
 
-As the giantesses grew, so did the gap between what they wanted and what an ordinary toy could survive. A partner thirty, sixty, a hundred times your size is not a danger you can simply be careful around — and so **SinCorp** built a business out of closing that gap. Its catalogue of **Toy Modifications** is the quiet engineering that makes the new world *function*: the enhancements a giantess can have installed in a toy so that he can better serve, endure, and please the ruling class.
+As the [giantesses](the-transformed) grew, so did the gap between what they wanted and what an ordinary toy could survive. A partner thirty, sixty, a hundred times your size is not a danger you can simply be careful around — and so **SinCorp** built a business out of closing that gap. Its catalogue of **Toy Modifications** is the quiet engineering that makes the new world *function*: the enhancements a giantess can have installed in a toy so that he can better serve, endure, and please the ruling class.
 
-Marketed with SinCorp's trademark blend of the clinical and the suggestive, each modification carries a brisk product name on the order form and a far more telling one on the lips of the women who buy them. Together they form the technical backbone of toy ownership in the post-TDay world.
+Marketed with SinCorp's trademark blend of the clinical and the suggestive, each modification carries a brisk product name on the order form and a far more telling one on the lips of the women who buy them. Together they form the technical backbone of toy ownership in the post-[TDay](tday) world.
 
 ## The catalogue
 
@@ -50,12 +50,12 @@ SinCorp's catalogue runs deeper than its headline products. Among the more commo
 - ***Sweet Nothing*** — alters a toy's body chemistry so that his taste and scent turn pleasing at giantess scale, where an unmodified toy would simply be overwhelming.
 - ***Hot House*** — lets a toy regulate against the heat and pressure of being fully enclosed against a body many times his size; a frequent companion purchase to Last Gasp.
 - ***Encore*** — suppresses a toy's own limits and refractory period, keeping him able to perform on demand for as long as his owner wishes rather than as long as his body would naturally allow.
-- ***Heel*** — a tracking-and-recall implant that lets an owner always locate a toy; particularly valued for micro'd toys who are easily misplaced and Wild Toys prone to running. The name doubles as the command.
+- ***Heel*** — a tracking-and-recall implant that lets an owner always locate a toy; particularly valued for micro'd toys who are easily misplaced and [Wild Toys](wild-toys) prone to running. The name doubles as the command.
 - ***Doll Parts*** — a cosmetic line that renders a toy's skin flawless and pleasingly soft at scale, often bundled with *Bottomless* as a "presentation" package.
 
 ## Origins: from super-soldiers to toys
 
-SinCorp did not begin by selling these. Before TDay — before the serum, before the new order — **Sin funded the company the way many ambitious firms do: on government contracts.** SinCorp's pre-TDay reputation was built on supplying the military with a line of **"super-soldier serums"** promising hardier, faster-healing, more resilient troops.
+SinCorp did not begin by selling these. Before TDay — before the serum, before the new order — **[Sin](sin) funded the company the way many ambitious firms do: on government contracts.** SinCorp's pre-TDay reputation was built on supplying the military with a line of **"super-soldier serums"** promising hardier, faster-healing, more resilient troops.
 
 In truth, those serums were **precursors to the modifications catalogued here** — early, cruder versions of the same science, most directly the ancestor of **Keepsake**. The military believed it was buying battlefield durability. It was, without knowing it, **field-testing the technology that would one day keep toys alive beneath the giantesses.** By the time anyone understood what SinCorp had really been building, the company was already rich, already entrenched, and already most of the way to the world it intended to make.
 

@@ -7,7 +7,7 @@ tags: [angora, sin, sincorp, matriarchs, project-sylph, mega-cities, location]
 
 ## Overview
 
-Angora is the first mega-city, the most powerful, and the unofficial capital of the post-TDay world. It is the seat of [Sin's](sin) authority, the global headquarters of [SinCorp](sincorp), and the standard against which every other [mega-city](mega-cities) measures itself — in scale, in influence, and in the particular, total culture of power that defines life within its walls. If the new world has a centre, it is here. Where Sin is, the world turns.
+Angora is the first mega-city, the most powerful, and the unofficial capital of the post-[TDay](tday) world. It is the seat of [Sin's](sin) authority, the global headquarters of [SinCorp](sincorp), and the standard against which every other [mega-city](mega-cities) measures itself — in scale, in influence, and in the particular, total culture of power that defines life within its walls. If the new world has a centre, it is here. Where Sin is, the world turns.
 
 It is also, in a sense the other cities are not, a pure thing. Most mega-cities grew — adapted, improvised, shaped by whoever seized them. Angora was *designed*, from nothing, to be exactly what its maker intended. It is the new world order rendered without compromise: the clearest statement anywhere of what Sin built TDay to create.
 
@@ -15,7 +15,7 @@ It is also, in a sense the other cities are not, a pure thing. Most mega-cities 
 
 Angora was not rebuilt from an old-world city. It was raised from open ground that had held no major settlement before, on a site Sin chose precisely because it came with nothing to work around — no existing streets to widen, no buildings to gut, no compromises baked into the bones of someone else's world. A blank slate, for a blank-slate civilisation.
 
-The result is the most liveable environment the Transformed have. Where cities adapted from pre-TDay architecture are forever making do — doors enlarged, ceilings raised, old human proportions showing through the renovations — Angora was built giantess-scale from its first foundation. Its grid accommodates inhabitants up to thirty feet comfortably and as a matter of course; the merely tall move through it without thought. Anything larger than the city's baseline relies on specialist access routes, the one concession its design makes to the upper extremes of scale.
+The result is the most liveable environment [the Transformed](the-transformed) have. Where cities adapted from pre-TDay architecture are forever making do — doors enlarged, ceilings raised, old human proportions showing through the renovations — Angora was built giantess-scale from its first foundation. Its grid accommodates inhabitants up to thirty feet comfortably and as a matter of course; the merely tall move through it without thought. Anything larger than the city's baseline relies on specialist access routes, the one concession its design makes to the upper extremes of scale.
 
 Beneath the gleaming order of its upper city — the broad thoroughfares, the towering residences of the Transformed, the plazas built for beings the size of buildings — Angora runs the same machinery every mega-city does, simply more completely: the markets and management of toys, the infrastructure of water and power and logistics that SinCorp threads through everything, and, at its heart, the laboratories. Like every city it is an island in the [Wilds](the-wilds), and as the capital it is the most secure island of them all.
 

@@ -41,8 +41,8 @@ When you're ready, have a word with Jay (the Discord is easiest). You'll want a 
 
 A few things hold the setting together. Keep these in mind and you'll fit right in:
 
-- **Everyone in Sinverse is an adult.** Every character — every toy, every Transformed, every face in the crowd — is an adult, full stop. This is non-negotiable and has no exceptions.
-- **Stay consistent with established canon.** Build on the serum, TDay, and the broad shape of the world rather than contradicting them. If you want to bend something major, talk to Jay first; there's usually room to make it work.
+- **Everyone in Sinverse is an adult.** Every character — every [toy](toys), every [Transformed](the-transformed), every face in the crowd — is an adult, full stop. This is non-negotiable and has no exceptions.
+- **Stay consistent with established canon.** Build on the serum, [TDay](tday), and the broad shape of the world rather than contradicting them. If you want to bend something major, talk to Jay first; there's usually room to make it work.
 - **Tag your content honestly.** Sinverse covers intense themes — label what's in your work so readers can choose what they engage with.
 - **Respect other contributors' characters and stories.** Ask before substantially using or changing someone else's creation. Collaboration is encouraged; appropriation isn't.
 - **Credit is yours.** Your contributions stay attributed to you, and you're listed among the Contributors.

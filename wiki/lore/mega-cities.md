@@ -7,7 +7,7 @@ tags: [mega-cities, angora, matriarchs, location, society]
 
 ## Overview
 
-The mega-cities are the bastions of civilisation in the post-TDay world — vast islands of steel and concrete standing amid the overgrown, mutated Wilds. They exist because the new world made the old one unliveable twice over: the Transformed needed infrastructure built to a scale no human city had ever required, and the serum's after-effects had turned the flora and fauna beyond the walls into things too large and too dangerous to live among. The mega-cities answered both problems at once — enormous, ordered enclaves where giantesses can live, built deliberately apart from a wilderness that has become genuinely hostile.
+The mega-cities are the bastions of civilisation in the post-[TDay](tday) world — vast islands of steel and concrete standing amid the overgrown, mutated Wilds. They exist because the new world made the old one unliveable twice over: [the Transformed](the-transformed) needed infrastructure built to a scale no human city had ever required, and the serum's after-effects had turned the flora and fauna beyond the walls into the [Overgrown](the-overgrown) — things too large and too dangerous to live among. The mega-cities answered both problems at once — enormous, ordered enclaves where giantesses can live, built deliberately apart from a wilderness that has become genuinely hostile.
 
 Each is an independent city-state ruled by a [Matriarch](matriarchs), with its own culture, laws, economy, and character. They function less like cities than like nations — sovereign, self-contained, and answerable to no authority above them but Sin's.
 
@@ -15,13 +15,13 @@ Each is an independent city-state ruled by a [Matriarch](matriarchs), with its o
 
 A mega-city is many times larger than a traditional city, and not merely because everything in it is bigger. Even after accounting for the increased size of doorways, transit, furniture, and architecture — all built to a giantess baseline — the cities sprawl on a scale the old world never approached, because they must house entire populations of beings several times human height and the immense systems required to feed, water, and supply them.
 
-Infrastructure is built to accommodate inhabitants ranging from roughly 8 to 30 feet — the **Amazon** range and the lower giantess tiers. Standard doorframes, transit systems, and architecture all reflect this baseline; a standard mega-city door stands around 14 feet tall. Macro-scale Transformed, well past 100 feet, simply cannot fit within the cities at all, and live instead out in the Wilds.
+Infrastructure is built to accommodate inhabitants ranging from roughly 8 to 30 feet — the **Amazon** range and the lower giantess tiers. Standard doorframes, transit systems, and architecture all reflect this baseline; a standard mega-city door stands around 14 feet tall. [Macro](macro)-scale Transformed, well past 100 feet, simply cannot fit within the cities at all, and live instead out in the Wilds.
 
 ## Islands in the Wilds
 
-The defining fact of a mega-city is that it is an island. Beyond its edges lies the [Wilds](the-wilds) — the reclaimed, overgrown country where the serum's runoff mutated plant and animal life into dangerous, oversized forms, and where the macro Transformed and feral cast-offs roam. The cities are built as secure enclaves against all of it.
+The defining fact of a mega-city is that it is an island. Beyond its edges lies the [Wilds](the-wilds) — the reclaimed, overgrown country where the serum's runoff mutated plant and animal life into the [Overgrown](the-overgrown) — dangerous, oversized forms — and where the macro Transformed and [feral](ferals) cast-offs roam. The cities are built as secure enclaves against all of it.
 
-Crucially, that security holds. The danger of the new world is *out there*, not at the gates; a mega-city is not a besieged fortress under constant assault, but a stable, well-defended island that has long since established its borders. The Wilds are something one ventures *into* — by huntresses seeking sport, by the desperate, by those with reason to cross from one city to another — not something that comes pouring over the walls. Within a mega-city, life proceeds in relative order and safety. The horror of the world is a thing the cities keep firmly outside.
+Crucially, that security holds. The danger of the new world is *out there*, not at the gates; a mega-city is not a besieged fortress under constant assault, but a stable, well-defended island that has long since established its borders. The Wilds are something one ventures *into* — by [huntresses](the-paws) seeking sport, by the desperate, by those with reason to cross from one city to another — not something that comes pouring over the walls. Within a mega-city, life proceeds in relative order and safety. The horror of the world is a thing the cities keep firmly outside.
 
 ## Independent Nations
 

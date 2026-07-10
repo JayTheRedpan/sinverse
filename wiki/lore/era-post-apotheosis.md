@@ -5,7 +5,7 @@ eyebrow: Era — T0 to T+8
 era: post-apotheosis
 ---
 
-The Chaos and its immediate aftermath. The old world collapses; the Transformed begin consolidating power.
+The Chaos and its immediate aftermath. The old world collapses; [the Transformed](the-transformed) begin consolidating power.
 
 The weeks and months following [TDay](era-tday) are sometimes referred to simply as **The Chaos**. Civil infrastructure collapsed in most major population centres. The Transformed, newly empowered and largely freed of empathy, began to assert control over what remained. Out of the wreckage, the shape of a new order started to form.
 

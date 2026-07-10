@@ -121,7 +121,7 @@
       },
       {
         "text": "Research may be the way forward, if this is a laboratory, its likely deeper and safer in the labs.",
-        "nextId": null
+        "nextId": 14
       }
     ],
     "author": "SpearmintMagpie",
@@ -211,5 +211,37 @@
     ],
     "author": "SpearmintMagpie",
     "title": "2 Steps Back"
+  },
+  {
+    "id": 14,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Level 4 Hazard labs?",
+        "nextId": 15
+      },
+      {
+        "text": "Level 6 Security?",
+        "nextId": null
+      },
+      {
+        "text": "Level 7 Medical?",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Blind Fall"
+  },
+  {
+    "id": 15,
+    "image": null,
+    "tags": [
+      "gore"
+    ],
+    "choices": [],
+    "author": "",
+    "isEnding": true,
+    "title": "Hazard Warning"
   }
 ]

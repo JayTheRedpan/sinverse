@@ -7,7 +7,7 @@ tags: [resistance, tempered, toys, wilds, bastion, sincorp, organization]
 
 ## Overview
 
-The Resistance is the organised opposition to the new world order — a loose, leaderless network of [Tempered](tempered) women and toys working to get males out of the [mega-cities](mega-cities) and into the relative freedom of the [Wilds](the-wilds). It is not an army, not a government-in-exile, and not a movement with a manifesto. It does not seek to reverse TDay, de-transform the Transformed, or retake the world. It has something far narrower and more achievable: a list of people who need to be somewhere else, and the means to sometimes get them there.
+The Resistance is the organised opposition to the new world order — a loose, leaderless network of [Tempered](tempered) women and toys working to get males out of the [mega-cities](mega-cities) and into the relative freedom of the [Wilds](the-wilds). It is not an army, not a government-in-exile, and not a movement with a manifesto. It does not seek to reverse [TDay](tday), de-transform [the Transformed](the-transformed), or retake the world. It has something far narrower and more achievable: a list of people who need to be somewhere else, and the means to sometimes get them there.
 
 In a world built on the certainty that toys are property, the Resistance is the standing assertion that they are people. That assertion is dangerous enough that the organisation has shaped its entire existence around surviving it.
 
@@ -29,7 +29,7 @@ It also keeps no records. No archives, no operation logs, no ledgers of who was 
 
 The Resistance's work is unglamorous by design. Its tools are smuggling routes and safe houses in the border zones between city and Wilds; forged [SinCorp documentation](sincorp) where a city's culture demands papers; quiet intelligence on SinCorp activity and on which toys are under immediate threat; and the patient logistics of moving a person from inside the order to outside it without anyone noticing he is gone. The most successful extractions are never the dramatic ones — they are paperwork, timing, and an unremarkable vehicle making an unremarkable journey.
 
-What the Resistance is *for*, beneath all of it, is the toy population itself. The numbers are stark: the toy population has fallen by most of itself in the years since TDay, and the decline continues. The Resistance regards that as the core urgency of everything it does — not an abstract injustice but a population being consumed faster than it can replace itself, one life at a time, with extraction the only lever it actually holds.
+What the Resistance is *for*, beneath all of it, is the toys themselves. Not the population as a number — that cratered after TDay and then stabilized, and SinCorp's vats hold it steady now — but the people inside it: an entire class born, bought, spent, and owned, with no say in any of it. The Resistance regards that as the core urgency of everything it does — not an abstract injustice but particular lives held as property, freed one at a time, with extraction the only lever it actually holds.
 
 ## The Underground Railroad
 

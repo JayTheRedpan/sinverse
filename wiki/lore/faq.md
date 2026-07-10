@@ -7,7 +7,7 @@ faq: true
 
 ## Does the serum affect trans people? What about gender identity?
 
-Yes — and inclusively. The Apotheosis Serum responds to a person's true sense of self, not their assigned sex. You are who you say you are, and the serum reacts accordingly: anyone who knows herself to be a woman is transformed. This has been the consistent stance of the setting from the start.
+Yes — and inclusively. The [Apotheosis Serum](apotheosis-serum) responds to a person's true sense of self, not their assigned sex. You are who you say you are, and the serum reacts accordingly: anyone who knows herself to be a woman is [transformed](the-transformed). This has been the consistent stance of the setting from the start.
 
 ## Why weren't the giantesses stopped by modern military weapons on or before TDay?
 
@@ -19,11 +19,11 @@ Heavy weapons can still be annoying or painful to them. Narratively that's used 
 
 More advanced than our real-world tech. SinCorp's innovations — especially super-soldier serums — forced militaries to escalate fast, developing power armor and far more powerful personal armaments in response.
 
-After TDay these weapons became useless against girls, but boys in the Wilds still scavenge them to hunt food and fend off the weaker mutated wildlife. During the Giantess Renaissance, Sin and others invented novelty weapons for hunting boys — feralizers, pheromone weapons, shrink balls — all less effective than the girls themselves, but they add sport to the capture.
+After [TDay](tday) these weapons became useless against girls, but boys in [the Wilds](the-wilds) still scavenge them to hunt food and fend off the weaker [Overgrown](the-overgrown). During the Giantess Renaissance, [Sin](sin) and others invented novelty weapons for hunting boys — feralizers, pheromone weapons, shrink balls — all less effective than the girls themselves, but they add sport to the capture.
 
 ## If giantesses no longer have female reproductive systems, how does reproduction work?
 
-It doesn't — not without help. Eliminating female reproductive organs was done without thought to the consequences, and after TDay toys quickly grew scarce.
+It doesn't — not without help. Eliminating female reproductive organs was done without thought to the consequences, and after TDay [toys](toys) quickly grew scarce — until [SinCorp's](sincorp) vat-growing, and the [modifications](toy-modifications) that let toys carry pregnancies, stabilized the supply. (See [Reproduction & the Population](reproduction).)
 
 Sin's solution was to establish vat-growing technology: first tube-grown boys to placate the girls, then a new generation of girls, and eventually modifications that let boys carry pregnancies (for her own amusement). Male pregnancy is treated as an accepted fetish among the girls. These pregnancies mostly produce more toys, occasionally a new girl.
 
