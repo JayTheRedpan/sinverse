@@ -794,7 +794,7 @@ function renderChar(figs, char, slotIdx) {
   var defaultSil = (DEFAULTS.height[char.default_silhouette] || DEFAULTS.height.giantess || '../images/character-default.svg');
   var usingDefault = !char.image;
   img.crossOrigin = 'anonymous';   // allow alpha hit-testing without tainting canvas
-  img.src = char.image || defaultSil;
+  img.src = (window.SinverseImg ? SinverseImg.canvas(char.image, 1600) : char.image) || defaultSil;
   img.alt = char.name;
   // sr-img-real skips the brightening filter — only silhouettes need it
   img.className = 'sr-char-img' + (usingDefault ? '' : ' sr-img-real');
@@ -814,6 +814,7 @@ function renderChar(figs, char, slotIdx) {
 
 // Draw image to canvas with flip/rotate for length view alignment
 function orientedImgEl(src, flip, rotateDeg, filter) {
+  if (window.SinverseImg) src = SinverseImg.canvas(src, 1600);
   var img = el('img');
   // Bake the rose-gold tint straight into a canvas when `filter` is set (even
   // with no flip/rotation), so the element holds real gold pixels — no CSS
@@ -2306,7 +2307,7 @@ function renderLengthRow(entity) {
     var hsImg = el('img'); hsImg.className = 'sr-headshot-img';
     var hsSilId = entity.data.default_headshot_silhouette || entity.data.default_silhouette || (DEFAULTS.headshotSils[0]&&DEFAULTS.headshotSils[0].id) || 'giantess';
     var hsSilUrl = DEFAULTS.headshot[hsSilId] || DEFAULTS.headshot.giantess || '';
-    hsImg.src = entity.data.profile_image || hsSilUrl;
+    hsImg.src = (window.SinverseImg ? SinverseImg.canvas(entity.data.profile_image, 500) : entity.data.profile_image) || hsSilUrl;
     if (!entity.data.profile_image) hsImg.classList.add('sr-sil-filter');
     hsWrap.appendChild(hsImg);
     var hsName = el('div'); hsName.className = 'sr-headshot-name';
@@ -2370,7 +2371,7 @@ function renderLengthRow(entity) {
       if (charFlip || charRot) {
         lenImg = orientedImgEl(charLenSrc, charFlip, charRot, !entity.data.length_image);
       } else {
-        lenImg.src = charLenSrc;
+        lenImg.src = (window.SinverseImg ? SinverseImg.canvas(charLenSrc, 1600) : charLenSrc);
         if (!entity.data.length_image) lenImg.classList.add('sr-sil-filter');
       }
     }
