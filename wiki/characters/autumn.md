@@ -1,6 +1,6 @@
 ## Overview
 
-Autumn is a Clydesdale mare and one of the new world's stockraisers. Where most of the transformed simply take what they want and discard the rest, Autumn runs a working **breeding farm** — a ranch out in the country where men are kept, trained, and bred like livestock, each one a "pet" or a head of "stock" in her drawling estimation. She is a rancher to the bone: proud of her animals, patient with her training, and possessed of an unusual virtue among the apotheosis girls — restraint. Autumn keeps her stock alive because good stock is worth keeping, and she has open contempt for those who break their toys too fast to enjoy them.
+Autumn is a Clydesdale mare and one of the new world's stockraisers. Where most of [the transformed](the-transformed) simply take what they want and discard the rest, Autumn runs a working **breeding farm** — a ranch out in the country where men are kept, trained, and bred like livestock, each one a "pet" or a head of "stock" in her drawling estimation. She is a rancher to the bone: proud of her animals, patient with her training, and possessed of an unusual virtue among the apotheosis girls — restraint. Autumn keeps her stock alive because good stock is worth keeping, and she has open contempt for those who break their [toys](toys) too fast to enjoy them.
 
 At a little over twenty-two feet she's modest by the standards of the towering giantesses, but on her own land, surrounded by pens of plugged and bridled ponies, Autumn is unquestionably the master of all she surveys.
 
@@ -26,7 +26,7 @@ Little is recorded of Autumn's life before the world changed, though her tempera
 
 When the serum remade the world, Autumn took to the new order with the practical mindset of a rancher rather than the abandon of a predator. Rather than roam and hunt, she established a **breeding farm** — a ranch where men are kept as "stock," housed in pens, broken to the saddle, and trained into compliant "ponies" and "cock sleeves." She bridles and plugs her pets, gives the favored ones names — Rain, Bent, Crew, White among them — and works them on a regimen of conditioning, discipline, and a special diet, treating the whole enterprise as serious animal husbandry.
 
-She sources fresh stock through a business arrangement with **Sin**, purchasing transformed-world "product" to train on her farm — and she's not shy about critiquing the matriarch's methods, needling Sin for breaking her own toys too quickly. The two are associates of long standing, trading stock and barbs in equal measure, and Autumn attends the gatherings of the new world's elite with a few of her best ponies in tow.
+She sources fresh stock through a business arrangement with **Sin**, purchasing transformed-world "product" to train on her farm — and she's not shy about critiquing the [matriarch](matriarchs)'s methods, needling Sin for breaking her own toys too quickly. The two are associates of long standing, trading stock and barbs in equal measure, and Autumn attends the gatherings of the new world's elite with a few of her best ponies in tow.
 
 ## As a Rancher
 

@@ -1,6 +1,6 @@
 ## Overview
 
-Becka is a lioness and one half of an inseparable pair of twin sisters, the other being her sister Bella. Where most of the transformed hunt alone, Becka and Bella hunt together — and, more unusually, they *share*. The twins are defined by their bond: a giggling, bickering, fiercely close partnership that turns even their cruelty into a joint activity. To a toy, that closeness is no comfort. Two apex predators who finish each other's sentences and cooperate by instinct are far harder to survive than one.
+Becka is a lioness and one half of an inseparable pair of twin sisters, the other being her sister Bella. Where most of [the transformed](the-transformed) hunt alone, Becka and Bella hunt together — and, more unusually, they *share*. The twins are defined by their bond: a giggling, bickering, fiercely close partnership that turns even their cruelty into a joint activity. To a [toy](toys), that closeness is no comfort. Two apex predators who finish each other's sentences and cooperate by instinct are far harder to survive than one.
 
 Becka is the marginally cooler-headed half of the pair — the one who comes up with the "ideas," delivers the cruelest suggestions in an even, almost thoughtful tone, and lets her more excitable sister supply the squealing enthusiasm. She is every bit as monstrous; she's just quieter about it.
 
@@ -51,7 +51,7 @@ Becka's defining kink — shared completely with her sister — is exactly that:
 ## Did You Know
 
 - Becka and Bella are **identical twins** — the only reliable way to tell them apart is their hair: Becka's ponytail, Bella's pigtails.
-- Their step-brother was their **first toy** — he abandoned them on TDay, and they tracked him down and kept him as a pet.
+- Their step-brother was their **first toy** — he abandoned them on [TDay](tday), and they tracked him down and kept him as a pet.
 - It was **Becka** who decided their first toy was no longer a brother but a pet, and gave it its demeaning new name.
 - The twins **share** their toys rather than fight over them, a dynamic so intense that few playthings can survive it.
 - At roughly **eighteen feet**, the twins are middling in size among the transformed — but they come as a matched pair, which more than makes up for it.

@@ -1,6 +1,6 @@
 ## Overview
 
-Kel is a red panda giantess, transformed by the [Apotheosis Serum](apotheosis-serum) on TDay. She is a playful, teasing dominant — a giantess who treats the small as toys in the most literal sense, something to be nudged, shoved, and toyed with for her own amusement. There's a games-playing quality to her cruelty: she's more interested in the fun of having something tiny at her mercy than in any cold, methodical unmaking, and she grins and laughs her way through an encounter rather than savouring it in silence.
+Kel is a red panda giantess, transformed by the [Apotheosis Serum](apotheosis-serum) on [TDay](tday). She is a playful, teasing dominant — a giantess who treats the small as toys in the most literal sense, something to be nudged, shoved, and toyed with for her own amusement. There's a games-playing quality to her cruelty: she's more interested in the fun of having something tiny at her mercy than in any cold, methodical unmaking, and she grins and laughs her way through an encounter rather than savouring it in silence.
 
 Her signature is the easy, casual use of her sheer size. Kel likes to push toys around — with a foot, with a hand, and especially with her long tail — herding the small with the lazy confidence of someone for whom they are barely an inconvenience. Much of her wider story remains unwritten, but what's established is the shape of her: enormous, playful, and idly, cheerfully cruel.
 
@@ -8,7 +8,7 @@ Her signature is the easy, casual use of her sheer size. Kel likes to push toys 
 
 ## Appearance
 
-Kel is a red panda giantess standing around seventeen feet, tall enough that a toy comes up no higher than her knee. She has the rich, dark fur of her species, and atop her head a thick pomp of hair in the same darker tone, cut through by a single cream-white streak. Her build carries the generous proportions common among the transformed.
+Kel is a red panda giantess standing around seventeen feet, tall enough that a toy comes up no higher than her knee. She has the rich, dark fur of her species, and atop her head a thick pomp of hair in the same darker tone, cut through by a single cream-white streak. Her build carries the generous proportions common among [the transformed](the-transformed).
 
 Her long tail is a defining feature — not just for show but as a tool she uses constantly, sweeping and nudging toys around with it the way someone else might use a hand. Like her red panda kin she carries equine anatomy, a product of her transformation, dramatically outsized against any toy unfortunate enough to share a room with her.
 

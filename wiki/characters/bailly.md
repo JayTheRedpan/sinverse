@@ -1,6 +1,6 @@
 ## Overview
 
-In a world of towering, predatory giantesses, Bailly is the girl next door. She is a laquine — a rare natural cross of rabbit and equine — standing well over a dozen feet of muscle with a sweet, almost ditzy disposition that fits her surroundings about as poorly as anything could. While most of her kind chase down stray toys or claw their way up the social pile, Bailly goes about her life unbothered and unconcerned with such self-important goals. She does not pine for the old world the way the Resistance does; this is the only world she has ever really known, and she simply wants to make a good life in it.
+In a world of towering, predatory giantesses, Bailly is the girl next door. She is a laquine — a rare natural cross of rabbit and equine — standing well over a dozen feet of muscle with a sweet, almost ditzy disposition that fits her surroundings about as poorly as anything could. While most of her kind chase down stray toys or claw their way up the social pile, Bailly goes about her life unbothered and unconcerned with such self-important goals. She does not pine for the old world the way [the Resistance](the-resistance) does; this is the only world she has ever really known, and she simply wants to make a good life in it.
 
 That places her in an unusual position — one paw in the world of massive, dominant women, and one paw in something much closer to simple, loving family life. Some find her naive, some find her childish, and others just wonder how the big bunny can be so laid back.
 
@@ -8,9 +8,9 @@ That places her in an unusual position — one paw in the world of massive, domi
 
 ## Appearance
 
-At a glance, Bailly is an enormous black bunny: thick, angora-soft black fur, long floppy ears, messy shoulder-length blue hair, and deep emerald-green eyes set in a face far gentler than her frame. Her true nature as a laquine shows in her build and her endowment — like other laquines she reads as mostly rabbit, but carries the size, power, and equine anatomy of her stranger half.
+At a glance, Bailly is an enormous black bunny: thick, [angora](angora)-soft black fur, long floppy ears, messy shoulder-length blue hair, and deep emerald-green eyes set in a face far gentler than her frame. Her true nature as a laquine shows in her build and her endowment — like other laquines she reads as mostly rabbit, but carries the size, power, and equine anatomy of her stranger half.
 
-What sets her apart from the other transformed women is muscle. Even under that dense fur, Bailly is visibly, seriously built — broad shoulders, defined abs, powerful hips and thighs, the physique of someone who trains hard and often rather than one merely gifted size by the serum. She moves with the easy confidence of a body that has never once failed her. As a laquine she carries an equine endowment rather than the humanoid or canine forms common among her peers, a detail that, combined with her rabbit's breeding instincts, makes her a more potent presence than her soft face ever suggests.
+What sets her apart from the other [transformed](the-transformed) women is muscle. Even under that dense fur, Bailly is visibly, seriously built — broad shoulders, defined abs, powerful hips and thighs, the physique of someone who trains hard and often rather than one merely gifted size by the serum. She moves with the easy confidence of a body that has never once failed her. As a laquine she carries an equine endowment rather than the humanoid or canine forms common among her peers, a detail that, combined with her rabbit's breeding instincts, makes her a more potent presence than her soft face ever suggests.
 
 ## Personality
 
@@ -38,7 +38,7 @@ Watching what unchecked aggression had done to other girls, Bailly's mother soug
 
 Bailly is a gentle but intense domme. She has no need for cruelty or sadism — her size and presence are overwhelming entirely on their own. She loves to tease, using her body, her musk, and her sheer physical scale to push a toy past what it can handle, and she can be sweet and loving even while making it painfully clear how insignificant a toy is beside her. Degrading little nicknames come out as genuine affection; the moments she forgets her own strength and overwhelms a partner by accident become an excuse to fuss over the small thing afterward.
 
-She finds eating a toy cruel and wasteful — she would much rather keep one and enjoy it than trade it for a moment's satisfaction. Feral livestock is another matter; her enormous body needs the protein, and she'll snack on a goat happily enough even while it kicks. What she truly craves is breeding: the feel of filling a tiny partner with her seed, the rabbit-deep satisfaction of the idea that she is impregnating something so small and precious. Any toy of her own is likely to be both modified to survive her and chipped to carry for her.
+She finds eating a toy cruel and wasteful — she would much rather keep one and enjoy it than trade it for a moment's satisfaction. [Feral](ferals) livestock is another matter; her enormous body needs the protein, and she'll snack on a goat happily enough even while it kicks. What she truly craves is breeding: the feel of filling a tiny partner with her seed, the rabbit-deep satisfaction of the idea that she is impregnating something so small and precious. Any toy of her own is likely to be both modified to survive her and chipped to carry for her.
 
 {{RELATIONSHIPS}}
 
@@ -66,7 +66,7 @@ Bailly's signature is **breeding**, and the gentle-giant dynamic that surrounds 
 - Bailly's lack of a growth-regulating gene is similar to a real-world **liger** — like the hybrid big cat, she grows continuously and packs on muscle far faster than a normal person, and no one knows how large she might ultimately become, or how much of that runaway growth she could pass to her children.
 - She runs her own yoga studio, **Limber Buns Yoga**, the former owner having handed it down to her.
 - Bailly once **killed another giantess with a single punch to the chest.** She doesn't like to talk about it.
-- In the few times she has met Sin, she insists on calling the other bunny **"Sinthia,"** which annoys her greatly.
+- In the few times she has met [Sin](sin), she insists on calling the other bunny **"Sinthia,"** which annoys her greatly.
 - *(Out of character: Bailly began as a Monk-class character on an old Neverwinter Nights server, which is where her martial-arts background comes from.)*
 
 ## Related

@@ -1,6 +1,6 @@
 ## Overview
 
-Xena is a macro-scale Transformed who rules a stretch of the [Wilds](the-wilds) as, in her own mind, a warlord. A towering T-Rex standing nearly fifty feet, she was carried by the unstable TDay Variant of the [Apotheosis Serum](apotheosis-serum) up to a scale that brought the mental damage so often paired with it — and in Xena, that damage took the shape of a grand, fixed delusion. She is convinced she is a conqueror, that the territory she occupies is a domain she won and holds, and that she reigns over it by right. Whether anyone else recognises her "rule" is, to Xena, beside the point. She is certain of it, and she rules accordingly.
+Xena is a [macro](macro)-scale [Transformed](the-transformed) who rules a stretch of the [Wilds](the-wilds) as, in her own mind, a warlord. A towering T-Rex standing nearly fifty feet, she was carried by the unstable [TDay](tday) Variant of the [Apotheosis Serum](apotheosis-serum) up to a scale that brought the mental damage so often paired with it — and in Xena, that damage took the shape of a grand, fixed delusion. She is convinced she is a conqueror, that the territory she occupies is a domain she won and holds, and that she reigns over it by right. Whether anyone else recognises her "rule" is, to Xena, beside the point. She is certain of it, and she rules accordingly.
 
 *This profile is partially documented. The details of Xena's character beyond her defining delusion are still being developed.*
 

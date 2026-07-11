@@ -1,6 +1,6 @@
 ## Overview
 
-Riley is a raccoon-red panda hybrid, born into the world after TDay and raised far from the parents who made her. She is the child of [Jay](jay) and [Libby](libby) — though she was not brought up by either of them, and would not thank you for the connection. Riley carries a deep, smouldering hatred for her red panda parent, a loathing fed partly by her own disgust at being tied by blood to a *toy*, and partly by the vicious giantess who raised her in their place.
+Riley is a raccoon-red panda hybrid, born into the world after [TDay](tday) and raised far from the parents who made her. She is the child of [Jay](jay) and [Libby](libby) — though she was not brought up by either of them, and would not thank you for the connection. Riley carries a deep, smouldering hatred for her red panda parent, a loathing fed partly by her own disgust at being tied by blood to a *toy*, and partly by the vicious giantess who raised her in their place.
 
 What put Riley in that giantess's care rather than her parents' has never been made clear, and was likely not wholly anyone's choice. What's certain is the result: a young giantess with a chip the size of her resentment, a hard goth shell, and a habit of taking out on other red panda toys the fury she holds for the one who bore her. She is still finding her place in the new world, and not much else about her is known for sure.
 
@@ -28,7 +28,7 @@ Riley has no before. She was born into the world after TDay, a child of the new 
 
 ### After TDay
 
-Riley is the child of Jay and Libby — born, as the new world's children are, through SinCorp's reproductive science, since the transformed women have no womb to carry a child of their own. By rights she might have grown up in the rare warmth of her parents' bond. She did not.
+Riley is the child of Jay and Libby — born, as the new world's children are, through SinCorp's reproductive science, since [the transformed](the-transformed) women have no womb to carry a child of their own. By rights she might have grown up in the rare warmth of her parents' bond. She did not.
 
 How Riley came to be raised by another instead has never been established, and was likely not wholly within Jay or Libby's power to decide. What's known is who took that place: a sabertooth giantess of vicious reputation, who took a particular liking to the young Riley and raised her as her own. Riley came to call her **"aunt,"** with what genuine affection the word carries — and it was this aunt who shaped the angry, hardened young giantess Riley became, stoking her disgust at her toy parentage into the deep-seated hatred she carries now.
 

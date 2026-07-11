@@ -1,8 +1,8 @@
 ## Overview
 
-Jenny is a young bunny-red panda hybrid, born into the world [Sin](sin) made and shaped entirely by it. She is a creature of worship and appetite: she idolizes Sin, adores the influencer [Brandy](brandy), and channels both into a hungry, excitable cruelty toward the toys she can get her hands on. More than anything, she is defined by what she is becoming — Jenny carries an accelerated, seemingly unbounded version of the perpetual-growth mutation, and was told early on that she will likely keep growing until she reaches full macro scale. She received that news not with fear but with delight, and the promise of her own future enormity has become the centre of her fantasies and her favourite weapon in her threats.
+Jenny is a young bunny-red panda hybrid, born into the world [Sin](sin) made and shaped entirely by it. She is a creature of worship and appetite: she idolizes Sin, adores the influencer [Brandy](brandy), and channels both into a hungry, excitable cruelty toward the toys she can get her hands on. More than anything, she is defined by what she is becoming — Jenny carries an accelerated, seemingly unbounded version of the perpetual-growth mutation, and was told early on that she will likely keep growing until she reaches full [macro](macro) scale. She received that news not with fear but with delight, and the promise of her own future enormity has become the centre of her fantasies and her favourite weapon in her threats.
 
-For now she is a nobody — one of the smaller giantesses, unknown to the powers she dreams of joining. But Jenny is certain she is destined for more, in every sense, and she is in no doubt that the world will one day have to reckon with her.
+For now she is a nobody — one of the smaller [giantesses](the-transformed), unknown to the powers she dreams of joining. But Jenny is certain she is destined for more, in every sense, and she is in no doubt that the world will one day have to reckon with her.
 
 {{FEATURED}}
 
@@ -24,7 +24,7 @@ The other half of her is the growth. The promise that she will one day be macro 
 
 ### Before TDay
 
-Jenny has no before. She was born into the world after TDay, a child of the new order who has never known anything but the world Sin built — which is precisely why she accepts it so completely. To Jenny, giantesses ruling and toys serving isn't a change or a conquest; it's simply how the world is, the water she has always swum in.
+Jenny has no before. She was born into the world after [TDay](tday), a child of the new order who has never known anything but the world Sin built — which is precisely why she accepts it so completely. To Jenny, giantesses ruling and toys serving isn't a change or a conquest; it's simply how the world is, the water she has always swum in.
 
 ### After TDay
 
@@ -34,7 +34,7 @@ Then came the discovery that would define her. Jenny carries an accelerated and 
 
 ## As a Rising Giantess
 
-Jenny is, for now, a nobody, and the gap between her ambitions and her standing is wide. She is one of the smaller giantesses, unknown to SinCorp, unremarked by the Matriarchs, with no title, no faction, and no claim on anyone's attention — a fan dreaming at the edges of a world she desperately wants to matter in.
+Jenny is, for now, a nobody, and the gap between her ambitions and her standing is wide. She is one of the smaller giantesses, unknown to SinCorp, unremarked by the [Matriarchs](matriarchs), with no title, no faction, and no claim on anyone's attention — a fan dreaming at the edges of a world she desperately wants to matter in.
 
 But the ambition is real and specific. Jenny aspires to work for [SinCorp](sincorp), to serve the organization her idol built and to climb toward the centre of the order she worships. And she has, in her growth, something that may eventually make the world notice her whether she earns it or not: a body destined to become macro is, by the lights of the new world, a remarkable and potentially valuable thing. For now, though, none of that has come to pass. Jenny is all potential — enormous potential, by her own reckoning — and the present reality of a young giantess waiting, impatiently, to grow into the figure she's already certain she'll become.
 

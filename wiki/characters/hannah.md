@@ -24,7 +24,7 @@ She is, in the end, a giantess who rules by being irresistible. People come to M
 
 ### Before TDay
 
-Little has been established about Hannah's life before the world changed. Like all the transformed, she was once ordinary, before the Apotheosis Serum remade her into the towering kangaroo giantess she is now.
+Little has been established about Hannah's life before the world changed. Like all [the transformed](the-transformed), she was once ordinary, before the [Apotheosis Serum](apotheosis-serum) remade her into the towering kangaroo giantess she is now.
 
 ### After TDay
 
@@ -36,7 +36,7 @@ She has ruled Marisol ever since as its Matriarch, keeping the party going and t
 
 Hannah's rule is a lighter thing than her counterparts', but it is a Matriarch's rule all the same. She governs Marisol by being its magnetic centre — the presence the whole island orients toward — and by keeping its perpetual celebration running and its pleasures flowing. Beneath the sunshine, the city is hers: run for indulgence, kept within Sin's order, and held through the [power to command](matriarchs) that comes with being the undisputed heart of the place.
 
-Her authority is absolute within Marisol and, like all Matriarchs, conditional on staying within the new world's order — which suits Hannah perfectly, since she wants nothing more than to keep her island exactly as it is. She shares with Alea's and Angora's Matriarchs the same easy mutual respect that holds between all the mega-cities; the dominant gender does not war with itself, and Hannah's energies point at keeping the party alive and the toys serving, never at any rival among the Matriarchs.
+Her authority is absolute within Marisol and, like all Matriarchs, conditional on staying within the new world's order — which suits Hannah perfectly, since she wants nothing more than to keep her island exactly as it is. She shares with Alea's and Angora's Matriarchs the same easy mutual respect that holds between all the [mega-cities](mega-cities); the dominant gender does not war with itself, and Hannah's energies point at keeping the party alive and the toys serving, never at any rival among the Matriarchs.
 
 {{RELATIONSHIPS}}
 

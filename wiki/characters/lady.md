@@ -24,11 +24,11 @@ That same cheerful single-mindedness makes her thoroughly heedless of a toy's co
 
 ### Before TDay
 
-Little has been established about Lady's life before the world changed. Like all the transformed, she was once ordinary, before the Apotheosis Serum remade her — though the restless, run-loving energy that defines her seems a natural fit for the border collie she became.
+Little has been established about Lady's life before the world changed. Like all [the transformed](the-transformed), she was once ordinary, before the Apotheosis Serum remade her — though the restless, run-loving energy that defines her seems a natural fit for the border collie she became.
 
 ### After TDay
 
-Lady was transformed by the Apotheosis Serum on TDay, and in the new world she found her way to a profession that fit her instincts like nothing else could: the hunt. She took up the dangerous, lucrative trade of the [Paws](the-paws), ranging into the Wilds after the toys that command the highest prices at market — and discovered that the work she'd be best at was also the work she loved most. For a giantess who lives to run and chase, being paid to do exactly that, in the most demanding country the new world offers, is less a job than a calling.
+Lady was transformed by the Apotheosis Serum on [TDay](tday), and in the new world she found her way to a profession that fit her instincts like nothing else could: the hunt. She took up the dangerous, lucrative trade of the [Paws](the-paws), ranging into the Wilds after the toys that command the highest prices at market — and discovered that the work she'd be best at was also the work she loved most. For a giantess who lives to run and chase, being paid to do exactly that, in the most demanding country the new world offers, is less a job than a calling.
 
 She has made herself a well-regarded huntress and a welcome sister among the Paws, equally at home on a solitary long-distance ranging or banded into a temporary pack for a bigger haul. Like all her trade she equips herself from [SinCorp](sincorp)'s capture catalogue, but the gear is the least of what makes her good: Lady's real tools are her legs, her nose, her stamina, and the bottomless joy she takes in the chase.
 

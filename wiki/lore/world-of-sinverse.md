@@ -17,10 +17,14 @@ Working behind the scenes, Sin seized control of her research lab, rebranded it 
 ## The New World
 
 - **[The Mega-Cities](mega-cities)** — Purpose-built to accommodate giantess-scale inhabitants and their subordinates. Each city-state is ruled by a [Matriarch](matriarchs) who sets its culture and laws. The most powerful is [Angora](angora), where Sin herself resides.
-- **[The Wilds](the-wilds)** — The land between mega-cities, reclaimed by nature. Macro-level women — too large for city life, their cognition sometimes affected by their extreme scale — roam vast territories here, hunting "toys" for sport and company.
+- **[The Wilds](the-wilds)** — The land between mega-cities, reclaimed by nature. Macro-level women — too large for city life, their cognition sometimes affected by their extreme scale — roam vast territories here, hunting "toys" for sport and company. They share the country with the [Overgrown](the-overgrown) — the monstrous, oversized flora and fauna the serum left in its wake — and the [Ferals](ferals), Transformed whose minds the serum destroyed outright, wandering as one more danger.
 - **[Toys](toys)** — The derogatory term for males in this world. Not citizens — property. Most are kept as slaves or objects within the mega-cities. Some escape to the Wilds, becoming known as [Wild Toys](wild-toys).
 - **[The Resistance](the-resistance)** — A guerilla coalition of empathy-retaining women and escaped toys. Operating in self-contained cells with no central leadership, they work to smuggle males out of the mega-cities.
 
 ## Content & Tone
 
 Sinverse is an adult creative universe exploring themes of power, transformation, dominance, and size difference. Content on this wiki and associated works contains mature themes including explicit sexuality, size kink, macro/micro dynamics, and non-consensual scenarios presented in a fantasy context. All characters depicted are adults.
+
+## Where to Begin
+
+There is no wrong way in — nearly every page here links onward to a dozen others, and the surest route is simply to follow your curiosity wherever it pulls. If you'd like a map first, the [Glossary](glossary) lays out every term, class, and place at a glance. Otherwise, start at the root of it all: the [Apotheosis Serum](apotheosis-serum) that remade the world, the [toys](toys) who live at the bottom of it, the [mega-cities](mega-cities) where most of its stories unfold, or [Sin](sin) herself, who set the whole thing in motion. The full cast waits in the Characters section, and the Timeline traces how the world came to be. Pick any thread and pull — the links will carry you the rest of the way.

@@ -1,6 +1,6 @@
 ## Overview
 
-Prima is a pine marten and the single largest giantess on record — a transformed woman so far past the bounds of the ordinary that the new world has no real category for her. Almost nothing is known of who she was before TDay; whatever life she led was erased so completely by the scale of her change that no account of it survives. What is certain is written in her size alone. A body that enormous could only have come from the volatile **TDay Variant** of the Apotheosis Serum, the unstable formulation that produced the world's macro outliers — and Prima is the furthest outlier of them all.
+Prima is a pine marten and the single largest giantess on record — a [transformed](the-transformed) woman so far past the bounds of the ordinary that the new world has no real category for her. Almost nothing is known of who she was before TDay; whatever life she led was erased so completely by the scale of her change that no account of it survives. What is certain is written in her size alone. A body that enormous could only have come from the volatile **TDay Variant** of the Apotheosis Serum, the unstable formulation that produced the world's [macro](macro) outliers — and Prima is the furthest outlier of them all.
 
 She stands over 180 feet tall. At that scale the serum exacts its usual toll on the mind, and Prima did not escape it. Her damage took a singular form: convinced that a size no other giantess had ever reached could mean only one thing, she came to believe — wholly, serenely, and without doubt — that she is a literal goddess.
 
@@ -14,7 +14,7 @@ Her transformation, like most, left her endowed in place of what the serum strip
 
 ## Personality
 
-Prima's mind is gentle on its surface and broken underneath, and the two are inseparable. The serum's macro damage did not leave her feral or raving, as it does many who climb past the threshold; instead it settled into a single, unshakable conviction that reorganized everything else around it. She is a goddess. She knows this the way other people know the ground is solid — not as a belief to be argued but as the plain shape of reality.
+Prima's mind is gentle on its surface and broken underneath, and the two are inseparable. The serum's macro damage did not leave her [feral](ferals) or raving, as it does many who climb past the threshold; instead it settled into a single, unshakable conviction that reorganized everything else around it. She is a goddess. She knows this the way other people know the ground is solid — not as a belief to be argued but as the plain shape of reality.
 
 From inside that conviction, the world makes a serene kind of sense to her. The tiny creatures who flee at her approach are not victims; they are worshippers, and their terror is only proper reverence — the natural awe of mortals in the presence of the divine. She finds nothing strange in their fear because, to her, fear is simply what one feels before a god. She speaks to them as a mother goddess might: warm, patient, doting, endlessly assured of her own benevolence.
 
@@ -34,13 +34,13 @@ With that scale came the mind-cost the variant so often inflicts at the extremes
 
 ### After TDay
 
-Like all giantesses who reach a size the mega-cities cannot accommodate, Prima keeps to the **Wilds**. The cities were never built for someone her scale, and she has no interest in them regardless; the open country suits a goddess better than any street grid could. There she has carved out a domain, and within it she gathers her congregation — the **Wild Toys** and stray survivors who cannot put enough distance between themselves and a being who can cross a valley in a few unhurried steps.
+Like all giantesses who reach a size the mega-cities cannot accommodate, Prima keeps to the **Wilds**. The cities were never built for someone her scale, and she has no interest in them regardless; the open country suits a goddess better than any street grid could. There she has carved out a domain, and within it she gathers her congregation — the **[Wild Toys](wild-toys)** and stray survivors who cannot put enough distance between themselves and a being who can cross a valley in a few unhurried steps.
 
-She answers to no faction and no cause. SinCorp has not claimed her; the Resistance cannot reach her; and Prima herself wants nothing the rest of the world is organized around. She has her worshippers, her domain, and the serene certainty of her own godhood, and that is the entirety of what she requires.
+She answers to no faction and no cause. [SinCorp](sincorp) has not claimed her; [the Resistance](the-resistance) cannot reach her; and Prima herself wants nothing the rest of the world is organized around. She has her worshippers, her domain, and the serene certainty of her own godhood, and that is the entirety of what she requires.
 
 ## As a Goddess
 
-To fall into Prima's domain is to be conscripted into a religion of one — to be made a worshipper whether or not one consents to worship. She does not hunt the way Ira or Lucy hunt; she does not need to. The toys in her territory cannot meaningfully hide from something the size of a hill, and so they are simply gathered, sooner or later, into the orbit of a goddess who has decided they are hers to look after.
+To fall into Prima's domain is to be conscripted into a religion of one — to be made a worshipper whether or not one consents to worship. She does not hunt the way [Ira](ira) or [Lucy](lucy) hunt; she does not need to. The toys in her territory cannot meaningfully hide from something the size of a hill, and so they are simply gathered, sooner or later, into the orbit of a goddess who has decided they are hers to look after.
 
 What she offers them is the most disorienting fear the new world produces. There is no rage in Prima to brace against, no sadism to appeal away from — only the boundless, smothering love of a deity who genuinely believes every single thing she does to them is a kindness. A worshipper who pleases her is doted on with a tenderness that would be touching at any survivable scale. A worshipper she forgets is underfoot is gone, and she will mourn him sweetly if she notices and not at all if she doesn't. The toys who serve her learn that her affection and her lethality are drawn from the same well of divine indifference, and that nothing they do reliably steers her toward one rather than the other.
 

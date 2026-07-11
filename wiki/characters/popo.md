@@ -8,7 +8,7 @@ Popo is bubbly, excitable, and almost childishly delighted by the world she find
 
 ## Appearance
 
-Popo is a brown bunny with short brown hair and bright green eyes, her look defined by a sweep of **red-dyed tips** in her bangs that hang down over her face. She stands nine and a half feet — modest by the standards of the towering Transformed, but enormous beside the toys she hunts and adores. Her whole bearing is energy barely contained: bouncing, fidgeting, lit up with an excitement she makes no effort to hide.
+Popo is a brown bunny with short brown hair and bright green eyes, her look defined by a sweep of **red-dyed tips** in her bangs that hang down over her face. She stands nine and a half feet — modest by the standards of the towering [Transformed](the-transformed), but enormous beside the toys she hunts and adores. Her whole bearing is energy barely contained: bouncing, fidgeting, lit up with an excitement she makes no effort to hide.
 
 The serum left her endowed in a humanoid form. On Popo the effect reads less as menace than as one more outlet for an appetite she is forever, happily, at the mercy of.
 
@@ -28,7 +28,7 @@ Little is recorded of Popo's life before the change, and she is far too occupied
 
 ### After TDay
 
-For Popo, the new world is a personal paradise. Where the old one would have made her appetites a source of shame or struggle — the sort of bottomless craving a person hides — TDay rewrote the order so that her lust was no longer a flaw but an asset, and her giddy enthusiasm for indulging it simply made her exceptional at the work the new world had on offer. She fell in with Juxta, and the two built their shop together: Popo to bring the toys in, Juxta to make something sellable of them. It is a partnership that has lasted because it is also a friendship, two halves of a whole who are seldom seen apart and are taken, by nearly everyone, for sisters.
+For Popo, the new world is a personal paradise. Where the old one would have made her appetites a source of shame or struggle — the sort of bottomless craving a person hides — [TDay](tday) rewrote the order so that her lust was no longer a flaw but an asset, and her giddy enthusiasm for indulging it simply made her exceptional at the work the new world had on offer. She fell in with Juxta, and the two built their shop together: Popo to bring the toys in, Juxta to make something sellable of them. It is a partnership that has lasted because it is also a friendship, two halves of a whole who are seldom seen apart and are taken, by nearly everyone, for sisters.
 
 ## As a Huntress
 

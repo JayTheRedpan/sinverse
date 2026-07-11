@@ -24,11 +24,11 @@ When they are — when the right occasion gives her permission and reason to sto
 
 ### Before TDay
 
-Little has been established about Marian's life before the world changed. Like all the transformed, she was once ordinary, before the Apotheosis Serum remade her — though the composed, organized temperament that makes her so effective a functionary seems likely to have been hers all along.
+Little has been established about Marian's life before the world changed. Like all [the transformed](the-transformed), she was once ordinary, before the Apotheosis Serum remade her — though the composed, organized temperament that makes her so effective a functionary seems likely to have been hers all along.
 
 ### After TDay
 
-Marian was transformed by the Apotheosis Serum on TDay and, in the new world, found her place within [SinCorp](sin)'s organization — rising to become a trusted secretary and functionary working close to Sin's own operations. Efficient, discreet, and reliable, she made herself the kind of quiet competence an empire runs on, and earned a position near its centre.
+Marian was transformed by the Apotheosis Serum on [TDay](tday) and, in the new world, found her place within [SinCorp](sin)'s organization — rising to become a trusted secretary and functionary working close to Sin's own operations. Efficient, discreet, and reliable, she made herself the kind of quiet competence an empire runs on, and earned a position near its centre.
 
 It was at one of Sin's own house parties that the other side of Marian first showed itself. Moving through the gathering — past giantesses indulging themselves in every corner — she made her way to an upper room where Sin herself was presiding over a game: a tabletop role-playing session whose pieces, it turned out, were living shrunken toys, and whose hazards Sin made real, producing actual shrunken creatures to set upon a toy whenever a turn went against it. Drawn in and persuaded to play, Marian found the game working on her. With each turn her composure thinned, her reserve loosening notch by notch, until at last it gave way entirely — her hair coming down around her shoulders in a wild mess, a sinister grin spreading across her face, and a cowering toy trapped in her fist as she looked down at him. The lid, that night, came off for good.
 

@@ -2,7 +2,7 @@
 
 Jay is a red panda and one of the primary toys followed in the post-TDay world — one of the lenses through which the Sinverse is witnessed. Many of the universe's stories and comics are seen through his eyes, though he is far from the only toy whose life the new world is built upon.
 
-He stands 5'7". In the old world, his long frame made him quick on his feet; in the new one, the giantesses are quick to point out that it simply makes him a better toy — a body built long and supple enough to take their equipment.
+He stands 5'7". In the old world, his long frame made him quick on his feet; in the new one, the [giantesses](the-transformed) are quick to point out that it simply makes him a better toy — a body built long and supple enough to take their equipment.
 
 {{FEATURED}}
 
@@ -40,7 +40,7 @@ Jay is untransformed. He took no serum and was changed by no one; he is simply a
 
 ## As a Toy
 
-Jay's body has become, through no ambition of his own, remarkably well suited to its role. The huntresses and Matriarchs who use him remark on his durability — that he can be taken in every way a toy his size can be taken (worked over orally until his jaw aches, stretched and filled, worn and ridden as a living sleeve) and still be intact enough to be used again. Where a lesser toy would be ruined, Jay endures, and the women who learn this about him tend to keep him.
+Jay's body has become, through no ambition of his own, remarkably well suited to its role. The [huntresses](the-paws) and [Matriarchs](matriarchs) who use him remark on his durability — that he can be taken in every way a toy his size can be taken (worked over orally until his jaw aches, stretched and filled, worn and ridden as a living sleeve) and still be intact enough to be used again. Where a lesser toy would be ruined, Jay endures, and the women who learn this about him tend to keep him.
 
 This durability is conspicuous. SinCorp is known to produce enhancements for toys — treatments that rebuild a small body to absorb the relentless, oversized attention of beings two to four times its size without breaking under it. Jay has never been shown undergoing the process, but his resilience under use that should have wrecked him strongly suggests he has, at some point, received some measure of these treatments. It remains one of the open questions of his story.
 
@@ -52,7 +52,7 @@ His old advantages count for little here. The speed that once carried him across
 
 *The kinks and dynamics that define this character's encounters.*
 
-Jay's preferences are, by the nature of his situation, largely beside the point — as a toy he rarely has any agency over his encounters, and what happens to him is dictated by whoever holds him at the time rather than by anything he wants. The throughline of his experiences isn't a kink he pursues but a position he occupies: the small, overpowered partner with no say, at the mercy of women many times his size. If anything defines his side of an encounter, it's that helplessness itself and the tail-grab dynamic so often used to control him. The one genuine exception is Libby, with whom his involvement is mutual and wanted — the rare relationship in his life where his preferences are something a partner actually cares to ask about.
+Jay's preferences are, by the nature of his situation, largely beside the point — as a toy he rarely has any agency over his encounters, and what happens to him is dictated by whoever holds him at the time rather than by anything he wants. The throughline of his experiences isn't a kink he pursues but a position he occupies: the small, overpowered partner with no say, at the mercy of women many times his size. If anything defines his side of an encounter, it's that helplessness itself and the tail-grab dynamic so often used to control him. The one genuine exception is [Libby](libby), with whom his involvement is mutual and wanted — the rare relationship in his life where his preferences are something a partner actually cares to ask about.
 
 ## Usage Guide
 

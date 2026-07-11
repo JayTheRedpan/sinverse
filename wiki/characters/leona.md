@@ -10,11 +10,11 @@ Find a particular toy. Deliver a message to a particular person. Go somewhere, s
 
 Leona is a striking hybrid of bunny and lion, standing thirteen and a half feet — a shade taller, as it happens, than Sin herself, the sort of detail that suits a woman whose original job was to stand between her mistress and harm. The two halves of her heritage blend across her: the long ears and softer features of a rabbit set against the heavier build, the colouring, and the unmistakable mane-framed presence of a lion. The result is something more imposing than either parent stock alone, an apex frame with a predator's confidence in how it moves.
 
-The serum left her endowed, as it does all the Transformed, in a feline form to match her lion's half. She is built powerfully — the body of someone who was, once, expected to use it — and she carries that power with the easy, lording assurance of a woman who has never doubted she is the largest and most dangerous thing in most rooms she enters.
+The serum left her endowed, as it does all [the Transformed](the-transformed), in a feline form to match her lion's half. She is built powerfully — the body of someone who was, once, expected to use it — and she carries that power with the easy, lording assurance of a woman who has never doubted she is the largest and most dangerous thing in most rooms she enters.
 
 ## Personality
 
-Leona's defining trait is pride — specifically, pride in her closeness to Sin. In a world where most never glimpse the First Matriarch and the toys taken to meet her are never seen again, Leona comes and goes from Sin's presence as a matter of course, trusted with errands Sin will hand to no one else. She knows exactly how rare that is, and she wears it openly. It is the centre of her sense of herself: not merely a giantess, not merely powerful, but *Sin's* — the one sent for when it matters.
+Leona's defining trait is pride — specifically, pride in her closeness to Sin. In a world where most never glimpse the First [Matriarch](matriarchs) and the toys taken to meet her are never seen again, Leona comes and goes from Sin's presence as a matter of course, trusted with errands Sin will hand to no one else. She knows exactly how rare that is, and she wears it openly. It is the centre of her sense of herself: not merely a giantess, not merely powerful, but *Sin's* — the one sent for when it matters.
 
 That pride makes her formidable and a little vain, and intensely loyal in a way that is more proprietary than worshipful. She does not fawn over Sin so much as guard her unique standing with her, jealous of the access and quietly certain no one else has earned it. Toward everyone beneath that standing — which is to say nearly everyone — she is confident to the point of arrogance, accustomed to being obeyed and unbothered by the rare soul who hesitates. She is efficient, direct, and used to closing distance between Sin's wishes and the world's compliance by whatever means the errand requires.
 
@@ -22,7 +22,7 @@ That pride makes her formidable and a little vain, and intensely loyal in a way 
 
 ### Before TDay
 
-Leona's role predates the new world. In the years when Sin was still a mortal genius building the foundations of SinCorp in secret — assembling the plans, the resources, and the network that TDay would one day require — she had the vulnerabilities of any mortal with dangerous ambitions and dangerous enemies, and Leona was her protection against them. As Sin's bodyguard in those years, Leona stood between her and the threats that came with what she was quietly building, in the dangerous interval before Sin became something no threat could touch.
+Leona's role predates the new world. In the years when Sin was still a mortal genius building the foundations of SinCorp in secret — assembling the plans, the resources, and the network that [TDay](tday) would one day require — she had the vulnerabilities of any mortal with dangerous ambitions and dangerous enemies, and Leona was her protection against them. As Sin's bodyguard in those years, Leona stood between her and the threats that came with what she was quietly building, in the dangerous interval before Sin became something no threat could touch.
 
 ### After TDay
 

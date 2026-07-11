@@ -2,7 +2,7 @@
 
 Sin is the titular figure of the Sinverse and the progenitor of the world as it now exists. A black bunny of genius-level intellect, she discovered the Apotheosis Serum, tested it on herself, and orchestrated the event known as TDay — the day the world was remade to her vision. She is the founder of SinCorp and the Matriarch of Angora, the unofficial capital of the post-TDay world.
 
-She stands 13 feet tall. To the giantesses who rule the mega-cities she commands respect; to the toys who live beneath them, she is something closer to a cruel deity — and a boogeyman.
+She stands 13 feet tall. To the giantesses who rule the [mega-cities](mega-cities) she commands respect; to the toys who live beneath them, she is something closer to a cruel deity — and a boogeyman.
 
 {{FEATURED}}
 
@@ -52,7 +52,7 @@ She is always, without exception, entirely in control of any encounter, and very
 
 *The kinks and dynamics that define this character's encounters.*
 
-Sin is a true sadist, and her tastes run to the deliberate infliction of suffering for its own sake. What sets her apart from the merely cruel is *what* she most wants to ruin: not the body, but the mind. Sin gets far more out of breaking a toy psychologically than physically — the body is just the instrument she plays to get there. Her real craving is to take a whole, willful person and unmake them by degrees: to watch defiance curdle into pleading, pleading into compliance, and compliance into something that no longer remembers it was ever anything else. She savors the exact moment a toy's personality finally gives way — when the wit, the resistance, the sense of self all collapse and leave behind a quivering, hollowed-out husk that flinches at her voice and exists only to be used. A toy reduced to a mindless, broken shell of who they used to be is her masterpiece, and she is endlessly patient in pursuit of it; she would rather spend weeks dismantling one mind completely than indulge a hundred quick cruelties. Every degradation she chooses is aimed at that goal. The physical abuse is real and severe, but to Sin it has always been a means — the point is the person who used to be there, and isn't anymore.
+Sin is a true sadist, and her tastes run to the deliberate infliction of suffering for its own sake. What sets her apart from the merely cruel is *what* she most wants to ruin: not the body, but the mind. Sin gets far more out of breaking a toy psychologically than physically — the body is just the instrument she plays to get there. Her real craving is to take a whole, willful person and unmake them by degrees: to watch defiance curdle into pleading, pleading into compliance, and compliance into something that no longer remembers it was ever anything else. She savors the exact moment a toy's personality finally gives way — when the wit, [the resistance](the-resistance), the sense of self all collapse and leave behind a quivering, hollowed-out husk that flinches at her voice and exists only to be used. A toy reduced to a mindless, broken shell of who they used to be is her masterpiece, and she is endlessly patient in pursuit of it; she would rather spend weeks dismantling one mind completely than indulge a hundred quick cruelties. Every degradation she chooses is aimed at that goal. The physical abuse is real and severe, but to Sin it has always been a means — the point is the person who used to be there, and isn't anymore.
 
 ## Usage Guide
 
@@ -67,7 +67,7 @@ Sin is a true sadist, and her tastes run to the deliberate infliction of sufferi
 
 ## Did You Know
 
-- Sin was the first being ever transformed by the Apotheosis Serum — she tested it on herself before anyone else.
+- Sin was the first being ever [transformed](the-transformed) by the Apotheosis Serum — she tested it on herself before anyone else.
 - The golden streak in her bangs appears to be entirely natural. Given how little regard she has for her own vanity, no one believes she put it there on purpose.
 - Her equine genitalia is widely believed to be a deliberate choice — a self-modification made specifically to maximise her ability to dominate and destroy a toy.
 - SinCorp was originally funded by selling "soldier durability treatments" to the military — the precursor science to the toy-durability treatments that now keep prey alive under their owners.
