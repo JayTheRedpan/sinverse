@@ -14,7 +14,7 @@
     "role": [
 
     ],
-    "class": "Giantess",
+    "class": ["Giantess"],
     "height": 132,
     "weight": 1200,
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782180704/haven_profile_in9ojv.webp",
@@ -91,7 +91,7 @@
     "role": [
       "Dominatrix"
     ],
-    "class": "Giantess",
+    "class": ["Giantess"],
     "relationships": [
       { 
         "name": "Mia", 
@@ -131,7 +131,7 @@
     "role": [
 
     ],
-    "class": "Giantess",
+    "class": ["Giantess"],
     "relationships": [
       { 
         "name": "Vex", 
@@ -171,7 +171,7 @@
     "role": [
 
     ],
-    "class": "Sylph",
+    "class": ["Sylph"],
     "relationships": [
       { 
         "name": "Hydey", 
@@ -212,7 +212,7 @@
     "role": [
       "Historian"
     ],
-    "class": "Giantess",
+    "class": ["Giantess"],
     "relationships": [
 
     ],
@@ -249,7 +249,7 @@
     "role": [
       "First Huntress"
     ],
-    "class": "Giantess",
+    "class": ["Giantess"],
     "relationships": [
       { 
         "name": "Nestle", 

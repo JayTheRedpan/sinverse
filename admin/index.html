@@ -233,6 +233,22 @@ async function checkCharacters(chars) {
   chars.forEach(c => (c.faction || []).forEach(f => { if (KNOWN_FACTIONS.indexOf(f) === -1) badFaction.add(f); }));
   if (badFaction.size) issues.push(warn('Unrecognized faction value(s): ' + [...badFaction].map(f => '<code>' + f + '</code>').join(', ') + ' — typo, or add to the checker if new'));
 
+  // Class hierarchy — class is an array; subset classes must carry their parent
+  // (a Tempered is also a Giantess), and values should be from the known set.
+  const CLASS_PARENT = { 'Tempered': 'Giantess', 'Feral': 'Giantess', 'Wild Toy': 'Toy' };
+  const KNOWN_CLASSES = ['Giantess', 'Toy', 'Sylph', 'Tempered', 'Feral', 'Wild Toy'];
+  const badClass = new Set();
+  chars.forEach(c => {
+    const cl = Array.isArray(c['class']) ? c['class'] : (c['class'] ? [c['class']] : []);
+    if (!Array.isArray(c['class']) && c['class']) issues.push(warn('Character <code>' + c.name + '</code> has a non-array <code>class</code> (should be a list, e.g. ["Giantess","Tempered"])'));
+    cl.forEach(x => { if (KNOWN_CLASSES.indexOf(x) === -1) badClass.add(x); });
+    Object.keys(CLASS_PARENT).forEach(sub => {
+      if (cl.indexOf(sub) !== -1 && cl.indexOf(CLASS_PARENT[sub]) === -1)
+        issues.push(err('Character <code>' + c.name + '</code> is <code>' + sub + '</code> but is missing its parent class <code>' + CLASS_PARENT[sub] + '</code> — a ' + sub + ' is also a ' + CLASS_PARENT[sub]));
+    });
+  });
+  if (badClass.size) issues.push(warn('Unrecognized class value(s): ' + [...badClass].map(x => '<code>' + x + '</code>').join(', ') + ' — typo, or add to KNOWN_CLASSES in the checker'));
+
   return issues;
 }
 

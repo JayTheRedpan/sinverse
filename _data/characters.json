@@ -49,7 +49,9 @@
       }
     ],
     "role": [],
-    "class": "Toy"
+    "class": [
+      "Toy"
+    ]
   },
   {
     "id": 1,
@@ -88,9 +90,12 @@
       }
     ],
     "role": [
-      "First Matriarch"
+      "First Matriarch",
+      "Matriarch"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 2,
@@ -120,7 +125,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 3,
@@ -150,7 +157,9 @@
       "penisType": "canine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 4,
@@ -182,7 +191,9 @@
     "role": [
       "Barrista"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 5,
@@ -201,9 +212,7 @@
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999577/profile_lucile_j2wrdf.webp",
     "wiki": "lucile",
-    "faction": [
-      
-    ],
+    "faction": [],
     "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
@@ -214,7 +223,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 6,
@@ -255,7 +266,9 @@
     "role": [
       "Huntress"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 7,
@@ -295,7 +308,9 @@
       "Toy Trainer",
       "Toy Seller"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 8,
@@ -327,7 +342,9 @@
     "role": [
       "Toy Pound Keeper"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 9,
@@ -362,7 +379,9 @@
     "role": [
       "Bodyguard"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 10,
@@ -392,7 +411,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 11,
@@ -426,7 +447,9 @@
     "role": [
       "Secretary"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 12,
@@ -456,7 +479,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 13,
@@ -488,7 +513,9 @@
     "role": [
       "Influencer"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 14,
@@ -518,7 +545,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 15,
@@ -561,7 +590,9 @@
       }
     ],
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 16,
@@ -591,7 +622,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 17,
@@ -628,7 +661,9 @@
       }
     ],
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 18,
@@ -662,7 +697,9 @@
     "role": [
       "Huntress"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 19,
@@ -710,7 +747,10 @@
       "Security Guard",
       "Double-Agent"
     ],
-    "class": ["Giantess", "Tempered"]
+    "class": [
+      "Giantess",
+      "Tempered"
+    ]
   },
   {
     "id": 20,
@@ -740,7 +780,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 21,
@@ -770,7 +812,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 22,
@@ -800,7 +844,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 23,
@@ -848,7 +894,9 @@
       "Clone",
       "Breeder"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 24,
@@ -878,7 +926,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 25,
@@ -897,9 +947,7 @@
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988230/CanineCock_length_jbhbva.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999302/profile_zuzu_zxw3k0.webp",
     "wiki": "zuzu",
-    "faction": [
-      "The Wilds"
-    ],
+    "faction": [],
     "transformed_by": "Apotheosis Serum (TDay Variant)",
     "canonical": true,
     "anatomy": {
@@ -910,7 +958,10 @@
       "penisType": "canine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess",
+      "Feral"
+    ]
   },
   {
     "id": 26,
@@ -942,7 +993,9 @@
     "role": [
       "Matriarch"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 27,
@@ -972,7 +1025,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 28,
@@ -1009,7 +1064,9 @@
       }
     ],
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 29,
@@ -1046,7 +1103,9 @@
       }
     ],
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 30,
@@ -1078,7 +1137,9 @@
     "role": [
       "Matriarch"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 31,
@@ -1108,7 +1169,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 32,
@@ -1138,7 +1201,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 33,
@@ -1168,7 +1233,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 34,
@@ -1198,7 +1265,9 @@
       "penisType": "humanoid"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 35,
@@ -1230,7 +1299,9 @@
     "role": [
       "Designer"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 36,
@@ -1262,7 +1333,9 @@
     "role": [
       "Chemist"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 37,
@@ -1292,7 +1365,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 38,
@@ -1322,7 +1397,9 @@
       "penisType": "equine"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 39,
@@ -1352,7 +1429,9 @@
       "penisType": "tentacle"
     },
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 40,
@@ -1384,7 +1463,9 @@
     "role": [
       "'Goddess'"
     ],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 41,
@@ -1427,7 +1508,9 @@
       }
     ],
     "role": [],
-    "class": "Giantess"
+    "class": [
+      "Giantess"
+    ]
   },
   {
     "id": 42,
@@ -1458,13 +1541,11 @@
       "vag": false,
       "penisType": "canine"
     },
-    "relationships": [
-
-    ],
-    "role": [
-      
-    ],
-    "class": "Sylph"
+    "relationships": [],
+    "role": [],
+    "class": [
+      "Sylph"
+    ]
   },
   {
     "id": 43,
@@ -1483,9 +1564,7 @@
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783478396/height_profile_cwauhy.webp",
     "wiki": "eve",
-    "faction": [
-      
-    ],
+    "faction": [],
     "transformed_by": "Project Sylph",
     "canonical": true,
     "anatomy": {
@@ -1495,12 +1574,10 @@
       "vag": false,
       "penisType": "humanoid"
     },
-    "relationships": [
-      
-    ],
-    "role": [
-      
-    ],
-    "class": "Sylph"
+    "relationships": [],
+    "role": [],
+    "class": [
+      "Sylph"
+    ]
   }
 ]
