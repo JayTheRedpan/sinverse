@@ -1756,6 +1756,19 @@
       <div id="cat-grid"></div>
     </section>
 
+    <!-- Character not-found page: shown when a ?character= link (from the gallery
+         or library) names a character that has no wiki entry yet. -->
+    <section class="wiki-page" id="page-not-found">
+      <div class="wiki-intro-eyebrow">Not Found</div>
+      <h1 class="wiki-intro-title">Character not found</h1>
+      <p style="color: var(--text-secondary, #b8a898); font-family: var(--font-body, 'EB Garamond', serif); font-size: 1.02rem; line-height: 1.65; max-width: 42rem; margin-top: 0.75rem;">
+        There's no wiki entry for <strong id="nf-name" style="color: var(--text-primary, #f0e8df);"></strong> yet. This character may appear in the gallery or library but hasn't been written up here.
+      </p>
+      <p style="margin-top: 1.25rem;">
+        <a class="wiki-lore-link" href="#page-characters" onclick="showPage('characters'); return false;">&#8592; Browse all characters</a>
+      </p>
+    </section>
+
     <!-- Lore detail (dynamic) -->
     <section class="wiki-page" id="page-lore">
       <div id="lore-detail-content"></div>
@@ -2099,7 +2112,12 @@ Promise.all([
       if (section) showCategory(section, false);
       else showPage('not-found', false);
     } else if (pageMatch) { showPage(pageMatch[1], false); }
-    return; // skip ?character= param handling below
+    // Only stop here if the hash actually matched a known route. An unmatched
+    // hash — notably '#not-found', which has no '#page-' prefix — falls through
+    // to the ?character= handler below, so the not-found page is rebuilt from
+    // the still-present ?character= query param (fixes a blank page when
+    // navigating forward back into a not-found URL).
+    if (fanMatch || charMatch || loreMatch || catMatch || pageMatch) return;
   }
 
   // Handle ?character= param from gallery/library links. The value is a

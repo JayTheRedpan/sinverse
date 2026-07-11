@@ -221,6 +221,7 @@ async function init() {
     } catch(e) { window._libraryItems = []; }
     buildRelatedFor(item, 'gallery', window._galleryItems, window._libraryItems);
     if (window.SinverseDates) await SinverseDates.load('../wiki/eras.json');
+    await loadInactiveFanKeys();
     render();
   } catch(e) {
     document.body.innerHTML = '<div style="padding:4rem;text-align:center;color:var(--text-muted)">' + e.message + '</div>';
@@ -630,25 +631,75 @@ function renderRelatedLinks(containerId, related) {
   if (!rendered) el.style.display = 'none';
 }
 
+// ── Inactive fan characters + known-character roster ──────────
+// Fan characters flagged "active": false are hidden site-wide. And any tag
+// that doesn't resolve to a real character (canon or active fan) is shown as
+// plain text rather than a link, so it never leads to a broken wiki page.
+var _inactiveFanKeys = {};
+var _knownCharKeys   = {};   // canon + ACTIVE fan: names and wiki slugs (lowercased)
+function loadInactiveFanKeys() {
+  function addKnown(c){
+    if (!c) return;
+    if (c.name) _knownCharKeys[String(c.name).toLowerCase()] = true;
+    if (c.wiki) _knownCharKeys[String(c.wiki).toLowerCase()] = true;
+  }
+  var canonP = fetch('../_data/characters.json').then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
+  var fanP   = fetch('../_data/fan-characters.json').then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
+  return Promise.all([canonP, fanP]).then(function(res){
+    (res[0] || []).forEach(addKnown);
+    (res[1] || []).forEach(function(c){
+      if (c && c.active === false) {
+        if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
+        if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
+      } else { addKnown(c); }
+    });
+  }).catch(function(){});
+}
+function isInactiveFanTag(tag) {
+  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+  if (m && m[1].toLowerCase() === 'canon') return false;
+  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
+  return !!_inactiveFanKeys[key] || !!_inactiveFanKeys[key.replace(/\s+/g, '-')];
+}
+function activeCharacters(chars) {
+  return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
+}
+function isKnownCharacter(tag) {
+  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
+  return !!_knownCharKeys[key] || !!_knownCharKeys[key.replace(/\s+/g, '-')];
+}
+
 function renderCharacterLinks(containerId, characters) {
   var el = document.getElementById(containerId);
+  characters = activeCharacters(characters);   // drop inactive fan characters
   if (!el || !characters || !characters.length) return;
   var label = document.createElement('span');
   label.className   = 'viewer-chars-label';
   label.textContent = 'Characters: ';
   el.appendChild(label);
   characters.forEach(function(charId, i) {
-    var a = document.createElement('a');
-    a.className = 'viewer-char-link';
     // A tag is a character handle: optional "canon:"/"fan:" prefix + name (or
-    // slug). Pass the full handle to the wiki (it resolves canon vs fan); show
-    // just the readable name, prefix stripped.
+    // slug). Link it only if it resolves to a real character; otherwise show
+    // it as plain text so it never leads to a broken wiki page.
     var m = String(charId).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
     var pfx = m ? (m[1].toLowerCase() + ':') : '';
     var key = (m ? m[2] : String(charId)).replace(/_/g, ' ').trim();
-    a.href = '../wiki/?character=' + encodeURIComponent(pfx + key.toLowerCase());
-    a.textContent = key.charAt(0).toUpperCase() + key.slice(1);
-    el.appendChild(a);
+    var displayName = key.charAt(0).toUpperCase() + key.slice(1);
+    if (isKnownCharacter(charId)) {
+      var a = document.createElement('a');
+      a.className = 'viewer-char-link';
+      a.href = '../wiki/?character=' + encodeURIComponent(pfx + key.toLowerCase());
+      a.textContent = displayName;
+      el.appendChild(a);
+    } else {
+      var span = document.createElement('span');
+      span.className   = 'viewer-char-plain';
+      span.style.color = 'var(--text-secondary, #b8a898)';
+      span.title       = 'No wiki entry yet';
+      span.textContent = displayName;
+      el.appendChild(span);
+    }
     if (i < characters.length - 1) el.appendChild(document.createTextNode(', '));
   });
 }

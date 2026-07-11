@@ -185,18 +185,24 @@ function renderReaderRelated(related) {
 // Fan characters flagged "active": false in _data/fan-characters.json are
 // hidden site-wide, so their appearances as character tags are ignored.
 var _inactiveFanKeys = {};
+var _knownCharKeys   = {};   // canon + ACTIVE fan: names and wiki slugs (lowercased)
 function loadInactiveFanKeys() {
-  return fetch('../_data/fan-characters.json')
-    .then(function(r){ return r.ok ? r.json() : []; })
-    .then(function(list){
-      (list || []).forEach(function(c){
-        if (c && c.active === false) {
-          if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
-          if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
-        }
-      });
-    })
-    .catch(function(){});
+  function addKnown(c){
+    if (!c) return;
+    if (c.name) _knownCharKeys[String(c.name).toLowerCase()] = true;
+    if (c.wiki) _knownCharKeys[String(c.wiki).toLowerCase()] = true;
+  }
+  var canonP = fetch('../_data/characters.json').then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
+  var fanP   = fetch('../_data/fan-characters.json').then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
+  return Promise.all([canonP, fanP]).then(function(res){
+    (res[0] || []).forEach(addKnown);                    // every canon character is known/linkable
+    (res[1] || []).forEach(function(c){
+      if (c && c.active === false) {                     // inactive fan → hidden site-wide
+        if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
+        if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
+      } else { addKnown(c); }                             // active fan → known/linkable
+    });
+  }).catch(function(){});
 }
 function isInactiveFanTag(tag) {
   var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
@@ -206,6 +212,15 @@ function isInactiveFanTag(tag) {
 }
 function activeCharacters(chars) {
   return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
+}
+// A tag is "known" only if it resolves to a character that actually has an
+// entry (canon, or an active fan character). Unknown tags — typos, or
+// characters not written up yet — render as plain text instead of links, so
+// they never lead to a broken wiki page.
+function isKnownCharacter(tag) {
+  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
+  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
+  return !!_knownCharKeys[key] || !!_knownCharKeys[key.replace(/\s+/g, '-')];
 }
 
 function renderReaderCharacters(characters) {
@@ -230,11 +245,22 @@ function renderReaderCharacters(characters) {
     var m = String(charId).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
     var pfx = m ? (m[1].toLowerCase() + ':') : '';
     var key = (m ? m[2] : String(charId)).replace(/_/g, ' ').trim();
-    var a = document.createElement('a');
-    a.className   = 'reader-char-link';
-    a.href        = '../wiki/?character=' + encodeURIComponent(pfx + key.toLowerCase());
-    a.textContent = key.charAt(0).toUpperCase() + key.slice(1);
-    list.appendChild(a);
+    var displayName = key.charAt(0).toUpperCase() + key.slice(1);
+    if (isKnownCharacter(charId)) {
+      var a = document.createElement('a');
+      a.className   = 'reader-char-link';
+      a.href        = '../wiki/?character=' + encodeURIComponent(pfx + key.toLowerCase());
+      a.textContent = displayName;
+      list.appendChild(a);
+    } else {
+      var span = document.createElement('span');
+      span.className   = 'reader-char-plain';
+      span.style.color = 'var(--text-secondary, #b8a898)';
+      span.style.cursor = 'default';
+      span.title       = 'No wiki entry yet';
+      span.textContent = displayName;
+      list.appendChild(span);
+    }
   });
   el.appendChild(list);
 }
