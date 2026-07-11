@@ -1,6 +1,6 @@
 ## Overview
 
-Sandy is a fennec fox and one of the more peculiar personalities among the transformed. A young adult, she nonetheless affects a deliberately playful, childish demeanor — all giggles, games, and theatrics — that masks a predator every bit as dangerous as her more openly fearsome peers. The disarming, bubbly act is part of what makes her unsettling: where another giantess announces her threat, Sandy hides hers behind a grin and a singsong voice, and the toys who underestimate her rarely get a second chance to correct the mistake.
+Sandy is a fennec fox and one of the more peculiar personalities among [the transformed](the-transformed). A young adult, she nonetheless affects a deliberately playful, childish demeanor — all giggles, games, and theatrics — that masks a predator every bit as dangerous as her more openly fearsome peers. The disarming, bubbly act is part of what makes her unsettling: where another giantess announces her threat, Sandy hides hers behind a grin and a singsong voice, and the [toys](toys) who underestimate her rarely get a second chance to correct the mistake.
 
 At twenty feet she's on the smaller side for the apotheosis girls, but her oversized fennec ears, her boundless energy, and her habit of treating the whole grim new world as her personal playground make her impossible to ignore.
 
@@ -24,7 +24,7 @@ Little is documented about Sandy's life before the world changed, beyond that sh
 
 ### After TDay
 
-Like every other woman, Sandy was transformed on TDay — though as a fennec she came out on the smaller end of the new order's giants. She embraced the change without hesitation, folding it into the playful, self-amusing worldview that defines her. Rather than seek power, territory, or a cause, Sandy treats the new world as a vast playground built for her entertainment, drifting through it in pursuit of whatever currently amuses her. She holds no faction and answers to no one, a free agent whose only real loyalty is to her own fun.
+Like every other woman, Sandy was transformed on [TDay](tday) — though as a fennec she came out on the smaller end of the new order's giants. She embraced the change without hesitation, folding it into the playful, self-amusing worldview that defines her. Rather than seek power, territory, or a cause, Sandy treats the new world as a vast playground built for her entertainment, drifting through it in pursuit of whatever currently amuses her. She holds no faction and answers to no one, a free agent whose only real loyalty is to her own fun.
 
 ## Preferences
 

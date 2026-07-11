@@ -16,7 +16,7 @@
 
 ## Related
 
-- [The Apotheosis Serum](../lore/apotheosis-serum) — what transformed her
+- [The Apotheosis Serum](../lore/apotheosis-serum) — what [transformed](the-transformed) her
 
 ## Did You Know
 

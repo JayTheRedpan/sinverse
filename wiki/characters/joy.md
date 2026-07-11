@@ -1,6 +1,6 @@
 ## Overview
 
-Joy is a clone of [Jay](jay), grown in a SinCorp laboratory at the personal direction of [Sin](sin) and built to be something Jay never was: a breeder. She was [Sin's](sin) answer to a specific problem — the rarity, and therefore the value, of red panda toys — and she was engineered to solve it, a female red panda capable of siring offspring even on partners who carry no breeding modification of their own. By the cold logic of the project she should have been a triumph.
+Joy is a clone of [Jay](jay), grown in a SinCorp laboratory at the personal direction of [Sin](sin) and built to be something Jay never was: a breeder. She was [Sin's](sin) answer to a specific problem — the rarity, and therefore the value, of red panda [toys](toys) — and she was engineered to solve it, a female red panda capable of siring offspring even on partners who carry no breeding modification of their own. By the cold logic of the project she should have been a triumph.
 
 She was not. Joy can breed, prolifically and without assistance — but she does not produce red pandas, the one thing she was made to do. To Sin, that made her a failed experiment, and Sin discarded the judgment as casually as she'd commissioned the work. To Joy, who was built knowing exactly what she was for, that verdict broke something. Recently, and unsteadily, she has come out the other side of that break pointed in a direction Sin did not intend: against her.
 
@@ -10,7 +10,7 @@ She was not. Joy can breed, prolifically and without assistance — but she does
 
 Joy looks, unmistakably, like a giantess-scaled echo of Jay — the same red panda colouring and markings, the same features, rendered at well over eleven feet and built on a breeder's generous frame. Anyone who knows the original would place her as his at a glance, which is precisely what she is.
 
-The one detail that distinguishes her is her crest: where Jay's is ordinary, Joy's carries a pronounced heart-shaped centre, a small flourish in the design that has become the easiest way to tell the clone from the source. She is endowed as the breeder she was built to be, humanoid in form, and carries herself at a scale that makes her engineered purpose plain. Notably, she is not a transformed woman at all — she was *grown* to this size in a vat, never touched by the serum, a deliberately built large female rather than one the Apotheosis Serum made.
+The one detail that distinguishes her is her crest: where Jay's is ordinary, Joy's carries a pronounced heart-shaped centre, a small flourish in the design that has become the easiest way to tell the clone from the source. She is endowed as the breeder she was built to be, humanoid in form, and carries herself at a scale that makes her engineered purpose plain. Notably, she is not a [transformed](the-transformed) woman at all — she was *grown* to this size in a vat, never touched by the serum, a deliberately built large female rather than one the [Apotheosis Serum](apotheosis-serum) made.
 
 ## Personality
 
@@ -22,7 +22,7 @@ Underneath the defiance is the thing that drives her: a need to prove the verdic
 
 ### Before TDay
 
-Joy has no "before." She was grown long after TDay, in a SinCorp facility, from material taken from Jay — a clone commissioned to order rather than a person with a past. Whatever history she has is entirely the history of the project that made her, and of what happened when that project was declared a failure.
+Joy has no "before." She was grown long after [TDay](tday), in a SinCorp facility, from material taken from Jay — a clone commissioned to order rather than a person with a past. Whatever history she has is entirely the history of the project that made her, and of what happened when that project was declared a failure.
 
 ### After TDay
 
@@ -36,7 +36,7 @@ What interrupted it was [Libby](libby). Whatever happened or didn't, it was Libb
 
 ## As a Breeder
 
-Joy's engineered function is real, whatever Sin made of the results. She is a true breeder, able to sire prolifically and, unusually, to do so on partners who carry no breeding modification at all — a capability built into her from the vat, and one that makes her a remarkable thing regardless of the colour of the offspring. In a world where reproduction is a managed, technological process and the toy population is in decline, a body that can breed unassisted is no small thing; it is only Sin's specific demand for red pandas that ever cast it as a failure.
+Joy's engineered function is real, whatever Sin made of the results. She is a true breeder, able to sire prolifically and, unusually, to do so on partners who carry no breeding modification at all — a capability built into her from the vat, and one that makes her a remarkable thing regardless of the colour of the offspring. In a world where [reproduction](reproduction) is a managed, technological process and the toy population is in decline, a body that can breed unassisted is no small thing; it is only Sin's specific demand for red pandas that ever cast it as a failure.
 
 Joy's own feelings about the function are tangled. It is the thing she was made for and the thing she "failed" at, and she cannot entirely separate her sense of her own worth from it — which is exactly the hook the Resistance, and Libby in particular, had to work against to reach her.
 

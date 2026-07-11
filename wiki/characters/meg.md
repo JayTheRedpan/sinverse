@@ -1,8 +1,8 @@
 ## Overview
 
-Meg is a great white shark giantess and the [Matriarch](matriarchs) of [Alea Panthera](alea-panthera), the new world's gambling capital. She is a creature of the underworld through and through — a giantess who ran the city's rackets long before she ever transformed, and who has run them at far greater scale ever since. Beneath the neon glamour of Alea's casinos lies a noir machine of black markets, toy-trafficking, and quiet operations, and all of it is hers.
+Meg is a great white shark giantess and the [Matriarch](matriarchs) of [Alea Panthera](alea-panthera), the new world's gambling capital. She is a creature of the underworld through and through — a giantess who ran the city's rackets long before she ever [transformed](the-transformed), and who has run them at far greater scale ever since. Beneath the neon glamour of Alea's casinos lies a noir machine of black markets, toy-trafficking, and quiet operations, and all of it is hers.
 
-She is not the largest Matriarch — at a shade under thirteen feet she is small for one who rules a mega-city — but Meg holds Alea the way she always held it: through nerve, ruthlessness, and the predator's instinct that never lets her stop moving. Her size was never the point. Her teeth always were.
+She is not the largest Matriarch — at a shade under thirteen feet she is small for one who rules a [mega-city](mega-cities) — but Meg holds Alea the way she always held it: through nerve, ruthlessness, and the predator's instinct that never lets her stop moving. Her size was never the point. Her teeth always were.
 
 {{FEATURED}}
 
@@ -28,15 +28,15 @@ Meg was a creature of the underground before the world ever changed — a fixtur
 
 ### After TDay
 
-When TDay came, Meg came through it with her wits intact — and her wits, in a city built on appetite and chance, were worth more than raw size. While others were undone by the transformation or swept up in the chaos, she did exactly what she had always done: she worked the angles, and she climbed. She clawed her way to the top of the city she had always operated beneath, and when the dust settled she held Alea Panthera entire.
+When [TDay](tday) came, Meg came through it with her wits intact — and her wits, in a city built on appetite and chance, were worth more than raw size. While others were undone by the transformation or swept up in the chaos, she did exactly what she had always done: she worked the angles, and she climbed. She clawed her way to the top of the city she had always operated beneath, and when the dust settled she held Alea Panthera entire.
 
 She has ruled it ever since as her personal empire, running the gambling, the toy-trafficking, and the lucrative black markets below as one vast operation — growing richer than the old world could ever have made her. She holds the city through the [power to command](matriarchs) it and the will to keep it firmly within the new order, answering, like every Matriarch, to no one above her save [Sin](sin).
 
 ## As Matriarch of Alea Panthera
 
-Meg's Alea is less a city governed than a business empire run. The casinos glitter above and the black markets churn below, and every part of it feeds her operation — toys dealt as currency at the tables, trafficked through the lower districts, and burned through faster than anywhere else in the new world. She manages the whole churning machine with a crime boss's eye, including the city's [traitor](alea-panthera)-run underground: owned male toys, collared and loosed to capture wild toys and keep the markets supplied.
+Meg's Alea is less a city governed than a business empire run. The casinos glitter above and the black markets churn below, and every part of it feeds her operation — toys dealt as currency at the tables, trafficked through the lower districts, and burned through faster than anywhere else in the new world. She manages the whole churning machine with a crime boss's eye, including the city's [traitor](alea-panthera)-run underground: owned male toys, collared and loosed to capture [wild toys](wild-toys) and keep the markets supplied.
 
-Her authority is absolute within her city and, like all Matriarchs, conditional on staying within the order Sin built. Meg has no interest in challenging that — her ambitions point inward, at the empire she runs, not upward or sideways at any rival. She shares with Marisol's and Angora's Matriarchs the same easy mutual respect that holds between all the mega-cities; the dominant gender does not war with itself, and Meg's scheming is aimed squarely at her operation and the toys that fuel it, never at another giantess.
+Her authority is absolute within her city and, like all Matriarchs, conditional on staying within the order Sin built. Meg has no interest in challenging that — her ambitions point inward, at the empire she runs, not upward or sideways at any rival. She shares with [Marisol](marisol)'s and [Angora](angora)'s Matriarchs the same easy mutual respect that holds between all the mega-cities; the dominant gender does not war with itself, and Meg's scheming is aimed squarely at her operation and the toys that fuel it, never at another giantess.
 
 {{RELATIONSHIPS}}
 

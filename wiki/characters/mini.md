@@ -1,8 +1,8 @@
 ## Overview
 
-Mini is a mouse and a cautionary tale wearing a cheerful grin. Like a handful of other women, the apotheosis serum barely took on her — she emerged from TDay tiny, knee-high in a world of towering giants, and she spent her early days in the new order desperate to be bigger. That desperation led her to steal and overdose on a stolen growth formula, and the gamble worked far better, and far worse, than she could have imagined. She ballooned into one of the largest beings in her corner of the world. The dose also addled her mind, leaving the sharp, frustrated little mouse behind and replacing her with a vast, simple, gleeful giant who lives almost entirely for her own pleasure.
+Mini is a mouse and a cautionary tale wearing a cheerful grin. Like a handful of other women, the [apotheosis serum](apotheosis-serum) barely took on her — she emerged from [TDay](tday) tiny, knee-high in a world of towering giants, and she spent her early days in the new order desperate to be bigger. That desperation led her to steal and overdose on a stolen growth formula, and the gamble worked far better, and far worse, than she could have imagined. She ballooned into one of the largest beings in her corner of the world. The dose also addled her mind, leaving the sharp, frustrated little mouse behind and replacing her with a vast, simple, gleeful giant who lives almost entirely for her own pleasure.
 
-Today Mini is a happy monster — a hundred-foot mouse with the temperament of an excited child and an appetite for "toys" that nothing small can survive. She is, by a quiet arrangement, the brute Sin keeps around to deal with toys that won't behave.
+Today Mini is a happy monster — a hundred-foot mouse with the temperament of an excited child and an appetite for "[toys](toys)" that nothing small can survive. She is, by a quiet arrangement, the brute Sin keeps around to deal with toys that won't behave.
 
 ## Appearance
 
@@ -14,7 +14,7 @@ She tends to look blissed-out and a little vacant, an enormous grin never far fr
 
 The Mini who exists now is dim, cheerful, and bottomlessly self-absorbed in the way of a creature whose mind never fully recovered from what she did to it. She is friendly, even affectionate, in a careless sort of way — she likes her "friends," likes her games, and approaches the destruction of a toy with the bouncy enthusiasm of a child at play. There is no malice in her exactly; there's barely enough higher thought for malice. She simply wants what she wants, finds her own size and pleasure endlessly delightful, and never once considers the perspective of the tiny things she plays with.
 
-Before the overdose she was someone quite different: a sharp, ambitious, increasingly bitter little mouse, gnawed at by the humiliation of being small in a world of giants and willing to scheme and steal to fix it. That cleverness is gone now, burned away by the chemicals she forced into herself. What's left treats her former ambitions as fully realized and asks no further questions — she got big, she's happy, and the world has shrunk to the size of her next plaything. It is, in its way, the most contented a transformed woman can be: too simple to want anything she doesn't already have.
+Before the overdose she was someone quite different: a sharp, ambitious, increasingly bitter little mouse, gnawed at by the humiliation of being small in a world of giants and willing to scheme and steal to fix it. That cleverness is gone now, burned away by the chemicals she forced into herself. What's left treats her former ambitions as fully realized and asks no further questions — she got big, she's happy, and the world has shrunk to the size of her next plaything. It is, in its way, the most contented a [transformed](the-transformed) woman can be: too simple to want anything she doesn't already have.
 
 ## History
 
@@ -24,7 +24,7 @@ Mini was an ordinary young woman before the world changed — unremarkable, and 
 
 ### TDay and the Overdose
 
-When the serum swept the world and women everywhere erupted into giants, Mini barely changed at all. She came out one of the rare partial transformees: still tiny, standing barely five feet in a world where the *smallest* of the new women towered over any man. For a creature now near the bottom of the food chain, that was an unbearable position, and Mini grew bitter and obsessive about it. She repeatedly pestered Sin — whose science could grow, shrink, and reshape the body — for another dose of the growth formula, and was refused every time; the matriarch warned that a second, untested dose could be catastrophic, that overdosing on the product could leave her little better than a toy.
+When the serum swept the world and women everywhere erupted into giants, Mini barely changed at all. She came out one of the rare partial transformees: still tiny, standing barely five feet in a world where the *smallest* of the new women towered over any man. For a creature now near the bottom of the food chain, that was an unbearable position, and Mini grew bitter and obsessive about it. She repeatedly pestered Sin — whose science could grow, shrink, and reshape the body — for another dose of the growth formula, and was refused every time; the [matriarch](matriarchs) warned that a second, untested dose could be catastrophic, that overdosing on the product could leave her little better than a toy.
 
 Mini didn't listen. She broke into Sin's lab, found the growth formula, and drank an entire vessel of it in one desperate gulp — dozens of doses at once. The change that followed was enormous and unstoppable: she swelled from a five-foot mouse into a forty-foot one, then higher, then higher still, blowing through Sin's offices and out into the street as a hundred-foot giant, drunk on the sheer pleasure of finally being *big*.
 
@@ -32,7 +32,7 @@ Sin's warning proved exactly right. The massive overdose did to Mini's mind what
 
 ### After TDay
 
-A diminished giant with a bottomless appetite and no real cunning is not a rival to anyone, and Sin — pragmatic as ever — found a use for the result. Mini lives at the edge of Sin's world now, a contented, half-feral fixture kept around as the brute who breaks toys too disobedient for ordinary handling. Sin sends her the runaways and the defiant; Mini, delighted to have playmates delivered to her door, does the rest, and the spectacle is popular enough among Sin's guests that it doubles as entertainment. It suits everyone but the toys: Mini is happy, Sin has her enforcer, and the lesson — that overdosing on the matriarch's product makes you a monster of a very particular and self-defeating kind — writes itself.
+A diminished giant with a bottomless appetite and no real cunning is not a rival to anyone, and Sin — pragmatic as ever — found a use for the result. Mini lives at the edge of Sin's world now, a contented, half-[feral](ferals) fixture kept around as the brute who breaks toys too disobedient for ordinary handling. Sin sends her the runaways and the defiant; Mini, delighted to have playmates delivered to her door, does the rest, and the spectacle is popular enough among Sin's guests that it doubles as entertainment. It suits everyone but the toys: Mini is happy, Sin has her enforcer, and the lesson — that overdosing on the matriarch's product makes you a monster of a very particular and self-defeating kind — writes itself.
 
 ## Preferences
 
@@ -48,7 +48,7 @@ Mini's tastes are as enormous and uncomplicated as she is. Her great delight is 
 - She is one of **Sin's tools** — the brute who breaks disobedient toys. She is *not* a rival to Sin and never bested her; her giant size is a leash Sin tolerates because Mini is too simple to be a threat.
 - Her appeal is **pure scale and helplessness** — she's among the largest beings in the setting, and her play is interchangeably using and eating tiny toys.
 - She has **no faction or agenda** — she's too addled for either. Her loyalty, such as it is, is to whoever brings her playmates.
-- A natural **parallel to Lucy**, another partial transformee who forced herself bigger — but where Lucy kept her mind and schemed, Mini lost hers entirely.
+- A natural **parallel to [Lucy](lucy)**, another partial transformee who forced herself bigger — but where Lucy kept her mind and schemed, Mini lost hers entirely.
 
 ## Did You Know
 

@@ -1,6 +1,6 @@
 ## Overview
 
-Ardian is a wolf, one of the earliest [Sylphs](project-sylph), and as close to a living blueprint of the program as the new world has. Like all males he was left small by TDay — not shrunk, but simply ordinary while the women around him grew enormous — and like most he might have lived out his days as a toy. Instead SinCorp selected him for something else: the Sylph treatment, which grew him into the lieutenant class built to stand between the giantesses and the toys beneath them. He is a loyal SinCorp asset, fully reformed and entirely content with what he has become, and he stands as a clear demonstration of what [Project Sylph](project-sylph) was designed to produce.
+Ardian is a wolf, one of the earliest [Sylphs](project-sylph), and as close to a living blueprint of the program as the new world has. Like all males he was left small by [TDay](tday) — not shrunk, but simply ordinary while the women around him grew enormous — and like most he might have lived out his days as a toy. Instead SinCorp selected him for something else: the Sylph treatment, which grew him into the lieutenant class built to stand between the giantesses and the toys beneath them. He is a loyal SinCorp asset, fully reformed and entirely content with what he has become, and he stands as a clear demonstration of what [Project Sylph](project-sylph) was designed to produce.
 
 At fifteen and a half feet he stands taller than most Sylphs — a notable outlier in a class that usually runs shorter, a quirk of his early, somewhat experimental transformation. But Ardian's significance isn't his height. It's that he embodies, more completely than almost anyone, the bargain the new world offered a certain kind of toy: serve, and rise above the rest.
 
@@ -10,7 +10,7 @@ At fifteen and a half feet he stands taller than most Sylphs — a notable outli
 
 Ardian is a slim wolf with a slight, almost delicate build that the Sylph process left largely intact rather than bulking out. He has striking electric teal-green eyes, and he plays them up: he keeps his bangs swept down over his face and has highlighted them in a matching electric teal-green, with the same vivid colour streaked in a strip running down the length of his tail. He paints his nails a similar shade, and has a habit of fiddling with his bangs — a small, preening tell that survived everything else about him. He stands fifteen feet seven inches, which makes him conspicuously taller than most Sylphs and places him toward the upper edge of the class's usual range.
 
-The transformation left him endowed in a canine form, dramatically out of proportion with his lean frame — one of the more obvious marks of what was done to remake him. For all his height he reads as lithe and lightly built, a Sylph's middling scale rather than a giantess's mass: enough to tower over any toy, never enough to rival the Transformed he answers to.
+The transformation left him endowed in a canine form, dramatically out of proportion with his lean frame — one of the more obvious marks of what was done to remake him. For all his height he reads as lithe and lightly built, a Sylph's middling scale rather than a giantess's mass: enough to tower over any toy, never enough to rival [the Transformed](the-transformed) he answers to.
 
 ## Personality
 

@@ -1,8 +1,8 @@
 ## Overview
 
-Zuzu is one of the Transformed who did not come through the change intact. A wolf whose mind was all but destroyed by the volatile TDay Variant of the serum, she emerged on the far side of her transformation as a towering, animalistic thing that moves on instinct alone. Among the women of [SinCorp](sincorp) she is spoken of less as a person than as one of the **ferals** — dangerous, unpredictable Transformed who have lost whatever self they once had, and whom even [Sin](sin)'s enforcers give a wide berth. Her ground lies in the off-limits [wild zones](the-wilds) beyond the city walls — territory marked as forbidden precisely because of what roams it.
+Zuzu is one of [the Transformed](the-transformed) who did not come through the change intact. A wolf whose mind was all but destroyed by the volatile TDay Variant of the serum, she emerged on the far side of her transformation as a towering, animalistic thing that moves on instinct alone. Among the women of [SinCorp](sincorp) she is spoken of less as a person than as one of the **[ferals](ferals)** — dangerous, unpredictable Transformed who have lost whatever self they once had, and whom even [Sin](sin)'s enforcers give a wide berth. Her ground lies in the off-limits [wild zones](the-wilds) beyond the city walls — territory marked as forbidden precisely because of what roams it.
 
-What makes Zuzu particularly unsettling is that she did not need to be enormous to end up this way. At a shade over twenty-three feet she is no larger than countless functioning giantesses who live ordinary lives in the mega-cities — yet her mind is gone all the same, a reminder that the instability of the TDay Variant was never strictly a matter of size.
+What makes Zuzu particularly unsettling is that she did not need to be enormous to end up this way. At a shade over twenty-three feet she is no larger than countless functioning giantesses who live ordinary lives in the [mega-cities](mega-cities) — yet her mind is gone all the same, a reminder that the instability of the TDay Variant was never strictly a matter of size.
 
 {{FEATURED}}
 
@@ -26,7 +26,7 @@ Nothing of Zuzu's life before the change has ever been established. Whatever she
 
 ### After TDay
 
-Zuzu was caught in the first wave of TDay and transformed by the unstable variant released that day — the formulation responsible for the era's wild inconsistencies, and for the cognitive damage that so often accompanied them. In most who suffered that damage it came paired with macro scale; in Zuzu it came without it. She grew only to giantess size, but her mind collapsed almost completely all the same, and she emerged one of the feral Transformed rather than a functioning part of Sin's new order.
+Zuzu was caught in the first wave of TDay and transformed by the unstable variant released that day — the formulation responsible for the era's wild inconsistencies, and for the cognitive damage that so often accompanied them. In most who suffered that damage it came paired with [macro](macro) scale; in Zuzu it came without it. She grew only to giantess size, but her mind collapsed almost completely all the same, and she emerged one of the feral Transformed rather than a functioning part of Sin's new order.
 
 She has lived apart ever since, roaming the off-limits wild zones where the ferals are left to themselves. SinCorp personnel treat any encounter with her — or any of her kind — as a serious hazard, and the ground she ranges is marked forbidden. She is referenced in SinCorp's own incident records as having left at least one captive mind-destroyed, and the ferals as a group are considered too dangerous to engage at all.
 
@@ -34,7 +34,7 @@ She has lived apart ever since, roaming the off-limits wild zones where the fera
 
 Zuzu is a predator in the most literal, instinct-driven sense the new world produces. She does not hunt for sport or cruelty the way the lucid Transformed do — she hunts because that is all that is left of her, and a toy who strays into her territory is simply prey that has wandered close. There are no games, no taunts, no bargains dressed up as mercy; there is only the cold arithmetic of something much larger that has caught something much smaller.
 
-What befalls those she catches is the stuff of the worst stories the Wild Toys tell each other. A captive does not come back from Zuzu intact — at best mind-broken, more often not at all — and the records that mention her note victims left hollowed in the same way she herself was hollowed, as though the damage in her propagates outward into whatever she gets her claws around. She is best understood not as a character with intent but as a hazard of the wild zones: a thing that other survivors fear, avoid, and pray never to blunder into.
+What befalls those she catches is the stuff of the worst stories the [Wild Toys](wild-toys) tell each other. A captive does not come back from Zuzu intact — at best mind-broken, more often not at all — and the records that mention her note victims left hollowed in the same way she herself was hollowed, as though the damage in her propagates outward into whatever she gets her claws around. She is best understood not as a character with intent but as a hazard of the wild zones: a thing that other survivors fear, avoid, and pray never to blunder into.
 
 {{RELATIONSHIPS}}
 

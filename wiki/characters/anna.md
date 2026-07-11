@@ -1,6 +1,6 @@
 ## Overview
 
-Anna is a spotted hyena giantess, transformed by the [Apotheosis Serum](apotheosis-serum) on TDay, and a creature of appetite and impulse. She is best understood as an opportunist: a giantess who acts on her whims the moment they strike her, with little patience and less restraint, and who is entirely willing to help herself to a toy that isn't hers if the mood takes her. What defines her in the encounter is scent and fear — Anna dominates through her own overwhelming musk and revels in the terror it provokes in something small and helpless beneath her.
+Anna is a spotted hyena giantess, transformed by the [Apotheosis Serum](apotheosis-serum) on [TDay](tday), and a creature of appetite and impulse. She is best understood as an opportunist: a giantess who acts on her whims the moment they strike her, with little patience and less restraint, and who is entirely willing to help herself to a toy that isn't hers if the mood takes her. What defines her in the encounter is scent and fear — Anna dominates through her own overwhelming musk and revels in the terror it provokes in something small and helpless beneath her.
 
 Much about Anna remains undefined. She holds no known title or allegiance, and little of her history has been established beyond the obvious fact of her transformation. What is clear is the shape of her cruelty: casual, sensory, and gleeful, the cruelty of a giantess who treats the small as toys to be picked up and played with on a whim.
 
@@ -10,7 +10,7 @@ Much about Anna remains undefined. She holds no known title or allegiance, and l
 
 Anna is a tall, powerfully built spotted hyena, standing around seventeen feet. Her frame is robust and muscular — well-defined abs, arms strong enough to handle a toy like a doll — covered in tan fur marked with a hyena's spotted pattern. Her eyes are a striking red, and she wears her long black hair half over her face, often framing a wide, toothy grin.
 
-Two details set her apart. A pair of devil-style horns rise from her head — an unusual and unexplained feature even by the standards of the transformed. And her nipples are each pierced with a bar, set against the dark skin beneath her fur. Like her hyena kin she carries equine anatomy, a product of her transformation.
+Two details set her apart. A pair of devil-style horns rise from her head — an unusual and unexplained feature even by the standards of [the transformed](the-transformed). And her nipples are each pierced with a bar, set against the dark skin beneath her fur. Like her hyena kin she carries equine anatomy, a product of her transformation.
 
 ## Personality
 

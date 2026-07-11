@@ -1,6 +1,6 @@
 ## Overview
 
-Contra Tyung is a house cat and, in the new world, the apex of the very kind of place that once preyed on her. Before TDay she was a secretary — meek, skittish, and ground down by a middle-manager boss who dictated a demeaning "uniform" for her and treated her as office decoration. After TDay she did not flee the corporate world; she inherited it. The firm that once leered at her now answers to her, and the men who ran it occupy a very different place in the hierarchy than they used to.
+Contra Tyung is a house cat and, in the new world, the apex of the very kind of place that once preyed on her. Before [TDay](tday) she was a secretary — meek, skittish, and ground down by a middle-manager boss who dictated a demeaning "uniform" for her and treated her as office decoration. After TDay she did not flee the corporate world; she inherited it. The firm that once leered at her now answers to her, and the men who ran it occupy a very different place in the hierarchy than they used to.
 
 She is a study in cold inversion. Where she was once timid prey, she is now the unbothered predator at the top of the org chart — running her corner of the post-TDay economy with the same casual cruelty that was once aimed at her, and keeping the men beneath her exactly as disposable as they once considered her.
 
@@ -8,13 +8,13 @@ She is a study in cold inversion. Where she was once timid prey, she is now the 
 
 Contra is a house cat built to a commanding scale — roughly eighteen feet of poised, deliberate menace. Her coat is tan and brown with a soft cream underbelly, set off by sharp green eyes and short red hair kept in a neat, businesslike cut. Pre-TDay she carried herself like a doe among wolves: tense shoulders, a stiff tail, the body language of someone perpetually braced for the next unwanted comment. The transformation kept the elegance and stripped out the fear. She favors sharp, corporate presentation — the polished, put-together look of an executive who has never once doubted she belongs at the head of the table.
 
-The serum left her endowed in place of the genitalia it took, a humanoid length she wields as a matter of dominance over the toys in her keeping rather than display.
+The serum left her endowed in place of the genitalia it took, a humanoid length she wields as a matter of dominance over the [toys](toys) in her keeping rather than display.
 
 ## Personality
 
 Contra's defining trait is the completeness of her reversal. The old Contra flinched, apologized, and shrank — she absorbed harassment because talking back would have cost her the job, and her fear was so habitual it read as part of her posture. The new Contra has buried that woman entirely. What replaced her is composed, patient, and glacially cruel: an executive predator who runs her domain by an unsentimental logic in which men are plentiful, disposable, and valued only by what they can do for her.
 
-She is territorial in the way the transformed tend to be — possessive of her space, her status, and her toys — and she enforces that territory without raising her voice. She doesn't rage; she decides. A man who fails her isn't screamed at, he's reassigned to a worse fate with a bored sigh and a flick of the wrist, and she takes a flat, proprietary satisfaction in how thoroughly the order of things has flipped in her favor. The skittish secretary is gone. In her place is someone who learned exactly how power works by being on the wrong end of it, and now applies the lesson without a flicker of remorse.
+She is territorial in the way [the transformed](the-transformed) tend to be — possessive of her space, her status, and her toys — and she enforces that territory without raising her voice. She doesn't rage; she decides. A man who fails her isn't screamed at, he's reassigned to a worse fate with a bored sigh and a flick of the wrist, and she takes a flat, proprietary satisfaction in how thoroughly the order of things has flipped in her favor. The skittish secretary is gone. In her place is someone who learned exactly how power works by being on the wrong end of it, and now applies the lesson without a flicker of remorse.
 
 ## History
 
@@ -30,7 +30,7 @@ Contra rose to command her firm completely. The boss who once dictated her unifo
 
 ## As an Executive Predator
 
-Contra runs her corner of the post-TDay corporate world like a true matriarch of industry — calm, procedural, and utterly without mercy. She keeps male toys both for use and as a labor pool, and she governs them through a chillingly bureaucratic cruelty: failure is "disciplined," underperformers are "reassigned," and the worst fates are handed down as if they were routine HR decisions. The horror of her domain is precisely how mundane she makes it sound. She rarely needs force; the structure does the work, and her toys learn to dread a bored, polite sentence far more than a raised hand.
+Contra runs her corner of the post-TDay corporate world like a true [matriarch](matriarchs) of industry — calm, procedural, and utterly without mercy. She keeps male toys both for use and as a labor pool, and she governs them through a chillingly bureaucratic cruelty: failure is "disciplined," underperformers are "reassigned," and the worst fates are handed down as if they were routine HR decisions. The horror of her domain is precisely how mundane she makes it sound. She rarely needs force; the structure does the work, and her toys learn to dread a bored, polite sentence far more than a raised hand.
 
 She takes a possessive, proprietary pleasure in her staff and her status, and the men who fail to be useful discover exactly how disposable they are in her ledger.
 

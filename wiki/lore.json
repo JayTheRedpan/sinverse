@@ -149,5 +149,6 @@
   { "id": "reproduction",    "label": "Reproduction & the Population","section": "Concepts", "group": "Society" },
   { "id": "macro",           "label": "Macro",                        "section": "Concepts", "group": "The Serum & Transformation" },
   { "id": "wild-toys",       "label": "Wild Toys",                    "section": "Concepts", "group": "Society" },
-  { "id": "life-of-a-giantess",  "label": "Life of a Giantess",           "section": "Concepts", "group": "Society" }
+  { "id": "life-of-a-giantess",  "label": "Life of a Giantess",           "section": "Concepts", "group": "Society" },
+  { "id": "ferals", "label": "Ferals", "section": "Concepts", "group": "The Serum & Transformation" }
 ]

@@ -1,8 +1,8 @@
 ## Overview
 
-Libby is a raccoon and one of the quiet founders of the Resistance — though almost no one, least of all SinCorp, would ever guess it. Before TDay she was a security guard at the original SinCorp laboratory, one of the ordinary employees who kept the lights on while Sin's earliest work crawled toward the breakthrough that would end the world. She was present at the beginning. She did not survive it unchanged.
+Libby is a raccoon and one of the quiet founders of [the Resistance](the-resistance) — though almost no one, least of all [SinCorp](sincorp), would ever guess it. Before [TDay](tday) she was a security guard at the original SinCorp laboratory, one of the ordinary employees who kept the lights on while [Sin](sin)'s earliest work crawled toward the breakthrough that would end the world. She was present at the beginning. She did not survive it unchanged.
 
-She stands 13 feet tall and weighs the better part of a ton — a hulking, hung behemoth cut from the same mold as the apotheosis girls who would later inherit the earth. What sets Libby apart is invisible from the outside: she kept her empathy. Where the serum hollows most women out and leaves only appetite, Libby still looks at a toy and sees a person. It is the cruelest gift the new world could have given her, and she has spent every day since learning to carry it.
+She stands 13 feet tall and weighs the better part of a ton — a hulking, hung behemoth cut from the same mold as the apotheosis girls who would later inherit the earth. What sets Libby apart is invisible from the outside: she kept her empathy. Where the serum hollows most women out and leaves only appetite, Libby still looks at a [toy](toys) and sees a person. It is the cruelest gift the new world could have given her, and she has spent every day since learning to carry it.
 
 {{FEATURED}}
 
@@ -26,21 +26,21 @@ The strain shows. She is patient and warm with the toys she helps, careful with 
 
 Libby worked security at the first SinCorp lab — a guard, not a scientist, one of the people who checked badges and walked the halls while history was being made behind doors she wasn't cleared to open. She was there for Sin's early testing, close enough to the work to be useful to it in a way she never volunteered for.
 
-At some point during those early trials, Libby was selected to receive the Apotheosis Serum. Whether she agreed or was simply chosen — pressured, volunteered by someone above her, or given no real choice at all — is something she does not talk about. The serum took, as it always did. It made her enormous. It made her hung. It should, by every other case on record, have scoured her empathy down to nothing.
+At some point during those early trials, Libby was selected to receive the [Apotheosis Serum](apotheosis-serum). Whether she agreed or was simply chosen — pressured, volunteered by someone above her, or given no real choice at all — is something she does not talk about. The serum took, as it always did. It made her enormous. It made her hung. It should, by every other case on record, have scoured her empathy down to nothing.
 
 It didn't.
 
 ### After TDay
 
-When the world ended, Libby — now one of the transformed, with no femininity left to return to and nowhere else to go — did the only thing available to her: she kept working for Sin and SinCorp. There was no resistance yet to defect to. There was only the company, and a changed woman who looked the part.
+When the world ended, Libby — now one of [the transformed](the-transformed), with no femininity left to return to and nowhere else to go — did the only thing available to her: she kept working for Sin and SinCorp. There was no resistance yet to defect to. There was only the company, and a changed woman who looked the part.
 
-But she could not do the work the new order expected of her, not the way it was meant to be done. Quietly, then less quietly, Libby began turning her position inside SinCorp into a smuggling operation — finding enslaved toys, falsifying the paperwork of their existence, and moving them out of the mega-cities and into the relative freedom of the Wilds. She was not the only girl of her kind doing it. The scattered, secret acts of Libby and others like her were the founding sparks of what would become the Resistance.
+But she could not do the work the new order expected of her, not the way it was meant to be done. Quietly, then less quietly, Libby began turning her position inside SinCorp into a smuggling operation — finding enslaved toys, falsifying the paperwork of their existence, and moving them out of the [mega-cities](mega-cities) and into the relative freedom of [the Wilds](the-wilds). She was not the only girl of her kind doing it. The scattered, secret acts of Libby and others like her were the founding sparks of what would become the Resistance.
 
-To Sin, none of this registers. In the rare moments their paths still cross, Sin sees Libby as a confused, timid thing — a girl who never quite found her footing in the new world, harmless and a little pitiable. Sin does not interact with her much anymore, and that incuriosity is the best cover Libby could have asked for. The Matriarch who notices everything has simply decided there is nothing here to notice.
+To Sin, none of this registers. In the rare moments their paths still cross, Sin sees Libby as a confused, timid thing — a girl who never quite found her footing in the new world, harmless and a little pitiable. Sin does not interact with her much anymore, and that incuriosity is the best cover Libby could have asked for. The [Matriarch](matriarchs) who notices everything has simply decided there is nothing here to notice.
 
 ## The Tempered
 
-Libby is the most prominent example of a rare deviation in the serum's effect — one SinCorp's surviving records file under the clinical name **Empathic Retention**, and which the affected women themselves came to call being **Tempered**. (In the first years after TDay the same women were widely known as **Empaths**; that older word has since given way to *Tempered*.) A Tempered girl receives the full physical transformation: the size, the strength, the endowment, the bottomless libido. What she does not lose is her capacity to recognize toys as people.
+Libby is the most prominent example of a rare deviation in the serum's effect — one SinCorp's surviving records file under the clinical name **Empathic Retention**, and which the affected women themselves came to call being **[Tempered](tempered)**. (In the first years after TDay the same women were widely known as **Empaths**; that older word has since given way to *Tempered*.) A Tempered girl receives the full physical transformation: the size, the strength, the endowment, the bottomless libido. What she does not lose is her capacity to recognize toys as people.
 
 It is not mercy. It is a fault line. A Tempered woman is built to take and wired to want, but she is also forced to watch herself do it through eyes that have not stopped caring — to feel the appetite and the conscience at full strength, at the same time, forever. Most of the apotheosis girls are at peace with what they are because nothing in them objects. The Tempered have no such peace. The condition is vanishingly rare and continues to surface, unpredictably, in a tiny fraction of new transformations; nearly every one of those women, sooner or later, finds her way toward the Resistance, because there is nowhere else for someone built like a predator and burdened like a person to belong.
 
@@ -54,9 +54,9 @@ When it happens, Libby tries to be careful. She is achingly aware that her size 
 
 ## Jay and Riley
 
-The defining relationship of Libby's life began as just another extraction. She liberated Jay from one predicament or another and set about smuggling him out of the mega-city — but the route went cold, and the two of them were stranded together in a safe house for far longer than either expected. Forced proximity did what danger and gratitude alone might not have. Over those long shut-in days, something neither of them had any business feeling took root, and Libby and Jay fell into a romance — a giantess and her toy, in love, which is among the most taboo things either side of the new world recognizes.
+The defining relationship of Libby's life began as just another extraction. She liberated [Jay](jay) from one predicament or another and set about smuggling him out of the mega-city — but the route went cold, and the two of them were stranded together in a safe house for far longer than either expected. Forced proximity did what danger and gratitude alone might not have. Over those long shut-in days, something neither of them had any business feeling took root, and Libby and Jay fell into a romance — a giantess and her toy, in love, which is among the most taboo things either side of the new world recognizes.
 
-They remain partners. Out of that bond came **Riley** — carried not by Libby, who like all transformed women has no womb to bear a child, but by Jay himself, through the mpreg modifications SinCorp's science makes possible. Libby is Riley's parent every bit as much as Jay is; she simply was not the one who carried.
+They remain partners. Out of that bond came **[Riley](riley)** — carried not by Libby, who like all transformed women has no womb to bear a child, but by Jay himself, through the mpreg modifications SinCorp's science makes possible. Libby is Riley's parent every bit as much as Jay is; she simply was not the one who carried.
 
 {{RELATIONSHIPS}}
 

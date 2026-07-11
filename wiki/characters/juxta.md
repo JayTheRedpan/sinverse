@@ -69,5 +69,5 @@ Juxta's register is **control and discipline** — the firm, deliberate dominanc
 - [Popo](popo) — her partner, her "sister," and the catching half of the shop
 - [Toys](toys) — the stock she trains and sells
 - [Life of a Toy in the Cities](life-of-a-toy) — the trained-servant and companion roles her shop supplies
-- [The Apotheosis Serum](apotheosis-serum) — what transformed her
+- [The Apotheosis Serum](apotheosis-serum) — what [transformed](the-transformed) her
 - [Sin](sin) — with whom she shares the setting's founding juxtaposition naming
