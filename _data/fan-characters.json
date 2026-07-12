@@ -261,7 +261,7 @@
   {
     "id": 8,
     "name": "Rona",
-    "active": true,
+    "active": false,
     "species": ["Wolf"],
     "pronouns": "she/her",
     "height": 146,
