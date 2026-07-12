@@ -185,7 +185,7 @@
     "choices": [
       {
         "text": "Level 4 - Hazard lab?",
-        "nextId": null
+        "nextId": 17
       },
       {
         "text": "Level 6 - Security?",
@@ -219,7 +219,7 @@
     "choices": [
       {
         "text": "Level 4 Hazard labs?",
-        "nextId": null
+        "nextId": 17
       },
       {
         "text": "Level 6 Security?",
@@ -262,5 +262,25 @@
     ],
     "author": "SpearmintMagpie",
     "title": "Alluring failures"
+  },
+  {
+    "id": 17,
+    "image": null,
+    "tags": [
+      "gore",
+      "vore"
+    ],
+    "choices": [
+      {
+        "text": "read the log; I must know what these things are, and how many could be out there",
+        "nextId": null
+      },
+      {
+        "text": "back into the vents and get that key! I won't become a metal bird snack",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "They lurk in the dark"
   }
 ]

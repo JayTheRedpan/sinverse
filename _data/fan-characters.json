@@ -227,7 +227,7 @@
     "height": 317,
     "height_correction": 1,
     "headroom_pct": 2,
-    "weight": 24531,
+    "weight": 14499,
     "length": 87,
     "length_correction": 1,
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783690031/alevia_height_zqluek.webp",
@@ -257,5 +257,42 @@
         "note": "Transformed Sylph, relationship pre T-Day" 
       }
     ]
+  },
+  {
+    "id": 8,
+    "name": "Rona",
+    "active": true,
+    "species": ["Wolf"],
+    "pronouns": "she/her",
+    "height": 146,
+    "height_correction": 1,
+    "headroom_pct": 0,
+    "weight": 1419,
+    "length": 29,
+    "length_correction": 1,
+    "image": "",
+    "length_image": "",
+    "profile_image": "",
+    "wiki": "rona",
+    "faction": [
+      
+    ],
+    "transformed_by": "Apotheosis Serum",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "humanoid" 
+    },
+    "role": [
+      "Therapist"
+    ],
+    "class": ["Giantess"],
+    "relationships": [
+      
+    ],
+    "contributor": "RonaSerena"
   }
 ]

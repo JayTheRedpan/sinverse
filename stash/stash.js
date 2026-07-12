@@ -265,12 +265,15 @@ function applyFilters() {
   });
 
   items.sort(function (a, b) {
+    // Dates only carry month+year, so same-month items tie. Break the tie by id:
+    // a higher id is the more recently added item, so it sorts first under
+    // 'newest' (and last under 'oldest').
     switch (state.sort) {
-      case 'oldest':  return (a.date || '').localeCompare(b.date || '');
+      case 'oldest':  return (a.date || '').localeCompare(b.date || '') || ((a.id || 0) - (b.id || 0));
       case 'title':   return (a.title || '').localeCompare(b.title || '');
       case 'creator': return creatorText(a).localeCompare(creatorText(b));
       case 'newest':
-      default:        return (b.date || '').localeCompare(a.date || '');
+      default:        return (b.date || '').localeCompare(a.date || '') || ((b.id || 0) - (a.id || 0));
     }
   });
 

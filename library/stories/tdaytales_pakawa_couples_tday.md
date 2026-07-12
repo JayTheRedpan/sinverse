@@ -128,9 +128,6 @@ massively award-winning biologist and chemist, the titular head of Sin
 Corp, which, according to the woman\'s reiterances on screen, was the
 most valuable corporation in the world.
 
-\>\>Alter this to match succeeding quotes; something about distribution
-maybe
-
 \"\... have heard shareholder concerns over the recent expenditures, and
 I reassure you that the project they are being invested in will more
 than return the short-term costs, and that the secrecy involved is

@@ -16,7 +16,8 @@
     "universe_date": 0,
     "canonical": true,
     "characters": [
-      "sin"
+      "sin",
+      "rona"
     ],
     "lore": [
       "tday",
@@ -805,7 +806,9 @@
     "date": "2021-12",
     "universe_date": null,
     "canonical": false,
-    "characters": [],
+    "characters": [
+      "rona"
+    ],
     "lore": [
       
     ],
@@ -850,7 +853,8 @@
     "universe_date": null,
     "canonical": false,
     "characters": [
-      "brandy"
+      "brandy",
+      "rona"
     ],
     "lore": [
       
@@ -1144,11 +1148,13 @@
     "author": "BadEnds",
     "summary": null,
     "tags": [
-      "noncon"
+      "noncon",
+      "gore",
+      "snuff"
     ],
     "file": "stories/tdaytales_rosi.md",
     "date": "2026-07",
-    "universe_date": null,
+    "universe_date": 0,
     "canonical": false,
     "characters": [
       "rosi",
