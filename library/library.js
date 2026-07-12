@@ -317,8 +317,11 @@ function applyFilters() {
   });
 
   filtered.sort(function(a, b) {
-    if (state.sortOrder === 'newest')    return (b.date || '').localeCompare(a.date || '');
-    if (state.sortOrder === 'oldest')    return (a.date || '').localeCompare(b.date || '');
+    // Dates only carry month+year, so same-month items tie. Break the tie by id:
+    // a higher id is the more recently added item, so it sorts first under
+    // 'newest' (and last under 'oldest').
+    if (state.sortOrder === 'newest')    return (b.date || '').localeCompare(a.date || '') || ((b.id || 0) - (a.id || 0));
+    if (state.sortOrder === 'oldest')    return (a.date || '').localeCompare(b.date || '') || ((a.id || 0) - (b.id || 0));
     if (state.sortOrder === 'title')     return (a.title || '').localeCompare(b.title || '');
     if (state.sortOrder === 'author')    return authorText(a).localeCompare(authorText(b));
     if (state.sortOrder === 'wordcount') return totalWords(b) - totalWords(a);

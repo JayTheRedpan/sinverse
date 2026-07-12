@@ -109,7 +109,7 @@ function renderMeta() {
       rows += '<div class="reader-date-row"><span class="reader-date-label">Posted</span><span class="reader-date-val">' + formatPostedDate(story.date) + '</span></div>';
     }
     if (story.universe_date !== null && story.universe_date !== undefined && window.SinverseDates) {
-      rows += '<div class="reader-date-row"><span class="reader-date-label">Set</span><span class="reader-date-val">' + SinverseDates.label(story.universe_date) + '</span></div>';
+      rows += '<div class="reader-date-row"><span class="reader-date-label">Set</span><span class="reader-date-val">' + SinverseDates.labelHtml(story.universe_date, '../wiki/') + '</span></div>';
     }
     datesEl.innerHTML = rows;
   }

@@ -455,7 +455,7 @@
   {
     "id": 14,
     "type": "set",
-    "title": "Jay Meets Rona",
+    "title": "Jay's Evaluation",
     "artist": "Picturd",
     "coverImage": null,
     "images": [
@@ -464,7 +464,8 @@
       "https://res.cloudinary.com/dq40xaaux/image/upload/v1780861718/03_z6bywj.webp"
     ],
     "characters": [
-      "jay"
+      "jay",
+      "rona"
     ],
     "tags": [
       "noncon",
