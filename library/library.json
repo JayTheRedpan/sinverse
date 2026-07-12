@@ -1136,5 +1136,30 @@
     ],
     "wordCount": 10796,
     "relates_to": []
+  },
+  {
+    "id": 45,
+    "type": "standalone",
+    "title": "TDay Tales - Rosi",
+    "author": "BadEnds",
+    "summary": null,
+    "tags": [
+      "noncon"
+    ],
+    "file": "stories/tdaytales_rosi.md",
+    "date": "2026-07",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "rosi",
+      "jay"
+    ],
+    "lore": [
+      "tempered",
+      "tday",
+      "apotheosis-serum"
+    ],
+    "wordCount": 5889,
+    "relates_to": []
   }
 ]
