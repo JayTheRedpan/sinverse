@@ -3,7 +3,9 @@
 Defect is not a name so much as a designation assigned to a specific clone series owned and manufactured by Sincorp. The original “Defect”, was an unusual red squirrel captured by Sincorp Huntresses and sequestered in a lab. He displayed intense devotion to the large women which only intensified as they abused him. Samples were collected prior to his eventual death at the hands (or rather, feet) of an over-enthusiastic scientist. Vivette Venenatus—a Sincorp Toy Engineer—tested the toyline extensively, and pushed for mass rollout despite moderate opposition.   
   
 His insistent and maniacal dedication to his owner regardless of the abuses afflicted is offputting to some women, though a minority of the girls find that watching a toy continue to lavish adoration as they tear him apart has an intoxicating quality. This has led to a moratorium on the most powerful durability modifications for his series, over fears that overuse of a Defect might induce a feral descent in a small subset of the girls.   
-  
+
+{{FEATURED}}
+
 ## Appearance:   
   
 In many ways, the Defect series presents as an average “male”, a toy of average height, a slightly thinner than average build, and a slightly larger than average penis, though it rarely sees use.   
@@ -48,7 +50,9 @@ Defects tend not to survive long enough to form lasting relationships. As a clon
 Two notable relationships for different Defects are Vivette Venenatus—the timber-rattlesnake engineer responsible for the Defect series production line, and Shari Katili—an iridescent navy-black panthress who has formed what some view as an “unhealthy” attachment to her primary Defect.   
   
 In both cases, each woman spends their entire toy allotment on versions of Defects, though Vivette likes to keep a small team around for tasks, each member of which she might use up at any moment, and Shari likes to splurge and use all save her primary Defect up in a gruesome orgy, forcing him to witness a fate she never intends to grant.   
-  
+
+{{RELATIONSHIPS}}
+
 ## Preferences:   
   
 Defect’s preference is abuse, in the simplest terms, and while he would never challenge his mistress in the hope that she might batter him out of frustration, he will relentlessly and happily recommend ways his suffering might alleviate any small inconvenience for his owner.   
