@@ -1158,7 +1158,7 @@ that time?\"
 
 Elise had to give that one some thought, dealing with the uncomfortable
 emotions that came up during her consideration by playing with her food.
-She rolled a small, girly, fatassed, whimpering tiger snack around in
+She rolled a small, girly, whimpering fennec snack around in
 her paw, kneading his ass and cock cruelly before tossing him into her
 mouth.
 
@@ -1189,15 +1189,15 @@ though.\"
 consider that, give me just a moment\...\"
 
 Elise nodded and tried to recall that time, while Rona gripped the
-shaggy head of another hyena that had been quietly choking on her dick
-while they talked. The wolf gritted her teeth and shoved the yeen\'s
+shaggy head of another canine that had been quietly choking on her dick
+while they talked. The wolf gritted her teeth and shoved the dog\'s
 muzzle all the way down her cock to kiss her nuts, tensing up and
 filling the room with low, throbbing, gushing sounds as his belly
 swelled up rounder and rounder, his hands pushing uselessly at her
 powerful thighs.
 
 \"There. Go throw that up in your stall, bitch,\" Rona ordered, pulling
-the hyena off her dick by the hair and tossing him aside so he could
+the canine off her dick by the hair and tossing him aside so he could
 crawl away and empty that huge, sloshing cum belly. \"So, how did you
 feel, Ellie?\"
 
@@ -1251,8 +1251,8 @@ him like the fucktoy he was.
 
 Rona only spared him as much attention as it took to notice Elise\'s
 frustrated gesture. \"Tell me about what happened in the following
-years,\" she prompted, while hauling a meek, scrawny-looking wild dog
-anthro around her chair by the collar to replace the hyena she had
+years,\" she prompted, while hauling a meek, scrawny-looking feline
+anthro around her chair by the collar to replace the canine she had
 filled to capacity.
 
 \"I kept Revy in the house for a while, during the T-Day aftermath,\"
@@ -1299,7 +1299,7 @@ know?\"
 
 Rona nodded. \"Yes, thank you. At the end there you mentioned sharing
 toys; does that include sharing that one?\" She asked, while feeding her
-dog toy that thick, hard wolfcock without so much as looking, his
+cat toy that thick, hard wolfcock without so much as looking, his
 stifled gagging filling the room.
 
 \"Well\... not at the time. I left him at home for events so the other
@@ -1405,7 +1405,7 @@ taken up entirely with the evaluation.\"
 standing up from her seat and stretching, massive cock towering over the
 helpless Revy.
 
-Rona rose as well, her iron dick lifting the whimpering canine toy still
+Rona rose as well, her iron dick lifting the whimpering feline toy still
 choking on it off the floor without even noticing the weight. \"I\'m
 glad to hear it! Just give me a call if you would like to come in
 again.\"

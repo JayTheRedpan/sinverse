@@ -1082,7 +1082,9 @@
     "date": "2026-06",
     "universe_date": null,
     "canonical": false,
-    "characters": [],
+    "characters": [
+      "defect"
+    ],
     "lore": [
       
     ],
