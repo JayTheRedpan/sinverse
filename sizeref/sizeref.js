@@ -2643,14 +2643,17 @@ function buildForm(slot) {
   anatBody.appendChild(anatF);
   // ── HEIGHT inputs (inline, no collapsible wrapper) ────────
   var hf = cf('Height *');
+  // Show the height input in whichever unit the user is currently working in.
+  // Both rows are always built (applyGlobalUnit() swaps them live if the unit
+  // is toggled while this form is open); only their visibility differs.
   hf.innerHTML +=
-    '<div class="row" id="hi-'+slot+'">' +
+    '<div class="row" id="hi-'+slot+'"'+(S.metric?' style="display:none"':'')+'>' +
       '<input id="ft-'+slot+'" class="builder-input numInput" type="number" min="0" max="99" value="'+(ex?safeHFt(ex.height):6)+'" />' +
       '<span class="sep">ft</span>' +
       '<input id="in-'+slot+'" class="builder-input numInput" type="number" min="0" max="11" value="'+(ex?safeHIn(ex.height):0)+'" />' +
       '<span class="sep">in</span>' +
     '</div>' +
-    '<div class="row" id="hm-'+slot+'" style="display:none">' +
+    '<div class="row" id="hm-'+slot+'"'+(S.metric?'':' style="display:none"')+'>' +
       '<input id="cm-'+slot+'" class="builder-input numInput" type="number" min="0" max="999" value="'+(ex?Math.round(inToCm(ex.height)):183)+'" />' +
       '<span class="sep">cm</span>' +
     '</div>';
@@ -4924,7 +4927,9 @@ function openCustomModal(id) {
     var cmEl   = document.getElementById('cm-'+slot);
     var name   = nameEl ? nameEl.value.trim() : '';
     var heightIn = 0;
-    if (ftEl && ftEl.closest && ftEl.closest('[style*="display:none"]') === null && ftEl.offsetParent !== null) {
+    // Read whichever unit the user is actually working in. (This used to be
+    // inferred from DOM visibility, which was brittle — trust S.metric.)
+    if (!S.metric && ftEl) {
       heightIn = (parseInt(ftEl.value)||0)*12 + (parseInt(inEl&&inEl.value)||0);
     } else if (cmEl) {
       heightIn = (parseFloat(cmEl.value)||0) / 2.54;
@@ -5084,7 +5089,13 @@ function applyGlobalUnit(isM) {
   g('btn-imperial').classList.toggle('active', !isM);
   g('btn-metric').classList.toggle('active', isM);
   // Update each custom form: show correct fields, convert values, refresh estimates
+  // Saved custom characters, PLUS any form currently open in the DOM — a brand-new
+  // character has no saved record yet, but its form still needs its units swapped.
   var _unitSlots = (loadCustom().chars||[]).map(function(c){return parseInt((c.id||'').replace('custom_',''),10);}).filter(Boolean);
+  document.querySelectorAll('[data-slot]').forEach(function(f){
+    var sN = parseInt(f.getAttribute('data-slot'), 10);
+    if (sN && _unitSlots.indexOf(sN) === -1) _unitSlots.push(sN);
+  });
   _unitSlots.forEach(function(slot) {
     var hi=g('hi-'+slot),hm=g('hm-'+slot);
     if(hi)hi.style.display=isM?'none':'';
