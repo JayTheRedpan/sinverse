@@ -299,21 +299,21 @@
   {
     "id": 9,
     "name": "Defect",
-    "active": false,
+    "active": true,
     "species": ["Red Squirrel"],
     "pronouns": "he/him",
     "height": 70,
     "height_correction": 1,
     "headroom_pct": 6.5,
     "weight": 170,
-    "length": 10,
+    "length": 8,
     "length_correction": 1,
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783956817/defect_height_abasnc.webp",
     "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783956820/defect_profile_rog63z.webp",
     "wiki": "defect",
     "faction": [
-      
+      "SinCorp"
     ],
     "transformed_by": null,
     "canonical": false,
@@ -325,7 +325,7 @@
       "penisType": "humanoid" 
     },
     "role": [
-      "Mass Produce"
+      "Proprietary Clone"
     ],
     "class": ["Toy"],
     "relationships": [
