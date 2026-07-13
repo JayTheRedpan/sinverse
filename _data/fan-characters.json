@@ -18,6 +18,7 @@
     "height": 132,
     "weight": 1200,
     "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782180704/haven_profile_in9ojv.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
     "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1782180703/haven_height_stb0y0.webp",
     "relationships": [
       { 
@@ -271,7 +272,7 @@
     "length": 29,
     "length_correction": 1,
     "image": "",
-    "length_image": "",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
     "profile_image": "",
     "wiki": "rona",
     "faction": [
@@ -294,5 +295,42 @@
       
     ],
     "contributor": "RonaSerena"
+  },
+  {
+    "id": 9,
+    "name": "Defect",
+    "active": false,
+    "species": ["Red Squirrel"],
+    "pronouns": "he/him",
+    "height": 70,
+    "height_correction": 1,
+    "headroom_pct": 6.5,
+    "weight": 170,
+    "length": 10,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783956817/defect_height_abasnc.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783956820/defect_profile_rog63z.webp",
+    "wiki": "defect",
+    "faction": [
+      
+    ],
+    "transformed_by": null,
+    "canonical": false,
+    "anatomy": { 
+      "breasts": false, 
+      "bustSize": null, 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "humanoid" 
+    },
+    "role": [
+      "Mass Produce"
+    ],
+    "class": ["Toy"],
+    "relationships": [
+      
+    ],
+    "contributor": "BadEnds"
   }
 ]

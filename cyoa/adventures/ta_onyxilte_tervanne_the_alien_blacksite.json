@@ -184,12 +184,12 @@
     "tags": [],
     "choices": [
       {
-        "text": "Level 4 - Hazard lab?",
+        "text": "Level 4 - Hazard Lab?",
         "nextId": 17
       },
       {
         "text": "Level 6 - Security?",
-        "nextId": null
+        "nextId": 18
       },
       {
         "text": "Level 7 - Medical?",
@@ -218,15 +218,15 @@
     "tags": [],
     "choices": [
       {
-        "text": "Level 4 Hazard labs?",
+        "text": "Level 4 - Hazard Lab?",
         "nextId": 17
       },
       {
-        "text": "Level 6 Security?",
-        "nextId": null
+        "text": "Level 6 - Security?",
+        "nextId": 18
       },
       {
-        "text": "Level 7 Medical?",
+        "text": "Level 7 - Medical?",
         "nextId": 16
       }
     ],
@@ -282,5 +282,16 @@
     ],
     "author": "SpearmintMagpie",
     "title": "They lurk in the dark"
+  },
+  {
+    "id": 18,
+    "image": null,
+    "tags": [
+      "feral",
+      "noncon"
+    ],
+    "choices": [],
+    "author": "SpearmintMagpie",
+    "title": "Hunting Party"
   }
 ]
