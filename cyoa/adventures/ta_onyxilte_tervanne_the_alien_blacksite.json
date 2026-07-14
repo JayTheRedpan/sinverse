@@ -273,7 +273,7 @@
     "choices": [
       {
         "text": "read the log; I must know what these things are, and how many could be out there",
-        "nextId": null
+        "nextId": 19
       },
       {
         "text": "back into the vents and get that key! I won't become a metal bird snack",
@@ -293,5 +293,18 @@
     "choices": [],
     "author": "SpearmintMagpie",
     "title": "Hunting Party"
+  },
+  {
+    "id": 19,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Into the vents for now, if they don't like light and cramp places, maybe this is for the best.",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Log 003: The Stalkers"
   }
 ]
