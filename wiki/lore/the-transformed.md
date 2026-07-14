@@ -21,11 +21,37 @@ But the change that truly *makes* a giantess is not physical. It is the rewrite 
 
 The serum's most consequential effect is the one it performs on how a Transformed woman feels toward others — and it runs in two directions at once.
 
-Toward **males**, it severs. A giantess's capacity to register a [toy's](toys) suffering as something that matters is cut at the root, and the void it leaves is wired straight into her sexual reward system, so that cruelty toward toys does not merely fail to trouble her but actively gratifies her — hardening over time from impulse into genuine need, the appetite [SinCorp](sincorp) researchers call **sadism deprivation**. This is why the order rests so easily on the giantesses: their dominance over toys is not a policy they enforce against their inclinations but the plain shape of their inclinations themselves.
+Toward **males**, it severs. A giantess's capacity to register a [toy's](toys) suffering as something that matters is cut at the root. Colloquially this is the **empathy drop**; [SinCorp's](sincorp) clinical term for the whole two-directional condition is **asymmetric empathy**.
+
+What the serum takes is best understood as a **brake**, not a kindness. A giantess is not filled with a hunger to hurt — she is simply emptied of anything that would tell her not to. Whatever she wants from a toy, nothing inside her objects. And into that void the serum wires a **reward**: the exercise of dominion over a toy is made intrinsically pleasurable. Crucially, the reward keys on **power, not pain**. Ownership, command, obedience, adoration, fear, use, indulgence, or outright cruelty all satisfy it equally. Cruelty is one expression among many — the most visible, and common enough to define the era's reputation, but never the requirement.
+
+This is why the order rests so easily on the giantesses: their dominance over toys is not a policy they enforce against their inclinations but the plain shape of their inclinations themselves.
 
 Toward **other women**, the same rewrite runs in reverse, and intensifies. Transformed solidarity is fierce, warm, and almost proprietary. Giantesses cooperate, bond, form deep sisterhoods, and run whole [mega-cities](mega-cities) in concert without the rivalry the old world's powerful would have fallen into. A giantess who learns of a rare woman spared by TDay's first wave will move with startling urgency to find her and see her "ascended" — treating an untransformed sister not as a curiosity but as someone owed a birthright. The drive to gather every woman into the fold appears to be the very same circuitry that cancels her regard for males, simply pointed the other way.
 
 The result is a being who can be tender and loyal to another woman in the same hour she treats a male as livestock, and feel no contradiction in it — because, to her remade mind, there is none.
+
+## Pressure, and how it shows
+
+Because dominion is wired to reward, going without it is felt. A giantess long deprived of any outlet — no toy of her own, no authority exercised, no one beneath her to command, indulge, or use — accumulates a pressure that builds until it finds a release. But the pressure is a **pressure to express power**, not specifically to inflict pain, and how it surfaces is a matter of the woman it is surfacing in.
+
+At its mildest it is barely remarkable: a general **irritability**, a shortened temper, a restless dissatisfaction she may not connect to its cause. Left longer it sharpens — she grows brittle, imperious, harder to be around, and increasingly disinclined to leave a nearby toy unbothered. At the far end it becomes something else entirely: a giantess pushed long past her limit may go **hunting**, abandoning whatever she was doing to go find a toy and take what she has been going without, in whatever form she takes it. That final state is genuinely dangerous and genuinely rare — most giantesses never approach it, for the simple reason that in a world built to supply them, almost none of them ever have to.
+
+The important point for anyone writing a giantess is that this is a **spectrum, not a countdown**. There is no clock ticking toward a mandatory rampage. There is only an appetite that is easy to satisfy and unpleasant to ignore — and a thousand ways to satisfy it.
+
+## The many shapes of the drop
+
+The empathy drop is one condition, but it is expressed through whatever personality carries it. Every giantess below is fully in the grip of it; none of them is doing it *wrong*. This is the range writers have to work with:
+
+- **The sadist.** She hurts toys because it is pleasurable and nothing in her objects. The most visible expression, and the one the era is named for in the popular imagination — but far from the only one.
+- **The collector.** Toys are *hers*. She keeps them, grooms them, dresses them, displays them, and is genuinely fond of them in the way one is fond of a prized animal. Their wishes never enter the calculation, because it does not occur to her that they have any that count.
+- **The doting owner.** Warm, affectionate, indulgent — and terrifying precisely because she means it. She will pamper a toy lavishly and remains entirely capable of using or discarding him without a flicker of remorse. The love is real. It simply has no brake behind it.
+- **The administrator.** Toys are inventory: allocated, processed, expended, replaced. There is no malice here at all, and to a toy that is arguably worse — a woman who would be no crueller if she hated him, and no kinder if she loved him.
+- **The aristocrat.** Cold, exacting, and above it all. She rarely touches a toy herself; the point for her is not use but *station* — the fact of being served, obeyed, and deferred to. Her dominion is satisfied by the arrangement itself.
+- **The hedonist.** Toys are pleasure, plain and simple. Not to be broken, not to be catalogued — to be *enjoyed*, extravagantly and often, with no more thought for the toy's experience than one gives a good meal.
+- **The kind one.** She is gentle. She takes care of her toys, protects them, listens to them — and she still owns them, still uses them, and would still not truly grieve one. Gentleness is not the same as empathy, and this is the shape that fools people, sometimes including herself. (A giantess who goes further — who begins to genuinely weigh a toy's suffering as though it *mattered* — is no longer displaying a variation. She may be [Tempered](tempered), and her sisters will start to wonder.)
+
+What unites them is not what they do to toys but what none of them can do: *feel it back*. The empathy drop is the absence beneath every one of these lives, and the shape it takes is simply the shape of the woman it happened to.
 
 ## A sisterhood, not a hierarchy of women
 
@@ -51,7 +77,9 @@ An all-but-ageless ruling class changes the character of the world in a way that
 ## Did You Know?
 
 - "Giantess" and "the Transformed" refer to the same class — the second is the neutral or clinical term, the first the everyday one.
-- What most defines a giantess is not her size but her rewritten empathy: severed toward males and wired to reward cruelty, intensified toward women into fierce solidarity.
+- What most defines a giantess is not her size but her rewritten empathy — the **empathy drop**: severed toward males, intensified toward women into fierce solidarity.
+- The serum removes a **brake**, it does not install a hunger for cruelty. What it rewards is the exercise of **power, not pain** — ownership, command, adoration, fear, use, or cruelty all satisfy it equally.
+- Going without any outlet builds pressure, but on a **spectrum**: from mild irritability, through brittle imperiousness, to (rarely) a giantess who abandons everything to go hunting for a toy.
 - Because dominance among the Transformed points only downward at toys, giantess society among the women is strikingly cooperative — sisterhood, not rivalry.
 - The serum all but halts ageing. No Transformed woman has yet died of anything resembling old age, so the ruling class is, for now, effectively permanent.
 - A giantess who hears of an untransformed woman surviving somewhere will often move urgently to find and "ascend" her — the same circuitry that cancels her regard for males, aimed the other way.
