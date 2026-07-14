@@ -35,8 +35,14 @@ No. Underage content is never part of the setting. The mechanics of maturation a
 
 The serum is unapologetic superscience — comic-book supergenius technology that bends or rewrites physics as we understand it. Girls can reach up to 200ft with no biological problems (though the very largest tend toward mental instability). Despite their size, they need far less food and water than you'd expect. They still feel hunger and thirst and would rather satisfy those urges than endure them, but bare survival takes little.
 
-## What is "sadism deprivation"?
+## What is the "empathy drop"?
 
-A far greater danger to giantesses than hunger. Cruelty toward boys is a biological need hardcoded by Sin's serum — without boys to abuse, a giantess can't achieve proper sexual release even when orgasming. The resulting tension builds until she degrades into a horny animal; prolonged deprivation can cause permanent insanity and death.
+The colloquial name for what the [serum](apotheosis-serum) does to a [Transformed](the-transformed) woman's mind — clinically, **asymmetric empathy**. Her empathy toward other women is intensified into fierce solidarity; her empathy toward males is severed outright. A giantess simply cannot register a [toy's](toys) suffering as something that *matters*.
+
+The crucial thing to understand is that the serum removes a **brake** rather than installing a hunger. She feels no compulsion to be cruel — she feels nothing that would stop her. And the void left behind is wired to reward the **exercise of dominion** over a toy in whatever form she prefers it: ownership, command, obedience, adoration, fear, indulgence, use, or cruelty. It keys on **power, not pain**. Cruelty is one expression of it among many, not a requirement — which is why giantesses range from outright sadists to doting collectors to cold administrators, all of them equally in its grip.
+
+## What happens if a giantess goes without an outlet?
+
+Pressure builds — but on a **spectrum**, not a countdown. Mild deprivation shows as irritability and a short temper. Sustained deprivation makes her brittle, imperious, and disinclined to leave any nearby toy alone. Pushed far enough — which is rare, in a world built to supply her — a giantess may go **hunting**: abandoning whatever she was doing to find a toy and take what she has been going without, in whatever form she takes it. There is no fixed clock and no mandatory rampage; there is an appetite that is easy to satisfy and unpleasant to ignore.
 
 It's also why the largest girls tend to be unstable: past a certain size, the gap between them and their prey is too great to engage with properly, leaving their cruelty needs unmet. Mass-abuse events can satisfy them, but require more toys than even Renaissance-era production can reliably supply.

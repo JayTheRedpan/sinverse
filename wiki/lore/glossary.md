@@ -14,7 +14,8 @@ A quick-reference index to the key terms, classes, places, and powers of the Sin
 - **[The Apotheosis Serum](apotheosis-serum)** — the agent that remade the world: keys off womanhood, grows a woman into a giantess, and rewrites her empathy.
 - **[TDay](tday)** — the day [Sin](sin) released the serum across the whole world at once; the dividing line of all history, and the point every date is measured from.
 - **The TDay Variant** — the unstable formulation released on [TDay](tday); responsible for the [macro](macro) outliers and for overgrowing the [Wilds](the-wilds). *(See [the serum's versions](apotheosis-serum).)*
-- **Sadism deprivation** — the engineered craving for cruelty toward [toys](toys) that the [serum](apotheosis-serum) wires into the [Transformed](the-transformed); an appetite that hardens over time from impulse into need.
+- **Empathy drop** — the colloquial name for what the [serum](apotheosis-serum) does to a [Transformed](the-transformed) woman's mind: empathy toward males severed, empathy toward women intensified. It removes a *brake* rather than installing a hunger for cruelty, and rewards the exercise of **dominion in any form** — ownership, command, adoration, fear, use, or cruelty alike.
+- **Asymmetric empathy** — [SinCorp's](sincorp) clinical term for the empathy drop.
 - **Feralization** — the rare failure in which the [serum](apotheosis-serum) destroys a mind rather than remaking it *(see [Ferals](ferals))*.
 
 ## Classes of being
