@@ -235,3 +235,25 @@ It's calls of pleasure do not fill you with ease, as its rhythm of using you to 
 
 ***???: it seems this journey has ended, not with your death, but with a rebirth. Unknown of their names, You failed to notice why you failed to die by their cocks, the changes your body was already experiencing by their sexual actions, all beings in Ta Onyxilte Tevanna act with a reason, these beings are no different, you will become one of the pack, you are theirs now~ But this fate isn't your end, just another page in a chapter of this place, you will endure, I know it.***
 
+## 19
+
+You click on the log, and it brings up a document, likely a good thing that its only a document, anything audible may alert the monsters in the dark, you start reading.
+
+*"Biological Conversion Project: STALKER
+
+The stalker avians, often also referred as head hunters or flying sawblades, are a biological being artificially injected with a nanite solution that converted the biological exterior into a extremely light metal exo-skeletal structure, it also converts non avian beings into an avian hawk, the metallic exo-skeletal structure mimic avian feathers and physiology perfectly.  Internally the stalkers digestive track was manipulated by the injection to convert all incoming biomatter into a usable biofuel, this being plant matter, meat and anything in-between. They stand near 15ft tall from beak to foot, making anything under 6ft easy prey for them.
+
+The first Stalker codenamed XENO was developed to have gained both set of genitals, that being a gential slit and a long silvery taper, while unexpected, she has seemed to adapted well to having both sets and enjoys the luxury of choice. When other stalkers were made, they equally gained the same trait of both genitals, however they all refer to themselves as female, or sisters. 
+
+The combat ability of the stalker should not be underestimated, they are ambush predators, that use the darkness to their advantage, they prefer open areas in pure darkness, with high observation sightlines, where they can pounce their target with either razor sharp talons, or the bladed edges of their wings, these blades were designed to shred the bone of our enemies and as such be avoided. Cramped places are a good means of avoiding them, anything that limits their flight they will avoid, additionally having a flashlight my be helpful for searching, they are sensitive to bright flashes. The Stalker eats smaller creatures, such as mice or similar size rodents alive, the papillae is outfitted with sharp spine like teeth that is common in Vega Avians, such spines dig into prey and hold them in place, if a bit wide, the prey may be crunched by the papillae's rough spines and hardened shell and the tongue of the bird, however this has proven to not be fatal, only crippling, resulting in a prey incapable of fighting their demise as they are swallowed whole and alive to be digested into biofuel. Stalkers have the similar 12 teeth along the beak edge that all Vega Avians have, however the front most 2 are slightly longer than the rest.
+
+While stalkers can reproduce naturally, it is a complicated matter for them, gestation is often not successful outside of a chosen compatible pair, usually the stalker than converted the other one. As such they often chose to convert others than show potential as a partner, to ensure they are a compatible pairing. Their longer front teeth contain the same nanites that caused their conversion as a form of venom, such a bite from them, ensures you are nothing more than a ticking timebomb. As the nanites work though your body your body will morph and disfigure, bones reshape, till you are another hawk stalker. This isn't always a bad choice when cornered, as it will ensure your survival, and they may look favourable on you. 
+
+They are matriarchal, following the orders of the first stalker Xeno, seeking her isn't a bad thing, but if she see potential in you for improving their low numbers, in the event they are low on numbers, she will not let you leave.
+
+Note: consider similar conversion methods for Hunters or a breeding method of conversion due to the complexity of their beaks.. may be advantageous for them to bite or breed others into their own kind.
+
+Additional note: who made it so Onyx could make stalkers?!"*
+
+you shiver at what you read about these creatures, however you know now how to avoid them.. its time to press forward!
+
