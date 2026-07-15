@@ -443,15 +443,14 @@ function renderCharRef() {
   renderTags('ref-tags', item.tags);
   renderDates('ref-dates', item);
 
-  // Character wiki link
-  if (item.characterId) {
-    var charLink = document.getElementById('ref-char-link');
-    var a = document.createElement('a');
-    a.href      = '../wiki/#' + item.characterId;
-    a.className = 'ref-wiki-link';
-    a.textContent = 'View character wiki entry';
-    charLink.appendChild(a);
-  }
+  // Character wiki link(s). Character references tag their subject(s) in a
+  // `characters` array (same as every other gallery item); older data may use a
+  // single `characterId`. Render through the shared helper so the links resolve
+  // via ?character=, get roster-checked, and match the rest of the site.
+  var refChars = (item.characters && item.characters.length)
+                   ? item.characters
+                   : (item.characterId ? [item.characterId] : []);
+  renderCharacterLinks('ref-char-link', refChars);
 
   // Height
   if (item.height) {
@@ -589,7 +588,7 @@ function renderDates(containerId, it) {
     rows += '<div class="viewer-date-row"><span class="viewer-date-label">Posted</span><span class="viewer-date-val">' + formatPostedDate(it.date) + '</span></div>';
   }
   if (it.universe_date !== null && it.universe_date !== undefined && window.SinverseDates) {
-    rows += '<div class="viewer-date-row"><span class="viewer-date-label">Set</span><span class="viewer-date-val">' + SinverseDates.labelHtml(it.universe_date, '../wiki/') + '</span></div>';
+    rows += '<div class="viewer-date-row"><span class="viewer-date-label">Set</span><span class="viewer-date-val">' + SinverseDates.label(it.universe_date) + '</span></div>';
   }
   el.innerHTML = rows;
 }
@@ -637,13 +636,14 @@ function renderRelatedLinks(containerId, related) {
 // plain text rather than a link, so it never leads to a broken wiki page.
 var _inactiveFanKeys = {};
 var _knownCharKeys   = {};   // canon + ACTIVE fan: names and wiki slugs (lowercased)
+var _rosterLoaded    = false;
 function loadInactiveFanKeys() {
   function addKnown(c){
     if (!c) return;
     if (c.name) _knownCharKeys[String(c.name).toLowerCase()] = true;
     if (c.wiki) _knownCharKeys[String(c.wiki).toLowerCase()] = true;
   }
-  var canonP = fetch('../_data/characters.json').then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
+  var canonP = fetch('../_data/characters.json').then(function(r){ if(!r.ok) throw new Error('characters.json '+r.status); return r.json(); });
   var fanP   = fetch('../_data/fan-characters.json').then(function(r){ return r.ok ? r.json() : []; }).catch(function(){ return []; });
   return Promise.all([canonP, fanP]).then(function(res){
     (res[0] || []).forEach(addKnown);
@@ -653,7 +653,15 @@ function loadInactiveFanKeys() {
         if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
       } else { addKnown(c); }
     });
-  }).catch(function(){});
+    _rosterLoaded = true;
+    console.log('[viewer] character roster loaded:', Object.keys(_knownCharKeys).length, 'known keys');
+  }).catch(function(err){
+    // If the roster can't be loaded, don't silently strip every link — fail OPEN
+    // (treat tags as linkable) so a data hiccup degrades to the old behaviour
+    // rather than blanking all character links.
+    _rosterLoaded = false;
+    console.warn('[viewer] character roster failed to load — linking all character tags as a fallback. Reason:', err && err.message);
+  });
 }
 function isInactiveFanTag(tag) {
   var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
@@ -665,6 +673,7 @@ function activeCharacters(chars) {
   return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
 }
 function isKnownCharacter(tag) {
+  if (!_rosterLoaded) return true;   // roster unavailable → link rather than blank everything
   var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
   var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
   return !!_knownCharKeys[key] || !!_knownCharKeys[key.replace(/\s+/g, '-')];

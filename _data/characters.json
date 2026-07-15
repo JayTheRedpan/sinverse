@@ -628,41 +628,35 @@
   },
   {
     "id": 17,
-    "name": "Bailly",
+    "name": "Eve",
     "species": [
       "Bunny"
     ],
-    "pronouns": "she/her",
-    "height": 145,
-    "height_correction": 0.75,
-    "headroom_pct": 7,
-    "weight": 1385,
-    "length": 39,
+    "pronouns": "he/him",
+    "height": 139,
+    "height_correction": 1,
+    "headroom_pct": 0,
+    "weight": 1223,
+    "length": 34,
     "length_correction": 1,
-    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999322/height_bailey_mtdca6.webp",
-    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
-    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999329/profile_bailey_hzwkdl.webp",
-    "wiki": "bailly",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783478395/height_eve_grh6qy.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783478396/height_profile_cwauhy.webp",
+    "wiki": "eve",
     "faction": [],
-    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "transformed_by": "Project Sylph",
     "canonical": true,
     "anatomy": {
-      "breasts": true,
-      "bustSize": "d",
+      "breasts": false,
+      "bustSize": null,
       "penis": true,
       "vag": false,
-      "penisType": "equine"
+      "penisType": "humanoid"
     },
-    "relationships": [
-      {
-        "name": "Jenny",
-        "type": "Child",
-        "note": ""
-      }
-    ],
+    "relationships": [],
     "role": [],
     "class": [
-      "Giantess"
+      "Sylph"
     ]
   },
   {
@@ -1540,39 +1534,6 @@
       "penis": true,
       "vag": false,
       "penisType": "canine"
-    },
-    "relationships": [],
-    "role": [],
-    "class": [
-      "Sylph"
-    ]
-  },
-  {
-    "id": 43,
-    "name": "Eve",
-    "species": [
-      "Bunny"
-    ],
-    "pronouns": "he/him",
-    "height": 139,
-    "height_correction": 1,
-    "headroom_pct": 0,
-    "weight": 1223,
-    "length": 34,
-    "length_correction": 1,
-    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783478395/height_eve_grh6qy.webp",
-    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
-    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1783478396/height_profile_cwauhy.webp",
-    "wiki": "eve",
-    "faction": [],
-    "transformed_by": "Project Sylph",
-    "canonical": true,
-    "anatomy": {
-      "breasts": false,
-      "bustSize": null,
-      "penis": true,
-      "vag": false,
-      "penisType": "humanoid"
     },
     "relationships": [],
     "role": [],

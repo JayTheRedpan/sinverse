@@ -922,5 +922,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/gallery/mistymorning/"
     }
+  },
+  {
+    "id": "TheKingRatte",
+    "name": "TheKingRatte",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1784082061/thekingratte_yzj4no.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/thekingratte/"
+    }
   }
 ]

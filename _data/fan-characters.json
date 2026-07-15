@@ -1,6 +1,46 @@
 [
   {
     "id": 1,
+    "name": "Bailly",
+    "active": true,
+    "species": [
+      "Bunny"
+    ],
+    "pronouns": "she/her",
+    "height": 145,
+    "height_correction": 0.75,
+    "headroom_pct": 7,
+    "weight": 1385,
+    "length": 39,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999322/height_bailey_mtdca6.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779999329/profile_bailey_hzwkdl.webp",
+    "wiki": "bailly",
+    "faction": [],
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "canonical": true,
+    "anatomy": {
+      "breasts": true,
+      "bustSize": "d",
+      "penis": true,
+      "vag": false,
+      "penisType": "equine"
+    },
+    "relationships": [
+      {
+        "name": "Jenny",
+        "type": "Child",
+        "note": ""
+      }
+    ],
+    "role": [],
+    "class": [
+      "Giantess"
+    ]
+  },
+  {
+    "id": 2,
     "name": "Haven",
     "active": true,
     "wiki": "haven",
@@ -30,7 +70,7 @@
     "canonical": false
   },
   {
-    "id": 2,
+    "id": 3,
     "name": "Rosi",
     "active": true,
     "wiki": "rosi",
@@ -59,7 +99,7 @@
     "canonical": false
   },
   {
-    "id": 3,
+    "id": 4,
     "name": "Vex",
     "active": true,
     "species": [
@@ -108,7 +148,7 @@
     "contributor": "Vex"
   },
   {
-    "id": 4,
+    "id": 5,
     "name": "Mia",
     "active": true,
     "species": ["Snow Leopard"],
@@ -142,7 +182,7 @@
     ]
   },
   {
-    "id": 5,
+    "id": 6,
     "name": "Song",
     "active": true,
     "species": ["Shire Horse"],
@@ -183,7 +223,7 @@
     "contributor": "CharitysSongbird"
   },
   {
-    "id": 6,
+    "id": 7,
     "name": "Adhara",
     "active": true,
     "species": ["Jackal"],
@@ -220,7 +260,7 @@
     "contributor": "CGK"
   },
   {
-    "id": 7,
+    "id": 8,
     "name": "Alevia",
     "active": true,
     "species": ["Green Dragon"],
@@ -260,7 +300,7 @@
     ]
   },
   {
-    "id": 8,
+    "id": 9,
     "name": "Rona",
     "active": false,
     "species": ["Wolf"],
@@ -297,7 +337,7 @@
     "contributor": "RonaSerena"
   },
   {
-    "id": 9,
+    "id": 10,
     "name": "Defect",
     "active": true,
     "species": ["Red Squirrel"],
@@ -332,5 +372,42 @@
       
     ],
     "contributor": "BadEnds"
+  },
+  {
+    "id": 11,
+    "name": "Kraggovox",
+    "active": true,
+    "species": ["Red Squirrel"],
+    "pronouns": "he/him",
+    "height": 288,
+    "height_correction": 1,
+    "headroom_pct": 2,
+    "weight": 10901,
+    "length": 108,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1784082606/kraggovox_height_hmcexz.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1784082610/kraggovox_length_hi17kz.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1784082602/kraggovox_profile_pgpug4.webp",
+    "wiki": "kraggovox",
+    "faction": [
+      
+    ],
+    "transformed_by": null,
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "humanoid" 
+    },
+    "role": [
+      
+    ],
+    "class": ["Giantess"],
+    "relationships": [
+      
+    ],
+    "contributor": "TheKingRatte"
   }
 ]

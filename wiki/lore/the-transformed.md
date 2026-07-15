@@ -39,11 +39,13 @@ At its mildest it is barely remarkable: a general **irritability**, a shortened 
 
 The important point for anyone writing a giantess is that this is a **spectrum, not a countdown**. There is no clock ticking toward a mandatory rampage. There is only an appetite that is easy to satisfy and unpleasant to ignore — and a thousand ways to satisfy it.
 
+What the spectrum does establish, though, is that a giantess genuinely **needs toys in her world**. This is the quiet symbiosis the whole order rests on: the toys are not merely permitted victims but a standing necessity, the thing a giantess's rewritten mind reaches for the way a body reaches for food. A giantess with no toy to own, command, indulge, or torment is a giantess slowly coming apart — and this is much of why even the coldest of them keep toys close, why the doting ones dote, and why the cruel ones are, in their own way, dependent on the very things they break. The toys need the giantesses to survive the world; the giantesses need the toys to remain themselves. Neither half of the new order is whole without the other.
+
 ## The many shapes of the drop
 
 The empathy drop is one condition, but it is expressed through whatever personality carries it. Every giantess below is fully in the grip of it; none of them is doing it *wrong*. This is the range writers have to work with:
 
-- **The sadist.** She hurts toys because it is pleasurable and nothing in her objects. The most visible expression, and the one the era is named for in the popular imagination — but far from the only one.
+- **The sadist.** For her the toy's *suffering itself* is the pleasure — not a byproduct of using him but the entire point. She actively revels in the fear, the pain, the pleading; a toy who feels nothing would be worthless to her, because it is precisely the response she feeds on. This is the most visible expression of the drop, and the one the era is named for in the popular imagination — the giantess for whom a toy's torment is not incidental but the whole meal. Far from the only shape, but never a rare one.
 - **The collector.** Toys are *hers*. She keeps them, grooms them, dresses them, displays them, and is genuinely fond of them in the way one is fond of a prized animal. Their wishes never enter the calculation, because it does not occur to her that they have any that count.
 - **The doting owner.** Warm, affectionate, indulgent — and terrifying precisely because she means it. She will pamper a toy lavishly and remains entirely capable of using or discarding him without a flicker of remorse. The love is real. It simply has no brake behind it.
 - **The administrator.** Toys are inventory: allocated, processed, expended, replaced. There is no malice here at all, and to a toy that is arguably worse — a woman who would be no crueller if she hated him, and no kinder if she loved him.
@@ -51,7 +53,7 @@ The empathy drop is one condition, but it is expressed through whatever personal
 - **The hedonist.** Toys are pleasure, plain and simple. Not to be broken, not to be catalogued — to be *enjoyed*, extravagantly and often, with no more thought for the toy's experience than one gives a good meal.
 - **The kind one.** She is gentle. She takes care of her toys, protects them, listens to them — and she still owns them, still uses them, and would still not truly grieve one. Gentleness is not the same as empathy, and this is the shape that fools people, sometimes including herself. (A giantess who goes further — who begins to genuinely weigh a toy's suffering as though it *mattered* — is no longer displaying a variation. She may be [Tempered](tempered), and her sisters will start to wonder.)
 
-What unites them is not what they do to toys but what none of them can do: *feel it back*. The empathy drop is the absence beneath every one of these lives, and the shape it takes is simply the shape of the woman it happened to.
+What unites them is not what they do to toys but their shared relationship to them: a toy's inner life places no *claim* on a giantess — his suffering never lands as something owed a stop — and yet she is drawn to toys, needs them near, and reaches for them to feel whole. For some that pull expresses itself as tenderness and for some as torment, and for the sadist the torment is the very thing she savours. The empathy drop is the absence beneath every one of these lives; the shape it takes is simply the shape of the woman it happened to.
 
 ## A sisterhood, not a hierarchy of women
 
