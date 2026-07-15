@@ -2433,7 +2433,7 @@
     "synopsis": "Character reference sheet for Bailly.",
     "date": "2019-09",
     "universe_date": null,
-    "canonical": true,
+    "canonical": false,
     "relates_to": []
   },
   {

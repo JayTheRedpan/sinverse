@@ -6,9 +6,76 @@
     "group": "The Serum & Transformation"
   },
   {
-    "id": "tday",
-    "label": "TDay",
-    "section": "History"
+    "id": "the-transformed",
+    "label": "The Transformed",
+    "section": "Concepts",
+    "group": "The Serum & Transformation"
+  },
+  {
+    "id": "tempered",
+    "label": "The Tempered",
+    "section": "Concepts",
+    "group": "The Serum & Transformation"
+  },
+  {
+    "id": "ferals",
+    "label": "Ferals",
+    "section": "Concepts",
+    "group": "The Serum & Transformation"
+  },
+  {
+    "id": "macro",
+    "label": "Macro",
+    "section": "Concepts",
+    "group": "The Serum & Transformation"
+  },
+  {
+    "id": "project-sylph",
+    "label": "Project Sylph",
+    "section": "Concepts",
+    "group": "The Serum & Transformation"
+  },
+  {
+    "id": "toys",
+    "label": "Toys",
+    "section": "Concepts",
+    "group": "Toys"
+  },
+  {
+    "id": "life-of-a-toy",
+    "label": "Life of a Toy in the Cities",
+    "section": "Concepts",
+    "group": "Toys"
+  },
+  {
+    "id": "wild-toys",
+    "label": "Wild Toys",
+    "section": "Concepts",
+    "group": "Toys"
+  },
+  {
+    "id": "toy-modifications",
+    "label": "SinCorp Toy Modifications",
+    "section": "Concepts",
+    "group": "Toys"
+  },
+  {
+    "id": "reproduction",
+    "label": "Reproduction & the Population",
+    "section": "Concepts",
+    "group": "Toys"
+  },
+  {
+    "id": "matriarchs",
+    "label": "The Matriarchs",
+    "section": "Concepts",
+    "group": "Society"
+  },
+  {
+    "id": "life-of-a-giantess",
+    "label": "Life of a Giantess",
+    "section": "Concepts",
+    "group": "Society"
   },
   {
     "id": "sincorp",
@@ -23,16 +90,28 @@
     "group": "SinCorp & Allies"
   },
   {
+    "id": "the-paws",
+    "label": "The Huntresses (The Paws)",
+    "section": "Organizations",
+    "group": "SinCorp & Allies"
+  },
+  {
     "id": "the-resistance",
     "label": "The Resistance",
     "section": "Organizations",
     "group": "Opposition"
   },
   {
-    "id": "the-paws",
-    "label": "The Huntresses (The Paws)",
+    "id": "the-pack",
+    "label": "The Pack",
     "section": "Organizations",
-    "group": "SinCorp & Allies"
+    "group": "Gangs"
+  },
+  {
+    "id": "mega-cities",
+    "label": "The Mega-Cities",
+    "section": "Locations",
+    "group": "Overview"
   },
   {
     "id": "angora",
@@ -53,18 +132,6 @@
     "group": "Mega-Cities"
   },
   {
-    "id": "mega-cities",
-    "label": "The Mega-Cities",
-    "section": "Locations",
-    "group": "Overview"
-  },
-  {
-    "id": "matriarchs",
-    "label": "The Matriarchs",
-    "section": "Concepts",
-    "group": "Society"
-  },
-  {
     "id": "the-wilds",
     "label": "The Wilds",
     "section": "Locations",
@@ -77,34 +144,27 @@
     "group": "Regions"
   },
   {
-    "id": "toys",
-    "label": "Toys",
-    "section": "Concepts",
-    "group": "Toys"
+    "id": "the-overgrown",
+    "label": "The Overgrown",
+    "section": "Wilds Bestiary",
+    "group": "Overview"
   },
   {
-    "id": "life-of-a-toy",
-    "label": "Life of a Toy in the Cities",
-    "section": "Concepts",
-    "group": "Toys"
+    "id": "grazers",
+    "label": "Grazers",
+    "section": "Wilds Bestiary",
+    "group": "Fauna"
   },
   {
-    "id": "toy-modifications",
-    "label": "SinCorp Toy Modifications",
-    "section": "Concepts",
-    "group": "Toys"
+    "id": "snarebloom",
+    "label": "Snarebloom",
+    "section": "Wilds Bestiary",
+    "group": "Flora"
   },
   {
-    "id": "project-sylph",
-    "label": "Project Sylph",
-    "section": "Concepts",
-    "group": "Society"
-  },
-  {
-    "id": "tempered",
-    "label": "The Tempered",
-    "section": "Concepts",
-    "group": "The Serum & Transformation"
+    "id": "tday",
+    "label": "TDay",
+    "section": "History"
   },
   {
     "id": "era-pre-sin",
@@ -139,16 +199,7 @@
   },
   {
     "id": "era-project-sylph",
-    "label": "Project Sylph",
+    "label": "The Sylph Age",
     "section": "Eras"
-  },
-  { "id": "the-overgrown", "label": "The Overgrown", "section": "Wilds Bestiary", "group": "Overview" },
-  { "id": "grazers",       "label": "Grazers",       "section": "Wilds Bestiary", "group": "Fauna" },
-  { "id": "snarebloom",    "label": "Snarebloom",    "section": "Wilds Bestiary", "group": "Flora" },
-  { "id": "the-transformed", "label": "The Transformed",             "section": "Concepts", "group": "The Serum & Transformation" },
-  { "id": "reproduction",    "label": "Reproduction & the Population","section": "Concepts", "group": "Society" },
-  { "id": "macro",           "label": "Macro",                        "section": "Concepts", "group": "The Serum & Transformation" },
-  { "id": "wild-toys",       "label": "Wild Toys",                    "section": "Concepts", "group": "Society" },
-  { "id": "life-of-a-giantess",  "label": "Life of a Giantess",           "section": "Concepts", "group": "Society" },
-  { "id": "ferals", "label": "Ferals", "section": "Concepts", "group": "The Serum & Transformation" }
+  }
 ]
