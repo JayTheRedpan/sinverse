@@ -257,3 +257,24 @@ Additional note: who made it so Onyx could make stalkers?!"*
 
 you shiver at what you read about these creatures, however you know now how to avoid them.. its time to press forward!
 
+## 20
+
+Against ever bone in your body telling you to just run into the vents and never turn back, you climb onto the chair and click on the log, it's a document log, you grumble hoping it would be something quick, but its quite extensive, but also seems to be an situation log than a log about these creatures.
+
+*"Look... I don't have much time to detail this out, but if you're seeing this, well the worst possible thing has happened... the failed, they broke containment! Security is trying to subdue them but, they are unnatural.. there isn't anything left to feel pain, I've left as much details I can about the monsters we have made down here! I'll try to lockdown the labs the best I can but I'm only level 4 access, i..if you need a key to get though the lockdown, my office is near the entry into the level 5 datacenter labs aux. entrance, there's a spare in my desk. Good luck"*
+
+This part of the log ends, and in turn a second document opens up detailing them
+
+"'Project Able' Report: The failed
+The project was a complete disaster, our 4 subjects.. when we gave them the transformative serum.. what happened, was nothing short of horrifying, their bodies.. started to mutate, but rather than a seamless transition from their current forms to vega avian forms.. turned into a scene from our nightmares... I.. won't get the noises of their screams out of my head, their bodies contoured in ways they shouldn't they screamed in agony, they screamed for our help, we didn't know what to do. We hit the killswitch.
+
+Half transformed, they were put down by varvo virus.. or so we thought, we killed their minds, but the mutations continued, their bodies cracked, and dismorphed, they started moving on their own! There was no brain activity but these 4 half bird half.. whatever they were beings were moving! Now.. they are just instinct drive masses of mutated flesh, anything of a lifeform that was in there is now long dead, the virus designed to kill them, made them stronger, they don't feel pain, only hunger and lust. A complete oversight on our part lead to 4 creatures we could only describe as G-virus mutant masses, but somehow that isn't even a perfect example of our mistake.
+
+The Failed hate UV, they will avoid UV light at all costs, they cannot see very well and UV burns them, they can feel vibrations so be careful when stomping around, they also can hear extremely well, they have no sense of smell anymore. These monsters do not care what you are, if you resist them, they will rip you apart and devour you, or worse.. they will breed you.. and I don't want to imagine what that would do to you. AVOID at all costs."
+
+you shiver in the seat.. the prospect of these half mutant abominations doing anything to you makes your skin crawl, you saw them as you got in the lab, they barely resemble a lifeform... just as you were about to leave another notice lights up on the screen
+
+"Notice: Project Able was a completely failure, and must be shutdown, seal off level 7 and evacuate the lab to level 5, however it gives a keen insight into the new Project Zypher our new geneticist has devised, direct injection of new geno will not work, a catalyst is required to stabilise the transformation, more data is required on catalyst response."
+
+You pause for only a second, only for your thought to be broken, by the shuffling happening outside the office, you swiftly dive into the vent before a failed decided to sneak up on you.. you need to move now more than ever you think to yourself.
+

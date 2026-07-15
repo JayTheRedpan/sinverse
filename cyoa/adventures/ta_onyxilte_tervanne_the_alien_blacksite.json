@@ -253,7 +253,7 @@
     "choices": [
       {
         "text": "Read the log: maybe it holds insight to what those things in the dark are!",
-        "nextId": null
+        "nextId": 20
       },
       {
         "text": "Climb though the vents, I gotta get out of here!",
@@ -306,5 +306,20 @@
     ],
     "author": "SpearmintMagpie",
     "title": "Log 003: The Stalkers"
+  },
+  {
+    "id": 20,
+    "image": null,
+    "tags": [
+      "gore"
+    ],
+    "choices": [
+      {
+        "text": "What nightmares.. I must get out of here! Maybe that doctor's key may help!",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Log 004: The failed"
   }
 ]
