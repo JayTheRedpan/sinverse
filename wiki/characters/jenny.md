@@ -10,7 +10,7 @@ For now she is a nobody — one of the smaller [giantesses](the-transformed), un
 
 Jenny's hybrid heritage reads beautifully across her. Her fur is black — the deep black of her bunny parentage — but carries the subtle markings of a red panda rendered in shades of black rather than rust, lighter patches surfacing against the dark like a familiar pattern half-remembered in shadow. She has slightly rounded bunny ears and a long, puffed tail, and bright gold eyes that catch the light.
 
-Her long black hair is worn in pigtails, each tip dyed a different neon — one electric blue, one electric red — a splash of deliberate, youthful flash against all that black. Around her neck she wears a chain bearing Brandy's logo, a fan's devotion worn openly. She stands a shade under twelve feet, modest by giantess standards; she is, at present, one of the smaller of her kind, a fact that sits in sharp and deliberate contrast with the colossal size she has been promised. The serum-equivalent of her heritage left her with equine anatomy, inherited from the Bailly.
+Her long black hair is worn in pigtails, each tip dyed a different neon — one electric blue, one electric red — a splash of deliberate, youthful flash against all that black. Around her neck she wears a chain bearing Brandy's logo, a fan's devotion worn openly. She stands a shade under twelve feet, modest by giantess standards; she is, at present, one of the smaller of her kind, a fact that sits in sharp and deliberate contrast with the colossal size she has been promised. The serum-equivalent of her heritage left her with equine anatomy, inherited from her hybrid mother.
 
 ## Personality
 
@@ -30,7 +30,7 @@ Jenny has no before. She was born into the world after [TDay](tday), a child of 
 
 Jenny grew up among the giantesses of the new world and was shaped, as the young are, by the ones she looked up to. She idolized the most powerful and the most glamorous — Sin above all, and Brandy for her fabulous, aspirational shine — and absorbed from them a model of what a giantess should be: dominant, cruel, adored. She set about imitating it with all the enthusiasm of youth, channelling Sin's sadism as best she understood it and wearing Brandy's logo at her throat.
 
-Then came the discovery that would define her. Jenny carries an accelerated and seemingly unbounded version of the perpetual-growth mutation — the same restless biology that drives [Bailly](bailly)'s endless growth, but turned up past any obvious ceiling. She was told, while still young, that she would likely never stop growing until she reached full macro scale. Where another might have been frightened, Jenny was *electrified*. The prospect of becoming truly enormous fused with everything else she already wanted — power, status, the ability to dominate utterly — and became the engine of her fantasies. She has been counting on it, and threatening with it, ever since.
+Then came the discovery that would define her. Jenny carries an accelerated and seemingly unbounded version of the perpetual-growth mutation — the same restless biology that drives her hybrid mother's endless growth, but turned up past any obvious ceiling. She was told, while still young, that she would likely never stop growing until she reached full macro scale. Where another might have been frightened, Jenny was *electrified*. The prospect of becoming truly enormous fused with everything else she already wanted — power, status, the ability to dominate utterly — and became the engine of her fantasies. She has been counting on it, and threatening with it, ever since.
 
 ## As a Rising Giantess
 
@@ -54,7 +54,7 @@ Threaded through all of it is **size fantasy**, specifically her own future macr
 
 - Jenny is **young, eager, and worshipful** — a fan, not a power player. She idolizes Sin, adores Brandy (and wears her logo), and accepts the new world's order completely because she was born into it.
 - Her sadism is an **excitable power trip**, NOT Sin's cold methodical patience. She gets swept up, giddy, carried away by the rush. Lean on that contrast — it's the point of her.
-- Her **growth destiny** is central: she carries an accelerated, unbounded version of Bailly's mutation and is expected to reach full macro. She's thrilled about it and threatens with it constantly. *"When I'm bigger I'm going to swallow you whole."*
+- Her **growth destiny** is central: she carries an accelerated, unbounded version of her hybrid mother's mutation and is expected to reach full macro. She's thrilled about it and threatens with it constantly. *"When I'm bigger I'm going to swallow you whole."*
 - The contrast between her **current small size** (one of the smaller giantesses) and her **future enormity** is a defining tension. She fantasizes with shrunken toys to rehearse her future scale.
 - She's a **nobody right now** — unknown to SinCorp, which she aspires to join. Don't write her as connected or important yet; her significance is all potential.
 - Her look: black fur with red-panda markings in shades of black, rounded bunny ears, long puff tail, gold eyes, black pigtails with one neon-blue and one neon-red tip, Brandy-logo necklace. Equine anatomy.
@@ -62,7 +62,7 @@ Threaded through all of it is **size fantasy**, specifically her own future macr
 ## Did You Know
 
 - Jenny was born after TDay and has never known any world but the one Sin made — which is part of why she embraces its order so completely.
-- She carries an accelerated, seemingly unbounded version of the same perpetual-growth mutation that drives Bailly, and is expected to keep growing until she reaches full macro scale. She was thrilled, not frightened, to find out.
+- She carries an accelerated, seemingly unbounded version of the same perpetual-growth mutation that drives her hybrid mother, and is expected to keep growing until she reaches full macro scale. She was thrilled, not frightened, to find out.
 - Her red-panda markings appear in shades of black rather than the usual rust, blended with her bunny parent's dark fur.
 - Jenny wears a chain with Brandy's logo on it — open fandom for the influencer she idolizes.
 - She tries to imitate Sin's sadism but gets it almost backwards: where Sin is cold and patient, Jenny is hot, fast, and overwhelmed by the power trip. The gap is much of her character.
@@ -73,7 +73,6 @@ Threaded through all of it is **size fantasy**, specifically her own future macr
 
 - [Sin](sin) — the idol Jenny worships and tries (and fails) to imitate
 - [Brandy](brandy) — the influencer Jenny adores; she wears Brandy's logo
-- [Bailly](bailly) — who shares the perpetual-growth mutation Jenny carries in accelerated, unbounded form
 - [SinCorp](sincorp) — the organization Jenny aspires to join
 - [The Apotheosis Serum](apotheosis-serum) — the science behind the world and the growth she's heir to
 - [Toys](toys) — the objects of her excitable cruelty and her size fantasies
