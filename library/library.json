@@ -1169,5 +1169,30 @@
     ],
     "wordCount": 5889,
     "relates_to": []
+  },
+  {
+    "id": 46,
+    "type": "standalone",
+    "title": "TDay Tales - Haven",
+    "author": "BadEnds",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "gore",
+      "snuff"
+    ],
+    "file": "stories/tdaytales_rosi.md",
+    "date": "2026-07",
+    "universe_date": 0,
+    "canonical": false,
+    "characters": [
+      "haven"
+    ],
+    "lore": [
+      "tday",
+      "apotheosis-serum"
+    ],
+    "wordCount": 5982,
+    "relates_to": []
   }
 ]
