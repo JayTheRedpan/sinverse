@@ -218,6 +218,10 @@
       {
         "text": "Cry.",
         "nextId": 12
+      },
+      {
+        "text": "Enjoy it?",
+        "nextId": 16
       }
     ],
     "author": "Phrenics",
@@ -292,5 +296,28 @@
     ],
     "author": "Phrenics",
     "title": "F - Clean."
+  },
+  {
+    "id": 16,
+    "image": null,
+    "tags": [
+      "sissification"
+    ],
+    "choices": [
+      {
+        "text": "Squirm and try to escape",
+        "nextId": null
+      },
+      {
+        "text": "Stay still and relax",
+        "nextId": null
+      },
+      {
+        "text": "Try to unbloat your swollen stomach",
+        "nextId": null
+      }
+    ],
+    "author": "R",
+    "title": "R-twisted pleasure"
   }
 ]
