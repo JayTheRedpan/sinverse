@@ -261,3 +261,15 @@ That's probably why she bothered to clean you.
 
 "Took a bit longer than I thought, maybe I shoulda skipped the morning session. Eh... Well, we're not setting off *that* late, hopefully we won't be too late for..."
 
+## 16
+
+You feel her barbed shaft slowly plowing in and out of your much smaller form, the taste of metal from her piercings mixing with the taste of her flesh. Your jaw aches, you stomach bulges, and for some twisted reason… your *hard?*
+
+You let out a slight whimper as you go limp, somehow finding pleasure in the situation, and think to yourself “am I finally breaking?” It feels like you should dread it, but over time, the taste of her doesn’t seem all that bad, and may seems to notice as well.
+
+“Wait, are you actually getting hard? Maybe you’re not as defective as I thought, ya little kitty!” She rewards you with a rougher thrust, filling your bowels and internal organs with a surge of pre-cum. That alone has you aching again, and not to mention your stomach is bloated, like a living condom. 
+
+After a while, she casually sits back on her bed, and without any warning, and little to no reaction, spews her load down your throat, giving you the first “meal” of the day. Her semen floods your body, swelling your stomach to near impossible proportions, making every inch of your body ache. Jizz leaks from your lips and spews from your nose, even dribbling from your anus as your stomach feels like it’s about to burst from the internal pressure.
+
+May finally pulls you off of her cock, sighing with pleasure, and oddly enough, petting your head? “Good job little toy, you even had some fun yourself” she laughs as she points at your thighs, and, to your horror, you came. Small dribble of cum, not from her, but from you, run down your leg, leaving you humiliated… you **enjoyed** it… and there’s no other excuse. You feel ashamed, but before you can wallow and question your sense of dignity, you’re picked up by May, and put in her cleavage to rest. She has no idea of letting you take a long break, but at least it’s a brief relief… right?
+
