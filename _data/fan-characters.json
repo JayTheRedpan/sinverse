@@ -409,5 +409,79 @@
       
     ],
     "contributor": "TheKingRatte"
+  },
+  {
+    "id": 12,
+    "name": "Tam",
+    "active": true,
+    "species": ["Red Fox"],
+    "pronouns": "She/Her",
+    "height": 134,
+    "height_correction": 1,
+    "headroom_pct": 2,
+    "weight": 1478,
+    "length": 33,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1785555324/tam_height_ugaknu.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1785555325/tam_profile_t7mklo.webp",
+    "wiki": "tam",
+    "faction": [
+      
+    ],
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "N", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "equine" 
+    },
+    "role": [
+      
+    ],
+    "class": ["Amazon"],
+    "relationships": [
+      
+    ],
+    "contributor": "TamFox"
+  },
+  {
+    "id": 13,
+    "name": "Serafin",
+    "active": true,
+    "species": ["Dragon"],
+    "pronouns": "She/Her",
+    "height": 206,
+    "height_correction": 1,
+    "headroom_pct": 6.5,
+    "weight": 4561,
+    "length": 33,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1785555539/serafin_height_kjtfac.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1785555539/serafin_profile_xsiv9s.webp",
+    "wiki": "serafin",
+    "faction": [
+      
+    ],
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "humanoid" 
+    },
+    "role": [
+      
+    ],
+    "class": ["Amazon"],
+    "relationships": [
+      
+    ],
+    "contributor": "Serafin"
   }
 ]
