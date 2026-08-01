@@ -300,13 +300,16 @@
     "universe_date": null,
     "canonical": false,
     "characters": [
-      "autumn"
+      "autumn",
+      "sin",
+      "song",
+      "eve"
     ],
     "lore": [
       "toys",
 	    "sincorp"
     ],
-    "wordCount": 4594,
+    "wordCount": 8349,
     "relates_to": []
   },
   {
@@ -324,13 +327,15 @@
     "universe_date": null,
     "canonical": false,
     "characters": [
-      "mini"
+      "mini",
+      "sin",
+      "leona"
     ],
     "lore": [
       "sincorp",
 	    "toys"
     ],
-    "wordCount": 4889,
+    "wordCount": 9750,
     "relates_to": []
   },
   {
@@ -1193,6 +1198,89 @@
       "apotheosis-serum"
     ],
     "wordCount": 5982,
+    "relates_to": []
+  },
+  {
+    "id": 47,
+    "type": "standalone",
+    "title": "Tita Intro",
+    "author": "CharitysSongbird",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "vore"
+    ],
+    "file": "stories/tita_intro.md",
+    "date": "2026-07",
+    "universe_date": 0,
+    "canonical": false,
+    "characters": [
+      "lady",
+      "tita",
+      "libby",
+      "song",
+      "veronica"
+    ],
+    "lore": [
+      
+    ],
+    "wordCount": 8011,
+    "relates_to": []
+  },
+  {
+    "id": 48,
+    "type": "standalone",
+    "title": "Veronica Intro",
+    "author": "CharitysSongbird",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "vore",
+      "musk"
+    ],
+    "file": "stories/veronica_intro.md",
+    "date": "2026-07",
+    "universe_date": 0,
+    "canonical": false,
+    "characters": [
+      "veronica",
+      "tam",
+      "tita",
+      "hydie",
+      "jay",
+      "song"
+    ],
+    "lore": [
+
+    ],
+    "wordCount": 8794,
+    "relates_to": []
+  },
+  {
+    "id": 49,
+    "type": "standalone",
+    "title": "Serafin in Sinverse: Vol. 1",
+    "author": "Serafin",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "vore",
+      "musk",
+      "snuff",
+      "gore",
+      "micro"
+    ],
+    "file": "stories/serafin_in_sinverse_vol_1.md",
+    "date": "2026-07",
+    "universe_date": 0,
+    "canonical": false,
+    "characters": [
+      "serafin"
+    ],
+    "lore": [
+
+    ],
+    "wordCount": 4549,
     "relates_to": []
   }
 ]

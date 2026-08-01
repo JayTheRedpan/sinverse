@@ -262,7 +262,8 @@
     "avatar": null,
     "bio": null,
     "types": [
-      "Writer"
+      "Writer",
+      "Artist"
     ],
     "socials": {
       "deviantart": "https://www.deviantart.com/badendsstories",
@@ -933,6 +934,42 @@
     ],
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/thekingratte/"
+    }
+  },
+  {
+    "id": "Serafin",
+    "name": "Serafin",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1785554696/serafin_boojcm.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/youira/"
+    }
+  },
+  {
+    "id": "Tenzing",
+    "name": "Tenzing",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1785556290/tenzing_ud7oql.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/tenzing/"
+    }
+  },
+  {
+    "id": "KaiDrachenFox",
+    "name": "KaiDrachenFox",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1785557863/kainervousfluster_uve2o0.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/kaidrachenfox"
     }
   }
 ]
