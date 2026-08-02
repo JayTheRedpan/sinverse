@@ -298,7 +298,7 @@
     "file": "stories/autumn_intro.md",
     "date": "2019-12",
     "universe_date": null,
-    "canonical": false,
+    "canonical": true,
     "characters": [
       "autumn",
       "sin",
@@ -373,7 +373,7 @@
     "file": "stories/zuzu_intro.md",
     "date": "2019-12",
     "universe_date": null,
-    "canonical": false,
+    "canonical": true,
     "characters": [
       "zuzu"
     ],
@@ -1213,7 +1213,7 @@
     "file": "stories/tita_intro.md",
     "date": "2026-07",
     "universe_date": 0,
-    "canonical": false,
+    "canonical": true,
     "characters": [
       "lady",
       "tita",
@@ -1241,7 +1241,7 @@
     "file": "stories/veronica_intro.md",
     "date": "2026-07",
     "universe_date": 0,
-    "canonical": false,
+    "canonical": true,
     "characters": [
       "veronica",
       "tam",
