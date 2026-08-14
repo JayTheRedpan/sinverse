@@ -769,9 +769,11 @@
     "date": "2022-07",
     "universe_date": null,
     "canonical": false,
-    "characters": [],
+    "characters": [
+      "candy"
+    ],
     "lore": [
-      
+      "alea-panthera"
     ],
     "wordCount": 7077,
     "relates_to": []
@@ -1281,6 +1283,29 @@
 
     ],
     "wordCount": 4549,
+    "relates_to": []
+  },
+  {
+    "id": 50,
+    "type": "standalone",
+    "title": "Waking Up With A Fox",
+    "author": "Cytharia",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "musk"
+    ],
+    "file": "stories/waking_up_with_a_fox.md",
+    "date": "2026-08",
+    "universe_date": 0,
+    "canonical": false,
+    "characters": [
+      "jay"
+    ],
+    "lore": [
+
+    ],
+    "wordCount": 2818,
     "relates_to": []
   }
 ]
