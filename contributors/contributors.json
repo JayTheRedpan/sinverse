@@ -971,5 +971,29 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/kaidrachenfox"
     }
+  },
+  {
+    "id": "Cytharia",
+    "name": "Cytharia",
+    "avatar": null,
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/cytharia/"
+    }
+  },
+  {
+    "id": "Draeusz",
+    "name": "Draeusz",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1786728228/draeusz_xlzr2o.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/diegojhol"
+    }
   }
 ]
