@@ -483,5 +483,46 @@
       
     ],
     "contributor": "Serafin"
+  },
+  {
+    "id": 14,
+    "name": "Candy",
+    "active": true,
+    "species": ["Tiger"],
+    "pronouns": "She/Her",
+    "height": 188,
+    "height_correction": 1,
+    "headroom_pct": 15.5,
+    "weight": 3036,
+    "length": 20,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1786716903/candy_height_yxn0kj.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988230/CanineCock_length_jbhbva.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1786716904/candy_profile_bjdmqr.webp",
+    "wiki": "candy",
+    "faction": [
+      
+    ],
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "k", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "canine" 
+    },
+    "role": [
+      
+    ],
+    "class": ["Amazon"],
+    "relationships": [
+      { 
+        "name": "John", 
+        "type": "Ex-Husband", 
+        "note": "was her husband pre TDAY, now toy post Tday he's her toy" 
+      }
+    ],
+    "contributor": "RegalDrennan"
   }
 ]
