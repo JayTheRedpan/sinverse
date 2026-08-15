@@ -201,5 +201,11 @@
     "id": "era-project-sylph",
     "label": "The Sylph Age",
     "section": "Eras"
+  },
+  { 
+    "id": "scratch", 
+    "label": "Scratch", 
+    "section": "Concepts", 
+    "group": "Toys" 
   }
 ]
