@@ -277,7 +277,7 @@
       },
       {
         "text": "back into the vents and get that key! I won't become a metal bird snack",
-        "nextId": null
+        "nextId": 21
       }
     ],
     "author": "SpearmintMagpie",
@@ -321,5 +321,22 @@
     ],
     "author": "SpearmintMagpie",
     "title": "Log 004: The failed"
+  },
+  {
+    "id": 21,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "dash for the vent on the other side! I can make it!",
+        "nextId": null
+      },
+      {
+        "text": "Its too dark, best head down the bright hallway, I don't see danger...",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "developing nightmares"
   }
 ]
