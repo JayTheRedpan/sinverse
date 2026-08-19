@@ -3747,5 +3747,124 @@
     "canonical": false,
     "synopsis": null,
     "relates_to": []
+  },
+  {
+    "id": 158,
+    "type": "set",
+    "title": "Bouncing and Browsing",
+    "artist": "ArtinTess",
+    "coverImage": null,
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1787155390/bouncing_and_browsing_01_lrmtgd.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1787155390/bouncing_and_browsing_02_hvyna7.webp"
+    ],
+    "characters": [
+      "jay",
+      "adhara"
+    ],
+    "tags": [
+      "micro"
+    ],
+    "lore": [
+      
+    ],
+    "synopsis": null,
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "relates_to": []
+  },
+  {
+    "id": 159,
+    "type": "scene",
+    "title": "Sinverse Graffiti",
+    "artist": "Endy",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1787155755/sinverse_graffiti_japan_gaf8tt.png",
+    "characters": [
+      
+    ],
+    "tags": [
+      
+    ],
+    "lore": [
+      
+    ],
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "synopsis": null,
+    "relates_to": []
+  },
+  {
+    "id": 160,
+    "type": "set",
+    "title": "SinCorp Domesticator",
+    "artist": "Akira",
+    "coverImage": null,
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1787156554/domesticator_01a_ddg2qu.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1787156557/domesticator_01b_t8o1fi.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1787156559/domesticator_01c_jq3pmu.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1787156550/domesticator_02_sbmdmz.webp",
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1787156551/domesticator_03_vvmdyk.webp"
+    ],
+    "characters": [
+      "jay",
+      "akira"
+    ],
+    "tags": [
+      "m/m",
+      "bondage"
+    ],
+    "lore": [
+      "sincorp"
+    ],
+    "synopsis": null,
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "relates_to": []
+  },
+  {
+    "id": 161,
+    "type": "scene",
+    "title": "Tail Job Helper",
+    "artist": "WispSings",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1787161512/tail_job_hirdw2.webp",
+    "characters": [
+      "jay"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "lore": [
+      
+    ],
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "synopsis": null,
+    "relates_to": []
+  },
+  {
+    "id": 162,
+    "type": "scene",
+    "title": "Big Roll!",
+    "artist": "ArtinTess",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1787161949/big_roll_l57edc.webp",
+    "characters": [
+      "jay"
+    ],
+    "tags": [
+      "noncon"
+    ],
+    "lore": [
+      
+    ],
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "synopsis": null,
+    "relates_to": []
   }
 ]
