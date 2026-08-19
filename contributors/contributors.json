@@ -98,7 +98,7 @@
   {
     "id": "CGK",
     "name": "CGK",
-    "avatar": null,
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1787162223/cgk_whf1zz.webp",
     "bio": null,
     "types": [
       "Writer"
@@ -990,10 +990,22 @@
     "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1786728228/draeusz_xlzr2o.webp",
     "bio": null,
     "types": [
-      "Writer"
+      "Artist"
     ],
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/diegojhol"
+    }
+  },
+  {
+    "id": "Endy",
+    "name": "Endy",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1787155860/endy_cf1g5c.jpg",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "X": "https://x.com/endy_mini_ion"
     }
   }
 ]

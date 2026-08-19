@@ -1214,7 +1214,7 @@
     ],
     "file": "stories/tita_intro.md",
     "date": "2026-07",
-    "universe_date": 0,
+    "universe_date": null,
     "canonical": true,
     "characters": [
       "lady",
@@ -1242,7 +1242,7 @@
     ],
     "file": "stories/veronica_intro.md",
     "date": "2026-07",
-    "universe_date": 0,
+    "universe_date": null,
     "canonical": true,
     "characters": [
       "veronica",
@@ -1274,7 +1274,7 @@
     ],
     "file": "stories/serafin_in_sinverse_vol_1.md",
     "date": "2026-07",
-    "universe_date": 0,
+    "universe_date": null,
     "canonical": false,
     "characters": [
       "serafin"
@@ -1297,7 +1297,7 @@
     ],
     "file": "stories/waking_up_with_a_fox.md",
     "date": "2026-08",
-    "universe_date": 0,
+    "universe_date": null,
     "canonical": false,
     "characters": [
       "jay"
@@ -1306,6 +1306,28 @@
 
     ],
     "wordCount": 2818,
+    "relates_to": []
+  },
+  {
+    "id": 51,
+    "type": "standalone",
+    "title": "A Man of Science Reborn",
+    "author": "CharitysSongbird",
+    "summary": null,
+    "tags": [
+      
+    ],
+    "file": "stories/tiernan-reborn.md",
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "tiernan"
+    ],
+    "lore": [
+      "apotheosis-serum"
+    ],
+    "wordCount": 4127,
     "relates_to": []
   }
 ]
