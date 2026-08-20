@@ -218,6 +218,16 @@
         "name": "Hydey", 
         "type": "Owner", 
         "note": null 
+      },
+      { 
+        "name": "Eve", 
+        "type": "Frenemy", 
+        "note": null 
+      },
+      { 
+        "name": "Jay", 
+        "type": "Friend", 
+        "note": null 
       }
     ],
     "contributor": "CharitysSongbird"
