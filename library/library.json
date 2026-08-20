@@ -1329,5 +1329,54 @@
     ],
     "wordCount": 4127,
     "relates_to": []
+  },
+  {
+    "id": 52,
+    "type": "standalone",
+    "title": "Vending",
+    "author": "CharitysSongbird",
+    "summary": null,
+    "tags": [
+      "vore",
+      "micro",
+      "m/m",
+      "abuse"
+    ],
+    "file": "stories/vending.md",
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "song",
+      "eve"
+    ],
+    "lore": [
+      "project-sylph",
+	    "toys"
+    ],
+    "wordCount": 4628,
+    "relates_to": []
+  },
+  {
+    "id": 53,
+    "type": "standalone",
+    "title": "Short and Sweet",
+    "author": "BadEnds",
+    "summary": null,
+    "tags": [
+      
+    ],
+    "file": "stories/short_and_sweet.md",
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      
+    ],
+    "lore": [
+      
+    ],
+    "wordCount": 1442,
+    "relates_to": []
   }
 ]
