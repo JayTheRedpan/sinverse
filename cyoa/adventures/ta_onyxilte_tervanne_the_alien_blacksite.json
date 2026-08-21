@@ -301,7 +301,7 @@
     "choices": [
       {
         "text": "Into the vents for now, if they don't like light and cramp places, maybe this is for the best.",
-        "nextId": null
+        "nextId": 22
       }
     ],
     "author": "SpearmintMagpie",
@@ -338,5 +338,22 @@
     ],
     "author": "SpearmintMagpie",
     "title": "developing nightmares"
+  },
+  {
+    "id": 22,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "That log says they hunt in the dark, the light is the best way forward!",
+        "nextId": null
+      },
+      {
+        "text": "They don't like tight spaces so maybe the vents are the way.",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Hazard Zone"
   }
 ]
