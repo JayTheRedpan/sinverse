@@ -3868,5 +3868,27 @@
     "canonical": false,
     "synopsis": null,
     "relates_to": []
+  },
+  {
+    "id": 163,
+    "type": "scene",
+    "title": "Watch And Learn",
+    "artist": "WispSings",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1787445341/watch_and_learn_du8yjm.webp",
+    "characters": [
+      "jay",
+      "adhara"
+    ],
+    "tags": [
+      
+    ],
+    "lore": [
+      
+    ],
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "synopsis": null,
+    "relates_to": []
   }
 ]
