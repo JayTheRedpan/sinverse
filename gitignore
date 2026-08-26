@@ -1,0 +1,144 @@
+# ─────────────────────────────────────────────────────────────
+# Sinverse — .gitignore
+#
+# This repo is PUBLIC (GitHub Pages). Anything committed here is
+# permanently visible in history, even if deleted later. The rules
+# below are ordered by risk: secrets first, then personal/local
+# breadcrumbs, then ordinary clutter.
+# ─────────────────────────────────────────────────────────────
+
+
+# ── Secrets and credentials ──────────────────────────────────
+# Never commit these. If one is ever committed by accident, rotate
+# the credential immediately — removing it in a later commit does
+# NOT remove it from history.
+.env
+.env.*
+!.env.example
+*.key
+*.pem
+*.p12
+*.pfx
+*.crt
+id_rsa
+id_ed25519
+*.ppk
+secrets.json
+credentials.json
+config.local.*
+*.secret
+*.secrets
+
+
+# ── Local notes and drafts ───────────────────────────────────
+# A common accidental-PII vector: scratch files with real names,
+# emails, addresses, passwords, or unpublished plans.
+notes.md
+NOTES.md
+TODO.local.md
+scratch/
+drafts/
+private/
+local/
+*.local
+*.local.*
+
+
+# ── Editor and IDE ───────────────────────────────────────────
+# VS Code settings can contain absolute paths (C:\Users\<name>\...),
+# which leaks your OS username.
+.vscode/
+!.vscode/extensions.json
+.idea/
+*.sublime-workspace
+*.sublime-project
+*.code-workspace
+.history/
+
+
+# ── OS clutter ───────────────────────────────────────────────
+.DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+Thumbs.db
+ehthumbs.db
+Desktop.ini
+$RECYCLE.BIN/
+
+
+# ── Dependencies and build output ────────────────────────────
+node_modules/
+package-lock.json.bak
+dist/
+build/
+.cache/
+.parcel-cache/
+.tmp/
+tmp/
+
+
+# ── Logs and diagnostics ─────────────────────────────────────
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+logs/
+
+
+# ── Backups and temp files ───────────────────────────────────
+# Editor/OS backups frequently contain older copies of files you
+# meant to sanitize.
+*.bak
+*.backup
+*.old
+*.orig
+*.rej
+*.swp
+*.swo
+*~
+*.tmp
+sinverse-backup*/
+*-backup/
+*-old/
+
+
+# ── Archives ─────────────────────────────────────────────────
+# Zips of the site tend to sweep up .git, local configs, and
+# anything else sitting in the folder. Commit source, not bundles.
+*.zip
+*.tar
+*.tar.gz
+*.tgz
+*.rar
+*.7z
+
+
+# ── Local tooling / scripts ──────────────────────────────────
+# Deploy or sync scripts often hardcode internal hosts, IPs, paths,
+# or usernames (e.g. a NAS git remote). Keep them out of the repo.
+deploy.local.*
+sync.*
+*.deploy
+.direnv/
+venv/
+.venv/
+__pycache__/
+*.pyc
+
+
+# ── Media working files ──────────────────────────────────────
+# Source art files can carry metadata (author name, software
+# registration, GPS) and are large. Publish exports, not sources.
+*.psd
+*.xcf
+*.clip
+*.kra
+*.ai
+*.sketch
+
+
+# ── Anything explicitly marked private ───────────────────────
+*.private
+*.private.*
