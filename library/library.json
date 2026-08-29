@@ -1382,5 +1382,29 @@
     ],
     "wordCount": 1442,
     "relates_to": []
+  },
+  {
+    "id": 54,
+    "type": "standalone",
+    "title": "The Games We Play",
+    "author": "CharitysSongbird",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "micro"
+    ],
+    "file": "stories/the_games_we_play.md",
+    "date": "2026-08",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "rosi",
+      "tess"
+    ],
+    "lore": [
+      
+    ],
+    "wordCount": 3633,
+    "relates_to": []
   }
 ]

@@ -71,6 +71,7 @@ While an oddity even among their numbers, he is not as active in open operations
 - It is recorded that Eve was an active Sylph at the time of Song's testing and may have been present at the time. Though all reports of that particular test have since been lost or deleted.
 - Song has been deployed for several enforcement actions within the wilds and has remained a high performer in "capturing" marks, who are then returned to the pound. Given Hydie's affiliation, it is likely these "captures" are less due to skill and rather a means of resistance movements.
 - It is known that he is an adamant supporter of a particular resistance plan "Delphi"
+- Song lives in a loft above the Pound, a much larger room than most toys would be allowed, thanks to Hydie’s kindness. He’s used the extra space to make up a small model Mainstreet out of doll houses and a few larger buildings he uses to give shrunken toy’s a safe place to live, though he has been known to indulge himself, and other toys with it from time to time.
 
 ## Related
 
