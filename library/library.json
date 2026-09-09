@@ -1406,5 +1406,58 @@
     ],
     "wordCount": 3633,
     "relates_to": []
+  },
+  {
+    "id": 55,
+    "type": "standalone",
+    "title": "The 'Truth'",
+    "author": "Fortune",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "abuse"
+    ],
+    "file": "stories/the_truth.md",
+    "date": "2026-09",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "jay",
+      "sin"
+    ],
+    "lore": [
+      
+    ],
+    "wordCount": 8466,
+    "relates_to": []
+  },
+  {
+    "id": 56,
+    "type": "standalone",
+    "title": "Aurora Was Still Gold",
+    "author": "ItsYaGalBerry",
+    "summary": "Berry talks Casey and Freya into a same-day trip to Candy’s Aurora casino in Alea because the pictures of the place will not leave her alone. They ride SinCorp’s underground rail into a night of collar rules, stage attention, and polished spectacle, and Berry gets the pretty evening she wanted, until a gold-collar cloned toy named Dakota becomes the part of it she actually takes home.",
+    "tags": [
+      "noncon",
+      "abuse",
+      "micro",
+      "vore"
+    ],
+    "file": "stories/aurora_was_still_gold.md",
+    "date": "2026-09",
+    "universe_date": 42,
+    "canonical": false,
+    "characters": [
+      "berry",
+      "casey",
+      "candy"
+    ],
+    "lore": [
+      "alea-panthera",
+	    "toys",
+      "sincorp"
+    ],
+    "wordCount": 16422,
+    "relates_to": []
   }
 ]

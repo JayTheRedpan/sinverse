@@ -14,6 +14,7 @@
     { label: 'Home',         href: '/',              id: 'home' },
     { label: 'Library',      href: '/library/',       id: 'library' },
     { label: 'Gallery',      href: '/gallery/',       id: 'gallery' },
+    { label: 'Audio',        href: '/audio/',         id: 'audio' },
     { label: 'Size Ref',     href: '/sizeref/',       id: 'sizeref' },
     { label: 'CYOA',         href: '/cyoa/',          id: 'cyoa' },
     { label: 'Wiki',         href: '/wiki/',          id: 'wiki' },

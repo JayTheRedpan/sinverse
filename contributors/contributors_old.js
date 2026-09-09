@@ -84,23 +84,6 @@ function creditedBy(field, id) {
   return list.indexOf(id) !== -1;
 }
 
-// Audio works (audio/audio.json), loaded once at startup. Held module-level so
-// the counting helpers don't need their signatures threaded through every
-// caller. A contributor is credited on a clip if they appear in voice_actors[],
-// in credits[] (foley / writing / editing…), or in the legacy contributor[].
-var AUDIO_ITEMS = [];
-function audioWorkCount(id) {
-  var key = (id || '').toLowerCase();
-  return AUDIO_ITEMS.reduce(function(sum, it) {
-    if (!it || it.active === false) return sum;
-    var people = [];
-    if (Array.isArray(it.voice_actors)) people = people.concat(it.voice_actors);
-    else if (it.contributor) people = people.concat(Array.isArray(it.contributor) ? it.contributor : [it.contributor]);
-    (Array.isArray(it.credits) ? it.credits : []).forEach(function(cr){ if (cr && cr.id) people.push(cr.id); });
-    return people.some(function(p){ return String(p).toLowerCase() === key; }) ? sum + 1 : sum;
-  }, 0);
-}
-
 function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
   // Comics count per page and serials per chapter; a set counts as ONE entry,
   // and any other single work counts as one.
@@ -115,7 +98,7 @@ function publicWorkCount(id, galleryItems, libraryItems, adventureNodes) {
     return sum + 1;
   }, 0);
   var c = adventureNodes.filter(function(n){ return n.author === id; }).length;
-  return g + l + c + audioWorkCount(id);
+  return g + l + c;
 }
 
 // Count a creator's STASH contributions: images (sets/comics count their pages)
@@ -159,7 +142,6 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
     return sum + 1;
   }, 0);
   var cCount = adventureNodes.filter(function(n){ return n.author === id; }).length;
-  var aCount = audioWorkCount(id);
 
   var defs;
   var stashUrl = '../stash/?creator=' + encodeURIComponent(id);
@@ -174,7 +156,6 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
     defs = [
       { n: gCount, label: 'Artworks',   url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
       { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
-      { n: aCount, label: 'Audio',      url: '../audio/?search=' + encodeURIComponent(id) + '&mode=credits', link: aCount > 0 },
       { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
       { n: stashTotal, label: 'Stash',  url: stashUrl, link: stashTotal > 0 },
     ];
@@ -182,7 +163,6 @@ function buildCounts(id, galleryItems, libraryItems, adventureNodes, container, 
     defs = [
       { n: gCount, label: 'Artworks',   url: '../gallery/?search=' + encodeURIComponent(id) + '&mode=artist', link: gCount > 0 },
       { n: lCount, label: 'Stories',    url: '../library/?search=' + encodeURIComponent(id) + '&mode=author', link: lCount > 0 },
-      { n: aCount, label: 'Audio',      url: '../audio/?search=' + encodeURIComponent(id) + '&mode=credits', link: aCount > 0 },
       { n: cCount, label: 'Adventures', url: '../cyoa/?authorId=' + encodeURIComponent(id), link: cCount > 0 },
     ];
   }
@@ -219,10 +199,10 @@ function renderJay(jay, chars, galleryItems, libraryItems, adventureNodes) {
   var portrait = document.getElementById('jay-portrait');
   if (portrait) {
     if (portraitSrc) {
-      portrait.src = portraitSrc;
+      portrait.src = (window.SinverseImg ? SinverseImg.thumb(portraitSrc, 400) : portraitSrc);
       portrait.classList.remove('is-sil');
     } else if (char && char.image) {
-      portrait.src = char.image;
+      portrait.src = (window.SinverseImg ? SinverseImg.thumb(char.image, 400) : char.image);
       portrait.classList.add('is-sil');
     } else {
       portrait.src = '';
@@ -488,7 +468,6 @@ async function init() {
       safeFetch(root + 'cyoa/cyoa.json',           []),
       safeFetch(root + 'stash/stash.json',         []),
       safeFetch(root + '_data/fan-characters.json',[]),
-      safeFetch(root + 'audio/audio.json',         []),
     ]);
 
     var contributors = results[0];
@@ -497,7 +476,6 @@ async function init() {
     var libraryItems = results[3];
     var cyoaManifest = results[4];
     var stashItems   = results[5];
-    AUDIO_ITEMS      = results[7] || [];
     // Active fan characters that are contributor avatars link back to a profile.
     var fanChars     = (results[6] || []).filter(function(c){ return c.active !== false; });
 

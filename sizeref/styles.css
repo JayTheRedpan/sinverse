@@ -161,9 +161,11 @@ body.has-global-nav .sr-app {
   background:transparent;border:1px solid var(--border);border-radius:var(--radius);
   width:28px;height:28px;display:flex;align-items:center;justify-content:center;
   font-size:1rem;color:var(--text-secondary);cursor:pointer;transition:all .2s;
+  touch-action:manipulation;   /* no dbl-tap zoom / tap-delay side effects */
+  flex-shrink:0;               /* never squeezed by a tight toolbar row */
 }
 .zoom-btn:hover { border-color:var(--border-mid);color:var(--accent); }
-.zoom-reset-btn { width:auto;padding:0 .6rem;font-family:var(--font-caps);font-size:.58rem;letter-spacing:.08em; }
+.zoom-reset-btn { width:auto;padding:0 .6rem;font-family:var(--font-caps);font-size:.58rem;letter-spacing:.08em;white-space:nowrap; }
 .copy-scale-btn.zoom-btn { width:auto; }
 .zoom-label { font-family:var(--font-caps);font-size:.62rem;letter-spacing:.1em;color:var(--text-secondary);min-width:38px;text-align:center; }
 
@@ -216,7 +218,7 @@ body.has-global-nav .sr-app {
 .sr-scroll {
   flex: 1;
   min-height: 0;
-  overflow-x: auto;       /* always allow horizontal scroll */
+  overflow-x: scroll;     /* always reserved so a mid-session scrollbar can't shift the grid */
   overflow-y: hidden;     /* JS switches to auto when zoom > 1 */
   display: flex;
   align-items: flex-end;
@@ -314,9 +316,16 @@ body.has-global-nav .sr-app {
 /* Mobile */
 @media (max-width:900px) {
   .sr-app, body.has-global-nav .sr-app { grid-template-columns:1fr; height:auto; }
-  .sr-sidebar { max-height:55vh; }
-  .sr-main { height:80vh; min-height:0; }
-  .sr-stats { max-height:25vh; grid-template-columns:1fr 1fr; }
+  .sr-sidebar { max-height:55vh; max-height:55svh; }
+  .sr-main { height:80vh; height:80svh; min-height:0; }
+  /* Sidebar collapsed: the page would be shorter than the viewport (80svh of
+     main + nothing else), leaving a band of bare background below the cards.
+     Pin the shell to the full remaining viewport instead and let the lone
+     main pane stretch to fill it. */
+  body.sr-sidebar-collapsed .sr-app { height:100vh; height:100svh; }
+  body.sr-sidebar-collapsed.has-global-nav .sr-app { height:calc(100vh - 52px); height:calc(100svh - 52px); }
+  body.sr-sidebar-collapsed .sr-main { height:auto; }
+  .sr-stats { max-height:25vh; max-height:25svh; grid-template-columns:1fr 1fr; }
   .sr-canvas-area {
   position: relative; min-height:200px; }
   .sr-length-area { min-height:200px; }
@@ -710,7 +719,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
   .sr-toolbar { padding: .4rem .75rem; }
   .zoom-btn { width: 24px; height: 24px; font-size: .85rem; }
   .zoom-label { min-width: 30px; font-size: .56rem; }
-  .zoom-reset-btn { padding: 0 .35rem; font-size: .54rem; }
+  .zoom-reset-btn { width: auto; padding: 0 .35rem; font-size: .54rem; }
 }
 
 /* Headshot counter-zoom — inverse scale applied by JS to cancel out parent zoom */
@@ -1967,6 +1976,7 @@ details[open] > summary.img-section-summary::before { transform: rotate(90deg); 
 
 /* ── Copy bar (below canvas, above stats) ────────────────────── */
 .sr-copy-bar {
+  flex-shrink: 0;
   display: flex;
   align-items: center;
   justify-content: space-between;
@@ -2194,4 +2204,57 @@ body.sandbox-active .sr-img-wrap img { cursor: inherit; }
   color: var(--text-muted, var(--text-secondary));
   text-align: center;
   margin-top: 0.1rem;
+}
+
+/* ── Collapsible panels ─────────────────────────
+   The sidebar and the character-card grids can be tucked away (persisted per
+   device). Collapsing only hides control surfaces — the scene, sandbox
+   dragging, grid overlay, and the copy bars are untouched, and the canvas
+   simply reflows into the reclaimed space. */
+body.sr-sidebar-collapsed .sr-sidebar { display: none; }
+body.sr-sidebar-collapsed .sr-app,
+body.sr-sidebar-collapsed.has-global-nav .sr-app { grid-template-columns: 1fr; }
+
+body.sr-stats-collapsed .sr-stats { display: none; }
+body.sr-stats-collapsed .sr-stats-toggle { border-bottom: none; }
+
+.sr-panel-btn[aria-pressed="true"] { opacity: 0.65; }
+
+.sr-stats-toggle {
+  display: block;
+  width: 100%;
+  background: var(--bg-panel);
+  border: none;
+  border-top: 1px solid var(--border);
+  border-bottom: 1px solid var(--border);
+  color: var(--text-muted);
+  font-family: var(--font-caps);
+  font-size: 0.62rem;
+  letter-spacing: 0.14em;
+  text-transform: uppercase;
+  padding: 0.4rem 1.25rem;
+  text-align: left;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: color 0.15s;
+}
+.sr-stats-toggle:hover { color: var(--accent); }
+
+
+/* ── Short landscape viewports (rotated phones) ─
+   With the sidebar collapsed the app shell is pinned to the viewport; on a
+   ~350px-tall landscape screen the canvas minimum plus the bars can exceed
+   that, and overflow:hidden was clipping the lower controls. Shrink the
+   minimums and let the main pane scroll vertically as a fallback so the copy
+   bar and character cards always stay reachable. */
+@media (max-width: 900px) and (max-height: 520px) {
+  .sr-canvas-area { min-height: 140px; }
+  .sr-length-area { min-height: 140px; }
+  .sr-stats { max-height: 40vh; max-height: 40svh; }
+  /* Regardless of sidebar state: the main pane's base overflow:hidden would
+     clip the opened cards with no way to reach them in a ~350px-tall
+     viewport, so the pane itself scrolls whenever its content overflows. */
+  .sr-main { overflow-y: auto; }
+  .sr-view-tabs { padding: 0 0.5rem; }
+  .sr-toolbar { padding: 0.3rem 0.6rem; }
 }

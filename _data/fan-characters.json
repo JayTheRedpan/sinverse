@@ -451,7 +451,7 @@
     "role": [
       
     ],
-    "class": ["Amazon"],
+    "class": ["Giantess"],
     "relationships": [
       
     ],
@@ -488,7 +488,7 @@
     "role": [
       
     ],
-    "class": ["Amazon"],
+    "class": ["Giantess"],
     "relationships": [
       
     ],
@@ -525,7 +525,7 @@
     "role": [
       
     ],
-    "class": ["Amazon"],
+    "class": ["Giantess"],
     "relationships": [
       { 
         "name": "John", 
@@ -534,5 +534,66 @@
       }
     ],
     "contributor": "RegalDrennan"
+  },
+  {
+    "id": 15,
+    "name": "Berry",
+    "active": true,
+    "species": ["Wolf"],
+    "pronouns": "She/Her",
+    "height": 96,
+    "height_correction": 1,
+    "headroom_pct": 4,
+    "weight": 349,
+    "length": 24,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1788498159/berry_height_brbwcb.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1788498159/berry_profile_zjrooe.webp",
+    "wiki": "berry",
+    "faction": [
+      
+    ],
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "equine" 
+    },
+    "role": [
+      
+    ],
+    "class": ["Giantess"],
+    "relationships": [
+      {
+        "name": "Casey Voss",
+        "type": "Closest Friend",
+        "note": "Recovered Berry from stasis. Lab handler and the giantess Berry trusts most. Not a romantic partner, though still intimate."
+      },
+      {
+        "name": "Freya",
+        "type": "Friend",
+        "note": "Larger lupine friend. Teasing, size play, and messy boundaries. Close enough to call. Not Casey."
+      },
+      {
+        "name": "Candy",
+        "type": "Alea Contact",
+        "note": "Runs Aurora in all but name. Berry chose the visits. Respected, not trusted by default."
+      },
+      {
+        "name": "Grande",
+        "type": "Acquaintance",
+        "note": "Socially impressive and the source of Jay. Known, not leaned on."
+      },
+      {
+        "name": "Kate, Melissa, and Debbie",
+        "type": "Social Circle",
+        "note": "Needles Berry about height and softness. She still loves seeing Melissa for the bimbo energy. Friction, not refuge."
+      }
+    ],
+    "contributor": "ItsYaGalBerry"
   }
 ]

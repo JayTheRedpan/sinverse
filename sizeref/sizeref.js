@@ -693,10 +693,14 @@ function render() {
   });
   if (maxH < 1) maxH = 72;
 
-  // Measure canvasH AFTER stats are in DOM so their height is already subtracted
-  var areaEl = document.getElementById('sr-canvas-area');
-  if (areaEl) {
-    var freshH = areaEl.clientHeight;
+  // Measure canvasH AFTER stats are in DOM so their height is already subtracted.
+  // Measure the SCROLL element, not the outer area: its clientHeight excludes the
+  // horizontal scrollbar, so the scale matches the height figures actually get.
+  // (The scrollbar is always reserved via overflow-x:scroll so this can't flip
+  // between renders and shift the grid off the ruler.)
+  var measureEl = document.getElementById('sr-scroll') || document.getElementById('sr-canvas-area');
+  if (measureEl) {
+    var freshH = measureEl.clientHeight;
     if (freshH > 100) S.canvasH = freshH - 4;
   }
   S.pxPerIn = (S.canvasH * S.zoomH) / maxH;
@@ -969,9 +973,19 @@ function updateRuler() {
   inner.innerHTML = '';
   if (S.pxPerIn <= 0) return;
 
+  // Same measurement source as the scale math (see render): the scroll element's
+  // clientHeight, so ruler ticks and figure scale always agree.
+  var scrollMeasure = document.getElementById('sr-scroll');
   var areaEl = document.getElementById('sr-canvas-area');
-  var viewH = areaEl ? areaEl.clientHeight - 4 : col.offsetHeight;
+  var viewH = scrollMeasure ? scrollMeasure.clientHeight - 4
+            : (areaEl ? areaEl.clientHeight - 4 : col.offsetHeight);
   if (viewH < 10) return;
+  // The ruler column spans the full canvas area, but the ground sits at the
+  // scroll element's CLIENT bottom — above the always-reserved horizontal
+  // scrollbar. Lift the bottom-anchored ruler by that thickness so tick 0
+  // stays exactly on the ground line.
+  var sbH = scrollMeasure ? Math.max(0, scrollMeasure.offsetHeight - scrollMeasure.clientHeight) : 0;
+  inner.style.bottom = sbH + 'px';
 
   // When zoomed in the scene scrolls; build ticks up to the FULL scrollable
   // height (not just the visible viewport) so the ruler can scroll along with
@@ -3372,9 +3386,9 @@ function createSlotRow(type) {
   row.appendChild(rmBtn);
 
   sel.addEventListener('change', function() {
-    var areaEl2 = document.getElementById('sr-canvas-area');
-    if (areaEl2) {
-      var h = areaEl2.clientHeight;
+    var measureEl2 = document.getElementById('sr-scroll') || document.getElementById('sr-canvas-area');
+    if (measureEl2) {
+      var h = measureEl2.clientHeight;
       if (h > 100) S.canvasH = h - 4;
     }
     renderActive();
@@ -6442,11 +6456,23 @@ function renderOrSandbox() {
   _preserveHeightScrollFracX = null;
 }
 var _preserveHeightScrollFracX = null;
+// Some mobile browsers can deliver a duplicate (ghost) click for a single tap,
+// which made one press jump two zoom steps. A short dedupe window swallows the
+// ghost; deliberate repeated taps land comfortably outside it.
+var _lastZoomTs = 0;
+function zoomDebounced() {
+  var now = Date.now();
+  if (now - _lastZoomTs < 120) return true;
+  _lastZoomTs = now;
+  return false;
+}
 g('btn-zoom-in').addEventListener('click',function(){
+  if(zoomDebounced())return;
   if(S.view==='length'){S.zoomL=Math.min(ZMAX,parseFloat((S.zoomL+ZSTEP).toFixed(2)));applyLengthZoom();}
   else{S.zoomH=Math.min(ZMAX,parseFloat((S.zoomH+ZSTEP).toFixed(2)));renderOrSandbox();}
 });
 g('btn-zoom-out').addEventListener('click',function(){
+  if(zoomDebounced())return;
   if(S.view==='length'){S.zoomL=Math.max(ZMIN,parseFloat((S.zoomL-ZSTEP).toFixed(2)));applyLengthZoom();}
   else{S.zoomH=Math.max(ZMIN,parseFloat((S.zoomH-ZSTEP).toFixed(2)));renderOrSandbox();}
 });
@@ -6470,3 +6496,79 @@ document.querySelectorAll('.custom-clear-btn').forEach(function(btn){btn.addEven
 })();
 
 init();
+
+/* ── Collapsible panels (sidebar + character-card grids) ─────────────────
+   Persisted per device. On a first visit from a small screen the card grids
+   start collapsed (they're output, easily reopened); the sidebar starts open
+   since it's the primary input surface. Collapsing never touches scene state,
+   sandbox ordering, the grid overlay, or the copy pipeline — it only hides
+   control surfaces and lets the canvas reflow. */
+(function () {
+  var LS_SIDE  = 'sr_sidebar_collapsed';
+  var LS_STATS = 'sr_stats_collapsed';
+
+  function readPref(key, fallback) {
+    try {
+      var v = localStorage.getItem(key);
+      return v === null ? fallback : v === '1';
+    } catch (e) { return fallback; }
+  }
+  function writePref(key, val) {
+    try { localStorage.setItem(key, val ? '1' : '0'); } catch (e) {}
+  }
+
+  var smallScreen = window.innerWidth <= 900;
+  var sideCollapsed  = readPref(LS_SIDE,  false);
+  var statsCollapsed = readPref(LS_STATS, smallScreen);   // mobile-first default
+
+  var sideBtn   = document.getElementById('btn-toggle-sidebar');
+  var statsBtns = [document.getElementById('btn-toggle-stats'),
+                   document.getElementById('btn-toggle-stats-length')].filter(Boolean);
+
+  function apply() {
+    document.body.classList.toggle('sr-sidebar-collapsed', sideCollapsed);
+    document.body.classList.toggle('sr-stats-collapsed', statsCollapsed);
+    if (sideBtn) {
+      sideBtn.setAttribute('aria-pressed', sideCollapsed ? 'true' : 'false');
+      sideBtn.title = sideCollapsed ? 'Show the character panel' : 'Hide the character panel';
+    }
+    statsBtns.forEach(function (b) {
+      b.setAttribute('aria-expanded', statsCollapsed ? 'false' : 'true');
+      b.innerHTML = 'Character cards ' + (statsCollapsed ? '&#9656;' : '&#9662;');
+    });
+    // Nudge anything layout-aware.
+    window.dispatchEvent(new Event('resize'));
+  }
+
+  // The scene's scale is measured from the canvas height at render time, so a
+  // panel toggle must re-render or figures stay sized for the old height
+  // (covered bottoms when reopening, dead space when collapsing). Re-render via
+  // the same pathway the zoom buttons use; skipped during initial load, before
+  // the app has data.
+  function rerenderScene() {
+    try {
+      if (S && S.view === 'length') {
+        if (typeof applyLengthZoom === 'function') applyLengthZoom();
+      } else if (typeof renderOrSandbox === 'function') {
+        renderOrSandbox();
+      }
+    } catch (e) { /* pre-init toggle; the first render will measure correctly */ }
+  }
+
+  if (sideBtn) sideBtn.addEventListener('click', function () {
+    sideCollapsed = !sideCollapsed;
+    writePref(LS_SIDE, sideCollapsed);
+    apply();
+    rerenderScene();
+  });
+  statsBtns.forEach(function (b) {
+    b.addEventListener('click', function () {
+      statsCollapsed = !statsCollapsed;
+      writePref(LS_STATS, statsCollapsed);
+      apply();
+      rerenderScene();
+    });
+  });
+
+  apply();
+})();

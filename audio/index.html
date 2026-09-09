@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <script src="../_shared/agegate.js?v=1780460382"></script>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Audio — Sinverse</title>
+  <!-- Social preview (Open Graph / Discord / Twitter) -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Sinverse" />
+  <meta property="og:title" content="Sinverse" />
+  <meta property="og:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta property="og:image" content="https://sinverse.net/images/logo.png" />
+  <meta property="og:image:width" content="598" />
+  <meta property="og:image:height" content="598" />
+  <meta property="og:url" content="https://sinverse.net/" />
+  <meta name="twitter:card" content="summary" />
+  <meta name="twitter:title" content="Sinverse" />
+  <meta name="twitter:description" content="A collaborative adult creative universe — stories, art, lore, and interactive adventures. 18+." />
+  <meta name="twitter:image" content="https://sinverse.net/images/logo.png" />
+  <meta name="theme-color" content="#c49a78" />
+  <link rel="icon" type="image/x-icon" href="../favicon.ico" />
+  <link rel="apple-touch-icon" href="../apple-touch-icon.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&family=Cormorant+SC:wght@300;400;600&family=EB+Garamond:ital,wght@0,400;1,400&display=swap" rel="stylesheet" />
+  <link rel="stylesheet" href="../_shared/styles-global.css?v=1780202227" />
+  <link rel="stylesheet" href="styles.css?v=2" />
+</head>
+<body>
+
+  <header class="aud-header">
+    <div class="aud-brand">
+      <div class="aud-title-block">
+        <h1 class="aud-title">Audio</h1>
+        <span class="aud-eyebrow">Voice Works</span>
+      </div>
+    </div>
+  </header>
+
+  <!-- Controls -->
+  <div class="aud-controls">
+    <div class="aud-search-row">
+      <input id="search-input" class="search-input" type="text" placeholder="Search…" />
+      <button id="search-clear-btn" class="search-clear-btn" title="Clear search and reset filters">✕ Clear</button>
+      <button id="filter-toggle-btn" class="filter-toggle-btn" title="Show/hide filters">Filters ▾</button>
+    </div>
+    <div id="filter-panel" class="filter-panel">
+      <div class="filter-row">
+        <div class="filter-group">
+          <span class="filter-group-label">Search</span>
+          <div class="search-mode-toggles">
+            <button class="search-mode-btn active" data-mode="title"     title="Search titles">Title</button>
+            <button class="search-mode-btn active" data-mode="credits"   title="Search voice actors and other credits">Credits</button>
+            <button class="search-mode-btn active" data-mode="character" title="Search characters">Character</button>
+          </div>
+        </div>
+      </div>
+      <div class="filter-row">
+        <div class="filter-group filter-group-tags">
+          <span class="filter-group-label">Tags</span>
+          <div class="tag-controls">
+            <div class="tag-bulk">
+              <button id="tag-select-none" class="tag-bulk-btn">Clear all</button>
+            </div>
+            <div class="tag-tri-legend" aria-hidden="true">
+              <span class="tag-tri-legend-item"><span class="tag-tri-chip neutral">Tag</span> off</span>
+              <span class="tag-tri-legend-item"><span class="tag-tri-chip include">＋ Tag</span> require</span>
+              <span class="tag-tri-legend-item"><span class="tag-tri-chip exclude">－ Tag</span> exclude</span>
+            </div>
+          </div>
+          <div class="tag-mode-hint" id="tag-mode-hint"></div>
+          <div id="tag-filters" class="tag-filter-row"></div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="results-bar">
+    <span id="results-count" class="results-count"></span>
+    <div class="results-sort">
+      <label class="results-sort-label" for="sort-select">Sort:</label>
+      <select id="sort-select" class="sort-select-inline">
+        <option value="newest">Newest first</option>
+        <option value="oldest">Oldest first</option>
+        <option value="title">Title A–Z</option>
+        <option value="duration">Longest first</option>
+      </select>
+    </div>
+  </div>
+
+  <div id="aud-grid" class="aud-grid">
+    <div class="loading-placeholder">Loading audio...</div>
+  </div>
+
+  <footer class="aud-footer">
+    <a href="../" class="footer-home-link">&#8592; Sinverse Home</a>
+    <span class="footer-sep">&middot;</span>
+    <span id="aud-count" class="aud-count"></span>
+  </footer>
+
+  <script src="../_shared/images.js?v=1780460382"></script>
+  <script src="audio.js?v=2"></script>
+
+<script src="../_shared/nav.js?v=1781600000"></script>
+<script>initNav('audio');</script>
+</body>
+</html>

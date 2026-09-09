@@ -2688,15 +2688,16 @@ var SIZE_BUCKETS = [];   // loaded from size-classes.json (ordered, smallest fir
 // Characters pages each keep their own.
 
 // Computes a character's size-class label from its height using the buckets
-// defined in size-classes.json. Each bucket has a `max` (exclusive upper bound
-// in inches); a null/absent max is the open-ended top bucket. Because this is
-// derived live, renaming or re-bucketing in that one file updates every
-// character automatically — nothing is stored on the character.
+// defined in size-classes.json. Each bucket has a `max` (INCLUSIVE upper bound
+// in inches — a character at exactly the max belongs to that class); a
+// null/absent max is the open-ended top bucket. Because this is derived live,
+// renaming or re-bucketing in that one file updates every character
+// automatically — nothing is stored on the character.
 function sizeClassFor(heightIn) {
   if (heightIn == null) return '';
   for (var i = 0; i < SIZE_BUCKETS.length; i++) {
     var b = SIZE_BUCKETS[i];
-    if (b.max == null || heightIn < b.max) return b.label;
+    if (b.max == null || heightIn <= b.max) return b.label;
   }
   return SIZE_BUCKETS.length ? SIZE_BUCKETS[SIZE_BUCKETS.length - 1].label : '';
 }
