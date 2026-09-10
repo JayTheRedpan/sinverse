@@ -90,19 +90,19 @@ If a scene stays inside those limits, the volume can go up.
 
 ## Did You Know
 
-She has never told anyone that the first thing she did after learning she could not get pregnant was cry from relief.
+- She has never told anyone that the first thing she did after learning she could not get pregnant was cry from relief.
 
-She practices faces in the mirror when she is alone, still getting used to how her lips change every smile.
+- She practices faces in the mirror when she is alone, still getting used to how her lips change every smile.
 
-The smell of old concrete and dust comforts her. She cannot explain why.
+- The smell of old concrete and dust comforts her. She cannot explain why.
 
-She once tried to go a day without toys and only lasted until mid-afternoon.
+- She once tried to go a day without toys and only lasted until mid-afternoon.
 
-She sleeps better when rain or wind hits the walls. It drowns out the idea of distant heavy movement.
+- She sleeps better when rain or wind hits the walls. It drowns out the idea of distant heavy movement.
 
-Biscuit is the reason she asked for a larger apartment.
+- Biscuit is the reason she asked for a larger apartment.
 
-Casey purrs when she is actually pleased with her. Most of the lab floor never hears it.
+- Casey purrs when she is actually pleased with her. Most of the lab floor never hears it.
 
 ## Related
 

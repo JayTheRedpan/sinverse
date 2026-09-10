@@ -72,9 +72,9 @@ Defect is disposable by nature, and may die in any number of stories. There are 
 Defect will react uncomfortably to excessive kindness from his superiors.   
   
 ## Did You Know:  
-* Defect seems to have instinctual knowledge of pressure points and reflexology, every clone doubling as a surprisingly effective masseuse.   
-* Defect series clones are currently prohibited from receiving full-strength Second Wind modifications, out of fear that it could prolong a dangerous state of feral ecstasy some women experience.   
-* The current record of survival for a single Defect is one year, four months and twelve days, owned by Shari Katili. No other Defect has lived beyond seven months.   
-* Defect series clones will often self-terminate via the nearest giantess when they receive kindness in significant excess of abuse.   
-* Defect series clones are seen as inferior toys by many women, as their response to suffering can feel lackluster for those who do not appreciate devotion.  
-* There have been several Resistance attempts to “rescue” a Defect, though all but one have failed near immediately. The most successful involved a rare, abandoned Defect, and still ultimately failed due to the intervention of Alevia.   
+- Defect seems to have instinctual knowledge of pressure points and reflexology, every clone doubling as a surprisingly effective masseuse.   
+- Defect series clones are currently prohibited from receiving full-strength Second Wind modifications, out of fear that it could prolong a dangerous state of feral ecstasy some women experience.   
+- The current record of survival for a single Defect is one year, four months and twelve days, owned by Shari Katili. No other Defect has lived beyond seven months.   
+- Defect series clones will often self-terminate via the nearest giantess when they receive kindness in significant excess of abuse.   
+- Defect series clones are seen as inferior toys by many women, as their response to suffering can feel lackluster for those who do not appreciate devotion.  
+- There have been several Resistance attempts to “rescue” a Defect, though all but one have failed near immediately. The most successful involved a rare, abandoned Defect, and still ultimately failed due to the intervention of Alevia.   

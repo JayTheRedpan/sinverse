@@ -59,14 +59,14 @@ If planning to be used, DM Candy from the sinverse discord before continuing
 
 
 ## Did You Know
-Candys Casino is called Aurora Resort and Casino
-That you can play games against Candy with any wager, but more thank likely will lose trying.
+- Candys Casino is called Aurora Resort and Casino
 
-Candy has a daughter, Azu
+- That you can play games against Candy with any wager, but more thank likely will lose trying.
 
-John Lynn was Candys ex-husband 
+- Candy has a daughter, Azu
 
+- John Lynn was Candys ex-husband 
 
 ## Related
-Alea Pantera
+[Alea Panthera](alea-panthera)
 

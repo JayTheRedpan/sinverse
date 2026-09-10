@@ -83,16 +83,15 @@ Serafin and Haven are in a relationship, with their "husband" Turbo. Serafin and
 
 
 ## Did You Know
-Serafin used to be a Liberian. 
+- Serafin used to be a Liberian. 
 
-Serafin used to enjoy reading monster smut. 
+- Serafin used to enjoy reading monster smut. 
 
-Before T-Day Serafin dated serval men, all of which she has since hunted down. Even fighting off other girls to get her prize in the immediate aftermath of T-Day. 
+- Before T-Day Serafin dated serval men, all of which she has since hunted down. Even fighting off other girls to get her prize in the immediate aftermath of T-Day. 
 
-Serafin does not mod her toys, so she goes through them quickly. 
+- Serafin does not mod her toys, so she goes through them quickly. 
 
-Serafin can breathe fire 
-
+- Serafin can breathe fire 
 
 ## Related
 
