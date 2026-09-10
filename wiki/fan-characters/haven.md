@@ -17,7 +17,7 @@ Haven's physical build is relatively muscular all things considered. Her powerfu
 
 ## Personality
 
-Haven is a proper psychopath. Haven not only lacks empathy for toys, she lacks it entirely. She's an expert manipulator and can easily feign empathy making it easy to get what she wants out of the other girls who rarely expect such behaviour from one of their own. Haven possesses the same extreme libido and urges other women do, however she already had a great deal of experience containing exteme urges and impulses from her life before TDay. She takes advantage of these skills to aquire a constant supply of toys.
+Haven is a proper psychopath. Haven not only lacks empathy for toys, she lacks it entirely. She's an expert manipulator and can easily feign empathy making it easy to get what she wants out of the other girls who rarely expect such behaviour from one of their own. Haven possesses the same extreme libido and urges other women do, however she already had a great deal of experience containing exteme urges and impulses from her life before TDay and used this impulse control to make sure her first orgasm with her enhanced body was one to remember. One of Haven's standout traits is that she does not see men as toys. She sees them as people - much as most women did before TDay. Moreover Haven dislikes how the girls of the new world see men as little more than objects. For Haven breaking a person with hopes, dreams, and emotions is part of what makes killing them so pleasurable. As far as Haven is concerned treating men as little more than sentient dolls and fleshlights is a waste and a failiure to acknowledge why breaking them feels so good. 
 
 ## History
 
@@ -27,7 +27,7 @@ A sadistic psychopath, prior to TDay she was a serial killer who primarily targe
 
 ### After TDay
 
-Not much about Haven has been documented post-TDay. It is known that she's rather wasteful with her toys often ruining them simply for fun rather than for sexual gratification. And that she at some point crossed paths with and laid claim to her cousin Turbo. Turbo remains the only toy Haven has not utterly destroyed.  
+Not much about Haven has been documented post-TDay. It is known that she's rather wasteful with her toys often ruining them simply for fun rather than for sexual gratification. And that she at some point crossed paths with and laid claim to her cousin Turbo. Turbo remains one of only a handful of men Haven has not utterly destroyed.   
 
 {{RELATIONSHIPS}}
 
@@ -35,7 +35,9 @@ Not much about Haven has been documented post-TDay. It is known that she's rathe
 
 *The kinks and dynamics that define this character's encounters.*
 
- Haven's entire m.o is sadism and making sure toys not only break, but that they suffer - though the suffering does not need to be prolonged. She is always looking for new ways to brutalize toys - with a preference for methods that do not involve external tools. Haven breaks bones for the sound they make, leaves crippled toys to starve on the floor simply because she feels like it, or pulls them apart because it's been a few days since she last did that. Haven even makes a point of eating foods that give her cum a bad taste so that the toys that do last have to choose between an unpalatable meal and starvation. 
+Haven's entire m.o is sadism and making sure toys not only break, but that they suffer - though the suffering does not need to be prolonged. She is always looking for new ways to brutalize toys - with a preference for methods that do not involve external tools. Haven breaks bones for the sound they make, leaves crippled toys to starve on the floor simply because she feels like it, or pulls them apart because it's been a few days since she last did that. Haven even makes a point of eating foods that give her cum a bad taste so that the toys that do last have to choose between an unpalatable meal and starvation. 
+
+Haven has some difficulty getting along with other girls as she also lacks empathy towards them. Being a former serial killer Haven also resents how common killing men is. What was once a thrilling extreme taboo is now just normal. Haven has even dabbled in treating some men well before killing them just to try and recapture the thrill of the charade she used to have to maintain.   
 
 ## Usage Guide
 
@@ -52,10 +54,10 @@ Haven belongs to TurboCanuck. If you wish to use her please contact him for perm
 
 ## Related
 
-The Apotheosis Serum - What transformed her
+- [The Apotheosis Serum](the-apotheosis-serum) — What transformed her
 
-Toys - those expendable holes they used to call men
+- [Toys](toys) — those expendable holes they used to call men
 
-Mega-Cities - Where she lives
+- [Mega Cities](mega-cities) — Where she lives
 
-TDay - The event that allowed her to streamline her process for killing men
+- [TDay](tday) — The event that allowed her to streamline her process for killing men
