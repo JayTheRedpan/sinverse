@@ -1523,6 +1523,22 @@
     }
     .wiki-vtl-seg button.on { background:var(--accent-dim); color:var(--accent); }
     .wiki-vtl-seg button + button { border-left:1px solid var(--border-mid); }
+    /* "Show minor events" pill — hidden until at least one minor event exists */
+    .wiki-vtl-minor-toggle {
+      display:inline-flex; align-items:center; gap:0.4rem;
+      margin-left:0.6rem;
+      border:1px solid var(--border-mid); border-radius:999px;
+      background:none; color:var(--text-muted);
+      font-family:var(--font-caps); font-size:0.62rem; letter-spacing:0.1em;
+      text-transform:uppercase; padding:0.32rem 0.85rem; cursor:pointer;
+      transition:color 0.15s, border-color 0.15s, background 0.15s;
+    }
+    .wiki-vtl-minor-toggle::before { content:'\25CB'; font-size:0.7em; }
+    .wiki-vtl-minor-toggle[aria-pressed="true"] { background:var(--accent-dim); color:var(--accent); border-color:var(--accent); }
+    .wiki-vtl-minor-toggle[aria-pressed="true"]::before { content:'\25CF'; }
+    /* Minor events render de-emphasized so the major beats still lead the eye */
+    .wiki-vtl-event.minor { opacity:0.78; }
+    .wiki-vtl-event.minor .wiki-vtl-ev-title { font-size:0.92em; color:var(--text-secondary); }
 
     /* Era jump-nav: a full-width band that sticks to the top of the timeline
        as you scroll. This browser sticks at the scroll container's CONTENT
@@ -1706,6 +1722,7 @@
           <button type="button" data-mode="expanded" class="on">Expanded</button>
           <button type="button" data-mode="collapsed">Overview</button>
         </div>
+        <button class="wiki-vtl-minor-toggle" id="vtl-minor-toggle" aria-pressed="false" style="display:none">Show minor events</button>
       </div>
 
       <nav class="wiki-vtl-nav" id="vtl-nav" aria-label="Jump to era"></nav>
@@ -2486,7 +2503,19 @@ function buildTimeline() {
 
   // Assign each event to an era id; collect dated orphans and undated events.
   var assigned = {}, orphans = [], present = [];
-  timelineEvents.forEach(function(ev) {
+  // Minor events (marked "minor": true in timeline.json) are hidden unless the
+  // user opts in — keeps the default view to the major beats. The toggle only
+  // appears once at least one minor event exists.
+  var minorCount = timelineEvents.filter(function(ev){ return ev.minor === true; }).length;
+  var minorBtn = document.getElementById('vtl-minor-toggle');
+  if (minorBtn) {
+    minorBtn.style.display = minorCount ? '' : 'none';
+    minorBtn.textContent = 'Show minor events (' + minorCount + ')';
+    minorBtn.setAttribute('aria-pressed', _vtlShowMinor ? 'true' : 'false');
+  }
+  var visibleEvents = _vtlShowMinor ? timelineEvents
+                                    : timelineEvents.filter(function(ev){ return ev.minor !== true; });
+  visibleEvents.forEach(function(ev) {
     var d = vtlEvDate(ev);
     if (d === null) { present.push(ev); return; }
     var er = vtlEraForDate(ordered, d);
@@ -2601,7 +2630,7 @@ function buildTimeline() {
       }
 
       var card = document.createElement('div');
-      card.className = 'wiki-vtl-event' + (ev.era === 'anchor' ? ' anchor' : '');
+      card.className = 'wiki-vtl-event' + (ev.era === 'anchor' ? ' anchor' : '') + (ev.minor === true ? ' minor' : '');
       card.setAttribute('data-ev-id', ev.id);
 
       // Related links (lore pages / characters) — same resolution as before.
@@ -2665,7 +2694,23 @@ function buildTimeline() {
 }
 
 // View toggle: Expanded (default) vs Overview (all eras collapsed).
+var _vtlShowMinor = (function(){
+  try { return localStorage.getItem('wiki_vtl_showMinor') === '1'; } catch (e) { return false; }
+})();
+
 function initTimelineView() {
+  var minorBtn = document.getElementById('vtl-minor-toggle');
+  if (minorBtn && !minorBtn._bound) {
+    minorBtn._bound = true;
+    minorBtn.addEventListener('click', function() {
+      _vtlShowMinor = !_vtlShowMinor;
+      try { localStorage.setItem('wiki_vtl_showMinor', _vtlShowMinor ? '1' : '0'); } catch (e) {}
+      buildTimeline();   // re-render with the new filter; view mode is reapplied below
+      if (_vtlViewMode === 'collapsed') {
+        document.querySelectorAll('.wiki-vtl-era').forEach(function(sec){ sec.classList.add('collapsed'); });
+      }
+    });
+  }
   var seg = document.getElementById('vtl-seg');
   if (!seg || seg._bound) return;
   seg._bound = true;

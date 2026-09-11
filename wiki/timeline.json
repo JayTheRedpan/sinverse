@@ -140,6 +140,18 @@
     ]
   },
   {
+    "id": "domesticator-launch",
+    "date": 71,
+    "title": "The Domesticator Launches",
+    "summary": "SinCorp releases the Domesticator, a posture exoskeleton that seals a toy into an obedient quadrupedal frame answering only to its handler. The first production run sells out within a month, and the device's two models — the docile Bitch Model and the household-topping Alpha — quietly sketch a hierarchy among toys that Project Sylph will not formalise for another thirty years.",
+    "tags": [
+      "the-domesticator", 
+      "sincorp", 
+      "toy-modifications"
+    ],
+    "minor": true
+  },
+  {
     "id": "project-sylph",
     "date": 101,
     "title": "Project Sylph",

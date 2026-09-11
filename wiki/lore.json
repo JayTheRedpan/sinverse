@@ -207,5 +207,11 @@
     "label": "Scratch", 
     "section": "Concepts", 
     "group": "Toys" 
+  },
+  {
+    "id": "the-domesticator",
+    "label": "The Domesticator",
+    "section": "Concepts",
+    "group": "Toys"
   }
 ]
