@@ -1252,7 +1252,7 @@
       "veronica",
       "tam",
       "tita",
-      "hydie",
+      "hydey",
       "jay",
       "song"
     ],
@@ -1458,6 +1458,95 @@
       "sincorp"
     ],
     "wordCount": 16422,
+    "relates_to": []
+  },
+  {
+    "id": 57,
+    "type": "serial",
+    "title": "Song Intro",
+    "author": "CharitysSongbird",
+    "summary": "The story of how Song came to find himself suriving TDay, a Sylph, and a member of The Resistance.",
+    "tags": [
+      "noncon",
+      "snuff",
+      "abuse",
+      "vore",
+      "micro",
+      "m/m"
+    ],
+    "date": "2026-09",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "song",
+      "hydey",
+      "hazel",
+      "popo",
+      "eve",
+      "riley",
+      "joy"
+    ],
+    "lore": [
+      "toys",
+      "the-resistance",
+      "apotheosis-serum",
+      "tday",
+      "the-wilds",
+      "project-sylph",
+      "life-of-a-toy",
+      "toy-modifications",
+      "mega-cities",
+      "the-paws"
+    ],
+    "chapters": [
+      {
+        "title": "Song Intro - Chapter 1",
+        "file": "stories/song_intro_1.md",
+        "wordCount": 6770
+      },
+      {
+        "title": "Song Intro - Chapter 2",
+        "file": "stories/song_intro_2.md",
+        "wordCount": 1908
+      },
+      {
+        "title": "Song Intro - Chapter 3",
+        "file": "stories/song_intro_3.md",
+        "wordCount": 8535
+      },
+      {
+        "title": "Song Intro - Chapter 4",
+        "file": "stories/song_intro_4.md",
+        "wordCount": 4871
+      }
+    ],
+    "relates_to": []
+  },
+  {
+    "id": 58,
+    "type": "standalone",
+    "title": "Happy Meal",
+    "author": "CharitysSongbird",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "vore",
+      "micro",
+      "watersports",
+      "snuff"
+    ],
+    "file": "stories/happy_meal.md",
+    "date": "2026-09",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "jenny",
+      "tess"
+    ],
+    "lore": [
+      "toys"
+    ],
+    "wordCount": 3784,
     "relates_to": []
   }
 ]

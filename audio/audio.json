@@ -55,5 +55,30 @@
       "snuff"
     ],
     "transcript": "transcripts/sandy_training_runt.md"
+  },
+  {
+    "id": 2,
+    "title": "Escape and Rescue",
+    "description": "Song finds a straggler toy he attempts to save, but not everything goes as planned and the big horse has to keep up appearances.",
+    "audio": "https://res.cloudinary.com/dq40xaaux/video/upload/v1789431037/escape_and_rescue_t8foou.mp3",
+    "duration": "10:38",
+    "cover": null,
+    "date": "2026-09",
+    "universe_date": null,
+    "characters": [
+      "song"
+    ],
+    "voice_actors": [
+      "CharitysSongbird"
+    ],
+    "credits": [
+
+    ],
+    "tags": [
+      "noncon",
+      "micro",
+      "m/m"
+    ],
+    "transcript": null
   }
 ]
