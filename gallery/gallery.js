@@ -67,34 +67,6 @@ var TYPE_ICONS = {
 
 // -- Boot
 // ── INIT: load tags + gallery.json, build filters, first render ──────────
-// ── Inactive fan characters ───────────────────────────────────
-// Fan characters flagged "active": false in _data/fan-characters.json are
-// hidden site-wide, so their appearances as character tags on gallery items
-// are ignored — not shown, not counted in filters or search.
-var _inactiveFanKeys = {};
-function loadInactiveFanKeys() {
-  return fetch('../_data/fan-characters.json')
-    .then(function(r){ return r.ok ? r.json() : []; })
-    .then(function(list){
-      (list || []).forEach(function(c){
-        if (c && c.active === false) {
-          if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
-          if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
-        }
-      });
-    })
-    .catch(function(){});
-}
-function isInactiveFanTag(tag) {
-  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
-  if (m && m[1].toLowerCase() === 'canon') return false; // an explicit canon ref is never a fan char
-  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
-  return !!_inactiveFanKeys[key] || !!_inactiveFanKeys[key.replace(/\s+/g, '-')];
-}
-function activeCharacters(chars) {
-  return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
-}
-
 async function init() {
   try {
     var res = await fetch('gallery.json');
@@ -102,7 +74,6 @@ async function init() {
     state.items = await res.json();
     var tagsRes = await fetch('../_data/tags.json');
     var tagsData = await tagsRes.json();
-    await loadInactiveFanKeys();
     buildTagFilters(tagsData.gallery || []);
 
     // Seed filter state from the URL (shareable links + restore-on-return).
@@ -273,23 +244,20 @@ function applyFilters() {
       if (includeTags.length && !includeTags.some(function(t){ return itemTags.indexOf(t) > -1; })) return false;
     }
     // Character filter from URL param is now folded into the search query
-    if (state.characterFilter && !activeCharacters(item.characters).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
+    if (state.characterFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(state.characterFilter)) return false;
     if (q) {
       var matched = false;
       if (modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q)) matched = true;
       if (modes.indexOf('artist')    > -1 && artistList(item).join(' ').toLowerCase().includes(q)) matched = true;
-      if (modes.indexOf('character') > -1 && activeCharacters(item.characters).some(function(c){ return c.toLowerCase().includes(q); })) matched = true;
+      if (modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); })) matched = true;
       if (!matched) return false;
     }
     return true;
   });
 
   state.filtered.sort(function(a, b) {
-    // Dates only carry month+year, so same-month items tie. Break the tie by id:
-    // a higher id is the more recently added item, so it sorts first under
-    // 'newest' (and last under 'oldest').
-    if (state.sortOrder === 'newest')    return (b.date || '').localeCompare(a.date || '') || ((b.id || 0) - (a.id || 0));
-    if (state.sortOrder === 'oldest')    return (a.date || '').localeCompare(b.date || '') || ((a.id || 0) - (b.id || 0));
+    if (state.sortOrder === 'newest') return (b.date || '').localeCompare(a.date || '') || ((b.id || 0) - (a.id || 0));
+    if (state.sortOrder === 'oldest') return (a.date || '').localeCompare(b.date || '') || ((a.id || 0) - (b.id || 0));
     if (state.sortOrder === 'title')  return a.title.localeCompare(b.title);
     if (state.sortOrder === 'artist') return artistText(a).localeCompare(artistText(b));
     return 0;
@@ -437,7 +405,7 @@ function renderGrid() {
           (TYPE_ICONS[item.type] || '') +
           '<span class="gallery-type-badge-txt">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
         '</span>' +
-        (item.canonical ? '<span class="gallery-canonical-badge">&#10022;</span>' : '') +
+        (item.canonical ? '<span class="gallery-canonical-badge" title="Foundational work">&#10022;</span>' : '') +
         (countLabel ? '<span class="gallery-page-count">' + countLabel + '</span>' : '') +
       '</div>' +
       '<div class="gallery-card-body">' +

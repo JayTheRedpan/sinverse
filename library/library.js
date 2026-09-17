@@ -53,34 +53,6 @@ var TYPE_LABELS = {
 };
 
 // ── INIT: load tags + library.json, build filters, first render ──────────
-// ── Inactive fan characters ───────────────────────────────────
-// Fan characters flagged "active": false in _data/fan-characters.json are
-// hidden site-wide, so their appearances as character tags on stories are
-// ignored — not shown, not counted in filters or search.
-var _inactiveFanKeys = {};
-function loadInactiveFanKeys() {
-  return fetch('../_data/fan-characters.json')
-    .then(function(r){ return r.ok ? r.json() : []; })
-    .then(function(list){
-      (list || []).forEach(function(c){
-        if (c && c.active === false) {
-          if (c.name) _inactiveFanKeys[String(c.name).toLowerCase()] = true;
-          if (c.wiki) _inactiveFanKeys[String(c.wiki).toLowerCase()] = true;
-        }
-      });
-    })
-    .catch(function(){});
-}
-function isInactiveFanTag(tag) {
-  var m = String(tag).match(/^\s*(canon|fan)\s*:\s*(.+)$/i);
-  if (m && m[1].toLowerCase() === 'canon') return false; // explicit canon ref is never a fan char
-  var key = (m ? m[2] : String(tag)).replace(/_/g, ' ').trim().toLowerCase();
-  return !!_inactiveFanKeys[key] || !!_inactiveFanKeys[key.replace(/\s+/g, '-')];
-}
-function activeCharacters(chars) {
-  return (chars || []).filter(function(c){ return !isInactiveFanTag(c); });
-}
-
 async function init() {
   try {
     var [storiesRes, collectionsRes] = await Promise.all([
@@ -93,7 +65,6 @@ async function init() {
     state.collections = await collectionsRes.json();
     var tagsRes = await fetch('../_data/tags.json');
     var tagsData = await tagsRes.json();
-    await loadInactiveFanKeys();
     buildTagFilters(tagsData.story || []);
 
     // Seed filter state from the URL (shareable links + restore-on-return).
@@ -304,12 +275,12 @@ function applyFilters() {
       // Inclusion: must have at least one of the required tags.
       if (includeTags.length && !includeTags.some(function(t){ return itemTags.indexOf(t) > -1; })) return false;
     }
-    if (charFilter && !activeCharacters(item.characters).map(function(c){return c.toLowerCase();}).includes(charFilter)) return false;
+    if (charFilter && !(item.characters || []).map(function(c){return c.toLowerCase();}).includes(charFilter)) return false;
     if (q) {
       var modes = getActiveModes();
       var inTitle  = modes.indexOf('title')     > -1 && (item.title  || '').toLowerCase().includes(q);
       var inAuthor = modes.indexOf('author')    > -1 && authorList(item).join(' ').toLowerCase().includes(q);
-      var inChar   = modes.indexOf('character') > -1 && activeCharacters(item.characters).some(function(c){ return c.toLowerCase().includes(q); });
+      var inChar   = modes.indexOf('character') > -1 && (item.characters || []).some(function(c){ return c.toLowerCase().includes(q); });
       var inTag    = modes.indexOf('tag')       > -1 && (item.tags || []).some(function(t){ return t.toLowerCase().includes(q); });
       if (!inTitle && !inAuthor && !inChar && !inTag) return false;
     }
@@ -317,9 +288,6 @@ function applyFilters() {
   });
 
   filtered.sort(function(a, b) {
-    // Dates only carry month+year, so same-month items tie. Break the tie by id:
-    // a higher id is the more recently added item, so it sorts first under
-    // 'newest' (and last under 'oldest').
     if (state.sortOrder === 'newest')    return (b.date || '').localeCompare(a.date || '') || ((b.id || 0) - (a.id || 0));
     if (state.sortOrder === 'oldest')    return (a.date || '').localeCompare(b.date || '') || ((a.id || 0) - (b.id || 0));
     if (state.sortOrder === 'title')     return (a.title || '').localeCompare(b.title || '');
@@ -579,7 +547,7 @@ function openInfoModal(item, words) {
     '<div class="lib-info-modal">' +
       '<button class="lib-info-close" aria-label="Close">&#10005;</button>' +
       '<div class="lib-info-eyebrow">' + (TYPE_LABELS[item.type] || item.type) +
-        (item.canonical ? ' &middot; \u2726 Canon' : '') + '</div>' +
+        (item.canonical ? ' &middot; \u2726 Foundational' : '') + '</div>' +
       '<h2 class="lib-info-title">' + item.title + '</h2>' +
       (authorText(item) ? '<div class="lib-info-author">by ' + authorText(item) + '</div>' : '') +
       (item.summary ? '<p class="lib-info-summary">' + item.summary + '</p>' : '') +
@@ -687,7 +655,7 @@ function renderGridView(items) {
         coverHtml +
         '<span class="lib-type-badge lib-type-' + item.type + '">' + (TYPE_LABELS[item.type] || item.type) + '</span>' +
         chapBadge +
-        (item.canonical ? '<span class="lib-canonical-badge">&#10022;</span>' : '') +
+        (item.canonical ? '<span class="lib-canonical-badge" title="Foundational work">&#10022;</span>' : '') +
         (words ? '<span class="lib-cover-wordcount">' + fmtWords(words) + '</span>' : '') +
         '<button class="lib-info-btn" title="Details" aria-label="Details">i</button>' +
       '</div>';

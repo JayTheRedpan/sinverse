@@ -481,14 +481,12 @@
   text-transform: uppercase;
   color: var(--text-muted);
   flex-shrink: 0;
-  width: 3.5rem;
+  min-width: 3.5rem;      /* short labels still align their buttons */
+  white-space: nowrap;    /* longer labels (e.g. "Foundational") grow instead of being overlapped */
+  padding-right: 0.6rem;
 }
 .filter-btns { display: flex; gap: 0.35rem; flex-wrap: wrap; }
-.filter-group-tags {
-  width: 100%;
-  flex-direction: column;
-  align-items: flex-start;
-}
+.filter-group-tags { width: 100%; }
 
 .type-toggle-btn {
   background: var(--bg-inset);

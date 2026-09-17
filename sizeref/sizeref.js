@@ -525,7 +525,7 @@ function sc(hIn, buildId) {
 function buildSelectOptions(sel, preserveValue) {
   var cur = preserveValue !== undefined ? preserveValue : sel.value;
   sel.innerHTML = '<option value="">-- Select --</option>';
-  var cg = el('optgroup'); cg.label = 'Canon';
+  var cg = el('optgroup'); cg.label = 'Official';
   S.chars.forEach(function(c) {
     var o = el('option'); o.value = 'canon_'+c.id; o.textContent = c.name; cg.appendChild(o);
   });

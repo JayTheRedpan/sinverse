@@ -3959,5 +3959,26 @@
     "canonical": false,
     "synopsis": null,
     "relates_to": []
+  },
+  {
+    "id": 167,
+    "type": "charref",
+    "title": "Dierdra Reference",
+    "artist": "Akira",
+    "images": [
+      "https://res.cloudinary.com/dq40xaaux/image/upload/v1789666007/dierdra_czpkqy.png"
+    ],
+    "characters": [
+      "dierdra"
+    ],
+    "tags": [
+      "reference"
+    ],
+    "lore": [],
+    "synopsis": "Character reference sheet for Dierdra.",
+    "date": "2026-09",
+    "universe_date": null,
+    "canonical": true,
+    "relates_to": []
   }
 ]

@@ -595,5 +595,42 @@
       }
     ],
     "contributor": "ItsYaGalBerry"
+  },
+  {
+    "id": 16,
+    "name": "Dierdra",
+    "active": true,
+    "species": ["Kangaroo"],
+    "pronouns": "She/Her",
+    "height": 180,
+    "height_correction": 1,
+    "headroom_pct": 6,
+    "weight": 2653,
+    "length": 36,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1789664353/dierdra_height_ehvacm.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1789664353/dierdra_profile_b2nn9o.webp",
+    "wiki": "dierdra",
+    "faction": [
+      "SinCorp"
+    ],
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "humanoid" 
+    },
+    "role": [
+      "Researcher"
+    ],
+    "class": ["Giantess"],
+    "relationships": [
+
+    ],
+    "contributor": "Akira"
   }
 ]
