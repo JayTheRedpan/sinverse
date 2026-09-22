@@ -1575,5 +1575,33 @@
     ],
     "wordCount": 19447,
     "relates_to": []
+  },
+  {
+    "id": 60,
+    "type": "standalone",
+    "title": "Hunting Tails",
+    "author": "CharitysSongbird",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "micro"
+    ],
+    "file": "stories/hunting_tails.md",
+    "date": "2026-09",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "xena",
+      "lady",
+      "fera"
+    ],
+    "lore": [
+      "the-paws",
+      "sincorp",
+      "the-wilds"
+    ],
+    "wordCount": 6324,
+    "relates_to": []
   }
 ]
