@@ -1548,5 +1548,32 @@
     ],
     "wordCount": 3784,
     "relates_to": []
+  },
+  {
+    "id": 59,
+    "type": "standalone",
+    "title": "TDay Tales - Workplace Violation",
+    "author": "Simon",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "abuse",
+      "bdsm",
+      "musk"
+    ],
+    "file": "stories/tdaytales_workplace_violation.md",
+    "date": "2026-09",
+    "universe_date": 0,
+    "canonical": false,
+    "characters": [
+      
+    ],
+    "lore": [
+      "tday",
+      "apotheosis-serum",
+      "sincorp"
+    ],
+    "wordCount": 19447,
+    "relates_to": []
   }
 ]
