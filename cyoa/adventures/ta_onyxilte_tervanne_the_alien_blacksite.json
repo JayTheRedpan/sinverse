@@ -18,7 +18,7 @@
       }
     ],
     "author": "SpearmintMagpie",
-    "title": "A choice must be made"
+    "title": "A Choice Must Be Made"
   },
   {
     "id": 2,
@@ -39,7 +39,7 @@
       }
     ],
     "author": "SpearmintMagpie",
-    "title": "The toy's venture to darkness"
+    "title": "The Toy's Venture to Darkness"
   },
   {
     "id": 3,
@@ -49,7 +49,7 @@
     ],
     "choices": [],
     "author": "SpearmintMagpie",
-    "title": "A fearful mistake"
+    "title": "A Fearful Mistake"
   },
   {
     "id": 4,
@@ -146,7 +146,7 @@
       }
     ],
     "author": null,
-    "title": "A wolf huntress"
+    "title": "A Wolf Huntress"
   },
   {
     "id": 10,
@@ -210,7 +210,7 @@
       }
     ],
     "author": "SpearmintMagpie",
-    "title": "2 Steps Back"
+    "title": "Two Steps Back"
   },
   {
     "id": 14,
@@ -261,7 +261,7 @@
       }
     ],
     "author": "SpearmintMagpie",
-    "title": "Alluring failures"
+    "title": "Alluring Failures"
   },
   {
     "id": 17,
@@ -272,16 +272,16 @@
     ],
     "choices": [
       {
-        "text": "read the log; I must know what these things are, and how many could be out there",
+        "text": "Read the log; I must know what these things are, and how many could be out there",
         "nextId": 19
       },
       {
-        "text": "back into the vents and get that key! I won't become a metal bird snack",
+        "text": "Back into the vents and get that key! I won't become a metal bird snack",
         "nextId": 21
       }
     ],
     "author": "SpearmintMagpie",
-    "title": "They lurk in the dark"
+    "title": "They Lurk in the Dark"
   },
   {
     "id": 18,
@@ -320,7 +320,7 @@
       }
     ],
     "author": "SpearmintMagpie",
-    "title": "Log 004: The failed"
+    "title": "Log 004: The Failed"
   },
   {
     "id": 21,
@@ -328,8 +328,8 @@
     "tags": [],
     "choices": [
       {
-        "text": "dash for the vent on the other side! I can make it!",
-        "nextId": null
+        "text": "Dash for the vent on the other side! I can make it!",
+        "nextId": 23
       },
       {
         "text": "Its too dark, best head down the bright hallway, I don't see danger...",
@@ -337,7 +337,7 @@
       }
     ],
     "author": "SpearmintMagpie",
-    "title": "developing nightmares"
+    "title": "Developing Nightmares"
   },
   {
     "id": 22,
@@ -367,6 +367,7 @@
     "choices": [
 
     ],
+    "isEnding": true,
     "author": "SpearmintMagpie",
     "title": "Stalked and Caught"
   }
