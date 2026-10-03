@@ -51,7 +51,7 @@ Vex is the property of her owner and is not to be used without express permissio
 
 ## Did You Know
 
-- Vex is the vicious sabertooth "aunt" from [Riley's](riley) history — the giantess who took her in and stoked her hatred of her toy parentage. *(Riley's own entry deliberately leaves the aunt unnamed; Vex is that figure, so you may want to reconcile the two.)*
+- Vex is the vicious sabertooth "aunt" from [Riley's](riley) history — the giantess who took her in and stoked her hatred of her toy parentage.
 - She was one of the earliest giantesses Sin ever transformed, before TDay, in a SinCorp lab — and appears among those first transformations in the origin-story comic **Sinverse Rise**.
 - Her partner is the snow leopard macro [Mia](mia), who stands many times Vex's height and yet submits to Vex alone. The two were together before the transformation and never parted.
 - How the pair share a private life across such an enormous size gap is never spelled out — but it's said that behind closed doors Mia is somehow brought down to Vex's scale, the two of them meeting as equals in size, and often turning their shared dominance on a single toy between them.
