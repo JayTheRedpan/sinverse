@@ -265,7 +265,51 @@
     ],
     "class": ["Giantess"],
     "relationships": [
-
+      { 
+        "name": "Regina", 
+        "type": "Mother", 
+        "note": "Jackal; got her for prestige purposes; only showed her affection on her 18th birthday; they are estranged" 
+      },
+      { 
+        "name": "Nino", 
+        "type": "Father", 
+        "note": "Horse; he raised her; got squished by a giantess on her 18th birthday; she cherishes his memory" 
+      },
+      { 
+        "name": "Darya", 
+        "type": "Daughter", 
+        "note": "Jackal-Hybrid; doted on and spoiled; tests boundaries even in adulthood; loves her mother; studies in Marisol, because that is where the parties are at; has piercings to her mother's chagrin" 
+      },
+      { 
+        "name": "Phidia", 
+        "type": "Roommate", 
+        "note": "Owl; even taller than Adhara, but 90% plummage; a sculptor famous for depicting toys in triumphant poses; they were roommates, do I have to make it more obvious?; had a falling out with Adhara for filming with Fimbul" 
+      },
+      { 
+        "name": "Fimbul", 
+        "type": "Past Fling", 
+        "note": "Horse; self-absorbed crush influencer; numbers mean everything, both followers and victims; her white fur looks great with red splotches; Adhara starred in her first video series about doubling the number of micros crushed every day; Adhara declined taking part in any more videos, because she was bored by chasing views; bids on Phidia's sculptures to smash them on camera" 
+      },
+      { 
+        "name": "Joy", 
+        "type": "Friend", 
+        "note": "Adhara helped her flee from the laboratory; they still exchange coded letters" 
+      },
+      { 
+        "name": "Libby", 
+        "type": "Aquaintance", 
+        "note": "she heard about Adhara from SinCorp colleagues; dislikes her for seeing toys as people and going out of her way to torture them; they have membership in some Resistance cells in common" 
+      },
+      { 
+        "name": "Hailey", 
+        "type": "Aquaintance", 
+        "note": "they know each other from Adhara's time with the Pack; she was introduced to Darya before the latter set off to Marisol" 
+      },
+      { 
+        "name": "Icon", 
+        "type": "Voice in her Ear", 
+        "note": "Short for 'Input Computing Output Number#'; how she refers to the micros in her earring cage; they provide advice, additional pairs of eyes and ears, and she takes care of them till they mess up; excellent service is rewarded with freedom" 
+      }
     ],
     "contributor": "CGK"
   },
