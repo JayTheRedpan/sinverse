@@ -28,15 +28,11 @@ Adhara has no before. She never saw that wonderful and fascinating world bereft 
 
 ### After TDay
 
-Adhara was born in T+33 as a child of ambition, not love. Her mother, Regina, wanted a daughter as a boost for her bid for a matriarch position. Her father, Nino, who had to bear her never had a choice anyways.
+Adhara was born in T+33 as a child of ambition, not love. Her mother, Regina, wanted a daughter as a boost for her bid for a matriarch position. Her father, Nino, who had to bear her never had a choice anyways.  As Regina's bid failed, she showed even less interest in her daughter and it fell upon Nino to raise her. While it showed her that toys were people too, it did not make for the easiest childhood.
 
-As Regina's bid failed, she showed even less interest in her daughter and it fell upon Nino to raise her. While it showed her that toys were people too, it did not make for the easiest childhood.
+Adhara arrived at Angora University as an adult and without any idea who she wanted to be. She lost no time to start figuring this out. She tried everything she could conceive of. She was like a starving dog with a hunger for new experiences.  She fucked toys in every way she could think of and any way her fellow students came up with. She experimented with lesbian sex with her roommate, Phidia. She was a crush influencer together with Fimbul for twenty-three days. She started conflicts with other students to see if she could win. She ran with the Pack on weekends.
 
-Adhara arrived at Angora University as an adult and without any idea who she wanted to be. She lost no time to start figuring this out. She tried everything she could conceive of. She was like a starving dog with a hunger for new experiences.
-
-She fucked toys in every way she could think of and any way her fellow students came up with. She experimented with lesbian sex with her roommate, Phidia. She was a crush influencer together with Fimbul for twenty-three days. She started conflicts with other students to see if she could win. She ran with the Pack on weekends.
-
-Once she finished her primary students and started working on her PhD in history, she knew who and what she wanted to be. Her path was clear and she won't let anyone stop her from walking it.
+Once she finished her primary studies and started working on her PhD in history, she knew who and what she wanted to be. Her path was clear and she won't let anyone stop her from walking it.
 
 ### As a Historian
 
