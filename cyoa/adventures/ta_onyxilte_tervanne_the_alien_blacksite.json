@@ -257,7 +257,7 @@
       },
       {
         "text": "Climb though the vents, I gotta get out of here!",
-        "nextId": null
+        "nextId": 24
       }
     ],
     "author": "SpearmintMagpie",
@@ -370,5 +370,18 @@
     "isEnding": true,
     "author": "SpearmintMagpie",
     "title": "Stalked and Caught"
+  },
+  {
+    "id": 24,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "No option now.. to that office if I'm getting out of here alive!",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "System Lockdown"
   }
 ]

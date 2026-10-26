@@ -53,7 +53,8 @@
     "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779898023/ronaserena_zwxln3.gif",
     "bio": null,
     "types": [
-      "Writer"
+      "Writer",
+      "Artist"
     ],
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/ronaserena"
@@ -1090,6 +1091,42 @@
     ],
     "socials": {
       "twitter": "https://x.com/MiuraRTR"
+    }
+  },
+  {
+    "id": "NexxieTheJester",
+    "name": "NexxieTheJester",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1792976525/nexxiethejester_jgarbk.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "twitter": "https://x.com/NexxieTheJester"
+    }
+  },
+  {
+    "id": "ndrnight",
+    "name": "ndrnight",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1792977265/ndrnight_yb59hr.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/ndrnight/"
+    }
+  },
+  {
+    "id": "ViolaBat",
+    "name": "ViolaBat",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1792977662/violabat_cngvlz.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "twitter": "https://x.com/ViolaBat"
     }
   }
 ]
