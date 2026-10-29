@@ -301,5 +301,32 @@
     "date": "2026-03",
     "blurb": null,
     "relates_to": [16]
+  },
+  {
+    "id": 18,
+    "kind": "story",
+    "type": "serial",
+    "title": "Big Boyfriends",
+    "creator": "CharitysSongbird",
+    "tags": [
+      "m/m",
+      "micro",
+      "noncon",
+      "abuse",
+      "watersports"
+    ],
+    "date": "2025-09",
+    "chapters": [
+      { "title": "Chapter 1 - The Wish", "file": "stories/big_boyfriends_1.md", "wordCount": 14794 },
+      { "title": "Chapter 2 - Breakfast",    "file": "stories/big_boyfriends_2.md", "wordCount": 5743},
+      { "title": "Chapter 3 - Morning", "file": "stories/big_boyfriends_3.md", "wordCount": 2576 },
+      { "title": "Chapter 4 - Grocery Shopping",    "file": "stories/big_boyfriends_4.md", "wordCount": 5668 },
+      { "title": "Chapter 5 - The Mall", "file": "stories/big_boyfriends_5.md", "wordCount": 5201 },
+      { "title": "Chapter 6 - Movie Night",    "file": "stories/big_boyfriends_6.md", "wordCount": 3588 },
+      { "title": "Chapter 7 - A Quick Shower", "file": "stories/big_boyfriends_7.md", "wordCount": 910 },
+      { "title": "Chapter 8 - TTRPG Fun",    "file": "stories/big_boyfriends_8.md", "wordCount": 1333 }
+      
+    ],
+    "relates_to": []
   }
 ]
