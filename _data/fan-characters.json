@@ -184,7 +184,7 @@
   {
     "id": 6,
     "name": "Song",
-    "active": true,
+    "active": false,
     "species": ["Shire Horse"],
     "pronouns": "he/him",
     "height": 126,
