@@ -356,7 +356,7 @@
   {
     "id": 9,
     "name": "Rona",
-    "active": false,
+    "active": true,
     "species": ["Wolf"],
     "pronouns": "she/her",
     "height": 146,
@@ -365,9 +365,9 @@
     "weight": 1419,
     "length": 29,
     "length_correction": 1,
-    "image": "",
-    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779909824/cock_inriej.webp",
-    "profile_image": "",
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1793586147/rona_height_uan8ft.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988242/HorseCock_length_b66qx4.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1793586123/rona_profile_e6yd47.webp",
     "wiki": "rona",
     "faction": [
       
@@ -379,7 +379,7 @@
       "bustSize": "d", 
       "penis": true, 
       "vag": false, 
-      "penisType": "humanoid" 
+      "penisType": "equine" 
     },
     "role": [
       "Therapist"

@@ -378,10 +378,27 @@
     "choices": [
       {
         "text": "No option now.. to that office if I'm getting out of here alive!",
-        "nextId": null
+        "nextId": 25
       }
     ],
     "author": "SpearmintMagpie",
     "title": "System Lockdown"
+  },
+  {
+    "id": 25,
+    "image": null,
+    "tags": [],
+    "choices": [
+      {
+        "text": "Wait the monster out! UV hurts it, there's still time",
+        "nextId": null
+      },
+      {
+        "text": "Smash the window! I prefer not to die in this lab!",
+        "nextId": null
+      }
+    ],
+    "author": "SpearmintMagpie",
+    "title": "Monsters at the gate"
   }
 ]
