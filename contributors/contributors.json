@@ -1128,5 +1128,17 @@
     "socials": {
       "twitter": "https://x.com/ViolaBat"
     }
+  },
+  {
+    "id": "Veliren",
+    "name": "Veliren",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1794106156/veliren_gyakyl.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/velirenrey/"
+    }
   }
 ]
