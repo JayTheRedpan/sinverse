@@ -111,12 +111,12 @@ city. To one side, a dapple grey mare sat. Her massive breasts resting on the ri
 held in her lap, from which the droopy ears and nose of a small canine peeked out, both wondering
 what the source of all the commotion was. Not far from her, a massive elephant sat, her rotund form sat
 with one thick leg propped up across the other. Below her form a locked carrier sat, two worried little
-eyes peering out from the shadows within. Across the waiting room, Joey couldn't help but blush at what he saw. A mouse girl, maybe nine or ten at most, sat next to her much more mature mother. The
+eyes peering out from the shadows within. <!--Across the waiting room, Joey couldn't help but blush at what he saw. A mouse girl, maybe nine or ten at most, sat next to her much more mature mother. The
 admittedly adorable girl had to be close to nine feet tall, a little raccoon boy hugged to her chest like he
 was some beloved teddy. Of course, Joey couldn't be sure which of the two was the reason the poor
 coon's midsection was heavily wrapped up in bandages. Both the mother's jeans and her daughter's
 yellow dress sported simply enormous bulges, more than enough to have easily ruptured something
-vital in the unfortunate coon.
+vital in the unfortunate coon. -->
 
 A tug from his leash brought Joey up to his feet, scrambling to follow his owner as she strode
 over to a a little glass window in one wall of the waiting room. The glass was decorated with all manner
