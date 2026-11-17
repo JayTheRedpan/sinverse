@@ -676,5 +676,45 @@
 
     ],
     "contributor": "Akira"
+  },
+  {
+    "id": 17,
+    "name": "Tess",
+    "active": true,
+    "species": ["Fox"],
+    "pronouns": "She/Her",
+    "height": 168,
+    "height_correction": 1,
+    "headroom_pct": 4.5,
+    "weight": 2164,
+    "length": 36,
+    "length_correction": 1,
+    "image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1794927077/tess_height_shtqvj.webp",
+    "length_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1779988230/CanineCock_length_jbhbva.webp",
+    "profile_image": "https://res.cloudinary.com/dq40xaaux/image/upload/v1794927141/tess_profile_i7klvl.webp",
+    "wiki": "tess",
+    "faction": [
+      
+    ],
+    "transformed_by": "Apotheosis Serum (TDay Variant)",
+    "canonical": false,
+    "anatomy": { 
+      "breasts": true, 
+      "bustSize": "d", 
+      "penis": true, 
+      "vag": false, 
+      "penisType": "canine" 
+    },
+    "role": [
+      "CEO"
+    ],
+    "class": ["Giantess"],
+    "relationships": [
+      { 
+        "name": "Song", 
+        "type": "Friend", 
+        "note": "College friends from before TDay" 
+      }
+    ]
   }
 ]

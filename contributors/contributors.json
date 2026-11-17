@@ -1140,5 +1140,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/velirenrey/"
     }
+  },
+  {
+    "id": "Trissyfen",
+    "name": "Trissyfen",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1794926866/trissyfen_oir9bn.webp",
+    "bio": null,
+    "types": [
+      "Artist"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/trissyfen"
+    }
   }
 ]
