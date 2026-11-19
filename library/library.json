@@ -1603,5 +1603,81 @@
     ],
     "wordCount": 6324,
     "relates_to": []
+  },
+  {
+    "id": 61,
+    "type": "standalone",
+    "title": "Suddenly, One Day",
+    "author": "Ember",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "snuff",
+      "macro",
+      "vore"
+    ],
+    "file": "stories/suddenly_one_day.md",
+    "date": "2026-11",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "prima",
+      "ember",
+      "popo"
+    ],
+    "lore": [
+      "the-paws",
+      "the-wilds"
+    ],
+    "wordCount": 8943,
+    "relates_to": []
+  },
+  {
+    "id": 62,
+    "type": "standalone",
+    "title": "Ream and Rescue",
+    "author": "Phrenics",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "earpen"
+    ],
+    "file": "stories/ream_and_rescue.md",
+    "date": "2026-10",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "rosi"
+    ],
+    "lore": [
+      
+    ],
+    "wordCount": 2016,
+    "relates_to": []
+  },
+  {
+    "id": 63,
+    "type": "standalone",
+    "title": "Peripheral Sacrifice",
+    "author": "Phrenics",
+    "summary": null,
+    "tags": [
+      "noncon",
+      "eyepen",
+      "gore",
+      "snuff"
+    ],
+    "file": "stories/peripheral_sacrifice.md",
+    "date": "2026-10",
+    "universe_date": null,
+    "canonical": false,
+    "characters": [
+      "adhara"
+    ],
+    "lore": [
+      
+    ],
+    "wordCount": 2018,
+    "relates_to": []
   }
 ]

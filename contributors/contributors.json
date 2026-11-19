@@ -1152,5 +1152,17 @@
     "socials": {
       "furaffinity": "https://www.furaffinity.net/user/trissyfen"
     }
+  },
+  {
+    "id": "Ember",
+    "name": "Ember",
+    "avatar": "https://res.cloudinary.com/dq40xaaux/image/upload/v1795098280/ember_nq8ezp.webp",
+    "bio": null,
+    "types": [
+      "Writer"
+    ],
+    "socials": {
+      "furaffinity": "https://www.furaffinity.net/user/embercehrinahve"
+    }
   }
 ]
