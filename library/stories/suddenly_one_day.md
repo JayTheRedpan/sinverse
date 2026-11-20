@@ -1,6 +1,5 @@
-Prima and Ember Draft
-
 **Suddenly, One Day**
+——————————————————————————————————————————
 
 My heart beat in my chest, drowning out the sounds of the forest.  
    
@@ -47,9 +46,11 @@ I looked up. A vast brown figure filled the sky. She took long, measured strides
 She stopped a short distance away and settled onto her knees. The clearing widened beneath her, trees folding and snapping under her like they were nothing more than twigs. Slowly, deliberately, she brought her face down into view. At that moment, my heart stopped. A name I thought long forgotten after years of running slipped from my throat. 
 
 “Prima?”  
-   
-**The World Had Changed**  
-   
+
+——————————————————————————————————————————  
+**The World Had Changed**
+——————————————————————————————————————————
+
 Her face became my entire world. Prima, MY Prima, was crouching down right in front of me with a beaming smile. She looked like she hadn’t aged a day since I last saw her.  
    
 “Prima\!” I cried out, attempting to stand. My legs gave out instantly, and I toppled back into the dirt. “Prima, please… It's me\! Ember\!”  
@@ -92,10 +93,12 @@ There was no time to ask what was happening. She was screaming, grasping at her 
    
 I ran.
 
-And I never stopped.    
-   
+And I never stopped.  
+
+——————————————————————————————————————————
 **Leaving Only Memories**  
-   
+——————————————————————————————————————————
+
 Prima made her home beside a mountain range. When she had picked me up, those mountains were a hazy blue off in the distance. Yet only a few minutes later, I found those mountains right next to me. I had to cling to the fur on her hand, each swing of her arms threatening to send me flying off. By the time we arrived, it looked as if her mind had drifted to something else. Her eyes sparkled like she was looking forward to something. She squatted down, pressing her hand to the ground and gently tipping me off.
 
 The first thing to catch my eye was a waterfall cascading down the side of a cliff. Nearby, a distinct imprint on a low incline the approximate size and shape of Prima marked the ground. I still couldn’t fathom her size; the imprint was like a crater all to itself. There was a group of maybe twenty toys, all scattered about. Each one of them was staring up at Prima, their bodies trembling in place. They were watching, the tension in their legs betraying their desire to run. Her smile seemed to relax as she watched us all, as if their fear was some strange form of worship.   
@@ -197,8 +200,10 @@ With that, Prima scoffed and turned away. There was no breakfast that morning, n
 She returned that evening, long after the sun had set. Anger no longer colored her face, but her indignant gaze remained. She ordered all of us to gather, to kneel in front of her and sing praise to her and her glory. Those of us who remained formed ragged rows beneath her. Some could barely stand; some stayed crumpled to the floor, but not one of us dared to refuse.  
 
 It was the worst night I can recall. Those who sang well, those who sang poorly, and any who caught her eye were plucked from the ground and swallowed whole. Prima promised each of them a better place–a reward I never wanted to receive. The truth of the situation finally sank in. Standing out would not make her remember. It would only get me killed. My voice disappeared into the chorus as I sang until morning, mourning the life we had. Mourning the life I finally understood would never return.   
-   
-**And Fear of the Difference**
+
+——————————————————————————————————————————
+**And Fear of the Difference**  
+——————————————————————————————————————————
 
 There was no passion left in my worship. I simply let the days pass, becoming another face in the crowd. Most days, I could barely bring myself to stand up. My feet dragged behind me; her bath was nothing more than a chore to be done. In the void that was left, the only comfort I found was in routine.   
    
@@ -226,10 +231,12 @@ I cried out in anger. I had told myself I wasn’t going to care, and that bath 
 
 I hit a tree in frustration, my knuckles splitting open as I grit my teeth. This was stupid, and I knew it wouldn’t end well. The Prima I knew was right in front of me, yet she had never felt further away. That huntress, the one she held up, had spoken directly to her and said something to change her mind. Just like the huntress, all I had to do was ensure my voice was truly heard, eye to eye. I couldn’t regain what I had lost, but if it cost me everything just to hold her once more, then it would be worth it.
 
-I looked back towards the woods, back to where the bear once chased me out. I cursed my heart and ran.  
-   
-**Yet Amongst the Changes**  
-   
+I looked back towards the woods, back to where the bear once chased me out. I cursed my heart and ran.
+
+——————————————————————————————————————————
+**Yet Amongst the Changes**
+——————————————————————————————————————————  
+
 The corpse of the snarebloom lay withered on the ground, the same place Prima had dropped it. Vines altered to snare their prey, far stronger than any rope I had ever seen, ready to be used. Even withered, I knew what I could do. The vines were heavy, but one by one I carried them deep into the forest.
 
 For a week, I did nothing but watch. The bear patrolled the same area every day. Her hunt would start at a fixed hour and end just as the sun was starting to set. I watched how she moved, how she hunted, and how she captured her prey. Those three pylons were her favorite, herding a toy to a chosen location before shrinking him down to size.  When she believed the chase to be over, she’d cast them out in front of her and let them do the rest.   
@@ -265,9 +272,11 @@ It felt like my ears were about to burst. I dropped the flare and covered my ear
 “THAT’S ENOUGH\!”
 
 Her yell caused the air to go still. She started to stomp towards me. The fury in her voice and the way the ground trembled like the earth itself feared her rage made me freeze. It was almost too much. My muscles locked up; this was my last chance. I watched each step, a gait that closed the distance in a matter of moments. It was one lucky step. That’s all it was. Her paw struck in the shrinking field as the pylons started glowing. The blue light lit up brighter than the sun, the sound of crackling electricity filling the air. Each pylon almost immediately started smoking, and soon, they exploded one by one. I covered my face, fragments of metal flying through the air and striking at my body. Everything was covered by a dense haze of electrical smoke, and it seemed as if nature itself held its breath.   
-   
-**What Truly Mattered**  
-   
+
+——————————————————————————————————————————
+**What Truly Mattered**
+—————————————————————————————————————————— 
+
 She stood there, shock etched on her face. Her eyes darted around before settling on her hands. She began to panic, staring at her own limbs as if they didn’t belong to her. I saw a sight that brought me to tears. There she stood, my Prima, no larger than the day I lost her. A gust of wind blew the remaining smoke away, and her eyes finally landed on me.   
    
 “You…” she said, her eyes trembling as a feral snarl formed on her face.
@@ -296,7 +305,7 @@ I rose to my feet as she straightened her back. She was a head taller than me, f
 
 Her face tightened, as if the words I spoke hurt to hear. Then recognition filled her eyes as she gave a possessive smile. 
 
-“As you should have. It’s been far too long.” She pulled me close into a possessive embrace. While her words were soft and relaxed, her hands gripped at my fur, as if she was holding a stuffed animal she lost as a child. “You shrunk your goddess. That won’t pass without punishment, but to hear those words spoken with meaning…”  
+“As you should have. It’s been far too long.” She pulled me close into a possessive embrace. While her words were soft and relaxed, her hands gripped at my fur, as if she was holding a stuffed animal she lost as a girl. “You shrunk your goddess. That won’t pass without punishment, but to hear those words spoken with meaning…”  
    
 Her voice trailed off as she held me as close as she could. My own tears slowly stopped as I returned her embrace. We both pulled back just a bit as our hands lay on each other’s hips. Her tail swung over towards mine, entwining around it like she refused to let me go. 
 
@@ -326,10 +335,12 @@ At that moment, I didn’t think. I ran, but not away. I ran straight to her, wh
 
 Her growth continued unabated. The ground beneath me seemed to shrink. Higher and higher I went, the air rushing around me. She didn’t speak; her cries of pain slowly stopped. When the movement finally stopped, I didn’t dare look down. Slowly, my grip began to fail. I tried to regain my grasp, only for her fur to slip through my fingers.
 
-I fell, reaching out as I cried out her name.   
-   
-**Still Remained**  
-   
+I fell, reaching out as I cried out her name. 
+
+——————————————————————————————————————————
+**Still Remained**
+——————————————————————————————————————————   
+
 I shut the crude leather-bound journal in front of me, letting out a soft chuckle as I looked up at the five toys. It wasn’t the whole story, but some parts were better kept between me and my goddess. My white dress hung down to the floor, pooling behind me, the gold religious necklace I wore shining bright in the sun. Each toy was leaning forward, their eyes wide as they hung on every word. A smile spread across my face. These toys would make a fine addition to the flock. The tent we were inside gently waved in the wind, the sound of working toys outside filling the silence. 
 
 “What then?\! Don’t just leave us on a cliffhanger\! How’d you survive the fall?”
